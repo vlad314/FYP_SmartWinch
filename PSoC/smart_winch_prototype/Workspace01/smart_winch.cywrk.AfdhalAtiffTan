@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CyXmlSerializer>
+<!--This file is machine generated and read. It is not intended to be edited by hand.-->
+<!--Due to this, there is no schema for this file.-->
+<CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspcCustomData" version="4">
+<CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997 type_name="CyDesigner.Common.Base.CyCustomData" version="2">
+<userData>
+<dataGuid v="1b906a0f-a7b6-4e4d-a428-82f98b53cb35">
+<CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35 type_name="CyDesigner.Common.ProjMgmt.GUI.CyExplorerWindow+CyExplorerWindowState" version="3" SelectedTab="Source">
+<TreeKeys>
+<v>Source</v>
+<v>Components</v>
+<v>Output</v>
+</TreeKeys>
+<TreeStates>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="smart_winch\Prototype\Source Files\ModbusRTU\modbus_regs.h">
+<ExpandedNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\TopDesign</v>
+<v>smart_winch\Prototype\Prototype.cydwr</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Pins</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Analog</v>
+<v>smart_winch\Prototype\Prototype.cydwr\DMA</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Clocks</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Interrupts</v>
+<v>smart_winch\Prototype\Prototype.cydwr\System</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Directives</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Flash Security</v>
+<v>smart_winch\Prototype\Header Files</v>
+<v>smart_winch\Prototype\Header Files\cyapicallbacks.h</v>
+<v>smart_winch\Prototype\Source Files</v>
+<v>smart_winch\Prototype\Source Files\Millis</v>
+<v>smart_winch\Prototype\Source Files\Millis\millis.c</v>
+<v>smart_winch\Prototype\Source Files\Millis\millis.h</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU\modbus_regs.h</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU\modbusRTU.c</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU\modbusRTU.h</v>
+<v>smart_winch\Prototype\Source Files\Motor</v>
+<v>smart_winch\Prototype\Source Files\Motor\motor.c</v>
+<v>smart_winch\Prototype\Source Files\Motor\motor.h</v>
+<v>smart_winch\Prototype\Source Files\nRF24_Adapter</v>
+<v>smart_winch\Prototype\Source Files\nRF24_Adapter\nRF24_Adapter.c</v>
+<v>smart_winch\Prototype\Source Files\nRF24_Adapter\nRF24_Adapter.h</v>
+<v>smart_winch\Prototype\Source Files\PID</v>
+<v>smart_winch\Prototype\Source Files\PID\pid.c</v>
+<v>smart_winch\Prototype\Source Files\PID\pid.h</v>
+<v>smart_winch\Prototype\Source Files\main.c</v>
+<v>smart_winch\Prototype\Generated_Source</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\Current_B</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\nRF24</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\TopDesign</v>
+<v>smart_winch\Prototype\Prototype.cydwr</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Pins</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Analog</v>
+<v>smart_winch\Prototype\Prototype.cydwr\DMA</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Clocks</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Interrupts</v>
+<v>smart_winch\Prototype\Prototype.cydwr\System</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Directives</v>
+<v>smart_winch\Prototype\Prototype.cydwr\Flash Security</v>
+<v>smart_winch\Prototype\Header Files</v>
+<v>smart_winch\Prototype\Header Files\cyapicallbacks.h</v>
+<v>smart_winch\Prototype\Source Files</v>
+<v>smart_winch\Prototype\Source Files\Millis</v>
+<v>smart_winch\Prototype\Source Files\Millis\millis.c</v>
+<v>smart_winch\Prototype\Source Files\Millis\millis.h</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU\modbus_regs.h</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU\modbusRTU.c</v>
+<v>smart_winch\Prototype\Source Files\ModbusRTU\modbusRTU.h</v>
+<v>smart_winch\Prototype\Source Files\Motor</v>
+<v>smart_winch\Prototype\Source Files\Motor\motor.c</v>
+<v>smart_winch\Prototype\Source Files\Motor\motor.h</v>
+<v>smart_winch\Prototype\Source Files\nRF24_Adapter</v>
+<v>smart_winch\Prototype\Source Files\nRF24_Adapter\nRF24_Adapter.c</v>
+<v>smart_winch\Prototype\Source Files\nRF24_Adapter\nRF24_Adapter.h</v>
+<v>smart_winch\Prototype\Source Files\PID</v>
+<v>smart_winch\Prototype\Source Files\PID\pid.c</v>
+<v>smart_winch\Prototype\Source Files\PID\pid.h</v>
+<v>smart_winch\Prototype\Source Files\main.c</v>
+<v>smart_winch\Prototype\Generated_Source</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\ADC</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\ADC_intClock</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\ADC_IRQ</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\Bridge_1</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\Bridge_2</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\CE</v>
+<v>smart_winch\Prototype\Generated_Source\PSoC4\Clock_1</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="smart_winch\Prototype">
+<ExpandedNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\nRF24_v1_6</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_COMMANDS.c</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_COMMANDS.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_CONFIG.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_FUNCS.c</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_FUNCS.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_LL_SPI.c</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_LL_SPI.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_REGS.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\nRF24_v1_6.cysym</v>
+<v>smart_winch\Prototype\TopDesign</v>
+<v>smart_winch\Prototype\TopDesign\TopDesign.cysch</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\nRF24_v1_6</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_COMMANDS.c</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_COMMANDS.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_CONFIG.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_FUNCS.c</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_FUNCS.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_LL_SPI.c</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_LL_SPI.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\API\NRF_REGS.h</v>
+<v>smart_winch\Prototype\nRF24_v1_6\nRF24_v1_6.cysym</v>
+<v>smart_winch\Prototype\TopDesign</v>
+<v>smart_winch\Prototype\TopDesign\TopDesign.cysch</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="smart_winch">
+<ExpandedNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\CortexM0</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_1.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_1_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_2.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_2_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_1.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_3.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\LED.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\millis.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Millis_ISR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Millis_TMR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Millis_TMR_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\modbusRTU.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\motor.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Motor_Dir.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Motor_Dir_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\pid.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PID_ISR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PID_Tick_Timer.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PID_Tick_Timer_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QE_A.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QE_A_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QE_B.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QE_B_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QuadDec.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QuadDec_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_BOOT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_rx.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_rx_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_SCB_IRQ.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_SCBCLK.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_SPI_UART.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_SPI_UART_INT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_tx.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_tx_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_UART.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\USB_UART_UART_BOOT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Prototype.elf</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Prototype.hex</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Prototype.map</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\ADC.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\ADC_INT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\ADC_intClock.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\ADC_IRQ.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\ADC_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Bridge_1.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Bridge_1_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Bridge_2.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Bridge_2_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\CE.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\CE_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Clock_1.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Clock_3.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Cm0Start.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Current_A.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Current_A_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Current_B.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Current_B_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\CyBootAsmGnu.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\CyDMA.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\cyfitter_cfg.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\CyFlash.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\CyLFClk.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\CyLib.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\cymetadata.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\cyPm.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\cyutils.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Direction_Flag.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Direction_Flag_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\LED.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\LED_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\main.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\millis.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Millis_ISR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Millis_TMR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Millis_TMR_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\modbusRTU.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\motor.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Motor_Dir.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\Motor_Dir_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\NRF_IRQ.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\NRF_IRQ_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\NRF_ISR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\nRF24_Adapter.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\nRF24_COMMANDS.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\nRF24_FUNCS.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\nRF24_LL_SPI.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\pid.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\PID_ISR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\PID_Tick_Timer.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\PID_Tick_Timer_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\PWM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\PWM_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\QE_A.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\QE_A_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\QE_B.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\QE_B_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\QuadDec.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\QuadDec_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_BOOT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_miso_m.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_miso_m_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_mosi_m.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_mosi_m_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_SCBCLK.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_sclk_m.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_sclk_m_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_SPI.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_SPI_BOOT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SPI_SPI_UART.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SS.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\SS_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_BOOT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_rx.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_rx_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_SCB_IRQ.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_SCBCLK.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_SPI_UART.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_SPI_UART_INT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_tx.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_tx_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_UART.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Listing Files\USB_UART_UART_BOOT.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Prototype.elf</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Prototype.hex</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Release\Prototype.map</v>
+<v>smart_winch\Prototype\Prototype.gpdsc</v>
+<v>smart_winch\Prototype\Prototype.rpt</v>
+<v>smart_winch\Prototype\Prototype_timing.html</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\CortexM0</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_1.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_1_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_2.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Bridge_2_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_1.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_3.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\LED.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\millis.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Millis_ISR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Millis_TMR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Millis_TMR_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\modbusRTU.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\motor.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Motor_Dir.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\Motor_Dir_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\pid.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PID_ISR.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PID_Tick_Timer.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PID_Tick_Timer_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_PM.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QE_A.lst</v>
+<v>smart_winch\Prototype\CortexM0\ARM_GCC_541\Debug\Listing Files\QE_A_PM.lst</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStates>
+<TreeKeysV2>
+<v>Datasheet</v>
+</TreeKeysV2>
+<TreeStatesV2>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="smart_winch">
+<ExpandedNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\PSoC 4 Architecture TRM</v>
+<v>smart_winch\Prototype\PSoC 4200M Family Datasheet</v>
+<v>smart_winch\Prototype\System Reference Guides</v>
+<v>smart_winch\Prototype\System Reference Guides\cy_boot_v5_60</v>
+<v>smart_winch\Prototype\System Reference Guides\cy_dmac_v1_10</v>
+<v>smart_winch\Prototype\System Reference Guides\cy_lfclk_v1_20</v>
+<v>smart_winch\Prototype\Project Datasheet</v>
+<v>smart_winch\Prototype\ADC_SAR_SEQ_P4_v2_50.pdf</v>
+<v>smart_winch\Prototype\cy_clock_v2_20</v>
+<v>smart_winch\Prototype\cy_clock_v2_20\cy_clock_v2_20.pdf</v>
+<v>smart_winch\Prototype\cy_isr_v1_70</v>
+<v>smart_winch\Prototype\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
+<v>smart_winch\Prototype\cy_pins_v2_20</v>
+<v>smart_winch\Prototype\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+<v>smart_winch\Prototype\CyControlReg_v1_80.pdf</v>
+<v>smart_winch\Prototype\cydff_v1_30.pdf</v>
+<v>smart_winch\Prototype\SCB_P4_v4_0</v>
+<v>smart_winch\Prototype\SCB_P4_v4_0\SCB_P4_v4_0.pdf</v>
+<v>smart_winch\Prototype\TCPWM_P4_v2_10</v>
+<v>smart_winch\Prototype\TCPWM_P4_v2_10\TCPWM_P4_v2_10.pdf</v>
+<v>smart_winch\Prototype\xor_v1_0.pdf</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>smart_winch</v>
+<v>smart_winch\Prototype</v>
+<v>smart_winch\Prototype\PSoC 4 Architecture TRM</v>
+<v>smart_winch\Prototype\PSoC 4200M Family Datasheet</v>
+<v>smart_winch\Prototype\System Reference Guides</v>
+<v>smart_winch\Prototype\System Reference Guides\cy_boot_v5_60</v>
+<v>smart_winch\Prototype\System Reference Guides\cy_dmac_v1_10</v>
+<v>smart_winch\Prototype\System Reference Guides\cy_lfclk_v1_20</v>
+<v>smart_winch\Prototype\Project Datasheet</v>
+<v>smart_winch\Prototype\ADC_SAR_SEQ_P4_v2_50.pdf</v>
+<v>smart_winch\Prototype\cy_clock_v2_20</v>
+<v>smart_winch\Prototype\cy_clock_v2_20\cy_clock_v2_20.pdf</v>
+<v>smart_winch\Prototype\cy_isr_v1_70</v>
+<v>smart_winch\Prototype\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
+<v>smart_winch\Prototype\cy_pins_v2_20</v>
+<v>smart_winch\Prototype\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+<v>smart_winch\Prototype\CyControlReg_v1_80.pdf</v>
+<v>smart_winch\Prototype\cydff_v1_30.pdf</v>
+<v>smart_winch\Prototype\SCB_P4_v4_0</v>
+<v>smart_winch\Prototype\SCB_P4_v4_0\SCB_P4_v4_0.pdf</v>
+<v>smart_winch\Prototype\TCPWM_P4_v2_10</v>
+<v>smart_winch\Prototype\TCPWM_P4_v2_10\TCPWM_P4_v2_10.pdf</v>
+<v>smart_winch\Prototype\xor_v1_0.pdf</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStatesV2>
+</CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35>
+</dataGuid>
+<dataGuid v="5f2be1a5-0687-4501-bb8c-cf21cb8211bf">
+<CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf type_name="CyDesigner.Common.ProjMgmt.GUI.CyBookmarkData" version="1">
+<indicators />
+</CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf>
+</dataGuid>
+</userData>
+</CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
+<Unloaded />
+<OpenDocs>
+<name v=".\Prototype.cydsn\Prototype.cydwr" />
+<name v=".\Prototype.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\Prototype.cydsn\main.c" />
+<name v=".\Prototype.cydsn\nRF24_Adapter.c" />
+<name v=".\Prototype.cydsn\nRF24_Adapter.h" />
+<name v=".\Prototype.cydsn\Generated_Source\PSoC4\nRF24_FUNCS.c" />
+<name v=".\Prototype.cydsn\pid.c" />
+<name v=".\Prototype.cydsn\Generated_Source\PSoC4\nRF24_REGS.h" />
+<name v=".\Prototype.cydsn\Generated_Source\PSoC4\nRF24_COMMANDS.c" />
+<name v=".\Prototype.cydsn\Generated_Source\PSoC4\CE.c" />
+<name v=".\Prototype.cydsn\Generated_Source\PSoC4\nRF24_LL_SPI.c" />
+<name v=".\Prototype.cydsn\modbus_regs.h" />
+</OpenDocs>
+<OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
+
+  Actipro Docking/MDI for WinForms
+  Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
+  http://www.actiprosoftware.com
+
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1168, 789" SelectedTabbedMdiWindow="b38489ec-d952-462f-bb70-cbbd2a3e86b1"><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Prototype.cydwr" Guid="02692cb5-6f09-44d3-a64e-0ee703688523" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\TopDesign\TopDesign.cysch" Guid="bbf26175-90b8-4474-a132-13927d16b1f5" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\main.c" Guid="b38489ec-d952-462f-bb70-cbbd2a3e86b1" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\nRF24_Adapter.c" Guid="01c5a780-2e9f-46e6-8332-cca6df86f53e" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\nRF24_Adapter.h" Guid="d7b2bdd5-ce1d-4831-b255-f444bc53e036" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Generated_Source\PSoC4\nRF24_FUNCS.c" Guid="260cbc18-bf88-4b42-b720-b424c624f87c" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\pid.c" Guid="2b5ddb20-1689-4f3e-8f92-bc04ed06d49a" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Generated_Source\PSoC4\nRF24_REGS.h" Guid="e5931bf1-e1e5-4cd9-af35-d8b99c66e7e0" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="b9d4cc3b-c54e-4200-9136-0e67e2146757" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Generated_Source\PSoC4\nRF24_COMMANDS.c" Guid="0d0fd536-0115-4670-af6f-555159ec50c1" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Generated_Source\PSoC4\CE.c" Guid="7ecf850b-c9da-4cf7-b12c-064ea1a782f1" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Generated_Source\PSoC4\nRF24_LL_SPI.c" Guid="9805c62e-16a5-45ec-8d44-e2e3951d639c" /><DocumentWindow Key="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\modbus_regs.h" Guid="c3620d61-3467-4910-a1b9-9fcfc75a3231" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+<config v="Release" />
+<AutoUpdate v="true" />
+</CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
+</CyXmlSerializer>

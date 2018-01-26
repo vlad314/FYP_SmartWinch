@@ -1,0 +1,27 @@
+18th Oct 2017
+-drafted basic pid controller with 100Hz sampling frequency
+-todo: test pid code, modbus?
+
+8th Nov 2017
+-Quadrature Encoder code working
+-PID code working
+
+9th Nov 2017 (archive2)
+-added modbus
+-fixed bug on negative setpoint
+-minor code cleanup
+
+13th Nov 2017 (archive5)
+-added soft rest
+-fixed integral bug
+-added reset for ingral
+-added direction detection for quadrature decoder
+-added reset source
+
+14th Nov 2017 (archive6)
+-added current measurement capability (ADC)
+-changed pwm freq to 1.4kHz and reduced the resolution to 15-bits (because of acoustic resonance)
+
+23rd Nov 2017 (archive7)
+-fixed the fractional math for integrator
+-changed pid sampling to 12.5Hz

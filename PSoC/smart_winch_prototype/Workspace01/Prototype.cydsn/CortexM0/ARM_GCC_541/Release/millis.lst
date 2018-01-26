@@ -1,0 +1,977 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 2
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"millis.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Millis_Tick,"ax",%progbits
+  20              		.align	2
+  21              		.global	Millis_Tick
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	Millis_Tick, %function
+  25              	Millis_Tick:
+  26              	.LFB34:
+  27              		.file 1 "millis.c"
+   1:millis.c      **** /*
+   2:millis.c      ****  * File:   millis.c
+   3:millis.c      ****  * Author: Afdhal Tan
+   4:millis.c      ****  *
+   5:millis.c      ****  * Created on 21 October 2016, 13:32
+   6:millis.c      ****  */
+   7:millis.c      **** 
+   8:millis.c      **** #include "millis.h"
+   9:millis.c      **** volatile unsigned long long long_millis=0;
+  10:millis.c      **** 
+  11:millis.c      **** CY_ISR(Millis_Tick)
+  12:millis.c      **** {
+  28              		.loc 1 12 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  13:millis.c      ****     long_millis+=1;
+  32              		.loc 1 13 0
+  33 0000 0122     		movs	r2, #1
+  34 0002 0023     		movs	r3, #0
+  35 0004 0649     		ldr	r1, .L2
+  12:millis.c      ****     long_millis+=1;
+  36              		.loc 1 12 0
+  37 0006 70B5     		push	{r4, r5, r6, lr}
+  38              		.cfi_def_cfa_offset 16
+  39              		.cfi_offset 4, -16
+  40              		.cfi_offset 5, -12
+  41              		.cfi_offset 6, -8
+  42              		.cfi_offset 14, -4
+  43              		.loc 1 13 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 2
+
+
+  44 0008 0C68     		ldr	r4, [r1]
+  45 000a 4D68     		ldr	r5, [r1, #4]
+  46 000c 1219     		adds	r2, r2, r4
+  47 000e 6B41     		adcs	r3, r3, r5
+  14:millis.c      **** 
+  15:millis.c      **** //    for debug use    
+  16:millis.c      **** //    static int cnt=0;
+  17:millis.c      **** //     
+  18:millis.c      **** //    //heartbeat on led
+  19:millis.c      **** //    if(cnt++>100)
+  20:millis.c      **** //    {
+  21:millis.c      **** //        cnt=0;
+  22:millis.c      **** //        LED_Write(~LED_Read());
+  23:millis.c      **** //    } 
+  24:millis.c      ****     
+  25:millis.c      ****     //clear flags before exiting isr
+  26:millis.c      ****     Millis_TMR_ClearInterrupt(Millis_TMR_INTR_MASK_TC);
+  48              		.loc 1 26 0
+  49 0010 0120     		movs	r0, #1
+  13:millis.c      **** 
+  50              		.loc 1 13 0
+  51 0012 0A60     		str	r2, [r1]
+  52 0014 4B60     		str	r3, [r1, #4]
+  27:millis.c      ****     Millis_ISR_ClearPending();
+  28:millis.c      **** }
+  53              		.loc 1 28 0
+  54              		@ sp needed
+  26:millis.c      ****     Millis_ISR_ClearPending();
+  55              		.loc 1 26 0
+  56 0016 FFF7FEFF 		bl	Millis_TMR_ClearInterrupt
+  57              	.LVL0:
+  27:millis.c      ****     Millis_ISR_ClearPending();
+  58              		.loc 1 27 0
+  59 001a FFF7FEFF 		bl	Millis_ISR_ClearPending
+  60              	.LVL1:
+  61              		.loc 1 28 0
+  62 001e 70BD     		pop	{r4, r5, r6, pc}
+  63              	.L3:
+  64              		.align	2
+  65              	.L2:
+  66 0020 00000000 		.word	.LANCHOR0
+  67              		.cfi_endproc
+  68              	.LFE34:
+  69              		.size	Millis_Tick, .-Millis_Tick
+  70              		.section	.text.Millis_Start,"ax",%progbits
+  71              		.align	2
+  72              		.global	Millis_Start
+  73              		.code	16
+  74              		.thumb_func
+  75              		.type	Millis_Start, %function
+  76              	Millis_Start:
+  77              	.LFB35:
+  29:millis.c      **** 
+  30:millis.c      **** void Millis_Start()
+  31:millis.c      **** {
+  78              		.loc 1 31 0
+  79              		.cfi_startproc
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 3
+
+
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82 0000 10B5     		push	{r4, lr}
+  83              		.cfi_def_cfa_offset 8
+  84              		.cfi_offset 4, -8
+  85              		.cfi_offset 14, -4
+  32:millis.c      ****     Millis_ISR_StartEx(Millis_Tick);
+  86              		.loc 1 32 0
+  87 0002 0348     		ldr	r0, .L5
+  88 0004 FFF7FEFF 		bl	Millis_ISR_StartEx
+  89              	.LVL2:
+  33:millis.c      ****     Millis_TMR_Start();
+  34:millis.c      **** }
+  90              		.loc 1 34 0
+  91              		@ sp needed
+  33:millis.c      ****     Millis_TMR_Start();
+  92              		.loc 1 33 0
+  93 0008 FFF7FEFF 		bl	Millis_TMR_Start
+  94              	.LVL3:
+  95              		.loc 1 34 0
+  96 000c 10BD     		pop	{r4, pc}
+  97              	.L6:
+  98 000e C046     		.align	2
+  99              	.L5:
+ 100 0010 00000000 		.word	Millis_Tick
+ 101              		.cfi_endproc
+ 102              	.LFE35:
+ 103              		.size	Millis_Start, .-Millis_Start
+ 104              		.global	long_millis
+ 105              		.bss
+ 106              		.align	3
+ 107              		.set	.LANCHOR0,. + 0
+ 108              		.type	long_millis, %object
+ 109              		.size	long_millis, 8
+ 110              	long_millis:
+ 111 0000 00000000 		.space	8
+ 111      00000000 
+ 112              		.text
+ 113              	.Letext0:
+ 114              		.file 2 "Generated_Source\\PSoC4/Millis_TMR.h"
+ 115              		.file 3 "Generated_Source\\PSoC4/Millis_ISR.h"
+ 116              		.file 4 "Generated_Source\\PSoC4/cytypes.h"
+ 117              		.file 5 "Generated_Source\\PSoC4/nRF24_REGS.h"
+ 118              		.section	.debug_info,"",%progbits
+ 119              	.Ldebug_info0:
+ 120 0000 EC010000 		.4byte	0x1ec
+ 121 0004 0400     		.2byte	0x4
+ 122 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 123 000a 04       		.byte	0x4
+ 124 000b 01       		.uleb128 0x1
+ 125 000c 3A010000 		.4byte	.LASF44
+ 126 0010 0C       		.byte	0xc
+ 127 0011 1A000000 		.4byte	.LASF45
+ 128 0015 06030000 		.4byte	.LASF46
+ 129 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 130 001d 00000000 		.4byte	0
+ 131 0021 00000000 		.4byte	.Ldebug_line0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 4
+
+
+ 132 0025 02       		.uleb128 0x2
+ 133 0026 01       		.byte	0x1
+ 134 0027 06       		.byte	0x6
+ 135 0028 2F020000 		.4byte	.LASF0
+ 136 002c 02       		.uleb128 0x2
+ 137 002d 01       		.byte	0x1
+ 138 002e 08       		.byte	0x8
+ 139 002f A3000000 		.4byte	.LASF1
+ 140 0033 02       		.uleb128 0x2
+ 141 0034 02       		.byte	0x2
+ 142 0035 05       		.byte	0x5
+ 143 0036 D2020000 		.4byte	.LASF2
+ 144 003a 02       		.uleb128 0x2
+ 145 003b 02       		.byte	0x2
+ 146 003c 07       		.byte	0x7
+ 147 003d D3000000 		.4byte	.LASF3
+ 148 0041 02       		.uleb128 0x2
+ 149 0042 04       		.byte	0x4
+ 150 0043 05       		.byte	0x5
+ 151 0044 FD020000 		.4byte	.LASF4
+ 152 0048 02       		.uleb128 0x2
+ 153 0049 04       		.byte	0x4
+ 154 004a 07       		.byte	0x7
+ 155 004b C1000000 		.4byte	.LASF5
+ 156 004f 02       		.uleb128 0x2
+ 157 0050 08       		.byte	0x8
+ 158 0051 05       		.byte	0x5
+ 159 0052 81020000 		.4byte	.LASF6
+ 160 0056 02       		.uleb128 0x2
+ 161 0057 08       		.byte	0x8
+ 162 0058 07       		.byte	0x7
+ 163 0059 18020000 		.4byte	.LASF7
+ 164 005d 03       		.uleb128 0x3
+ 165 005e 04       		.byte	0x4
+ 166 005f 05       		.byte	0x5
+ 167 0060 696E7400 		.ascii	"int\000"
+ 168 0064 02       		.uleb128 0x2
+ 169 0065 04       		.byte	0x4
+ 170 0066 07       		.byte	0x7
+ 171 0067 FA010000 		.4byte	.LASF8
+ 172 006b 04       		.uleb128 0x4
+ 173 006c F3010000 		.4byte	.LASF47
+ 174 0070 04       		.byte	0x4
+ 175 0071 D401     		.2byte	0x1d4
+ 176 0073 48000000 		.4byte	0x48
+ 177 0077 02       		.uleb128 0x2
+ 178 0078 04       		.byte	0x4
+ 179 0079 04       		.byte	0x4
+ 180 007a 9D000000 		.4byte	.LASF9
+ 181 007e 02       		.uleb128 0x2
+ 182 007f 08       		.byte	0x8
+ 183 0080 04       		.byte	0x4
+ 184 0081 23000000 		.4byte	.LASF10
+ 185 0085 02       		.uleb128 0x2
+ 186 0086 01       		.byte	0x1
+ 187 0087 08       		.byte	0x8
+ 188 0088 A2020000 		.4byte	.LASF11
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 5
+
+
+ 189 008c 02       		.uleb128 0x2
+ 190 008d 08       		.byte	0x8
+ 191 008e 04       		.byte	0x4
+ 192 008f 4C020000 		.4byte	.LASF12
+ 193 0093 02       		.uleb128 0x2
+ 194 0094 04       		.byte	0x4
+ 195 0095 07       		.byte	0x7
+ 196 0096 58020000 		.4byte	.LASF13
+ 197 009a 05       		.uleb128 0x5
+ 198 009b 01       		.byte	0x1
+ 199 009c 2C000000 		.4byte	0x2c
+ 200 00a0 05       		.byte	0x5
+ 201 00a1 1F       		.byte	0x1f
+ 202 00a2 43010000 		.4byte	0x143
+ 203 00a6 06       		.uleb128 0x6
+ 204 00a7 8E000000 		.4byte	.LASF14
+ 205 00ab 00       		.byte	0
+ 206 00ac 06       		.uleb128 0x6
+ 207 00ad E6000000 		.4byte	.LASF15
+ 208 00b1 01       		.byte	0x1
+ 209 00b2 06       		.uleb128 0x6
+ 210 00b3 A8030000 		.4byte	.LASF16
+ 211 00b7 02       		.byte	0x2
+ 212 00b8 06       		.uleb128 0x6
+ 213 00b9 F4000000 		.4byte	.LASF17
+ 214 00bd 03       		.byte	0x3
+ 215 00be 06       		.uleb128 0x6
+ 216 00bf 05010000 		.4byte	.LASF18
+ 217 00c3 04       		.byte	0x4
+ 218 00c4 06       		.uleb128 0x6
+ 219 00c5 5A000000 		.4byte	.LASF19
+ 220 00c9 05       		.byte	0x5
+ 221 00ca 06       		.uleb128 0x6
+ 222 00cb 07020000 		.4byte	.LASF20
+ 223 00cf 06       		.byte	0x6
+ 224 00d0 06       		.uleb128 0x6
+ 225 00d1 75030000 		.4byte	.LASF21
+ 226 00d5 07       		.byte	0x7
+ 227 00d6 06       		.uleb128 0x6
+ 228 00d7 A7020000 		.4byte	.LASF22
+ 229 00db 08       		.byte	0x8
+ 230 00dc 06       		.uleb128 0x6
+ 231 00dd 2A000000 		.4byte	.LASF23
+ 232 00e1 09       		.byte	0x9
+ 233 00e2 06       		.uleb128 0x6
+ 234 00e3 8F020000 		.4byte	.LASF24
+ 235 00e7 0A       		.byte	0xa
+ 236 00e8 06       		.uleb128 0x6
+ 237 00e9 7B000000 		.4byte	.LASF25
+ 238 00ed 0B       		.byte	0xb
+ 239 00ee 06       		.uleb128 0x6
+ 240 00ef 68000000 		.4byte	.LASF26
+ 241 00f3 0C       		.byte	0xc
+ 242 00f4 06       		.uleb128 0x6
+ 243 00f5 C8010000 		.4byte	.LASF27
+ 244 00f9 0D       		.byte	0xd
+ 245 00fa 06       		.uleb128 0x6
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 6
+
+
+ 246 00fb 61020000 		.4byte	.LASF28
+ 247 00ff 0E       		.byte	0xe
+ 248 0100 06       		.uleb128 0x6
+ 249 0101 95030000 		.4byte	.LASF29
+ 250 0105 0F       		.byte	0xf
+ 251 0106 06       		.uleb128 0x6
+ 252 0107 DC020000 		.4byte	.LASF30
+ 253 010b 10       		.byte	0x10
+ 254 010c 06       		.uleb128 0x6
+ 255 010d EC020000 		.4byte	.LASF31
+ 256 0111 11       		.byte	0x11
+ 257 0112 06       		.uleb128 0x6
+ 258 0113 29010000 		.4byte	.LASF32
+ 259 0117 12       		.byte	0x12
+ 260 0118 06       		.uleb128 0x6
+ 261 0119 3B020000 		.4byte	.LASF33
+ 262 011d 13       		.byte	0x13
+ 263 011e 06       		.uleb128 0x6
+ 264 011f 84030000 		.4byte	.LASF34
+ 265 0123 14       		.byte	0x14
+ 266 0124 06       		.uleb128 0x6
+ 267 0125 36000000 		.4byte	.LASF35
+ 268 0129 15       		.byte	0x15
+ 269 012a 06       		.uleb128 0x6
+ 270 012b BA030000 		.4byte	.LASF36
+ 271 012f 16       		.byte	0x16
+ 272 0130 06       		.uleb128 0x6
+ 273 0131 CB030000 		.4byte	.LASF37
+ 274 0135 17       		.byte	0x17
+ 275 0136 06       		.uleb128 0x6
+ 276 0137 67030000 		.4byte	.LASF38
+ 277 013b 1C       		.byte	0x1c
+ 278 013c 06       		.uleb128 0x6
+ 279 013d B1000000 		.4byte	.LASF39
+ 280 0141 1D       		.byte	0x1d
+ 281 0142 00       		.byte	0
+ 282 0143 07       		.uleb128 0x7
+ 283 0144 C6020000 		.4byte	.LASF48
+ 284 0148 01       		.byte	0x1
+ 285 0149 0B       		.byte	0xb
+ 286 014a 00000000 		.4byte	.LFB34
+ 287 014e 24000000 		.4byte	.LFE34-.LFB34
+ 288 0152 01       		.uleb128 0x1
+ 289 0153 9C       		.byte	0x9c
+ 290 0154 75010000 		.4byte	0x175
+ 291 0158 08       		.uleb128 0x8
+ 292 0159 1A000000 		.4byte	.LVL0
+ 293 015d C1010000 		.4byte	0x1c1
+ 294 0161 6B010000 		.4byte	0x16b
+ 295 0165 09       		.uleb128 0x9
+ 296 0166 01       		.uleb128 0x1
+ 297 0167 50       		.byte	0x50
+ 298 0168 01       		.uleb128 0x1
+ 299 0169 31       		.byte	0x31
+ 300 016a 00       		.byte	0
+ 301 016b 0A       		.uleb128 0xa
+ 302 016c 1E000000 		.4byte	.LVL1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 7
+
+
+ 303 0170 CD010000 		.4byte	0x1cd
+ 304 0174 00       		.byte	0
+ 305 0175 0B       		.uleb128 0xb
+ 306 0176 74020000 		.4byte	.LASF49
+ 307 017a 01       		.byte	0x1
+ 308 017b 1E       		.byte	0x1e
+ 309 017c 00000000 		.4byte	.LFB35
+ 310 0180 14000000 		.4byte	.LFE35-.LFB35
+ 311 0184 01       		.uleb128 0x1
+ 312 0185 9C       		.byte	0x9c
+ 313 0186 AB010000 		.4byte	0x1ab
+ 314 018a 08       		.uleb128 0x8
+ 315 018b 08000000 		.4byte	.LVL2
+ 316 018f D8010000 		.4byte	0x1d8
+ 317 0193 A1010000 		.4byte	0x1a1
+ 318 0197 09       		.uleb128 0x9
+ 319 0198 01       		.uleb128 0x1
+ 320 0199 50       		.byte	0x50
+ 321 019a 05       		.uleb128 0x5
+ 322 019b 03       		.byte	0x3
+ 323 019c 00000000 		.4byte	Millis_Tick
+ 324 01a0 00       		.byte	0
+ 325 01a1 0A       		.uleb128 0xa
+ 326 01a2 0C000000 		.4byte	.LVL3
+ 327 01a6 E3010000 		.4byte	0x1e3
+ 328 01aa 00       		.byte	0
+ 329 01ab 0C       		.uleb128 0xc
+ 330 01ac BA020000 		.4byte	.LASF50
+ 331 01b0 01       		.byte	0x1
+ 332 01b1 09       		.byte	0x9
+ 333 01b2 BC010000 		.4byte	0x1bc
+ 334 01b6 05       		.uleb128 0x5
+ 335 01b7 03       		.byte	0x3
+ 336 01b8 00000000 		.4byte	long_millis
+ 337 01bc 0D       		.uleb128 0xd
+ 338 01bd 56000000 		.4byte	0x56
+ 339 01c1 0E       		.uleb128 0xe
+ 340 01c2 00000000 		.4byte	.LASF40
+ 341 01c6 00000000 		.4byte	.LASF40
+ 342 01ca 02       		.byte	0x2
+ 343 01cb 4701     		.2byte	0x147
+ 344 01cd 0F       		.uleb128 0xf
+ 345 01ce DB010000 		.4byte	.LASF41
+ 346 01d2 DB010000 		.4byte	.LASF41
+ 347 01d6 03       		.byte	0x3
+ 348 01d7 28       		.byte	0x28
+ 349 01d8 0F       		.uleb128 0xf
+ 350 01d9 47000000 		.4byte	.LASF42
+ 351 01dd 47000000 		.4byte	.LASF42
+ 352 01e1 03       		.byte	0x3
+ 353 01e2 18       		.byte	0x18
+ 354 01e3 0E       		.uleb128 0xe
+ 355 01e4 18010000 		.4byte	.LASF43
+ 356 01e8 18010000 		.4byte	.LASF43
+ 357 01ec 02       		.byte	0x2
+ 358 01ed 3201     		.2byte	0x132
+ 359 01ef 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 8
+
+
+ 360              		.section	.debug_abbrev,"",%progbits
+ 361              	.Ldebug_abbrev0:
+ 362 0000 01       		.uleb128 0x1
+ 363 0001 11       		.uleb128 0x11
+ 364 0002 01       		.byte	0x1
+ 365 0003 25       		.uleb128 0x25
+ 366 0004 0E       		.uleb128 0xe
+ 367 0005 13       		.uleb128 0x13
+ 368 0006 0B       		.uleb128 0xb
+ 369 0007 03       		.uleb128 0x3
+ 370 0008 0E       		.uleb128 0xe
+ 371 0009 1B       		.uleb128 0x1b
+ 372 000a 0E       		.uleb128 0xe
+ 373 000b 55       		.uleb128 0x55
+ 374 000c 17       		.uleb128 0x17
+ 375 000d 11       		.uleb128 0x11
+ 376 000e 01       		.uleb128 0x1
+ 377 000f 10       		.uleb128 0x10
+ 378 0010 17       		.uleb128 0x17
+ 379 0011 00       		.byte	0
+ 380 0012 00       		.byte	0
+ 381 0013 02       		.uleb128 0x2
+ 382 0014 24       		.uleb128 0x24
+ 383 0015 00       		.byte	0
+ 384 0016 0B       		.uleb128 0xb
+ 385 0017 0B       		.uleb128 0xb
+ 386 0018 3E       		.uleb128 0x3e
+ 387 0019 0B       		.uleb128 0xb
+ 388 001a 03       		.uleb128 0x3
+ 389 001b 0E       		.uleb128 0xe
+ 390 001c 00       		.byte	0
+ 391 001d 00       		.byte	0
+ 392 001e 03       		.uleb128 0x3
+ 393 001f 24       		.uleb128 0x24
+ 394 0020 00       		.byte	0
+ 395 0021 0B       		.uleb128 0xb
+ 396 0022 0B       		.uleb128 0xb
+ 397 0023 3E       		.uleb128 0x3e
+ 398 0024 0B       		.uleb128 0xb
+ 399 0025 03       		.uleb128 0x3
+ 400 0026 08       		.uleb128 0x8
+ 401 0027 00       		.byte	0
+ 402 0028 00       		.byte	0
+ 403 0029 04       		.uleb128 0x4
+ 404 002a 16       		.uleb128 0x16
+ 405 002b 00       		.byte	0
+ 406 002c 03       		.uleb128 0x3
+ 407 002d 0E       		.uleb128 0xe
+ 408 002e 3A       		.uleb128 0x3a
+ 409 002f 0B       		.uleb128 0xb
+ 410 0030 3B       		.uleb128 0x3b
+ 411 0031 05       		.uleb128 0x5
+ 412 0032 49       		.uleb128 0x49
+ 413 0033 13       		.uleb128 0x13
+ 414 0034 00       		.byte	0
+ 415 0035 00       		.byte	0
+ 416 0036 05       		.uleb128 0x5
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 9
+
+
+ 417 0037 04       		.uleb128 0x4
+ 418 0038 01       		.byte	0x1
+ 419 0039 0B       		.uleb128 0xb
+ 420 003a 0B       		.uleb128 0xb
+ 421 003b 49       		.uleb128 0x49
+ 422 003c 13       		.uleb128 0x13
+ 423 003d 3A       		.uleb128 0x3a
+ 424 003e 0B       		.uleb128 0xb
+ 425 003f 3B       		.uleb128 0x3b
+ 426 0040 0B       		.uleb128 0xb
+ 427 0041 01       		.uleb128 0x1
+ 428 0042 13       		.uleb128 0x13
+ 429 0043 00       		.byte	0
+ 430 0044 00       		.byte	0
+ 431 0045 06       		.uleb128 0x6
+ 432 0046 28       		.uleb128 0x28
+ 433 0047 00       		.byte	0
+ 434 0048 03       		.uleb128 0x3
+ 435 0049 0E       		.uleb128 0xe
+ 436 004a 1C       		.uleb128 0x1c
+ 437 004b 0B       		.uleb128 0xb
+ 438 004c 00       		.byte	0
+ 439 004d 00       		.byte	0
+ 440 004e 07       		.uleb128 0x7
+ 441 004f 2E       		.uleb128 0x2e
+ 442 0050 01       		.byte	0x1
+ 443 0051 3F       		.uleb128 0x3f
+ 444 0052 19       		.uleb128 0x19
+ 445 0053 03       		.uleb128 0x3
+ 446 0054 0E       		.uleb128 0xe
+ 447 0055 3A       		.uleb128 0x3a
+ 448 0056 0B       		.uleb128 0xb
+ 449 0057 3B       		.uleb128 0x3b
+ 450 0058 0B       		.uleb128 0xb
+ 451 0059 27       		.uleb128 0x27
+ 452 005a 19       		.uleb128 0x19
+ 453 005b 11       		.uleb128 0x11
+ 454 005c 01       		.uleb128 0x1
+ 455 005d 12       		.uleb128 0x12
+ 456 005e 06       		.uleb128 0x6
+ 457 005f 40       		.uleb128 0x40
+ 458 0060 18       		.uleb128 0x18
+ 459 0061 9742     		.uleb128 0x2117
+ 460 0063 19       		.uleb128 0x19
+ 461 0064 01       		.uleb128 0x1
+ 462 0065 13       		.uleb128 0x13
+ 463 0066 00       		.byte	0
+ 464 0067 00       		.byte	0
+ 465 0068 08       		.uleb128 0x8
+ 466 0069 898201   		.uleb128 0x4109
+ 467 006c 01       		.byte	0x1
+ 468 006d 11       		.uleb128 0x11
+ 469 006e 01       		.uleb128 0x1
+ 470 006f 31       		.uleb128 0x31
+ 471 0070 13       		.uleb128 0x13
+ 472 0071 01       		.uleb128 0x1
+ 473 0072 13       		.uleb128 0x13
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 10
+
+
+ 474 0073 00       		.byte	0
+ 475 0074 00       		.byte	0
+ 476 0075 09       		.uleb128 0x9
+ 477 0076 8A8201   		.uleb128 0x410a
+ 478 0079 00       		.byte	0
+ 479 007a 02       		.uleb128 0x2
+ 480 007b 18       		.uleb128 0x18
+ 481 007c 9142     		.uleb128 0x2111
+ 482 007e 18       		.uleb128 0x18
+ 483 007f 00       		.byte	0
+ 484 0080 00       		.byte	0
+ 485 0081 0A       		.uleb128 0xa
+ 486 0082 898201   		.uleb128 0x4109
+ 487 0085 00       		.byte	0
+ 488 0086 11       		.uleb128 0x11
+ 489 0087 01       		.uleb128 0x1
+ 490 0088 31       		.uleb128 0x31
+ 491 0089 13       		.uleb128 0x13
+ 492 008a 00       		.byte	0
+ 493 008b 00       		.byte	0
+ 494 008c 0B       		.uleb128 0xb
+ 495 008d 2E       		.uleb128 0x2e
+ 496 008e 01       		.byte	0x1
+ 497 008f 3F       		.uleb128 0x3f
+ 498 0090 19       		.uleb128 0x19
+ 499 0091 03       		.uleb128 0x3
+ 500 0092 0E       		.uleb128 0xe
+ 501 0093 3A       		.uleb128 0x3a
+ 502 0094 0B       		.uleb128 0xb
+ 503 0095 3B       		.uleb128 0x3b
+ 504 0096 0B       		.uleb128 0xb
+ 505 0097 11       		.uleb128 0x11
+ 506 0098 01       		.uleb128 0x1
+ 507 0099 12       		.uleb128 0x12
+ 508 009a 06       		.uleb128 0x6
+ 509 009b 40       		.uleb128 0x40
+ 510 009c 18       		.uleb128 0x18
+ 511 009d 9742     		.uleb128 0x2117
+ 512 009f 19       		.uleb128 0x19
+ 513 00a0 01       		.uleb128 0x1
+ 514 00a1 13       		.uleb128 0x13
+ 515 00a2 00       		.byte	0
+ 516 00a3 00       		.byte	0
+ 517 00a4 0C       		.uleb128 0xc
+ 518 00a5 34       		.uleb128 0x34
+ 519 00a6 00       		.byte	0
+ 520 00a7 03       		.uleb128 0x3
+ 521 00a8 0E       		.uleb128 0xe
+ 522 00a9 3A       		.uleb128 0x3a
+ 523 00aa 0B       		.uleb128 0xb
+ 524 00ab 3B       		.uleb128 0x3b
+ 525 00ac 0B       		.uleb128 0xb
+ 526 00ad 49       		.uleb128 0x49
+ 527 00ae 13       		.uleb128 0x13
+ 528 00af 3F       		.uleb128 0x3f
+ 529 00b0 19       		.uleb128 0x19
+ 530 00b1 02       		.uleb128 0x2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 11
+
+
+ 531 00b2 18       		.uleb128 0x18
+ 532 00b3 00       		.byte	0
+ 533 00b4 00       		.byte	0
+ 534 00b5 0D       		.uleb128 0xd
+ 535 00b6 35       		.uleb128 0x35
+ 536 00b7 00       		.byte	0
+ 537 00b8 49       		.uleb128 0x49
+ 538 00b9 13       		.uleb128 0x13
+ 539 00ba 00       		.byte	0
+ 540 00bb 00       		.byte	0
+ 541 00bc 0E       		.uleb128 0xe
+ 542 00bd 2E       		.uleb128 0x2e
+ 543 00be 00       		.byte	0
+ 544 00bf 3F       		.uleb128 0x3f
+ 545 00c0 19       		.uleb128 0x19
+ 546 00c1 3C       		.uleb128 0x3c
+ 547 00c2 19       		.uleb128 0x19
+ 548 00c3 6E       		.uleb128 0x6e
+ 549 00c4 0E       		.uleb128 0xe
+ 550 00c5 03       		.uleb128 0x3
+ 551 00c6 0E       		.uleb128 0xe
+ 552 00c7 3A       		.uleb128 0x3a
+ 553 00c8 0B       		.uleb128 0xb
+ 554 00c9 3B       		.uleb128 0x3b
+ 555 00ca 05       		.uleb128 0x5
+ 556 00cb 00       		.byte	0
+ 557 00cc 00       		.byte	0
+ 558 00cd 0F       		.uleb128 0xf
+ 559 00ce 2E       		.uleb128 0x2e
+ 560 00cf 00       		.byte	0
+ 561 00d0 3F       		.uleb128 0x3f
+ 562 00d1 19       		.uleb128 0x19
+ 563 00d2 3C       		.uleb128 0x3c
+ 564 00d3 19       		.uleb128 0x19
+ 565 00d4 6E       		.uleb128 0x6e
+ 566 00d5 0E       		.uleb128 0xe
+ 567 00d6 03       		.uleb128 0x3
+ 568 00d7 0E       		.uleb128 0xe
+ 569 00d8 3A       		.uleb128 0x3a
+ 570 00d9 0B       		.uleb128 0xb
+ 571 00da 3B       		.uleb128 0x3b
+ 572 00db 0B       		.uleb128 0xb
+ 573 00dc 00       		.byte	0
+ 574 00dd 00       		.byte	0
+ 575 00de 00       		.byte	0
+ 576              		.section	.debug_aranges,"",%progbits
+ 577 0000 24000000 		.4byte	0x24
+ 578 0004 0200     		.2byte	0x2
+ 579 0006 00000000 		.4byte	.Ldebug_info0
+ 580 000a 04       		.byte	0x4
+ 581 000b 00       		.byte	0
+ 582 000c 0000     		.2byte	0
+ 583 000e 0000     		.2byte	0
+ 584 0010 00000000 		.4byte	.LFB34
+ 585 0014 24000000 		.4byte	.LFE34-.LFB34
+ 586 0018 00000000 		.4byte	.LFB35
+ 587 001c 14000000 		.4byte	.LFE35-.LFB35
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 12
+
+
+ 588 0020 00000000 		.4byte	0
+ 589 0024 00000000 		.4byte	0
+ 590              		.section	.debug_ranges,"",%progbits
+ 591              	.Ldebug_ranges0:
+ 592 0000 00000000 		.4byte	.LFB34
+ 593 0004 24000000 		.4byte	.LFE34
+ 594 0008 00000000 		.4byte	.LFB35
+ 595 000c 14000000 		.4byte	.LFE35
+ 596 0010 00000000 		.4byte	0
+ 597 0014 00000000 		.4byte	0
+ 598              		.section	.debug_line,"",%progbits
+ 599              	.Ldebug_line0:
+ 600 0000 AA000000 		.section	.debug_str,"MS",%progbits,1
+ 600      02007300 
+ 600      00000201 
+ 600      FB0E0D00 
+ 600      01010101 
+ 601              	.LASF40:
+ 602 0000 4D696C6C 		.ascii	"Millis_TMR_ClearInterrupt\000"
+ 602      69735F54 
+ 602      4D525F43 
+ 602      6C656172 
+ 602      496E7465 
+ 603              	.LASF45:
+ 604 001a 6D696C6C 		.ascii	"millis.c\000"
+ 604      69732E63 
+ 604      00
+ 605              	.LASF10:
+ 606 0023 646F7562 		.ascii	"double\000"
+ 606      6C6500
+ 607              	.LASF23:
+ 608 002a 4E52465F 		.ascii	"NRF_RPD_REG\000"
+ 608      5250445F 
+ 608      52454700 
+ 609              	.LASF35:
+ 610 0036 4E52465F 		.ascii	"NRF_RX_PW_P4_REG\000"
+ 610      52585F50 
+ 610      575F5034 
+ 610      5F524547 
+ 610      00
+ 611              	.LASF42:
+ 612 0047 4D696C6C 		.ascii	"Millis_ISR_StartEx\000"
+ 612      69735F49 
+ 612      53525F53 
+ 612      74617274 
+ 612      457800
+ 613              	.LASF19:
+ 614 005a 4E52465F 		.ascii	"NRF_RF_CH_REG\000"
+ 614      52465F43 
+ 614      485F5245 
+ 614      4700
+ 615              	.LASF26:
+ 616 0068 4E52465F 		.ascii	"NRF_RX_ADDR_P2_REG\000"
+ 616      52585F41 
+ 616      4444525F 
+ 616      50325F52 
+ 616      454700
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 13
+
+
+ 617              	.LASF25:
+ 618 007b 4E52465F 		.ascii	"NRF_RX_ADDR_P1_REG\000"
+ 618      52585F41 
+ 618      4444525F 
+ 618      50315F52 
+ 618      454700
+ 619              	.LASF14:
+ 620 008e 4E52465F 		.ascii	"NRF_CONFIG_REG\000"
+ 620      434F4E46 
+ 620      49475F52 
+ 620      454700
+ 621              	.LASF9:
+ 622 009d 666C6F61 		.ascii	"float\000"
+ 622      7400
+ 623              	.LASF1:
+ 624 00a3 756E7369 		.ascii	"unsigned char\000"
+ 624      676E6564 
+ 624      20636861 
+ 624      7200
+ 625              	.LASF39:
+ 626 00b1 4E52465F 		.ascii	"NRF_FEATURE_REG\000"
+ 626      46454154 
+ 626      5552455F 
+ 626      52454700 
+ 627              	.LASF5:
+ 628 00c1 6C6F6E67 		.ascii	"long unsigned int\000"
+ 628      20756E73 
+ 628      69676E65 
+ 628      6420696E 
+ 628      7400
+ 629              	.LASF3:
+ 630 00d3 73686F72 		.ascii	"short unsigned int\000"
+ 630      7420756E 
+ 630      7369676E 
+ 630      65642069 
+ 630      6E7400
+ 631              	.LASF15:
+ 632 00e6 4E52465F 		.ascii	"NRF_EN_AA_REG\000"
+ 632      454E5F41 
+ 632      415F5245 
+ 632      4700
+ 633              	.LASF17:
+ 634 00f4 4E52465F 		.ascii	"NRF_SETUP_AW_REG\000"
+ 634      53455455 
+ 634      505F4157 
+ 634      5F524547 
+ 634      00
+ 635              	.LASF18:
+ 636 0105 4E52465F 		.ascii	"NRF_SETUP_RETR_REG\000"
+ 636      53455455 
+ 636      505F5245 
+ 636      54525F52 
+ 636      454700
+ 637              	.LASF43:
+ 638 0118 4D696C6C 		.ascii	"Millis_TMR_Start\000"
+ 638      69735F54 
+ 638      4D525F53 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 14
+
+
+ 638      74617274 
+ 638      00
+ 639              	.LASF32:
+ 640 0129 4E52465F 		.ascii	"NRF_RX_PW_P1_REG\000"
+ 640      52585F50 
+ 640      575F5031 
+ 640      5F524547 
+ 640      00
+ 641              	.LASF44:
+ 642 013a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 642      43313120 
+ 642      352E342E 
+ 642      31203230 
+ 642      31363036 
+ 643 016d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 643      20726576 
+ 643      6973696F 
+ 643      6E203233 
+ 643      37373135 
+ 644 01a0 33202D66 		.ascii	"3 -ffunction-sections -ffat-lto-objects\000"
+ 644      66756E63 
+ 644      74696F6E 
+ 644      2D736563 
+ 644      74696F6E 
+ 645              	.LASF27:
+ 646 01c8 4E52465F 		.ascii	"NRF_RX_ADDR_P3_REG\000"
+ 646      52585F41 
+ 646      4444525F 
+ 646      50335F52 
+ 646      454700
+ 647              	.LASF41:
+ 648 01db 4D696C6C 		.ascii	"Millis_ISR_ClearPending\000"
+ 648      69735F49 
+ 648      53525F43 
+ 648      6C656172 
+ 648      50656E64 
+ 649              	.LASF47:
+ 650 01f3 75696E74 		.ascii	"uint32\000"
+ 650      333200
+ 651              	.LASF8:
+ 652 01fa 756E7369 		.ascii	"unsigned int\000"
+ 652      676E6564 
+ 652      20696E74 
+ 652      00
+ 653              	.LASF20:
+ 654 0207 4E52465F 		.ascii	"NRF_RF_SETUP_REG\000"
+ 654      52465F53 
+ 654      45545550 
+ 654      5F524547 
+ 654      00
+ 655              	.LASF7:
+ 656 0218 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 656      206C6F6E 
+ 656      6720756E 
+ 656      7369676E 
+ 656      65642069 
+ 657              	.LASF0:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 15
+
+
+ 658 022f 7369676E 		.ascii	"signed char\000"
+ 658      65642063 
+ 658      68617200 
+ 659              	.LASF33:
+ 660 023b 4E52465F 		.ascii	"NRF_RX_PW_P2_REG\000"
+ 660      52585F50 
+ 660      575F5032 
+ 660      5F524547 
+ 660      00
+ 661              	.LASF12:
+ 662 024c 6C6F6E67 		.ascii	"long double\000"
+ 662      20646F75 
+ 662      626C6500 
+ 663              	.LASF13:
+ 664 0258 73697A65 		.ascii	"sizetype\000"
+ 664      74797065 
+ 664      00
+ 665              	.LASF28:
+ 666 0261 4E52465F 		.ascii	"NRF_RX_ADDR_P4_REG\000"
+ 666      52585F41 
+ 666      4444525F 
+ 666      50345F52 
+ 666      454700
+ 667              	.LASF49:
+ 668 0274 4D696C6C 		.ascii	"Millis_Start\000"
+ 668      69735F53 
+ 668      74617274 
+ 668      00
+ 669              	.LASF6:
+ 670 0281 6C6F6E67 		.ascii	"long long int\000"
+ 670      206C6F6E 
+ 670      6720696E 
+ 670      7400
+ 671              	.LASF24:
+ 672 028f 4E52465F 		.ascii	"NRF_RX_ADDR_P0_REG\000"
+ 672      52585F41 
+ 672      4444525F 
+ 672      50305F52 
+ 672      454700
+ 673              	.LASF11:
+ 674 02a2 63686172 		.ascii	"char\000"
+ 674      00
+ 675              	.LASF22:
+ 676 02a7 4E52465F 		.ascii	"NRF_OBSERVE_TX_REG\000"
+ 676      4F425345 
+ 676      5256455F 
+ 676      54585F52 
+ 676      454700
+ 677              	.LASF50:
+ 678 02ba 6C6F6E67 		.ascii	"long_millis\000"
+ 678      5F6D696C 
+ 678      6C697300 
+ 679              	.LASF48:
+ 680 02c6 4D696C6C 		.ascii	"Millis_Tick\000"
+ 680      69735F54 
+ 680      69636B00 
+ 681              	.LASF2:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 16
+
+
+ 682 02d2 73686F72 		.ascii	"short int\000"
+ 682      7420696E 
+ 682      7400
+ 683              	.LASF30:
+ 684 02dc 4E52465F 		.ascii	"NRF_TX_ADDR_REG\000"
+ 684      54585F41 
+ 684      4444525F 
+ 684      52454700 
+ 685              	.LASF31:
+ 686 02ec 4E52465F 		.ascii	"NRF_RX_PW_P0_REG\000"
+ 686      52585F50 
+ 686      575F5030 
+ 686      5F524547 
+ 686      00
+ 687              	.LASF4:
+ 688 02fd 6C6F6E67 		.ascii	"long int\000"
+ 688      20696E74 
+ 688      00
+ 689              	.LASF46:
+ 690 0306 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 690      73657273 
+ 690      5C416664 
+ 690      68616C41 
+ 690      74696666 
+ 691 0335 736D6172 		.ascii	"smart_winch_prototype\\Workspace01\\Prototype.cydsn"
+ 691      745F7769 
+ 691      6E63685F 
+ 691      70726F74 
+ 691      6F747970 
+ 692 0366 00       		.ascii	"\000"
+ 693              	.LASF38:
+ 694 0367 4E52465F 		.ascii	"NRF_DYNPD_REG\000"
+ 694      44594E50 
+ 694      445F5245 
+ 694      4700
+ 695              	.LASF21:
+ 696 0375 4E52465F 		.ascii	"NRF_STATUS_REG\000"
+ 696      53544154 
+ 696      55535F52 
+ 696      454700
+ 697              	.LASF34:
+ 698 0384 4E52465F 		.ascii	"NRF_RX_PW_P3_REG\000"
+ 698      52585F50 
+ 698      575F5033 
+ 698      5F524547 
+ 698      00
+ 699              	.LASF29:
+ 700 0395 4E52465F 		.ascii	"NRF_RX_ADDR_P5_REG\000"
+ 700      52585F41 
+ 700      4444525F 
+ 700      50355F52 
+ 700      454700
+ 701              	.LASF16:
+ 702 03a8 4E52465F 		.ascii	"NRF_EN_RXADDR_REG\000"
+ 702      454E5F52 
+ 702      58414444 
+ 702      525F5245 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccgAgqUI.s 			page 17
+
+
+ 702      4700
+ 703              	.LASF36:
+ 704 03ba 4E52465F 		.ascii	"NRF_RX_PW_P5_REG\000"
+ 704      52585F50 
+ 704      575F5035 
+ 704      5F524547 
+ 704      00
+ 705              	.LASF37:
+ 706 03cb 4E52465F 		.ascii	"NRF_FIFO_STATUS_REG\000"
+ 706      4649464F 
+ 706      5F535441 
+ 706      5455535F 
+ 706      52454700 
+ 707              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

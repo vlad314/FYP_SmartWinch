@@ -1,0 +1,2495 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 2
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"Millis_ISR.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Millis_ISR_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	Millis_ISR_Interrupt
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	Millis_ISR_Interrupt, %function
+  25              	Millis_ISR_Interrupt:
+  26              	.LFB4:
+  27              		.file 1 "Generated_Source\\PSoC4\\Millis_ISR.c"
+   1:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+   2:Generated_Source\PSoC4/Millis_ISR.c **** * File Name: Millis_ISR.c  
+   3:Generated_Source\PSoC4/Millis_ISR.c **** * Version 1.70
+   4:Generated_Source\PSoC4/Millis_ISR.c **** *
+   5:Generated_Source\PSoC4/Millis_ISR.c **** *  Description:
+   6:Generated_Source\PSoC4/Millis_ISR.c **** *   API for controlling the state of an interrupt.
+   7:Generated_Source\PSoC4/Millis_ISR.c **** *
+   8:Generated_Source\PSoC4/Millis_ISR.c **** *
+   9:Generated_Source\PSoC4/Millis_ISR.c **** *  Note:
+  10:Generated_Source\PSoC4/Millis_ISR.c **** *
+  11:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+  12:Generated_Source\PSoC4/Millis_ISR.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC4/Millis_ISR.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:Generated_Source\PSoC4/Millis_ISR.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:Generated_Source\PSoC4/Millis_ISR.c **** * the software package with which this file was provided.
+  16:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+  17:Generated_Source\PSoC4/Millis_ISR.c **** 
+  18:Generated_Source\PSoC4/Millis_ISR.c **** 
+  19:Generated_Source\PSoC4/Millis_ISR.c **** #include <cydevice_trm.h>
+  20:Generated_Source\PSoC4/Millis_ISR.c **** #include <CyLib.h>
+  21:Generated_Source\PSoC4/Millis_ISR.c **** #include <Millis_ISR.h>
+  22:Generated_Source\PSoC4/Millis_ISR.c **** #include "cyapicallbacks.h"
+  23:Generated_Source\PSoC4/Millis_ISR.c **** 
+  24:Generated_Source\PSoC4/Millis_ISR.c **** #if !defined(Millis_ISR__REMOVED) /* Check for removal by optimization */
+  25:Generated_Source\PSoC4/Millis_ISR.c **** 
+  26:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+  27:Generated_Source\PSoC4/Millis_ISR.c **** *  Place your includes, defines and code here 
+  28:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************/
+  29:Generated_Source\PSoC4/Millis_ISR.c **** /* `#START Millis_ISR_intc` */
+  30:Generated_Source\PSoC4/Millis_ISR.c **** 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 2
+
+
+  31:Generated_Source\PSoC4/Millis_ISR.c **** /* `#END` */
+  32:Generated_Source\PSoC4/Millis_ISR.c **** 
+  33:Generated_Source\PSoC4/Millis_ISR.c **** extern cyisraddress CyRamVectors[CYINT_IRQ_BASE + CY_NUM_INTERRUPTS];
+  34:Generated_Source\PSoC4/Millis_ISR.c **** 
+  35:Generated_Source\PSoC4/Millis_ISR.c **** /* Declared in startup, used to set unused interrupts to. */
+  36:Generated_Source\PSoC4/Millis_ISR.c **** CY_ISR_PROTO(IntDefaultHandler);
+  37:Generated_Source\PSoC4/Millis_ISR.c **** 
+  38:Generated_Source\PSoC4/Millis_ISR.c **** 
+  39:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+  40:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_Start
+  41:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+  42:Generated_Source\PSoC4/Millis_ISR.c **** *
+  43:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+  44:Generated_Source\PSoC4/Millis_ISR.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  45:Generated_Source\PSoC4/Millis_ISR.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  46:Generated_Source\PSoC4/Millis_ISR.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  47:Generated_Source\PSoC4/Millis_ISR.c **** *  interrupt controller.
+  48:Generated_Source\PSoC4/Millis_ISR.c **** *
+  49:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:  
+  50:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+  51:Generated_Source\PSoC4/Millis_ISR.c **** *
+  52:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+  53:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+  54:Generated_Source\PSoC4/Millis_ISR.c **** *
+  55:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+  56:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_Start(void)
+  57:Generated_Source\PSoC4/Millis_ISR.c **** {
+  58:Generated_Source\PSoC4/Millis_ISR.c ****     /* For all we know the interrupt is active. */
+  59:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_Disable();
+  60:Generated_Source\PSoC4/Millis_ISR.c **** 
+  61:Generated_Source\PSoC4/Millis_ISR.c ****     /* Set the ISR to point to the Millis_ISR Interrupt. */
+  62:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_SetVector(&Millis_ISR_Interrupt);
+  63:Generated_Source\PSoC4/Millis_ISR.c **** 
+  64:Generated_Source\PSoC4/Millis_ISR.c ****     /* Set the priority. */
+  65:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_SetPriority((uint8)Millis_ISR_INTC_PRIOR_NUMBER);
+  66:Generated_Source\PSoC4/Millis_ISR.c **** 
+  67:Generated_Source\PSoC4/Millis_ISR.c ****     /* Enable it. */
+  68:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_Enable();
+  69:Generated_Source\PSoC4/Millis_ISR.c **** }
+  70:Generated_Source\PSoC4/Millis_ISR.c **** 
+  71:Generated_Source\PSoC4/Millis_ISR.c **** 
+  72:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+  73:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_StartEx
+  74:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+  75:Generated_Source\PSoC4/Millis_ISR.c **** *
+  76:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+  77:Generated_Source\PSoC4/Millis_ISR.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  78:Generated_Source\PSoC4/Millis_ISR.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  79:Generated_Source\PSoC4/Millis_ISR.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  80:Generated_Source\PSoC4/Millis_ISR.c **** *  the interrupt to the interrupt controller.
+  81:Generated_Source\PSoC4/Millis_ISR.c **** *  
+  82:Generated_Source\PSoC4/Millis_ISR.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+  83:Generated_Source\PSoC4/Millis_ISR.c **** *  used to provide consistent definition across compilers:
+  84:Generated_Source\PSoC4/Millis_ISR.c **** *  
+  85:Generated_Source\PSoC4/Millis_ISR.c **** *  Function definition example:
+  86:Generated_Source\PSoC4/Millis_ISR.c **** *   CY_ISR(MyISR)
+  87:Generated_Source\PSoC4/Millis_ISR.c **** *   {
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 3
+
+
+  88:Generated_Source\PSoC4/Millis_ISR.c **** *   }
+  89:Generated_Source\PSoC4/Millis_ISR.c **** *   Function prototype example:
+  90:Generated_Source\PSoC4/Millis_ISR.c **** *   CY_ISR_PROTO(MyISR);
+  91:Generated_Source\PSoC4/Millis_ISR.c **** *
+  92:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:  
+  93:Generated_Source\PSoC4/Millis_ISR.c **** *   address: Address of the ISR to set in the interrupt vector table.
+  94:Generated_Source\PSoC4/Millis_ISR.c **** *
+  95:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+  96:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+  97:Generated_Source\PSoC4/Millis_ISR.c **** *
+  98:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+  99:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_StartEx(cyisraddress address)
+ 100:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 101:Generated_Source\PSoC4/Millis_ISR.c ****     /* For all we know the interrupt is active. */
+ 102:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_Disable();
+ 103:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 104:Generated_Source\PSoC4/Millis_ISR.c ****     /* Set the ISR to point to the Millis_ISR Interrupt. */
+ 105:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_SetVector(address);
+ 106:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 107:Generated_Source\PSoC4/Millis_ISR.c ****     /* Set the priority. */
+ 108:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_SetPriority((uint8)Millis_ISR_INTC_PRIOR_NUMBER);
+ 109:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 110:Generated_Source\PSoC4/Millis_ISR.c ****     /* Enable it. */
+ 111:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_Enable();
+ 112:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 113:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 114:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 115:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 116:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_Stop
+ 117:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 118:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 119:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 120:Generated_Source\PSoC4/Millis_ISR.c **** *   Disables and removes the interrupt.
+ 121:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 122:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:  
+ 123:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 124:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 125:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 126:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 127:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 128:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 129:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_Stop(void)
+ 130:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 131:Generated_Source\PSoC4/Millis_ISR.c ****     /* Disable this interrupt. */
+ 132:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_Disable();
+ 133:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 134:Generated_Source\PSoC4/Millis_ISR.c ****     /* Set the ISR to point to the passive one. */
+ 135:Generated_Source\PSoC4/Millis_ISR.c ****     Millis_ISR_SetVector(&IntDefaultHandler);
+ 136:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 137:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 138:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 139:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 140:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_Interrupt
+ 141:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 142:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 143:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 144:Generated_Source\PSoC4/Millis_ISR.c **** *   The default Interrupt Service Routine for Millis_ISR.
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 4
+
+
+ 145:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 146:Generated_Source\PSoC4/Millis_ISR.c **** *   Add custom code between the START and END comments to keep the next version
+ 147:Generated_Source\PSoC4/Millis_ISR.c **** *   of this file from over-writing your code.
+ 148:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 149:Generated_Source\PSoC4/Millis_ISR.c **** *   Note You may use either the default ISR by using this API, or you may define
+ 150:Generated_Source\PSoC4/Millis_ISR.c **** *   your own separate ISR through ISR_StartEx().
+ 151:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 152:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:  
+ 153:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 154:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 155:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 156:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 157:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 158:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 159:Generated_Source\PSoC4/Millis_ISR.c **** CY_ISR(Millis_ISR_Interrupt)
+ 160:Generated_Source\PSoC4/Millis_ISR.c **** {
+  28              		.loc 1 160 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+ 161:Generated_Source\PSoC4/Millis_ISR.c ****     #ifdef Millis_ISR_INTERRUPT_INTERRUPT_CALLBACK
+ 162:Generated_Source\PSoC4/Millis_ISR.c ****         Millis_ISR_Interrupt_InterruptCallback();
+ 163:Generated_Source\PSoC4/Millis_ISR.c ****     #endif /* Millis_ISR_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 164:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 165:Generated_Source\PSoC4/Millis_ISR.c ****     /*  Place your Interrupt code here. */
+ 166:Generated_Source\PSoC4/Millis_ISR.c ****     /* `#START Millis_ISR_Interrupt` */
+ 167:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 168:Generated_Source\PSoC4/Millis_ISR.c ****     /* `#END` */
+ 169:Generated_Source\PSoC4/Millis_ISR.c **** }
+  33              		.loc 1 169 0
+  34              		@ sp needed
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE4:
+  38              		.size	Millis_ISR_Interrupt, .-Millis_ISR_Interrupt
+  39 0002 C046     		.section	.text.Millis_ISR_Start,"ax",%progbits
+  40              		.align	2
+  41              		.global	Millis_ISR_Start
+  42              		.code	16
+  43              		.thumb_func
+  44              		.type	Millis_ISR_Start, %function
+  45              	Millis_ISR_Start:
+  46              	.LFB1:
+  57:Generated_Source\PSoC4/Millis_ISR.c ****     /* For all we know the interrupt is active. */
+  47              		.loc 1 57 0
+  48              		.cfi_startproc
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51 0000 10B5     		push	{r4, lr}
+  52              		.cfi_def_cfa_offset 8
+  53              		.cfi_offset 4, -8
+  54              		.cfi_offset 14, -4
+  55              	.LBB26:
+  56              	.LBB27:
+ 170:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 171:Generated_Source\PSoC4/Millis_ISR.c **** 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 5
+
+
+ 172:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 173:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_SetVector
+ 174:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 175:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 176:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 177:Generated_Source\PSoC4/Millis_ISR.c **** *   Change the ISR vector for the Interrupt. Note calling Millis_ISR_Start
+ 178:Generated_Source\PSoC4/Millis_ISR.c **** *   will override any effect this method would have had. To set the vector 
+ 179:Generated_Source\PSoC4/Millis_ISR.c **** *   before the component has been started use Millis_ISR_StartEx instead.
+ 180:Generated_Source\PSoC4/Millis_ISR.c **** * 
+ 181:Generated_Source\PSoC4/Millis_ISR.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 182:Generated_Source\PSoC4/Millis_ISR.c **** *   used to provide consistent definition across compilers:
+ 183:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 184:Generated_Source\PSoC4/Millis_ISR.c **** *   Function definition example:
+ 185:Generated_Source\PSoC4/Millis_ISR.c **** *   CY_ISR(MyISR)
+ 186:Generated_Source\PSoC4/Millis_ISR.c **** *   {
+ 187:Generated_Source\PSoC4/Millis_ISR.c **** *   }
+ 188:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 189:Generated_Source\PSoC4/Millis_ISR.c **** *   Function prototype example:
+ 190:Generated_Source\PSoC4/Millis_ISR.c **** *     CY_ISR_PROTO(MyISR);
+ 191:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 192:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 193:Generated_Source\PSoC4/Millis_ISR.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 194:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 195:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 196:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 197:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 198:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 199:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_SetVector(cyisraddress address)
+ 200:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 201:Generated_Source\PSoC4/Millis_ISR.c ****     CyRamVectors[CYINT_IRQ_BASE + Millis_ISR__INTC_NUMBER] = address;
+ 202:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 203:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 204:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 205:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 206:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_GetVector
+ 207:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 208:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 209:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 210:Generated_Source\PSoC4/Millis_ISR.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 211:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 212:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 213:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 214:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 215:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 216:Generated_Source\PSoC4/Millis_ISR.c **** *   Address of the ISR in the interrupt vector table.
+ 217:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 218:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 219:Generated_Source\PSoC4/Millis_ISR.c **** cyisraddress Millis_ISR_GetVector(void)
+ 220:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 221:Generated_Source\PSoC4/Millis_ISR.c ****     return CyRamVectors[CYINT_IRQ_BASE + Millis_ISR__INTC_NUMBER];
+ 222:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 223:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 224:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 225:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 226:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_SetPriority
+ 227:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 228:Generated_Source\PSoC4/Millis_ISR.c **** *
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 6
+
+
+ 229:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 230:Generated_Source\PSoC4/Millis_ISR.c **** *   Sets the Priority of the Interrupt. 
+ 231:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 232:Generated_Source\PSoC4/Millis_ISR.c **** *   Note calling Millis_ISR_Start or Millis_ISR_StartEx will 
+ 233:Generated_Source\PSoC4/Millis_ISR.c **** *   override any effect this API would have had. This API should only be called
+ 234:Generated_Source\PSoC4/Millis_ISR.c **** *   after Millis_ISR_Start or Millis_ISR_StartEx has been called. 
+ 235:Generated_Source\PSoC4/Millis_ISR.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 236:Generated_Source\PSoC4/Millis_ISR.c **** *   Interrupt Editor.
+ 237:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 238:Generated_Source\PSoC4/Millis_ISR.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 239:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 240:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 241:Generated_Source\PSoC4/Millis_ISR.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 242:Generated_Source\PSoC4/Millis_ISR.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 243:Generated_Source\PSoC4/Millis_ISR.c **** *             PSoC 4: Priority is from 0 to 3.
+ 244:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 245:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 246:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 247:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 248:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 249:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_SetPriority(uint8 priority)
+ 250:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 251:Generated_Source\PSoC4/Millis_ISR.c **** 	uint8 interruptState;
+ 252:Generated_Source\PSoC4/Millis_ISR.c ****     uint32 priorityOffset = ((Millis_ISR__INTC_NUMBER % 4u) * 8u) + 6u;
+ 253:Generated_Source\PSoC4/Millis_ISR.c ****     
+ 254:Generated_Source\PSoC4/Millis_ISR.c **** 	interruptState = CyEnterCriticalSection();
+ 255:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_PRIOR = (*Millis_ISR_INTC_PRIOR & (uint32)(~Millis_ISR__INTC_PRIOR_MASK)) |
+ 256:Generated_Source\PSoC4/Millis_ISR.c ****                                     ((uint32)priority << priorityOffset);
+ 257:Generated_Source\PSoC4/Millis_ISR.c **** 	CyExitCriticalSection(interruptState);
+ 258:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 259:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 260:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 261:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 262:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_GetPriority
+ 263:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 264:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 265:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 266:Generated_Source\PSoC4/Millis_ISR.c **** *   Gets the Priority of the Interrupt.
+ 267:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 268:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 269:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 270:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 271:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 272:Generated_Source\PSoC4/Millis_ISR.c **** *   Priority of the interrupt, 0 being the highest priority
+ 273:Generated_Source\PSoC4/Millis_ISR.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 274:Generated_Source\PSoC4/Millis_ISR.c **** *    PSoC 4: Priority is from 0 to 3.
+ 275:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 276:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 277:Generated_Source\PSoC4/Millis_ISR.c **** uint8 Millis_ISR_GetPriority(void)
+ 278:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 279:Generated_Source\PSoC4/Millis_ISR.c ****     uint32 priority;
+ 280:Generated_Source\PSoC4/Millis_ISR.c **** 	uint32 priorityOffset = ((Millis_ISR__INTC_NUMBER % 4u) * 8u) + 6u;
+ 281:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 282:Generated_Source\PSoC4/Millis_ISR.c ****     priority = (*Millis_ISR_INTC_PRIOR & Millis_ISR__INTC_PRIOR_MASK) >> priorityOffset;
+ 283:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 284:Generated_Source\PSoC4/Millis_ISR.c ****     return (uint8)priority;
+ 285:Generated_Source\PSoC4/Millis_ISR.c **** }
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 7
+
+
+ 286:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 287:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 288:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 289:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_Enable
+ 290:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 291:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 292:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 293:Generated_Source\PSoC4/Millis_ISR.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 294:Generated_Source\PSoC4/Millis_ISR.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 295:Generated_Source\PSoC4/Millis_ISR.c **** *   function, which sets the vector and the priority, has been called.
+ 296:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 297:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 298:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 299:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 300:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 301:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 302:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 303:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 304:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_Enable(void)
+ 305:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 306:Generated_Source\PSoC4/Millis_ISR.c ****     /* Enable the general interrupt. */
+ 307:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_SET_EN = Millis_ISR__INTC_MASK;
+ 308:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 309:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 310:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 311:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 312:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_GetState
+ 313:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 314:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 315:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 316:Generated_Source\PSoC4/Millis_ISR.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 317:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 318:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 319:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 320:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 321:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 322:Generated_Source\PSoC4/Millis_ISR.c **** *   1 if enabled, 0 if disabled.
+ 323:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 324:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 325:Generated_Source\PSoC4/Millis_ISR.c **** uint8 Millis_ISR_GetState(void)
+ 326:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 327:Generated_Source\PSoC4/Millis_ISR.c ****     /* Get the state of the general interrupt. */
+ 328:Generated_Source\PSoC4/Millis_ISR.c ****     return ((*Millis_ISR_INTC_SET_EN & (uint32)Millis_ISR__INTC_MASK) != 0u) ? 1u:0u;
+ 329:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 330:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 331:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 332:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 333:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_Disable
+ 334:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 335:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 336:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 337:Generated_Source\PSoC4/Millis_ISR.c **** *   Disables the Interrupt in the interrupt controller.
+ 338:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 339:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 340:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 341:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 342:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 8
+
+
+ 343:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 344:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 345:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 346:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_Disable(void)
+ 347:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 348:Generated_Source\PSoC4/Millis_ISR.c ****     /* Disable the general interrupt. */
+ 349:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_CLR_EN = Millis_ISR__INTC_MASK;
+  57              		.loc 1 349 0
+  58 0002 8024     		movs	r4, #128
+  59 0004 094B     		ldr	r3, .L3
+  60 0006 A403     		lsls	r4, r4, #14
+  61 0008 1C60     		str	r4, [r3]
+  62              	.LVL0:
+  63              	.LBE27:
+  64              	.LBE26:
+  65              	.LBB28:
+  66              	.LBB29:
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+  67              		.loc 1 201 0
+  68 000a 9423     		movs	r3, #148
+  69 000c 0849     		ldr	r1, .L3+4
+  70 000e 094A     		ldr	r2, .L3+8
+  71              	.LBE29:
+  72              	.LBE28:
+  69:Generated_Source\PSoC4/Millis_ISR.c **** 
+  73              		.loc 1 69 0
+  74              		@ sp needed
+  75              	.LBB31:
+  76              	.LBB30:
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+  77              		.loc 1 201 0
+  78 0010 D150     		str	r1, [r2, r3]
+  79              	.LVL1:
+  80              	.LBE30:
+  81              	.LBE31:
+  82              	.LBB32:
+  83              	.LBB33:
+ 254:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_PRIOR = (*Millis_ISR_INTC_PRIOR & (uint32)(~Millis_ISR__INTC_PRIOR_MASK)) |
+  84              		.loc 1 254 0
+  85 0012 FFF7FEFF 		bl	CyEnterCriticalSection
+  86              	.LVL2:
+ 255:Generated_Source\PSoC4/Millis_ISR.c ****                                     ((uint32)priority << priorityOffset);
+  87              		.loc 1 255 0
+  88 0016 C023     		movs	r3, #192
+  89 0018 074A     		ldr	r2, .L3+12
+  90 001a 1B02     		lsls	r3, r3, #8
+  91 001c 1168     		ldr	r1, [r2]
+  92 001e 0B43     		orrs	r3, r1
+  93 0020 1360     		str	r3, [r2]
+ 257:Generated_Source\PSoC4/Millis_ISR.c **** }
+  94              		.loc 1 257 0
+  95 0022 FFF7FEFF 		bl	CyExitCriticalSection
+  96              	.LVL3:
+  97              	.LBE33:
+  98              	.LBE32:
+  99              	.LBB34:
+ 100              	.LBB35:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 9
+
+
+ 307:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 101              		.loc 1 307 0
+ 102 0026 054B     		ldr	r3, .L3+16
+ 103 0028 1C60     		str	r4, [r3]
+ 104              	.LBE35:
+ 105              	.LBE34:
+  69:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 106              		.loc 1 69 0
+ 107 002a 10BD     		pop	{r4, pc}
+ 108              	.L4:
+ 109              		.align	2
+ 110              	.L3:
+ 111 002c 80E100E0 		.word	-536813184
+ 112 0030 00000000 		.word	Millis_ISR_Interrupt
+ 113 0034 00000000 		.word	CyRamVectors
+ 114 0038 14E400E0 		.word	-536812524
+ 115 003c 00E100E0 		.word	-536813312
+ 116              		.cfi_endproc
+ 117              	.LFE1:
+ 118              		.size	Millis_ISR_Start, .-Millis_ISR_Start
+ 119              		.section	.text.Millis_ISR_StartEx,"ax",%progbits
+ 120              		.align	2
+ 121              		.global	Millis_ISR_StartEx
+ 122              		.code	16
+ 123              		.thumb_func
+ 124              		.type	Millis_ISR_StartEx, %function
+ 125              	Millis_ISR_StartEx:
+ 126              	.LFB2:
+ 100:Generated_Source\PSoC4/Millis_ISR.c ****     /* For all we know the interrupt is active. */
+ 127              		.loc 1 100 0
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 0
+ 130              		@ frame_needed = 0, uses_anonymous_args = 0
+ 131              	.LVL4:
+ 132 0000 10B5     		push	{r4, lr}
+ 133              		.cfi_def_cfa_offset 8
+ 134              		.cfi_offset 4, -8
+ 135              		.cfi_offset 14, -4
+ 136              	.LBB44:
+ 137              	.LBB45:
+ 138              		.loc 1 349 0
+ 139 0002 8024     		movs	r4, #128
+ 140 0004 094B     		ldr	r3, .L6
+ 141 0006 A403     		lsls	r4, r4, #14
+ 142 0008 1C60     		str	r4, [r3]
+ 143              	.LVL5:
+ 144              	.LBE45:
+ 145              	.LBE44:
+ 146              	.LBB46:
+ 147              	.LBB47:
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 148              		.loc 1 201 0
+ 149 000a 9423     		movs	r3, #148
+ 150 000c 084A     		ldr	r2, .L6+4
+ 151              	.LBE47:
+ 152              	.LBE46:
+ 112:Generated_Source\PSoC4/Millis_ISR.c **** 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 10
+
+
+ 153              		.loc 1 112 0
+ 154              		@ sp needed
+ 155              	.LBB49:
+ 156              	.LBB48:
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 157              		.loc 1 201 0
+ 158 000e D050     		str	r0, [r2, r3]
+ 159              	.LVL6:
+ 160              	.LBE48:
+ 161              	.LBE49:
+ 162              	.LBB50:
+ 163              	.LBB51:
+ 254:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_PRIOR = (*Millis_ISR_INTC_PRIOR & (uint32)(~Millis_ISR__INTC_PRIOR_MASK)) |
+ 164              		.loc 1 254 0
+ 165 0010 FFF7FEFF 		bl	CyEnterCriticalSection
+ 166              	.LVL7:
+ 255:Generated_Source\PSoC4/Millis_ISR.c ****                                     ((uint32)priority << priorityOffset);
+ 167              		.loc 1 255 0
+ 168 0014 C023     		movs	r3, #192
+ 169 0016 074A     		ldr	r2, .L6+8
+ 170 0018 1B02     		lsls	r3, r3, #8
+ 171 001a 1168     		ldr	r1, [r2]
+ 172 001c 0B43     		orrs	r3, r1
+ 173 001e 1360     		str	r3, [r2]
+ 257:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 174              		.loc 1 257 0
+ 175 0020 FFF7FEFF 		bl	CyExitCriticalSection
+ 176              	.LVL8:
+ 177              	.LBE51:
+ 178              	.LBE50:
+ 179              	.LBB52:
+ 180              	.LBB53:
+ 307:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 181              		.loc 1 307 0
+ 182 0024 044B     		ldr	r3, .L6+12
+ 183 0026 1C60     		str	r4, [r3]
+ 184              	.LBE53:
+ 185              	.LBE52:
+ 112:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 186              		.loc 1 112 0
+ 187 0028 10BD     		pop	{r4, pc}
+ 188              	.L7:
+ 189 002a C046     		.align	2
+ 190              	.L6:
+ 191 002c 80E100E0 		.word	-536813184
+ 192 0030 00000000 		.word	CyRamVectors
+ 193 0034 14E400E0 		.word	-536812524
+ 194 0038 00E100E0 		.word	-536813312
+ 195              		.cfi_endproc
+ 196              	.LFE2:
+ 197              		.size	Millis_ISR_StartEx, .-Millis_ISR_StartEx
+ 198              		.section	.text.Millis_ISR_Stop,"ax",%progbits
+ 199              		.align	2
+ 200              		.global	Millis_ISR_Stop
+ 201              		.code	16
+ 202              		.thumb_func
+ 203              		.type	Millis_ISR_Stop, %function
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 11
+
+
+ 204              	Millis_ISR_Stop:
+ 205              	.LFB3:
+ 130:Generated_Source\PSoC4/Millis_ISR.c ****     /* Disable this interrupt. */
+ 206              		.loc 1 130 0
+ 207              		.cfi_startproc
+ 208              		@ args = 0, pretend = 0, frame = 0
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+ 210              		@ link register save eliminated.
+ 211              	.LBB54:
+ 212              	.LBB55:
+ 213              		.loc 1 349 0
+ 214 0000 8022     		movs	r2, #128
+ 215 0002 044B     		ldr	r3, .L9
+ 216 0004 9203     		lsls	r2, r2, #14
+ 217 0006 1A60     		str	r2, [r3]
+ 218              	.LVL9:
+ 219              	.LBE55:
+ 220              	.LBE54:
+ 221              	.LBB56:
+ 222              	.LBB57:
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 223              		.loc 1 201 0
+ 224 0008 9423     		movs	r3, #148
+ 225 000a 0349     		ldr	r1, .L9+4
+ 226 000c 034A     		ldr	r2, .L9+8
+ 227              	.LBE57:
+ 228              	.LBE56:
+ 136:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 229              		.loc 1 136 0
+ 230              		@ sp needed
+ 231              	.LBB59:
+ 232              	.LBB58:
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 233              		.loc 1 201 0
+ 234 000e D150     		str	r1, [r2, r3]
+ 235              	.LVL10:
+ 236              	.LBE58:
+ 237              	.LBE59:
+ 136:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 238              		.loc 1 136 0
+ 239 0010 7047     		bx	lr
+ 240              	.L10:
+ 241 0012 C046     		.align	2
+ 242              	.L9:
+ 243 0014 80E100E0 		.word	-536813184
+ 244 0018 00000000 		.word	IntDefaultHandler
+ 245 001c 00000000 		.word	CyRamVectors
+ 246              		.cfi_endproc
+ 247              	.LFE3:
+ 248              		.size	Millis_ISR_Stop, .-Millis_ISR_Stop
+ 249              		.section	.text.Millis_ISR_SetVector,"ax",%progbits
+ 250              		.align	2
+ 251              		.global	Millis_ISR_SetVector
+ 252              		.code	16
+ 253              		.thumb_func
+ 254              		.type	Millis_ISR_SetVector, %function
+ 255              	Millis_ISR_SetVector:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 12
+
+
+ 256              	.LFB5:
+ 200:Generated_Source\PSoC4/Millis_ISR.c ****     CyRamVectors[CYINT_IRQ_BASE + Millis_ISR__INTC_NUMBER] = address;
+ 257              		.loc 1 200 0
+ 258              		.cfi_startproc
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 261              		@ link register save eliminated.
+ 262              	.LVL11:
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 263              		.loc 1 201 0
+ 264 0000 9423     		movs	r3, #148
+ 265 0002 014A     		ldr	r2, .L12
+ 202:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 266              		.loc 1 202 0
+ 267              		@ sp needed
+ 201:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 268              		.loc 1 201 0
+ 269 0004 D050     		str	r0, [r2, r3]
+ 202:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 270              		.loc 1 202 0
+ 271 0006 7047     		bx	lr
+ 272              	.L13:
+ 273              		.align	2
+ 274              	.L12:
+ 275 0008 00000000 		.word	CyRamVectors
+ 276              		.cfi_endproc
+ 277              	.LFE5:
+ 278              		.size	Millis_ISR_SetVector, .-Millis_ISR_SetVector
+ 279              		.section	.text.Millis_ISR_GetVector,"ax",%progbits
+ 280              		.align	2
+ 281              		.global	Millis_ISR_GetVector
+ 282              		.code	16
+ 283              		.thumb_func
+ 284              		.type	Millis_ISR_GetVector, %function
+ 285              	Millis_ISR_GetVector:
+ 286              	.LFB6:
+ 220:Generated_Source\PSoC4/Millis_ISR.c ****     return CyRamVectors[CYINT_IRQ_BASE + Millis_ISR__INTC_NUMBER];
+ 287              		.loc 1 220 0
+ 288              		.cfi_startproc
+ 289              		@ args = 0, pretend = 0, frame = 0
+ 290              		@ frame_needed = 0, uses_anonymous_args = 0
+ 291              		@ link register save eliminated.
+ 221:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 292              		.loc 1 221 0
+ 293 0000 9423     		movs	r3, #148
+ 294 0002 014A     		ldr	r2, .L15
+ 222:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 295              		.loc 1 222 0
+ 296              		@ sp needed
+ 221:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 297              		.loc 1 221 0
+ 298 0004 D058     		ldr	r0, [r2, r3]
+ 222:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 299              		.loc 1 222 0
+ 300 0006 7047     		bx	lr
+ 301              	.L16:
+ 302              		.align	2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 13
+
+
+ 303              	.L15:
+ 304 0008 00000000 		.word	CyRamVectors
+ 305              		.cfi_endproc
+ 306              	.LFE6:
+ 307              		.size	Millis_ISR_GetVector, .-Millis_ISR_GetVector
+ 308              		.section	.text.Millis_ISR_SetPriority,"ax",%progbits
+ 309              		.align	2
+ 310              		.global	Millis_ISR_SetPriority
+ 311              		.code	16
+ 312              		.thumb_func
+ 313              		.type	Millis_ISR_SetPriority, %function
+ 314              	Millis_ISR_SetPriority:
+ 315              	.LFB7:
+ 250:Generated_Source\PSoC4/Millis_ISR.c **** 	uint8 interruptState;
+ 316              		.loc 1 250 0
+ 317              		.cfi_startproc
+ 318              		@ args = 0, pretend = 0, frame = 0
+ 319              		@ frame_needed = 0, uses_anonymous_args = 0
+ 320              	.LVL12:
+ 321 0000 10B5     		push	{r4, lr}
+ 322              		.cfi_def_cfa_offset 8
+ 323              		.cfi_offset 4, -8
+ 324              		.cfi_offset 14, -4
+ 250:Generated_Source\PSoC4/Millis_ISR.c **** 	uint8 interruptState;
+ 325              		.loc 1 250 0
+ 326 0002 0400     		movs	r4, r0
+ 254:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_PRIOR = (*Millis_ISR_INTC_PRIOR & (uint32)(~Millis_ISR__INTC_PRIOR_MASK)) |
+ 327              		.loc 1 254 0
+ 328 0004 FFF7FEFF 		bl	CyEnterCriticalSection
+ 329              	.LVL13:
+ 255:Generated_Source\PSoC4/Millis_ISR.c ****                                     ((uint32)priority << priorityOffset);
+ 330              		.loc 1 255 0
+ 331 0008 044A     		ldr	r2, .L18
+ 332 000a 054B     		ldr	r3, .L18+4
+ 333 000c 1168     		ldr	r1, [r2]
+ 334 000e A403     		lsls	r4, r4, #14
+ 335 0010 0B40     		ands	r3, r1
+ 336 0012 1C43     		orrs	r4, r3
+ 337 0014 1460     		str	r4, [r2]
+ 257:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 338              		.loc 1 257 0
+ 339 0016 FFF7FEFF 		bl	CyExitCriticalSection
+ 340              	.LVL14:
+ 258:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 341              		.loc 1 258 0
+ 342              		@ sp needed
+ 343 001a 10BD     		pop	{r4, pc}
+ 344              	.L19:
+ 345              		.align	2
+ 346              	.L18:
+ 347 001c 14E400E0 		.word	-536812524
+ 348 0020 FF3FFFFF 		.word	-49153
+ 349              		.cfi_endproc
+ 350              	.LFE7:
+ 351              		.size	Millis_ISR_SetPriority, .-Millis_ISR_SetPriority
+ 352              		.section	.text.Millis_ISR_GetPriority,"ax",%progbits
+ 353              		.align	2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 14
+
+
+ 354              		.global	Millis_ISR_GetPriority
+ 355              		.code	16
+ 356              		.thumb_func
+ 357              		.type	Millis_ISR_GetPriority, %function
+ 358              	Millis_ISR_GetPriority:
+ 359              	.LFB8:
+ 278:Generated_Source\PSoC4/Millis_ISR.c ****     uint32 priority;
+ 360              		.loc 1 278 0
+ 361              		.cfi_startproc
+ 362              		@ args = 0, pretend = 0, frame = 0
+ 363              		@ frame_needed = 0, uses_anonymous_args = 0
+ 364              		@ link register save eliminated.
+ 365              	.LVL15:
+ 282:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 366              		.loc 1 282 0
+ 367 0000 024B     		ldr	r3, .L21
+ 285:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 368              		.loc 1 285 0
+ 369              		@ sp needed
+ 282:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 370              		.loc 1 282 0
+ 371 0002 1868     		ldr	r0, [r3]
+ 372              	.LVL16:
+ 284:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 373              		.loc 1 284 0
+ 374 0004 0004     		lsls	r0, r0, #16
+ 375              	.LVL17:
+ 376 0006 800F     		lsrs	r0, r0, #30
+ 285:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 377              		.loc 1 285 0
+ 378 0008 7047     		bx	lr
+ 379              	.L22:
+ 380 000a C046     		.align	2
+ 381              	.L21:
+ 382 000c 14E400E0 		.word	-536812524
+ 383              		.cfi_endproc
+ 384              	.LFE8:
+ 385              		.size	Millis_ISR_GetPriority, .-Millis_ISR_GetPriority
+ 386              		.section	.text.Millis_ISR_Enable,"ax",%progbits
+ 387              		.align	2
+ 388              		.global	Millis_ISR_Enable
+ 389              		.code	16
+ 390              		.thumb_func
+ 391              		.type	Millis_ISR_Enable, %function
+ 392              	Millis_ISR_Enable:
+ 393              	.LFB9:
+ 305:Generated_Source\PSoC4/Millis_ISR.c ****     /* Enable the general interrupt. */
+ 394              		.loc 1 305 0
+ 395              		.cfi_startproc
+ 396              		@ args = 0, pretend = 0, frame = 0
+ 397              		@ frame_needed = 0, uses_anonymous_args = 0
+ 398              		@ link register save eliminated.
+ 307:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 399              		.loc 1 307 0
+ 400 0000 8022     		movs	r2, #128
+ 401 0002 024B     		ldr	r3, .L24
+ 402 0004 9203     		lsls	r2, r2, #14
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 15
+
+
+ 403 0006 1A60     		str	r2, [r3]
+ 308:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 404              		.loc 1 308 0
+ 405              		@ sp needed
+ 406 0008 7047     		bx	lr
+ 407              	.L25:
+ 408 000a C046     		.align	2
+ 409              	.L24:
+ 410 000c 00E100E0 		.word	-536813312
+ 411              		.cfi_endproc
+ 412              	.LFE9:
+ 413              		.size	Millis_ISR_Enable, .-Millis_ISR_Enable
+ 414              		.section	.text.Millis_ISR_GetState,"ax",%progbits
+ 415              		.align	2
+ 416              		.global	Millis_ISR_GetState
+ 417              		.code	16
+ 418              		.thumb_func
+ 419              		.type	Millis_ISR_GetState, %function
+ 420              	Millis_ISR_GetState:
+ 421              	.LFB10:
+ 326:Generated_Source\PSoC4/Millis_ISR.c ****     /* Get the state of the general interrupt. */
+ 422              		.loc 1 326 0
+ 423              		.cfi_startproc
+ 424              		@ args = 0, pretend = 0, frame = 0
+ 425              		@ frame_needed = 0, uses_anonymous_args = 0
+ 426              		@ link register save eliminated.
+ 328:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 427              		.loc 1 328 0
+ 428 0000 024B     		ldr	r3, .L27
+ 329:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 429              		.loc 1 329 0
+ 430              		@ sp needed
+ 328:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 431              		.loc 1 328 0
+ 432 0002 1868     		ldr	r0, [r3]
+ 433 0004 8002     		lsls	r0, r0, #10
+ 434 0006 C00F     		lsrs	r0, r0, #31
+ 329:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 435              		.loc 1 329 0
+ 436 0008 7047     		bx	lr
+ 437              	.L28:
+ 438 000a C046     		.align	2
+ 439              	.L27:
+ 440 000c 00E100E0 		.word	-536813312
+ 441              		.cfi_endproc
+ 442              	.LFE10:
+ 443              		.size	Millis_ISR_GetState, .-Millis_ISR_GetState
+ 444              		.section	.text.Millis_ISR_Disable,"ax",%progbits
+ 445              		.align	2
+ 446              		.global	Millis_ISR_Disable
+ 447              		.code	16
+ 448              		.thumb_func
+ 449              		.type	Millis_ISR_Disable, %function
+ 450              	Millis_ISR_Disable:
+ 451              	.LFB11:
+ 347:Generated_Source\PSoC4/Millis_ISR.c ****     /* Disable the general interrupt. */
+ 452              		.loc 1 347 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 16
+
+
+ 453              		.cfi_startproc
+ 454              		@ args = 0, pretend = 0, frame = 0
+ 455              		@ frame_needed = 0, uses_anonymous_args = 0
+ 456              		@ link register save eliminated.
+ 457              		.loc 1 349 0
+ 458 0000 8022     		movs	r2, #128
+ 459 0002 024B     		ldr	r3, .L30
+ 460 0004 9203     		lsls	r2, r2, #14
+ 461 0006 1A60     		str	r2, [r3]
+ 350:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 462              		.loc 1 350 0
+ 463              		@ sp needed
+ 464 0008 7047     		bx	lr
+ 465              	.L31:
+ 466 000a C046     		.align	2
+ 467              	.L30:
+ 468 000c 80E100E0 		.word	-536813184
+ 469              		.cfi_endproc
+ 470              	.LFE11:
+ 471              		.size	Millis_ISR_Disable, .-Millis_ISR_Disable
+ 472              		.section	.text.Millis_ISR_SetPending,"ax",%progbits
+ 473              		.align	2
+ 474              		.global	Millis_ISR_SetPending
+ 475              		.code	16
+ 476              		.thumb_func
+ 477              		.type	Millis_ISR_SetPending, %function
+ 478              	Millis_ISR_SetPending:
+ 479              	.LFB12:
+ 351:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 352:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 353:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 354:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_SetPending
+ 355:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 356:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 357:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 358:Generated_Source\PSoC4/Millis_ISR.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 359:Generated_Source\PSoC4/Millis_ISR.c **** *   generating the interrupt.
+ 360:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 361:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 362:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 363:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 364:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 365:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 366:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 367:Generated_Source\PSoC4/Millis_ISR.c **** * Side Effects:
+ 368:Generated_Source\PSoC4/Millis_ISR.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 369:Generated_Source\PSoC4/Millis_ISR.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 370:Generated_Source\PSoC4/Millis_ISR.c **** *   interrupts).
+ 371:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 372:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 373:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_SetPending(void)
+ 374:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 480              		.loc 1 374 0
+ 481              		.cfi_startproc
+ 482              		@ args = 0, pretend = 0, frame = 0
+ 483              		@ frame_needed = 0, uses_anonymous_args = 0
+ 484              		@ link register save eliminated.
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 17
+
+
+ 375:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_SET_PD = Millis_ISR__INTC_MASK;
+ 485              		.loc 1 375 0
+ 486 0000 8022     		movs	r2, #128
+ 487 0002 024B     		ldr	r3, .L33
+ 488 0004 9203     		lsls	r2, r2, #14
+ 489 0006 1A60     		str	r2, [r3]
+ 376:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 490              		.loc 1 376 0
+ 491              		@ sp needed
+ 492 0008 7047     		bx	lr
+ 493              	.L34:
+ 494 000a C046     		.align	2
+ 495              	.L33:
+ 496 000c 00E200E0 		.word	-536813056
+ 497              		.cfi_endproc
+ 498              	.LFE12:
+ 499              		.size	Millis_ISR_SetPending, .-Millis_ISR_SetPending
+ 500              		.section	.text.Millis_ISR_ClearPending,"ax",%progbits
+ 501              		.align	2
+ 502              		.global	Millis_ISR_ClearPending
+ 503              		.code	16
+ 504              		.thumb_func
+ 505              		.type	Millis_ISR_ClearPending, %function
+ 506              	Millis_ISR_ClearPending:
+ 507              	.LFB13:
+ 377:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 378:Generated_Source\PSoC4/Millis_ISR.c **** 
+ 379:Generated_Source\PSoC4/Millis_ISR.c **** /*******************************************************************************
+ 380:Generated_Source\PSoC4/Millis_ISR.c **** * Function Name: Millis_ISR_ClearPending
+ 381:Generated_Source\PSoC4/Millis_ISR.c **** ********************************************************************************
+ 382:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 383:Generated_Source\PSoC4/Millis_ISR.c **** * Summary:
+ 384:Generated_Source\PSoC4/Millis_ISR.c **** *   Clears a pending interrupt in the interrupt controller.
+ 385:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 386:Generated_Source\PSoC4/Millis_ISR.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 387:Generated_Source\PSoC4/Millis_ISR.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 388:Generated_Source\PSoC4/Millis_ISR.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 389:Generated_Source\PSoC4/Millis_ISR.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 390:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 391:Generated_Source\PSoC4/Millis_ISR.c **** * Parameters:
+ 392:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 393:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 394:Generated_Source\PSoC4/Millis_ISR.c **** * Return:
+ 395:Generated_Source\PSoC4/Millis_ISR.c **** *   None
+ 396:Generated_Source\PSoC4/Millis_ISR.c **** *
+ 397:Generated_Source\PSoC4/Millis_ISR.c **** *******************************************************************************/
+ 398:Generated_Source\PSoC4/Millis_ISR.c **** void Millis_ISR_ClearPending(void)
+ 399:Generated_Source\PSoC4/Millis_ISR.c **** {
+ 508              		.loc 1 399 0
+ 509              		.cfi_startproc
+ 510              		@ args = 0, pretend = 0, frame = 0
+ 511              		@ frame_needed = 0, uses_anonymous_args = 0
+ 512              		@ link register save eliminated.
+ 400:Generated_Source\PSoC4/Millis_ISR.c ****     *Millis_ISR_INTC_CLR_PD = Millis_ISR__INTC_MASK;
+ 513              		.loc 1 400 0
+ 514 0000 8022     		movs	r2, #128
+ 515 0002 024B     		ldr	r3, .L36
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 18
+
+
+ 516 0004 9203     		lsls	r2, r2, #14
+ 517 0006 1A60     		str	r2, [r3]
+ 401:Generated_Source\PSoC4/Millis_ISR.c **** }
+ 518              		.loc 1 401 0
+ 519              		@ sp needed
+ 520 0008 7047     		bx	lr
+ 521              	.L37:
+ 522 000a C046     		.align	2
+ 523              	.L36:
+ 524 000c 80E200E0 		.word	-536812928
+ 525              		.cfi_endproc
+ 526              	.LFE13:
+ 527              		.size	Millis_ISR_ClearPending, .-Millis_ISR_ClearPending
+ 528              		.text
+ 529              	.Letext0:
+ 530              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 531              		.file 3 "Generated_Source\\PSoC4/CyLib.h"
+ 532              		.section	.debug_info,"",%progbits
+ 533              	.Ldebug_info0:
+ 534 0000 DA030000 		.4byte	0x3da
+ 535 0004 0400     		.2byte	0x4
+ 536 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 537 000a 04       		.byte	0x4
+ 538 000b 01       		.uleb128 0x1
+ 539 000c 0F010000 		.4byte	.LASF36
+ 540 0010 0C       		.byte	0xc
+ 541 0011 E2000000 		.4byte	.LASF37
+ 542 0015 B7020000 		.4byte	.LASF38
+ 543 0019 48000000 		.4byte	.Ldebug_ranges0+0x48
+ 544 001d 00000000 		.4byte	0
+ 545 0021 00000000 		.4byte	.Ldebug_line0
+ 546 0025 02       		.uleb128 0x2
+ 547 0026 01       		.byte	0x1
+ 548 0027 06       		.byte	0x6
+ 549 0028 2E030000 		.4byte	.LASF0
+ 550 002c 02       		.uleb128 0x2
+ 551 002d 01       		.byte	0x1
+ 552 002e 08       		.byte	0x8
+ 553 002f AD000000 		.4byte	.LASF1
+ 554 0033 02       		.uleb128 0x2
+ 555 0034 02       		.byte	0x2
+ 556 0035 05       		.byte	0x5
+ 557 0036 8F020000 		.4byte	.LASF2
+ 558 003a 02       		.uleb128 0x2
+ 559 003b 02       		.byte	0x2
+ 560 003c 07       		.byte	0x7
+ 561 003d 51000000 		.4byte	.LASF3
+ 562 0041 02       		.uleb128 0x2
+ 563 0042 04       		.byte	0x4
+ 564 0043 05       		.byte	0x5
+ 565 0044 A8020000 		.4byte	.LASF4
+ 566 0048 02       		.uleb128 0x2
+ 567 0049 04       		.byte	0x4
+ 568 004a 07       		.byte	0x7
+ 569 004b CA000000 		.4byte	.LASF5
+ 570 004f 02       		.uleb128 0x2
+ 571 0050 08       		.byte	0x8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 19
+
+
+ 572 0051 05       		.byte	0x5
+ 573 0052 00000000 		.4byte	.LASF6
+ 574 0056 02       		.uleb128 0x2
+ 575 0057 08       		.byte	0x8
+ 576 0058 07       		.byte	0x7
+ 577 0059 82000000 		.4byte	.LASF7
+ 578 005d 03       		.uleb128 0x3
+ 579 005e 04       		.byte	0x4
+ 580 005f 05       		.byte	0x5
+ 581 0060 696E7400 		.ascii	"int\000"
+ 582 0064 02       		.uleb128 0x2
+ 583 0065 04       		.byte	0x4
+ 584 0066 07       		.byte	0x7
+ 585 0067 F1010000 		.4byte	.LASF8
+ 586 006b 04       		.uleb128 0x4
+ 587 006c DC000000 		.4byte	.LASF9
+ 588 0070 02       		.byte	0x2
+ 589 0071 D201     		.2byte	0x1d2
+ 590 0073 2C000000 		.4byte	0x2c
+ 591 0077 04       		.uleb128 0x4
+ 592 0078 D3010000 		.4byte	.LASF10
+ 593 007c 02       		.byte	0x2
+ 594 007d D401     		.2byte	0x1d4
+ 595 007f 48000000 		.4byte	0x48
+ 596 0083 02       		.uleb128 0x2
+ 597 0084 04       		.byte	0x4
+ 598 0085 04       		.byte	0x4
+ 599 0086 7C000000 		.4byte	.LASF11
+ 600 008a 02       		.uleb128 0x2
+ 601 008b 08       		.byte	0x8
+ 602 008c 04       		.byte	0x4
+ 603 008d 9D010000 		.4byte	.LASF12
+ 604 0091 02       		.uleb128 0x2
+ 605 0092 01       		.byte	0x1
+ 606 0093 08       		.byte	0x8
+ 607 0094 64000000 		.4byte	.LASF13
+ 608 0098 04       		.uleb128 0x4
+ 609 0099 B1020000 		.4byte	.LASF14
+ 610 009d 02       		.byte	0x2
+ 611 009e 7E02     		.2byte	0x27e
+ 612 00a0 A4000000 		.4byte	0xa4
+ 613 00a4 05       		.uleb128 0x5
+ 614 00a5 77000000 		.4byte	0x77
+ 615 00a9 04       		.uleb128 0x4
+ 616 00aa 2C020000 		.4byte	.LASF15
+ 617 00ae 02       		.byte	0x2
+ 618 00af 8E02     		.2byte	0x28e
+ 619 00b1 B5000000 		.4byte	0xb5
+ 620 00b5 06       		.uleb128 0x6
+ 621 00b6 04       		.byte	0x4
+ 622 00b7 BB000000 		.4byte	0xbb
+ 623 00bb 07       		.uleb128 0x7
+ 624 00bc 02       		.uleb128 0x2
+ 625 00bd 08       		.byte	0x8
+ 626 00be 04       		.byte	0x4
+ 627 00bf 39020000 		.4byte	.LASF16
+ 628 00c3 02       		.uleb128 0x2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 20
+
+
+ 629 00c4 04       		.byte	0x4
+ 630 00c5 07       		.byte	0x7
+ 631 00c6 45020000 		.4byte	.LASF17
+ 632 00ca 08       		.uleb128 0x8
+ 633 00cb 1F000000 		.4byte	.LASF18
+ 634 00cf 01       		.byte	0x1
+ 635 00d0 3001     		.2byte	0x130
+ 636 00d2 01       		.byte	0x1
+ 637 00d3 09       		.uleb128 0x9
+ 638 00d4 3A030000 		.4byte	.LASF20
+ 639 00d8 01       		.byte	0x1
+ 640 00d9 C7       		.byte	0xc7
+ 641 00da 01       		.byte	0x1
+ 642 00db EB000000 		.4byte	0xeb
+ 643 00df 0A       		.uleb128 0xa
+ 644 00e0 0E020000 		.4byte	.LASF22
+ 645 00e4 01       		.byte	0x1
+ 646 00e5 C7       		.byte	0xc7
+ 647 00e6 A9000000 		.4byte	0xa9
+ 648 00ea 00       		.byte	0
+ 649 00eb 08       		.uleb128 0x8
+ 650 00ec 3E000000 		.4byte	.LASF19
+ 651 00f0 01       		.byte	0x1
+ 652 00f1 5A01     		.2byte	0x15a
+ 653 00f3 01       		.byte	0x1
+ 654 00f4 0B       		.uleb128 0xb
+ 655 00f5 63020000 		.4byte	.LASF31
+ 656 00f9 01       		.byte	0x1
+ 657 00fa 9F       		.byte	0x9f
+ 658 00fb 00000000 		.4byte	.LFB4
+ 659 00ff 02000000 		.4byte	.LFE4-.LFB4
+ 660 0103 01       		.uleb128 0x1
+ 661 0104 9C       		.byte	0x9c
+ 662 0105 09       		.uleb128 0x9
+ 663 0106 78020000 		.4byte	.LASF21
+ 664 010a 01       		.byte	0x1
+ 665 010b F9       		.byte	0xf9
+ 666 010c 01       		.byte	0x1
+ 667 010d 33010000 		.4byte	0x133
+ 668 0111 0A       		.uleb128 0xa
+ 669 0112 06010000 		.4byte	.LASF23
+ 670 0116 01       		.byte	0x1
+ 671 0117 F9       		.byte	0xf9
+ 672 0118 6B000000 		.4byte	0x6b
+ 673 011c 0C       		.uleb128 0xc
+ 674 011d BB000000 		.4byte	.LASF24
+ 675 0121 01       		.byte	0x1
+ 676 0122 FB       		.byte	0xfb
+ 677 0123 6B000000 		.4byte	0x6b
+ 678 0127 0C       		.uleb128 0xc
+ 679 0128 99020000 		.4byte	.LASF25
+ 680 012c 01       		.byte	0x1
+ 681 012d FC       		.byte	0xfc
+ 682 012e 77000000 		.4byte	0x77
+ 683 0132 00       		.byte	0
+ 684 0133 0D       		.uleb128 0xd
+ 685 0134 0E000000 		.4byte	.LASF26
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 21
+
+
+ 686 0138 01       		.byte	0x1
+ 687 0139 38       		.byte	0x38
+ 688 013a 00000000 		.4byte	.LFB1
+ 689 013e 40000000 		.4byte	.LFE1-.LFB1
+ 690 0142 01       		.uleb128 0x1
+ 691 0143 9C       		.byte	0x9c
+ 692 0144 CC010000 		.4byte	0x1cc
+ 693 0148 0E       		.uleb128 0xe
+ 694 0149 EB000000 		.4byte	0xeb
+ 695 014d 02000000 		.4byte	.LBB26
+ 696 0151 08000000 		.4byte	.LBE26-.LBB26
+ 697 0155 01       		.byte	0x1
+ 698 0156 3B       		.byte	0x3b
+ 699 0157 0F       		.uleb128 0xf
+ 700 0158 D3000000 		.4byte	0xd3
+ 701 015c 0A000000 		.4byte	.LBB28
+ 702 0160 00000000 		.4byte	.Ldebug_ranges0+0
+ 703 0164 01       		.byte	0x1
+ 704 0165 3E       		.byte	0x3e
+ 705 0166 74010000 		.4byte	0x174
+ 706 016a 10       		.uleb128 0x10
+ 707 016b DF000000 		.4byte	0xdf
+ 708 016f 00000000 		.4byte	.LLST0
+ 709 0173 00       		.byte	0
+ 710 0174 11       		.uleb128 0x11
+ 711 0175 05010000 		.4byte	0x105
+ 712 0179 12000000 		.4byte	.LBB32
+ 713 017d 14000000 		.4byte	.LBE32-.LBB32
+ 714 0181 01       		.byte	0x1
+ 715 0182 41       		.byte	0x41
+ 716 0183 BC010000 		.4byte	0x1bc
+ 717 0187 10       		.uleb128 0x10
+ 718 0188 11010000 		.4byte	0x111
+ 719 018c 18000000 		.4byte	.LLST1
+ 720 0190 12       		.uleb128 0x12
+ 721 0191 12000000 		.4byte	.LBB33
+ 722 0195 14000000 		.4byte	.LBE33-.LBB33
+ 723 0199 13       		.uleb128 0x13
+ 724 019a 1C010000 		.4byte	0x11c
+ 725 019e 2C000000 		.4byte	.LLST2
+ 726 01a2 14       		.uleb128 0x14
+ 727 01a3 27010000 		.4byte	0x127
+ 728 01a7 0E       		.byte	0xe
+ 729 01a8 15       		.uleb128 0x15
+ 730 01a9 16000000 		.4byte	.LVL2
+ 731 01ad C7030000 		.4byte	0x3c7
+ 732 01b1 15       		.uleb128 0x15
+ 733 01b2 26000000 		.4byte	.LVL3
+ 734 01b6 D2030000 		.4byte	0x3d2
+ 735 01ba 00       		.byte	0
+ 736 01bb 00       		.byte	0
+ 737 01bc 0E       		.uleb128 0xe
+ 738 01bd CA000000 		.4byte	0xca
+ 739 01c1 26000000 		.4byte	.LBB34
+ 740 01c5 04000000 		.4byte	.LBE34-.LBB34
+ 741 01c9 01       		.byte	0x1
+ 742 01ca 44       		.byte	0x44
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 22
+
+
+ 743 01cb 00       		.byte	0
+ 744 01cc 0D       		.uleb128 0xd
+ 745 01cd 69000000 		.4byte	.LASF27
+ 746 01d1 01       		.byte	0x1
+ 747 01d2 63       		.byte	0x63
+ 748 01d3 00000000 		.4byte	.LFB2
+ 749 01d7 3C000000 		.4byte	.LFE2-.LFB2
+ 750 01db 01       		.uleb128 0x1
+ 751 01dc 9C       		.byte	0x9c
+ 752 01dd 74020000 		.4byte	0x274
+ 753 01e1 16       		.uleb128 0x16
+ 754 01e2 0E020000 		.4byte	.LASF22
+ 755 01e6 01       		.byte	0x1
+ 756 01e7 63       		.byte	0x63
+ 757 01e8 A9000000 		.4byte	0xa9
+ 758 01ec 3F000000 		.4byte	.LLST3
+ 759 01f0 0E       		.uleb128 0xe
+ 760 01f1 EB000000 		.4byte	0xeb
+ 761 01f5 02000000 		.4byte	.LBB44
+ 762 01f9 08000000 		.4byte	.LBE44-.LBB44
+ 763 01fd 01       		.byte	0x1
+ 764 01fe 66       		.byte	0x66
+ 765 01ff 0F       		.uleb128 0xf
+ 766 0200 D3000000 		.4byte	0xd3
+ 767 0204 0A000000 		.4byte	.LBB46
+ 768 0208 18000000 		.4byte	.Ldebug_ranges0+0x18
+ 769 020c 01       		.byte	0x1
+ 770 020d 69       		.byte	0x69
+ 771 020e 1C020000 		.4byte	0x21c
+ 772 0212 10       		.uleb128 0x10
+ 773 0213 DF000000 		.4byte	0xdf
+ 774 0217 60000000 		.4byte	.LLST4
+ 775 021b 00       		.byte	0
+ 776 021c 11       		.uleb128 0x11
+ 777 021d 05010000 		.4byte	0x105
+ 778 0221 10000000 		.4byte	.LBB50
+ 779 0225 14000000 		.4byte	.LBE50-.LBB50
+ 780 0229 01       		.byte	0x1
+ 781 022a 6C       		.byte	0x6c
+ 782 022b 64020000 		.4byte	0x264
+ 783 022f 10       		.uleb128 0x10
+ 784 0230 11010000 		.4byte	0x111
+ 785 0234 73000000 		.4byte	.LLST5
+ 786 0238 12       		.uleb128 0x12
+ 787 0239 10000000 		.4byte	.LBB51
+ 788 023d 14000000 		.4byte	.LBE51-.LBB51
+ 789 0241 13       		.uleb128 0x13
+ 790 0242 1C010000 		.4byte	0x11c
+ 791 0246 87000000 		.4byte	.LLST6
+ 792 024a 14       		.uleb128 0x14
+ 793 024b 27010000 		.4byte	0x127
+ 794 024f 0E       		.byte	0xe
+ 795 0250 15       		.uleb128 0x15
+ 796 0251 14000000 		.4byte	.LVL7
+ 797 0255 C7030000 		.4byte	0x3c7
+ 798 0259 15       		.uleb128 0x15
+ 799 025a 24000000 		.4byte	.LVL8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 23
+
+
+ 800 025e D2030000 		.4byte	0x3d2
+ 801 0262 00       		.byte	0
+ 802 0263 00       		.byte	0
+ 803 0264 0E       		.uleb128 0xe
+ 804 0265 CA000000 		.4byte	0xca
+ 805 0269 24000000 		.4byte	.LBB52
+ 806 026d 04000000 		.4byte	.LBE52-.LBB52
+ 807 0271 01       		.byte	0x1
+ 808 0272 6F       		.byte	0x6f
+ 809 0273 00       		.byte	0
+ 810 0274 0D       		.uleb128 0xd
+ 811 0275 FE010000 		.4byte	.LASF28
+ 812 0279 01       		.byte	0x1
+ 813 027a 81       		.byte	0x81
+ 814 027b 00000000 		.4byte	.LFB3
+ 815 027f 20000000 		.4byte	.LFE3-.LFB3
+ 816 0283 01       		.uleb128 0x1
+ 817 0284 9C       		.byte	0x9c
+ 818 0285 AE020000 		.4byte	0x2ae
+ 819 0289 0E       		.uleb128 0xe
+ 820 028a EB000000 		.4byte	0xeb
+ 821 028e 00000000 		.4byte	.LBB54
+ 822 0292 08000000 		.4byte	.LBE54-.LBB54
+ 823 0296 01       		.byte	0x1
+ 824 0297 84       		.byte	0x84
+ 825 0298 17       		.uleb128 0x17
+ 826 0299 D3000000 		.4byte	0xd3
+ 827 029d 08000000 		.4byte	.LBB56
+ 828 02a1 30000000 		.4byte	.Ldebug_ranges0+0x30
+ 829 02a5 01       		.byte	0x1
+ 830 02a6 87       		.byte	0x87
+ 831 02a7 18       		.uleb128 0x18
+ 832 02a8 DF000000 		.4byte	0xdf
+ 833 02ac 00       		.byte	0
+ 834 02ad 00       		.byte	0
+ 835 02ae 19       		.uleb128 0x19
+ 836 02af D3000000 		.4byte	0xd3
+ 837 02b3 00000000 		.4byte	.LFB5
+ 838 02b7 0C000000 		.4byte	.LFE5-.LFB5
+ 839 02bb 01       		.uleb128 0x1
+ 840 02bc 9C       		.byte	0x9c
+ 841 02bd C9020000 		.4byte	0x2c9
+ 842 02c1 1A       		.uleb128 0x1a
+ 843 02c2 DF000000 		.4byte	0xdf
+ 844 02c6 01       		.uleb128 0x1
+ 845 02c7 50       		.byte	0x50
+ 846 02c8 00       		.byte	0
+ 847 02c9 1B       		.uleb128 0x1b
+ 848 02ca 4E020000 		.4byte	.LASF29
+ 849 02ce 01       		.byte	0x1
+ 850 02cf DB       		.byte	0xdb
+ 851 02d0 A9000000 		.4byte	0xa9
+ 852 02d4 00000000 		.4byte	.LFB6
+ 853 02d8 0C000000 		.4byte	.LFE6-.LFB6
+ 854 02dc 01       		.uleb128 0x1
+ 855 02dd 9C       		.byte	0x9c
+ 856 02de 19       		.uleb128 0x19
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 24
+
+
+ 857 02df 05010000 		.4byte	0x105
+ 858 02e3 00000000 		.4byte	.LFB7
+ 859 02e7 24000000 		.4byte	.LFE7-.LFB7
+ 860 02eb 01       		.uleb128 0x1
+ 861 02ec 9C       		.byte	0x9c
+ 862 02ed 1C030000 		.4byte	0x31c
+ 863 02f1 10       		.uleb128 0x10
+ 864 02f2 11010000 		.4byte	0x111
+ 865 02f6 9A000000 		.4byte	.LLST7
+ 866 02fa 13       		.uleb128 0x13
+ 867 02fb 1C010000 		.4byte	0x11c
+ 868 02ff BB000000 		.4byte	.LLST8
+ 869 0303 14       		.uleb128 0x14
+ 870 0304 27010000 		.4byte	0x127
+ 871 0308 0E       		.byte	0xe
+ 872 0309 15       		.uleb128 0x15
+ 873 030a 08000000 		.4byte	.LVL13
+ 874 030e C7030000 		.4byte	0x3c7
+ 875 0312 15       		.uleb128 0x15
+ 876 0313 1A000000 		.4byte	.LVL14
+ 877 0317 D2030000 		.4byte	0x3d2
+ 878 031b 00       		.byte	0
+ 879 031c 1C       		.uleb128 0x1c
+ 880 031d A4010000 		.4byte	.LASF39
+ 881 0321 01       		.byte	0x1
+ 882 0322 1501     		.2byte	0x115
+ 883 0324 6B000000 		.4byte	0x6b
+ 884 0328 00000000 		.4byte	.LFB8
+ 885 032c 10000000 		.4byte	.LFE8-.LFB8
+ 886 0330 01       		.uleb128 0x1
+ 887 0331 9C       		.byte	0x9c
+ 888 0332 54030000 		.4byte	0x354
+ 889 0336 1D       		.uleb128 0x1d
+ 890 0337 06010000 		.4byte	.LASF23
+ 891 033b 01       		.byte	0x1
+ 892 033c 1701     		.2byte	0x117
+ 893 033e 77000000 		.4byte	0x77
+ 894 0342 CE000000 		.4byte	.LLST9
+ 895 0346 1E       		.uleb128 0x1e
+ 896 0347 99020000 		.4byte	.LASF25
+ 897 034b 01       		.byte	0x1
+ 898 034c 1801     		.2byte	0x118
+ 899 034e 77000000 		.4byte	0x77
+ 900 0352 0E       		.byte	0xe
+ 901 0353 00       		.byte	0
+ 902 0354 1F       		.uleb128 0x1f
+ 903 0355 CA000000 		.4byte	0xca
+ 904 0359 00000000 		.4byte	.LFB9
+ 905 035d 10000000 		.4byte	.LFE9-.LFB9
+ 906 0361 01       		.uleb128 0x1
+ 907 0362 9C       		.byte	0x9c
+ 908 0363 20       		.uleb128 0x20
+ 909 0364 99000000 		.4byte	.LASF30
+ 910 0368 01       		.byte	0x1
+ 911 0369 4501     		.2byte	0x145
+ 912 036b 6B000000 		.4byte	0x6b
+ 913 036f 00000000 		.4byte	.LFB10
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 25
+
+
+ 914 0373 10000000 		.4byte	.LFE10-.LFB10
+ 915 0377 01       		.uleb128 0x1
+ 916 0378 9C       		.byte	0x9c
+ 917 0379 1F       		.uleb128 0x1f
+ 918 037a EB000000 		.4byte	0xeb
+ 919 037e 00000000 		.4byte	.LFB11
+ 920 0382 10000000 		.4byte	.LFE11-.LFB11
+ 921 0386 01       		.uleb128 0x1
+ 922 0387 9C       		.byte	0x9c
+ 923 0388 21       		.uleb128 0x21
+ 924 0389 18030000 		.4byte	.LASF32
+ 925 038d 01       		.byte	0x1
+ 926 038e 7501     		.2byte	0x175
+ 927 0390 00000000 		.4byte	.LFB12
+ 928 0394 10000000 		.4byte	.LFE12-.LFB12
+ 929 0398 01       		.uleb128 0x1
+ 930 0399 9C       		.byte	0x9c
+ 931 039a 21       		.uleb128 0x21
+ 932 039b BB010000 		.4byte	.LASF33
+ 933 039f 01       		.byte	0x1
+ 934 03a0 8E01     		.2byte	0x18e
+ 935 03a2 00000000 		.4byte	.LFB13
+ 936 03a6 10000000 		.4byte	.LFE13-.LFB13
+ 937 03aa 01       		.uleb128 0x1
+ 938 03ab 9C       		.byte	0x9c
+ 939 03ac 22       		.uleb128 0x22
+ 940 03ad A9000000 		.4byte	0xa9
+ 941 03b1 BC030000 		.4byte	0x3bc
+ 942 03b5 23       		.uleb128 0x23
+ 943 03b6 C3000000 		.4byte	0xc3
+ 944 03ba 2F       		.byte	0x2f
+ 945 03bb 00       		.byte	0
+ 946 03bc 24       		.uleb128 0x24
+ 947 03bd 31000000 		.4byte	.LASF40
+ 948 03c1 01       		.byte	0x1
+ 949 03c2 21       		.byte	0x21
+ 950 03c3 AC030000 		.4byte	0x3ac
+ 951 03c7 25       		.uleb128 0x25
+ 952 03c8 DA010000 		.4byte	.LASF34
+ 953 03cc DA010000 		.4byte	.LASF34
+ 954 03d0 03       		.byte	0x3
+ 955 03d1 E5       		.byte	0xe5
+ 956 03d2 25       		.uleb128 0x25
+ 957 03d3 16020000 		.4byte	.LASF35
+ 958 03d7 16020000 		.4byte	.LASF35
+ 959 03db 03       		.byte	0x3
+ 960 03dc E6       		.byte	0xe6
+ 961 03dd 00       		.byte	0
+ 962              		.section	.debug_abbrev,"",%progbits
+ 963              	.Ldebug_abbrev0:
+ 964 0000 01       		.uleb128 0x1
+ 965 0001 11       		.uleb128 0x11
+ 966 0002 01       		.byte	0x1
+ 967 0003 25       		.uleb128 0x25
+ 968 0004 0E       		.uleb128 0xe
+ 969 0005 13       		.uleb128 0x13
+ 970 0006 0B       		.uleb128 0xb
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 26
+
+
+ 971 0007 03       		.uleb128 0x3
+ 972 0008 0E       		.uleb128 0xe
+ 973 0009 1B       		.uleb128 0x1b
+ 974 000a 0E       		.uleb128 0xe
+ 975 000b 55       		.uleb128 0x55
+ 976 000c 17       		.uleb128 0x17
+ 977 000d 11       		.uleb128 0x11
+ 978 000e 01       		.uleb128 0x1
+ 979 000f 10       		.uleb128 0x10
+ 980 0010 17       		.uleb128 0x17
+ 981 0011 00       		.byte	0
+ 982 0012 00       		.byte	0
+ 983 0013 02       		.uleb128 0x2
+ 984 0014 24       		.uleb128 0x24
+ 985 0015 00       		.byte	0
+ 986 0016 0B       		.uleb128 0xb
+ 987 0017 0B       		.uleb128 0xb
+ 988 0018 3E       		.uleb128 0x3e
+ 989 0019 0B       		.uleb128 0xb
+ 990 001a 03       		.uleb128 0x3
+ 991 001b 0E       		.uleb128 0xe
+ 992 001c 00       		.byte	0
+ 993 001d 00       		.byte	0
+ 994 001e 03       		.uleb128 0x3
+ 995 001f 24       		.uleb128 0x24
+ 996 0020 00       		.byte	0
+ 997 0021 0B       		.uleb128 0xb
+ 998 0022 0B       		.uleb128 0xb
+ 999 0023 3E       		.uleb128 0x3e
+ 1000 0024 0B       		.uleb128 0xb
+ 1001 0025 03       		.uleb128 0x3
+ 1002 0026 08       		.uleb128 0x8
+ 1003 0027 00       		.byte	0
+ 1004 0028 00       		.byte	0
+ 1005 0029 04       		.uleb128 0x4
+ 1006 002a 16       		.uleb128 0x16
+ 1007 002b 00       		.byte	0
+ 1008 002c 03       		.uleb128 0x3
+ 1009 002d 0E       		.uleb128 0xe
+ 1010 002e 3A       		.uleb128 0x3a
+ 1011 002f 0B       		.uleb128 0xb
+ 1012 0030 3B       		.uleb128 0x3b
+ 1013 0031 05       		.uleb128 0x5
+ 1014 0032 49       		.uleb128 0x49
+ 1015 0033 13       		.uleb128 0x13
+ 1016 0034 00       		.byte	0
+ 1017 0035 00       		.byte	0
+ 1018 0036 05       		.uleb128 0x5
+ 1019 0037 35       		.uleb128 0x35
+ 1020 0038 00       		.byte	0
+ 1021 0039 49       		.uleb128 0x49
+ 1022 003a 13       		.uleb128 0x13
+ 1023 003b 00       		.byte	0
+ 1024 003c 00       		.byte	0
+ 1025 003d 06       		.uleb128 0x6
+ 1026 003e 0F       		.uleb128 0xf
+ 1027 003f 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 27
+
+
+ 1028 0040 0B       		.uleb128 0xb
+ 1029 0041 0B       		.uleb128 0xb
+ 1030 0042 49       		.uleb128 0x49
+ 1031 0043 13       		.uleb128 0x13
+ 1032 0044 00       		.byte	0
+ 1033 0045 00       		.byte	0
+ 1034 0046 07       		.uleb128 0x7
+ 1035 0047 15       		.uleb128 0x15
+ 1036 0048 00       		.byte	0
+ 1037 0049 27       		.uleb128 0x27
+ 1038 004a 19       		.uleb128 0x19
+ 1039 004b 00       		.byte	0
+ 1040 004c 00       		.byte	0
+ 1041 004d 08       		.uleb128 0x8
+ 1042 004e 2E       		.uleb128 0x2e
+ 1043 004f 00       		.byte	0
+ 1044 0050 3F       		.uleb128 0x3f
+ 1045 0051 19       		.uleb128 0x19
+ 1046 0052 03       		.uleb128 0x3
+ 1047 0053 0E       		.uleb128 0xe
+ 1048 0054 3A       		.uleb128 0x3a
+ 1049 0055 0B       		.uleb128 0xb
+ 1050 0056 3B       		.uleb128 0x3b
+ 1051 0057 05       		.uleb128 0x5
+ 1052 0058 27       		.uleb128 0x27
+ 1053 0059 19       		.uleb128 0x19
+ 1054 005a 20       		.uleb128 0x20
+ 1055 005b 0B       		.uleb128 0xb
+ 1056 005c 00       		.byte	0
+ 1057 005d 00       		.byte	0
+ 1058 005e 09       		.uleb128 0x9
+ 1059 005f 2E       		.uleb128 0x2e
+ 1060 0060 01       		.byte	0x1
+ 1061 0061 3F       		.uleb128 0x3f
+ 1062 0062 19       		.uleb128 0x19
+ 1063 0063 03       		.uleb128 0x3
+ 1064 0064 0E       		.uleb128 0xe
+ 1065 0065 3A       		.uleb128 0x3a
+ 1066 0066 0B       		.uleb128 0xb
+ 1067 0067 3B       		.uleb128 0x3b
+ 1068 0068 0B       		.uleb128 0xb
+ 1069 0069 27       		.uleb128 0x27
+ 1070 006a 19       		.uleb128 0x19
+ 1071 006b 20       		.uleb128 0x20
+ 1072 006c 0B       		.uleb128 0xb
+ 1073 006d 01       		.uleb128 0x1
+ 1074 006e 13       		.uleb128 0x13
+ 1075 006f 00       		.byte	0
+ 1076 0070 00       		.byte	0
+ 1077 0071 0A       		.uleb128 0xa
+ 1078 0072 05       		.uleb128 0x5
+ 1079 0073 00       		.byte	0
+ 1080 0074 03       		.uleb128 0x3
+ 1081 0075 0E       		.uleb128 0xe
+ 1082 0076 3A       		.uleb128 0x3a
+ 1083 0077 0B       		.uleb128 0xb
+ 1084 0078 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 28
+
+
+ 1085 0079 0B       		.uleb128 0xb
+ 1086 007a 49       		.uleb128 0x49
+ 1087 007b 13       		.uleb128 0x13
+ 1088 007c 00       		.byte	0
+ 1089 007d 00       		.byte	0
+ 1090 007e 0B       		.uleb128 0xb
+ 1091 007f 2E       		.uleb128 0x2e
+ 1092 0080 00       		.byte	0
+ 1093 0081 3F       		.uleb128 0x3f
+ 1094 0082 19       		.uleb128 0x19
+ 1095 0083 03       		.uleb128 0x3
+ 1096 0084 0E       		.uleb128 0xe
+ 1097 0085 3A       		.uleb128 0x3a
+ 1098 0086 0B       		.uleb128 0xb
+ 1099 0087 3B       		.uleb128 0x3b
+ 1100 0088 0B       		.uleb128 0xb
+ 1101 0089 27       		.uleb128 0x27
+ 1102 008a 19       		.uleb128 0x19
+ 1103 008b 11       		.uleb128 0x11
+ 1104 008c 01       		.uleb128 0x1
+ 1105 008d 12       		.uleb128 0x12
+ 1106 008e 06       		.uleb128 0x6
+ 1107 008f 40       		.uleb128 0x40
+ 1108 0090 18       		.uleb128 0x18
+ 1109 0091 9742     		.uleb128 0x2117
+ 1110 0093 19       		.uleb128 0x19
+ 1111 0094 00       		.byte	0
+ 1112 0095 00       		.byte	0
+ 1113 0096 0C       		.uleb128 0xc
+ 1114 0097 34       		.uleb128 0x34
+ 1115 0098 00       		.byte	0
+ 1116 0099 03       		.uleb128 0x3
+ 1117 009a 0E       		.uleb128 0xe
+ 1118 009b 3A       		.uleb128 0x3a
+ 1119 009c 0B       		.uleb128 0xb
+ 1120 009d 3B       		.uleb128 0x3b
+ 1121 009e 0B       		.uleb128 0xb
+ 1122 009f 49       		.uleb128 0x49
+ 1123 00a0 13       		.uleb128 0x13
+ 1124 00a1 00       		.byte	0
+ 1125 00a2 00       		.byte	0
+ 1126 00a3 0D       		.uleb128 0xd
+ 1127 00a4 2E       		.uleb128 0x2e
+ 1128 00a5 01       		.byte	0x1
+ 1129 00a6 3F       		.uleb128 0x3f
+ 1130 00a7 19       		.uleb128 0x19
+ 1131 00a8 03       		.uleb128 0x3
+ 1132 00a9 0E       		.uleb128 0xe
+ 1133 00aa 3A       		.uleb128 0x3a
+ 1134 00ab 0B       		.uleb128 0xb
+ 1135 00ac 3B       		.uleb128 0x3b
+ 1136 00ad 0B       		.uleb128 0xb
+ 1137 00ae 27       		.uleb128 0x27
+ 1138 00af 19       		.uleb128 0x19
+ 1139 00b0 11       		.uleb128 0x11
+ 1140 00b1 01       		.uleb128 0x1
+ 1141 00b2 12       		.uleb128 0x12
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 29
+
+
+ 1142 00b3 06       		.uleb128 0x6
+ 1143 00b4 40       		.uleb128 0x40
+ 1144 00b5 18       		.uleb128 0x18
+ 1145 00b6 9742     		.uleb128 0x2117
+ 1146 00b8 19       		.uleb128 0x19
+ 1147 00b9 01       		.uleb128 0x1
+ 1148 00ba 13       		.uleb128 0x13
+ 1149 00bb 00       		.byte	0
+ 1150 00bc 00       		.byte	0
+ 1151 00bd 0E       		.uleb128 0xe
+ 1152 00be 1D       		.uleb128 0x1d
+ 1153 00bf 00       		.byte	0
+ 1154 00c0 31       		.uleb128 0x31
+ 1155 00c1 13       		.uleb128 0x13
+ 1156 00c2 11       		.uleb128 0x11
+ 1157 00c3 01       		.uleb128 0x1
+ 1158 00c4 12       		.uleb128 0x12
+ 1159 00c5 06       		.uleb128 0x6
+ 1160 00c6 58       		.uleb128 0x58
+ 1161 00c7 0B       		.uleb128 0xb
+ 1162 00c8 59       		.uleb128 0x59
+ 1163 00c9 0B       		.uleb128 0xb
+ 1164 00ca 00       		.byte	0
+ 1165 00cb 00       		.byte	0
+ 1166 00cc 0F       		.uleb128 0xf
+ 1167 00cd 1D       		.uleb128 0x1d
+ 1168 00ce 01       		.byte	0x1
+ 1169 00cf 31       		.uleb128 0x31
+ 1170 00d0 13       		.uleb128 0x13
+ 1171 00d1 52       		.uleb128 0x52
+ 1172 00d2 01       		.uleb128 0x1
+ 1173 00d3 55       		.uleb128 0x55
+ 1174 00d4 17       		.uleb128 0x17
+ 1175 00d5 58       		.uleb128 0x58
+ 1176 00d6 0B       		.uleb128 0xb
+ 1177 00d7 59       		.uleb128 0x59
+ 1178 00d8 0B       		.uleb128 0xb
+ 1179 00d9 01       		.uleb128 0x1
+ 1180 00da 13       		.uleb128 0x13
+ 1181 00db 00       		.byte	0
+ 1182 00dc 00       		.byte	0
+ 1183 00dd 10       		.uleb128 0x10
+ 1184 00de 05       		.uleb128 0x5
+ 1185 00df 00       		.byte	0
+ 1186 00e0 31       		.uleb128 0x31
+ 1187 00e1 13       		.uleb128 0x13
+ 1188 00e2 02       		.uleb128 0x2
+ 1189 00e3 17       		.uleb128 0x17
+ 1190 00e4 00       		.byte	0
+ 1191 00e5 00       		.byte	0
+ 1192 00e6 11       		.uleb128 0x11
+ 1193 00e7 1D       		.uleb128 0x1d
+ 1194 00e8 01       		.byte	0x1
+ 1195 00e9 31       		.uleb128 0x31
+ 1196 00ea 13       		.uleb128 0x13
+ 1197 00eb 11       		.uleb128 0x11
+ 1198 00ec 01       		.uleb128 0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 30
+
+
+ 1199 00ed 12       		.uleb128 0x12
+ 1200 00ee 06       		.uleb128 0x6
+ 1201 00ef 58       		.uleb128 0x58
+ 1202 00f0 0B       		.uleb128 0xb
+ 1203 00f1 59       		.uleb128 0x59
+ 1204 00f2 0B       		.uleb128 0xb
+ 1205 00f3 01       		.uleb128 0x1
+ 1206 00f4 13       		.uleb128 0x13
+ 1207 00f5 00       		.byte	0
+ 1208 00f6 00       		.byte	0
+ 1209 00f7 12       		.uleb128 0x12
+ 1210 00f8 0B       		.uleb128 0xb
+ 1211 00f9 01       		.byte	0x1
+ 1212 00fa 11       		.uleb128 0x11
+ 1213 00fb 01       		.uleb128 0x1
+ 1214 00fc 12       		.uleb128 0x12
+ 1215 00fd 06       		.uleb128 0x6
+ 1216 00fe 00       		.byte	0
+ 1217 00ff 00       		.byte	0
+ 1218 0100 13       		.uleb128 0x13
+ 1219 0101 34       		.uleb128 0x34
+ 1220 0102 00       		.byte	0
+ 1221 0103 31       		.uleb128 0x31
+ 1222 0104 13       		.uleb128 0x13
+ 1223 0105 02       		.uleb128 0x2
+ 1224 0106 17       		.uleb128 0x17
+ 1225 0107 00       		.byte	0
+ 1226 0108 00       		.byte	0
+ 1227 0109 14       		.uleb128 0x14
+ 1228 010a 34       		.uleb128 0x34
+ 1229 010b 00       		.byte	0
+ 1230 010c 31       		.uleb128 0x31
+ 1231 010d 13       		.uleb128 0x13
+ 1232 010e 1C       		.uleb128 0x1c
+ 1233 010f 0B       		.uleb128 0xb
+ 1234 0110 00       		.byte	0
+ 1235 0111 00       		.byte	0
+ 1236 0112 15       		.uleb128 0x15
+ 1237 0113 898201   		.uleb128 0x4109
+ 1238 0116 00       		.byte	0
+ 1239 0117 11       		.uleb128 0x11
+ 1240 0118 01       		.uleb128 0x1
+ 1241 0119 31       		.uleb128 0x31
+ 1242 011a 13       		.uleb128 0x13
+ 1243 011b 00       		.byte	0
+ 1244 011c 00       		.byte	0
+ 1245 011d 16       		.uleb128 0x16
+ 1246 011e 05       		.uleb128 0x5
+ 1247 011f 00       		.byte	0
+ 1248 0120 03       		.uleb128 0x3
+ 1249 0121 0E       		.uleb128 0xe
+ 1250 0122 3A       		.uleb128 0x3a
+ 1251 0123 0B       		.uleb128 0xb
+ 1252 0124 3B       		.uleb128 0x3b
+ 1253 0125 0B       		.uleb128 0xb
+ 1254 0126 49       		.uleb128 0x49
+ 1255 0127 13       		.uleb128 0x13
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 31
+
+
+ 1256 0128 02       		.uleb128 0x2
+ 1257 0129 17       		.uleb128 0x17
+ 1258 012a 00       		.byte	0
+ 1259 012b 00       		.byte	0
+ 1260 012c 17       		.uleb128 0x17
+ 1261 012d 1D       		.uleb128 0x1d
+ 1262 012e 01       		.byte	0x1
+ 1263 012f 31       		.uleb128 0x31
+ 1264 0130 13       		.uleb128 0x13
+ 1265 0131 52       		.uleb128 0x52
+ 1266 0132 01       		.uleb128 0x1
+ 1267 0133 55       		.uleb128 0x55
+ 1268 0134 17       		.uleb128 0x17
+ 1269 0135 58       		.uleb128 0x58
+ 1270 0136 0B       		.uleb128 0xb
+ 1271 0137 59       		.uleb128 0x59
+ 1272 0138 0B       		.uleb128 0xb
+ 1273 0139 00       		.byte	0
+ 1274 013a 00       		.byte	0
+ 1275 013b 18       		.uleb128 0x18
+ 1276 013c 05       		.uleb128 0x5
+ 1277 013d 00       		.byte	0
+ 1278 013e 31       		.uleb128 0x31
+ 1279 013f 13       		.uleb128 0x13
+ 1280 0140 00       		.byte	0
+ 1281 0141 00       		.byte	0
+ 1282 0142 19       		.uleb128 0x19
+ 1283 0143 2E       		.uleb128 0x2e
+ 1284 0144 01       		.byte	0x1
+ 1285 0145 31       		.uleb128 0x31
+ 1286 0146 13       		.uleb128 0x13
+ 1287 0147 11       		.uleb128 0x11
+ 1288 0148 01       		.uleb128 0x1
+ 1289 0149 12       		.uleb128 0x12
+ 1290 014a 06       		.uleb128 0x6
+ 1291 014b 40       		.uleb128 0x40
+ 1292 014c 18       		.uleb128 0x18
+ 1293 014d 9742     		.uleb128 0x2117
+ 1294 014f 19       		.uleb128 0x19
+ 1295 0150 01       		.uleb128 0x1
+ 1296 0151 13       		.uleb128 0x13
+ 1297 0152 00       		.byte	0
+ 1298 0153 00       		.byte	0
+ 1299 0154 1A       		.uleb128 0x1a
+ 1300 0155 05       		.uleb128 0x5
+ 1301 0156 00       		.byte	0
+ 1302 0157 31       		.uleb128 0x31
+ 1303 0158 13       		.uleb128 0x13
+ 1304 0159 02       		.uleb128 0x2
+ 1305 015a 18       		.uleb128 0x18
+ 1306 015b 00       		.byte	0
+ 1307 015c 00       		.byte	0
+ 1308 015d 1B       		.uleb128 0x1b
+ 1309 015e 2E       		.uleb128 0x2e
+ 1310 015f 00       		.byte	0
+ 1311 0160 3F       		.uleb128 0x3f
+ 1312 0161 19       		.uleb128 0x19
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 32
+
+
+ 1313 0162 03       		.uleb128 0x3
+ 1314 0163 0E       		.uleb128 0xe
+ 1315 0164 3A       		.uleb128 0x3a
+ 1316 0165 0B       		.uleb128 0xb
+ 1317 0166 3B       		.uleb128 0x3b
+ 1318 0167 0B       		.uleb128 0xb
+ 1319 0168 27       		.uleb128 0x27
+ 1320 0169 19       		.uleb128 0x19
+ 1321 016a 49       		.uleb128 0x49
+ 1322 016b 13       		.uleb128 0x13
+ 1323 016c 11       		.uleb128 0x11
+ 1324 016d 01       		.uleb128 0x1
+ 1325 016e 12       		.uleb128 0x12
+ 1326 016f 06       		.uleb128 0x6
+ 1327 0170 40       		.uleb128 0x40
+ 1328 0171 18       		.uleb128 0x18
+ 1329 0172 9742     		.uleb128 0x2117
+ 1330 0174 19       		.uleb128 0x19
+ 1331 0175 00       		.byte	0
+ 1332 0176 00       		.byte	0
+ 1333 0177 1C       		.uleb128 0x1c
+ 1334 0178 2E       		.uleb128 0x2e
+ 1335 0179 01       		.byte	0x1
+ 1336 017a 3F       		.uleb128 0x3f
+ 1337 017b 19       		.uleb128 0x19
+ 1338 017c 03       		.uleb128 0x3
+ 1339 017d 0E       		.uleb128 0xe
+ 1340 017e 3A       		.uleb128 0x3a
+ 1341 017f 0B       		.uleb128 0xb
+ 1342 0180 3B       		.uleb128 0x3b
+ 1343 0181 05       		.uleb128 0x5
+ 1344 0182 27       		.uleb128 0x27
+ 1345 0183 19       		.uleb128 0x19
+ 1346 0184 49       		.uleb128 0x49
+ 1347 0185 13       		.uleb128 0x13
+ 1348 0186 11       		.uleb128 0x11
+ 1349 0187 01       		.uleb128 0x1
+ 1350 0188 12       		.uleb128 0x12
+ 1351 0189 06       		.uleb128 0x6
+ 1352 018a 40       		.uleb128 0x40
+ 1353 018b 18       		.uleb128 0x18
+ 1354 018c 9742     		.uleb128 0x2117
+ 1355 018e 19       		.uleb128 0x19
+ 1356 018f 01       		.uleb128 0x1
+ 1357 0190 13       		.uleb128 0x13
+ 1358 0191 00       		.byte	0
+ 1359 0192 00       		.byte	0
+ 1360 0193 1D       		.uleb128 0x1d
+ 1361 0194 34       		.uleb128 0x34
+ 1362 0195 00       		.byte	0
+ 1363 0196 03       		.uleb128 0x3
+ 1364 0197 0E       		.uleb128 0xe
+ 1365 0198 3A       		.uleb128 0x3a
+ 1366 0199 0B       		.uleb128 0xb
+ 1367 019a 3B       		.uleb128 0x3b
+ 1368 019b 05       		.uleb128 0x5
+ 1369 019c 49       		.uleb128 0x49
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 33
+
+
+ 1370 019d 13       		.uleb128 0x13
+ 1371 019e 02       		.uleb128 0x2
+ 1372 019f 17       		.uleb128 0x17
+ 1373 01a0 00       		.byte	0
+ 1374 01a1 00       		.byte	0
+ 1375 01a2 1E       		.uleb128 0x1e
+ 1376 01a3 34       		.uleb128 0x34
+ 1377 01a4 00       		.byte	0
+ 1378 01a5 03       		.uleb128 0x3
+ 1379 01a6 0E       		.uleb128 0xe
+ 1380 01a7 3A       		.uleb128 0x3a
+ 1381 01a8 0B       		.uleb128 0xb
+ 1382 01a9 3B       		.uleb128 0x3b
+ 1383 01aa 05       		.uleb128 0x5
+ 1384 01ab 49       		.uleb128 0x49
+ 1385 01ac 13       		.uleb128 0x13
+ 1386 01ad 1C       		.uleb128 0x1c
+ 1387 01ae 0B       		.uleb128 0xb
+ 1388 01af 00       		.byte	0
+ 1389 01b0 00       		.byte	0
+ 1390 01b1 1F       		.uleb128 0x1f
+ 1391 01b2 2E       		.uleb128 0x2e
+ 1392 01b3 00       		.byte	0
+ 1393 01b4 31       		.uleb128 0x31
+ 1394 01b5 13       		.uleb128 0x13
+ 1395 01b6 11       		.uleb128 0x11
+ 1396 01b7 01       		.uleb128 0x1
+ 1397 01b8 12       		.uleb128 0x12
+ 1398 01b9 06       		.uleb128 0x6
+ 1399 01ba 40       		.uleb128 0x40
+ 1400 01bb 18       		.uleb128 0x18
+ 1401 01bc 9742     		.uleb128 0x2117
+ 1402 01be 19       		.uleb128 0x19
+ 1403 01bf 00       		.byte	0
+ 1404 01c0 00       		.byte	0
+ 1405 01c1 20       		.uleb128 0x20
+ 1406 01c2 2E       		.uleb128 0x2e
+ 1407 01c3 00       		.byte	0
+ 1408 01c4 3F       		.uleb128 0x3f
+ 1409 01c5 19       		.uleb128 0x19
+ 1410 01c6 03       		.uleb128 0x3
+ 1411 01c7 0E       		.uleb128 0xe
+ 1412 01c8 3A       		.uleb128 0x3a
+ 1413 01c9 0B       		.uleb128 0xb
+ 1414 01ca 3B       		.uleb128 0x3b
+ 1415 01cb 05       		.uleb128 0x5
+ 1416 01cc 27       		.uleb128 0x27
+ 1417 01cd 19       		.uleb128 0x19
+ 1418 01ce 49       		.uleb128 0x49
+ 1419 01cf 13       		.uleb128 0x13
+ 1420 01d0 11       		.uleb128 0x11
+ 1421 01d1 01       		.uleb128 0x1
+ 1422 01d2 12       		.uleb128 0x12
+ 1423 01d3 06       		.uleb128 0x6
+ 1424 01d4 40       		.uleb128 0x40
+ 1425 01d5 18       		.uleb128 0x18
+ 1426 01d6 9742     		.uleb128 0x2117
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 34
+
+
+ 1427 01d8 19       		.uleb128 0x19
+ 1428 01d9 00       		.byte	0
+ 1429 01da 00       		.byte	0
+ 1430 01db 21       		.uleb128 0x21
+ 1431 01dc 2E       		.uleb128 0x2e
+ 1432 01dd 00       		.byte	0
+ 1433 01de 3F       		.uleb128 0x3f
+ 1434 01df 19       		.uleb128 0x19
+ 1435 01e0 03       		.uleb128 0x3
+ 1436 01e1 0E       		.uleb128 0xe
+ 1437 01e2 3A       		.uleb128 0x3a
+ 1438 01e3 0B       		.uleb128 0xb
+ 1439 01e4 3B       		.uleb128 0x3b
+ 1440 01e5 05       		.uleb128 0x5
+ 1441 01e6 27       		.uleb128 0x27
+ 1442 01e7 19       		.uleb128 0x19
+ 1443 01e8 11       		.uleb128 0x11
+ 1444 01e9 01       		.uleb128 0x1
+ 1445 01ea 12       		.uleb128 0x12
+ 1446 01eb 06       		.uleb128 0x6
+ 1447 01ec 40       		.uleb128 0x40
+ 1448 01ed 18       		.uleb128 0x18
+ 1449 01ee 9742     		.uleb128 0x2117
+ 1450 01f0 19       		.uleb128 0x19
+ 1451 01f1 00       		.byte	0
+ 1452 01f2 00       		.byte	0
+ 1453 01f3 22       		.uleb128 0x22
+ 1454 01f4 01       		.uleb128 0x1
+ 1455 01f5 01       		.byte	0x1
+ 1456 01f6 49       		.uleb128 0x49
+ 1457 01f7 13       		.uleb128 0x13
+ 1458 01f8 01       		.uleb128 0x1
+ 1459 01f9 13       		.uleb128 0x13
+ 1460 01fa 00       		.byte	0
+ 1461 01fb 00       		.byte	0
+ 1462 01fc 23       		.uleb128 0x23
+ 1463 01fd 21       		.uleb128 0x21
+ 1464 01fe 00       		.byte	0
+ 1465 01ff 49       		.uleb128 0x49
+ 1466 0200 13       		.uleb128 0x13
+ 1467 0201 2F       		.uleb128 0x2f
+ 1468 0202 0B       		.uleb128 0xb
+ 1469 0203 00       		.byte	0
+ 1470 0204 00       		.byte	0
+ 1471 0205 24       		.uleb128 0x24
+ 1472 0206 34       		.uleb128 0x34
+ 1473 0207 00       		.byte	0
+ 1474 0208 03       		.uleb128 0x3
+ 1475 0209 0E       		.uleb128 0xe
+ 1476 020a 3A       		.uleb128 0x3a
+ 1477 020b 0B       		.uleb128 0xb
+ 1478 020c 3B       		.uleb128 0x3b
+ 1479 020d 0B       		.uleb128 0xb
+ 1480 020e 49       		.uleb128 0x49
+ 1481 020f 13       		.uleb128 0x13
+ 1482 0210 3F       		.uleb128 0x3f
+ 1483 0211 19       		.uleb128 0x19
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 35
+
+
+ 1484 0212 3C       		.uleb128 0x3c
+ 1485 0213 19       		.uleb128 0x19
+ 1486 0214 00       		.byte	0
+ 1487 0215 00       		.byte	0
+ 1488 0216 25       		.uleb128 0x25
+ 1489 0217 2E       		.uleb128 0x2e
+ 1490 0218 00       		.byte	0
+ 1491 0219 3F       		.uleb128 0x3f
+ 1492 021a 19       		.uleb128 0x19
+ 1493 021b 3C       		.uleb128 0x3c
+ 1494 021c 19       		.uleb128 0x19
+ 1495 021d 6E       		.uleb128 0x6e
+ 1496 021e 0E       		.uleb128 0xe
+ 1497 021f 03       		.uleb128 0x3
+ 1498 0220 0E       		.uleb128 0xe
+ 1499 0221 3A       		.uleb128 0x3a
+ 1500 0222 0B       		.uleb128 0xb
+ 1501 0223 3B       		.uleb128 0x3b
+ 1502 0224 0B       		.uleb128 0xb
+ 1503 0225 00       		.byte	0
+ 1504 0226 00       		.byte	0
+ 1505 0227 00       		.byte	0
+ 1506              		.section	.debug_loc,"",%progbits
+ 1507              	.Ldebug_loc0:
+ 1508              	.LLST0:
+ 1509 0000 0A000000 		.4byte	.LVL0
+ 1510 0004 12000000 		.4byte	.LVL1
+ 1511 0008 0600     		.2byte	0x6
+ 1512 000a 03       		.byte	0x3
+ 1513 000b 00000000 		.4byte	Millis_ISR_Interrupt
+ 1514 000f 9F       		.byte	0x9f
+ 1515 0010 00000000 		.4byte	0
+ 1516 0014 00000000 		.4byte	0
+ 1517              	.LLST1:
+ 1518 0018 12000000 		.4byte	.LVL1
+ 1519 001c 26000000 		.4byte	.LVL3
+ 1520 0020 0200     		.2byte	0x2
+ 1521 0022 33       		.byte	0x33
+ 1522 0023 9F       		.byte	0x9f
+ 1523 0024 00000000 		.4byte	0
+ 1524 0028 00000000 		.4byte	0
+ 1525              	.LLST2:
+ 1526 002c 16000000 		.4byte	.LVL2
+ 1527 0030 25000000 		.4byte	.LVL3-1
+ 1528 0034 0100     		.2byte	0x1
+ 1529 0036 50       		.byte	0x50
+ 1530 0037 00000000 		.4byte	0
+ 1531 003b 00000000 		.4byte	0
+ 1532              	.LLST3:
+ 1533 003f 00000000 		.4byte	.LVL4
+ 1534 0043 13000000 		.4byte	.LVL7-1
+ 1535 0047 0100     		.2byte	0x1
+ 1536 0049 50       		.byte	0x50
+ 1537 004a 13000000 		.4byte	.LVL7-1
+ 1538 004e 3C000000 		.4byte	.LFE2
+ 1539 0052 0400     		.2byte	0x4
+ 1540 0054 F3       		.byte	0xf3
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 36
+
+
+ 1541 0055 01       		.uleb128 0x1
+ 1542 0056 50       		.byte	0x50
+ 1543 0057 9F       		.byte	0x9f
+ 1544 0058 00000000 		.4byte	0
+ 1545 005c 00000000 		.4byte	0
+ 1546              	.LLST4:
+ 1547 0060 0A000000 		.4byte	.LVL5
+ 1548 0064 10000000 		.4byte	.LVL6
+ 1549 0068 0100     		.2byte	0x1
+ 1550 006a 50       		.byte	0x50
+ 1551 006b 00000000 		.4byte	0
+ 1552 006f 00000000 		.4byte	0
+ 1553              	.LLST5:
+ 1554 0073 10000000 		.4byte	.LVL6
+ 1555 0077 24000000 		.4byte	.LVL8
+ 1556 007b 0200     		.2byte	0x2
+ 1557 007d 33       		.byte	0x33
+ 1558 007e 9F       		.byte	0x9f
+ 1559 007f 00000000 		.4byte	0
+ 1560 0083 00000000 		.4byte	0
+ 1561              	.LLST6:
+ 1562 0087 14000000 		.4byte	.LVL7
+ 1563 008b 23000000 		.4byte	.LVL8-1
+ 1564 008f 0100     		.2byte	0x1
+ 1565 0091 50       		.byte	0x50
+ 1566 0092 00000000 		.4byte	0
+ 1567 0096 00000000 		.4byte	0
+ 1568              	.LLST7:
+ 1569 009a 00000000 		.4byte	.LVL12
+ 1570 009e 07000000 		.4byte	.LVL13-1
+ 1571 00a2 0100     		.2byte	0x1
+ 1572 00a4 50       		.byte	0x50
+ 1573 00a5 07000000 		.4byte	.LVL13-1
+ 1574 00a9 24000000 		.4byte	.LFE7
+ 1575 00ad 0400     		.2byte	0x4
+ 1576 00af F3       		.byte	0xf3
+ 1577 00b0 01       		.uleb128 0x1
+ 1578 00b1 50       		.byte	0x50
+ 1579 00b2 9F       		.byte	0x9f
+ 1580 00b3 00000000 		.4byte	0
+ 1581 00b7 00000000 		.4byte	0
+ 1582              	.LLST8:
+ 1583 00bb 08000000 		.4byte	.LVL13
+ 1584 00bf 19000000 		.4byte	.LVL14-1
+ 1585 00c3 0100     		.2byte	0x1
+ 1586 00c5 50       		.byte	0x50
+ 1587 00c6 00000000 		.4byte	0
+ 1588 00ca 00000000 		.4byte	0
+ 1589              	.LLST9:
+ 1590 00ce 04000000 		.4byte	.LVL16
+ 1591 00d2 06000000 		.4byte	.LVL17
+ 1592 00d6 0700     		.2byte	0x7
+ 1593 00d8 70       		.byte	0x70
+ 1594 00d9 00       		.sleb128 0
+ 1595 00da 3E       		.byte	0x3e
+ 1596 00db 25       		.byte	0x25
+ 1597 00dc 33       		.byte	0x33
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 37
+
+
+ 1598 00dd 1A       		.byte	0x1a
+ 1599 00de 9F       		.byte	0x9f
+ 1600 00df 00000000 		.4byte	0
+ 1601 00e3 00000000 		.4byte	0
+ 1602              		.section	.debug_aranges,"",%progbits
+ 1603 0000 7C000000 		.4byte	0x7c
+ 1604 0004 0200     		.2byte	0x2
+ 1605 0006 00000000 		.4byte	.Ldebug_info0
+ 1606 000a 04       		.byte	0x4
+ 1607 000b 00       		.byte	0
+ 1608 000c 0000     		.2byte	0
+ 1609 000e 0000     		.2byte	0
+ 1610 0010 00000000 		.4byte	.LFB4
+ 1611 0014 02000000 		.4byte	.LFE4-.LFB4
+ 1612 0018 00000000 		.4byte	.LFB1
+ 1613 001c 40000000 		.4byte	.LFE1-.LFB1
+ 1614 0020 00000000 		.4byte	.LFB2
+ 1615 0024 3C000000 		.4byte	.LFE2-.LFB2
+ 1616 0028 00000000 		.4byte	.LFB3
+ 1617 002c 20000000 		.4byte	.LFE3-.LFB3
+ 1618 0030 00000000 		.4byte	.LFB5
+ 1619 0034 0C000000 		.4byte	.LFE5-.LFB5
+ 1620 0038 00000000 		.4byte	.LFB6
+ 1621 003c 0C000000 		.4byte	.LFE6-.LFB6
+ 1622 0040 00000000 		.4byte	.LFB7
+ 1623 0044 24000000 		.4byte	.LFE7-.LFB7
+ 1624 0048 00000000 		.4byte	.LFB8
+ 1625 004c 10000000 		.4byte	.LFE8-.LFB8
+ 1626 0050 00000000 		.4byte	.LFB9
+ 1627 0054 10000000 		.4byte	.LFE9-.LFB9
+ 1628 0058 00000000 		.4byte	.LFB10
+ 1629 005c 10000000 		.4byte	.LFE10-.LFB10
+ 1630 0060 00000000 		.4byte	.LFB11
+ 1631 0064 10000000 		.4byte	.LFE11-.LFB11
+ 1632 0068 00000000 		.4byte	.LFB12
+ 1633 006c 10000000 		.4byte	.LFE12-.LFB12
+ 1634 0070 00000000 		.4byte	.LFB13
+ 1635 0074 10000000 		.4byte	.LFE13-.LFB13
+ 1636 0078 00000000 		.4byte	0
+ 1637 007c 00000000 		.4byte	0
+ 1638              		.section	.debug_ranges,"",%progbits
+ 1639              	.Ldebug_ranges0:
+ 1640 0000 0A000000 		.4byte	.LBB28
+ 1641 0004 10000000 		.4byte	.LBE28
+ 1642 0008 10000000 		.4byte	.LBB31
+ 1643 000c 12000000 		.4byte	.LBE31
+ 1644 0010 00000000 		.4byte	0
+ 1645 0014 00000000 		.4byte	0
+ 1646 0018 0A000000 		.4byte	.LBB46
+ 1647 001c 0E000000 		.4byte	.LBE46
+ 1648 0020 0E000000 		.4byte	.LBB49
+ 1649 0024 10000000 		.4byte	.LBE49
+ 1650 0028 00000000 		.4byte	0
+ 1651 002c 00000000 		.4byte	0
+ 1652 0030 08000000 		.4byte	.LBB56
+ 1653 0034 0E000000 		.4byte	.LBE56
+ 1654 0038 0E000000 		.4byte	.LBB59
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 38
+
+
+ 1655 003c 10000000 		.4byte	.LBE59
+ 1656 0040 00000000 		.4byte	0
+ 1657 0044 00000000 		.4byte	0
+ 1658 0048 00000000 		.4byte	.LFB4
+ 1659 004c 02000000 		.4byte	.LFE4
+ 1660 0050 00000000 		.4byte	.LFB1
+ 1661 0054 40000000 		.4byte	.LFE1
+ 1662 0058 00000000 		.4byte	.LFB2
+ 1663 005c 3C000000 		.4byte	.LFE2
+ 1664 0060 00000000 		.4byte	.LFB3
+ 1665 0064 20000000 		.4byte	.LFE3
+ 1666 0068 00000000 		.4byte	.LFB5
+ 1667 006c 0C000000 		.4byte	.LFE5
+ 1668 0070 00000000 		.4byte	.LFB6
+ 1669 0074 0C000000 		.4byte	.LFE6
+ 1670 0078 00000000 		.4byte	.LFB7
+ 1671 007c 24000000 		.4byte	.LFE7
+ 1672 0080 00000000 		.4byte	.LFB8
+ 1673 0084 10000000 		.4byte	.LFE8
+ 1674 0088 00000000 		.4byte	.LFB9
+ 1675 008c 10000000 		.4byte	.LFE9
+ 1676 0090 00000000 		.4byte	.LFB10
+ 1677 0094 10000000 		.4byte	.LFE10
+ 1678 0098 00000000 		.4byte	.LFB11
+ 1679 009c 10000000 		.4byte	.LFE11
+ 1680 00a0 00000000 		.4byte	.LFB12
+ 1681 00a4 10000000 		.4byte	.LFE12
+ 1682 00a8 00000000 		.4byte	.LFB13
+ 1683 00ac 10000000 		.4byte	.LFE13
+ 1684 00b0 00000000 		.4byte	0
+ 1685 00b4 00000000 		.4byte	0
+ 1686              		.section	.debug_line,"",%progbits
+ 1687              	.Ldebug_line0:
+ 1688 0000 94010000 		.section	.debug_str,"MS",%progbits,1
+ 1688      02005200 
+ 1688      00000201 
+ 1688      FB0E0D00 
+ 1688      01010101 
+ 1689              	.LASF6:
+ 1690 0000 6C6F6E67 		.ascii	"long long int\000"
+ 1690      206C6F6E 
+ 1690      6720696E 
+ 1690      7400
+ 1691              	.LASF26:
+ 1692 000e 4D696C6C 		.ascii	"Millis_ISR_Start\000"
+ 1692      69735F49 
+ 1692      53525F53 
+ 1692      74617274 
+ 1692      00
+ 1693              	.LASF18:
+ 1694 001f 4D696C6C 		.ascii	"Millis_ISR_Enable\000"
+ 1694      69735F49 
+ 1694      53525F45 
+ 1694      6E61626C 
+ 1694      6500
+ 1695              	.LASF40:
+ 1696 0031 43795261 		.ascii	"CyRamVectors\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 39
+
+
+ 1696      6D566563 
+ 1696      746F7273 
+ 1696      00
+ 1697              	.LASF19:
+ 1698 003e 4D696C6C 		.ascii	"Millis_ISR_Disable\000"
+ 1698      69735F49 
+ 1698      53525F44 
+ 1698      69736162 
+ 1698      6C6500
+ 1699              	.LASF3:
+ 1700 0051 73686F72 		.ascii	"short unsigned int\000"
+ 1700      7420756E 
+ 1700      7369676E 
+ 1700      65642069 
+ 1700      6E7400
+ 1701              	.LASF13:
+ 1702 0064 63686172 		.ascii	"char\000"
+ 1702      00
+ 1703              	.LASF27:
+ 1704 0069 4D696C6C 		.ascii	"Millis_ISR_StartEx\000"
+ 1704      69735F49 
+ 1704      53525F53 
+ 1704      74617274 
+ 1704      457800
+ 1705              	.LASF11:
+ 1706 007c 666C6F61 		.ascii	"float\000"
+ 1706      7400
+ 1707              	.LASF7:
+ 1708 0082 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1708      206C6F6E 
+ 1708      6720756E 
+ 1708      7369676E 
+ 1708      65642069 
+ 1709              	.LASF30:
+ 1710 0099 4D696C6C 		.ascii	"Millis_ISR_GetState\000"
+ 1710      69735F49 
+ 1710      53525F47 
+ 1710      65745374 
+ 1710      61746500 
+ 1711              	.LASF1:
+ 1712 00ad 756E7369 		.ascii	"unsigned char\000"
+ 1712      676E6564 
+ 1712      20636861 
+ 1712      7200
+ 1713              	.LASF24:
+ 1714 00bb 696E7465 		.ascii	"interruptState\000"
+ 1714      72727570 
+ 1714      74537461 
+ 1714      746500
+ 1715              	.LASF5:
+ 1716 00ca 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1716      20756E73 
+ 1716      69676E65 
+ 1716      6420696E 
+ 1716      7400
+ 1717              	.LASF9:
+ 1718 00dc 75696E74 		.ascii	"uint8\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 40
+
+
+ 1718      3800
+ 1719              	.LASF37:
+ 1720 00e2 47656E65 		.ascii	"Generated_Source\\PSoC4\\Millis_ISR.c\000"
+ 1720      72617465 
+ 1720      645F536F 
+ 1720      75726365 
+ 1720      5C50536F 
+ 1721              	.LASF23:
+ 1722 0106 7072696F 		.ascii	"priority\000"
+ 1722      72697479 
+ 1722      00
+ 1723              	.LASF36:
+ 1724 010f 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1724      43313120 
+ 1724      352E342E 
+ 1724      31203230 
+ 1724      31363036 
+ 1725 0142 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1725      20726576 
+ 1725      6973696F 
+ 1725      6E203233 
+ 1725      37373135 
+ 1726 0175 33202D66 		.ascii	"3 -ffunction-sections -ffat-lto-objects\000"
+ 1726      66756E63 
+ 1726      74696F6E 
+ 1726      2D736563 
+ 1726      74696F6E 
+ 1727              	.LASF12:
+ 1728 019d 646F7562 		.ascii	"double\000"
+ 1728      6C6500
+ 1729              	.LASF39:
+ 1730 01a4 4D696C6C 		.ascii	"Millis_ISR_GetPriority\000"
+ 1730      69735F49 
+ 1730      53525F47 
+ 1730      65745072 
+ 1730      696F7269 
+ 1731              	.LASF33:
+ 1732 01bb 4D696C6C 		.ascii	"Millis_ISR_ClearPending\000"
+ 1732      69735F49 
+ 1732      53525F43 
+ 1732      6C656172 
+ 1732      50656E64 
+ 1733              	.LASF10:
+ 1734 01d3 75696E74 		.ascii	"uint32\000"
+ 1734      333200
+ 1735              	.LASF34:
+ 1736 01da 4379456E 		.ascii	"CyEnterCriticalSection\000"
+ 1736      74657243 
+ 1736      72697469 
+ 1736      63616C53 
+ 1736      65637469 
+ 1737              	.LASF8:
+ 1738 01f1 756E7369 		.ascii	"unsigned int\000"
+ 1738      676E6564 
+ 1738      20696E74 
+ 1738      00
+ 1739              	.LASF28:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 41
+
+
+ 1740 01fe 4D696C6C 		.ascii	"Millis_ISR_Stop\000"
+ 1740      69735F49 
+ 1740      53525F53 
+ 1740      746F7000 
+ 1741              	.LASF22:
+ 1742 020e 61646472 		.ascii	"address\000"
+ 1742      65737300 
+ 1743              	.LASF35:
+ 1744 0216 43794578 		.ascii	"CyExitCriticalSection\000"
+ 1744      69744372 
+ 1744      69746963 
+ 1744      616C5365 
+ 1744      6374696F 
+ 1745              	.LASF15:
+ 1746 022c 63796973 		.ascii	"cyisraddress\000"
+ 1746      72616464 
+ 1746      72657373 
+ 1746      00
+ 1747              	.LASF16:
+ 1748 0239 6C6F6E67 		.ascii	"long double\000"
+ 1748      20646F75 
+ 1748      626C6500 
+ 1749              	.LASF17:
+ 1750 0245 73697A65 		.ascii	"sizetype\000"
+ 1750      74797065 
+ 1750      00
+ 1751              	.LASF29:
+ 1752 024e 4D696C6C 		.ascii	"Millis_ISR_GetVector\000"
+ 1752      69735F49 
+ 1752      53525F47 
+ 1752      65745665 
+ 1752      63746F72 
+ 1753              	.LASF31:
+ 1754 0263 4D696C6C 		.ascii	"Millis_ISR_Interrupt\000"
+ 1754      69735F49 
+ 1754      53525F49 
+ 1754      6E746572 
+ 1754      72757074 
+ 1755              	.LASF21:
+ 1756 0278 4D696C6C 		.ascii	"Millis_ISR_SetPriority\000"
+ 1756      69735F49 
+ 1756      53525F53 
+ 1756      65745072 
+ 1756      696F7269 
+ 1757              	.LASF2:
+ 1758 028f 73686F72 		.ascii	"short int\000"
+ 1758      7420696E 
+ 1758      7400
+ 1759              	.LASF25:
+ 1760 0299 7072696F 		.ascii	"priorityOffset\000"
+ 1760      72697479 
+ 1760      4F666673 
+ 1760      657400
+ 1761              	.LASF4:
+ 1762 02a8 6C6F6E67 		.ascii	"long int\000"
+ 1762      20696E74 
+ 1762      00
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccBKMCTc.s 			page 42
+
+
+ 1763              	.LASF14:
+ 1764 02b1 72656733 		.ascii	"reg32\000"
+ 1764      3200
+ 1765              	.LASF38:
+ 1766 02b7 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 1766      73657273 
+ 1766      5C416664 
+ 1766      68616C41 
+ 1766      74696666 
+ 1767 02e6 736D6172 		.ascii	"smart_winch_prototype\\Workspace01\\Prototype.cydsn"
+ 1767      745F7769 
+ 1767      6E63685F 
+ 1767      70726F74 
+ 1767      6F747970 
+ 1768 0317 00       		.ascii	"\000"
+ 1769              	.LASF32:
+ 1770 0318 4D696C6C 		.ascii	"Millis_ISR_SetPending\000"
+ 1770      69735F49 
+ 1770      53525F53 
+ 1770      65745065 
+ 1770      6E64696E 
+ 1771              	.LASF0:
+ 1772 032e 7369676E 		.ascii	"signed char\000"
+ 1772      65642063 
+ 1772      68617200 
+ 1773              	.LASF20:
+ 1774 033a 4D696C6C 		.ascii	"Millis_ISR_SetVector\000"
+ 1774      69735F49 
+ 1774      53525F53 
+ 1774      65745665 
+ 1774      63746F72 
+ 1775              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

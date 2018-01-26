@@ -1,0 +1,749 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"motor.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Motor_Bidirectional,"ax",%progbits
+  20              		.align	2
+  21              		.global	Motor_Bidirectional
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	Motor_Bidirectional, %function
+  25              	Motor_Bidirectional:
+  26              	.LFB34:
+  27              		.file 1 "motor.c"
+   1:motor.c       **** /*******************************************************************************
+   2:motor.c       **** * File Name: motor.c  
+   3:motor.c       **** * Version 0.1
+   4:motor.c       **** * 6th November 2017
+   5:motor.c       **** *
+   6:motor.c       **** *  Description:
+   7:motor.c       **** *   APIs for motor controller.
+   8:motor.c       **** ********************************************************************************
+   9:motor.c       ****  * Copyright AfdhalAtiffTan, 2017
+  10:motor.c       ****  * All Rights Reserved
+  11:motor.c       ****  * UNPUBLISHED, LICENSED SOFTWARE.
+  12:motor.c       **** *******************************************************************************/
+  13:motor.c       **** 
+  14:motor.c       **** #include "motor.h"
+  15:motor.c       **** 
+  16:motor.c       **** /*******************************************************************************
+  17:motor.c       **** * Function Name: Motor_Bidirectional
+  18:motor.c       **** ********************************************************************************
+  19:motor.c       **** *
+  20:motor.c       **** * Summary:
+  21:motor.c       **** *  -Control the speed and the direction of the motor.
+  22:motor.c       **** *  -It accepts 0 to 65535 as the duty cycle.
+  23:motor.c       **** *  -Positive and negative value correspond to forward and backward respectively.
+  24:motor.c       **** *
+  25:motor.c       **** * Parameters:  
+  26:motor.c       **** *   *pwm: Set the speed and the direction of the motor by giving it +/- 0 to 65535 
+  27:motor.c       **** *
+  28:motor.c       **** * Return:
+  29:motor.c       **** *   None
+  30:motor.c       **** *
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 2
+
+
+  31:motor.c       **** *******************************************************************************/
+  32:motor.c       **** void Motor_Bidirectional(int pwm)
+  33:motor.c       **** {
+  28              		.loc 1 33 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 10B5     		push	{r4, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  37 0002 0400     		movs	r4, r0
+  34:motor.c       ****     //boundaries check
+  35:motor.c       ****     if (pwm>65535)
+  38              		.loc 1 35 0
+  39 0004 0B4B     		ldr	r3, .L7
+  40 0006 9842     		cmp	r0, r3
+  41 0008 03DC     		bgt	.L5
+  36:motor.c       ****         pwm = 65535;
+  37:motor.c       ****     else if (pwm<-65535)
+  42              		.loc 1 37 0
+  43 000a 0B4B     		ldr	r3, .L7+4
+  44 000c 9842     		cmp	r0, r3
+  45 000e 02DB     		blt	.L6
+  46 0010 02E0     		b	.L2
+  47              	.L5:
+  36:motor.c       ****         pwm = 65535;
+  48              		.loc 1 36 0
+  49 0012 084C     		ldr	r4, .L7
+  50 0014 00E0     		b	.L2
+  51              	.L6:
+  38:motor.c       ****         pwm = -65535;
+  52              		.loc 1 38 0
+  53 0016 084C     		ldr	r4, .L7+4
+  54              	.L2:
+  55              	.LVL1:
+  39:motor.c       ****     
+  40:motor.c       ****     //set direction first
+  41:motor.c       ****     if (pwm<0) //reverse
+  56              		.loc 1 41 0
+  57 0018 002C     		cmp	r4, #0
+  58 001a 04DA     		bge	.L3
+  42:motor.c       ****     {    
+  43:motor.c       ****         Motor_Dir_Write(1);
+  59              		.loc 1 43 0
+  60 001c 0120     		movs	r0, #1
+  61 001e FFF7FEFF 		bl	Motor_Dir_Write
+  62              	.LVL2:
+  44:motor.c       ****         pwm *= -1; //take only the magnitude
+  63              		.loc 1 44 0
+  64 0022 6442     		rsbs	r4, r4, #0
+  65              	.LVL3:
+  66 0024 02E0     		b	.L4
+  67              	.L3:
+  45:motor.c       ****     }
+  46:motor.c       ****     else //forward
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 3
+
+
+  47:motor.c       ****     {
+  48:motor.c       ****         Motor_Dir_Write(0);
+  68              		.loc 1 48 0
+  69 0026 0020     		movs	r0, #0
+  70 0028 FFF7FEFF 		bl	Motor_Dir_Write
+  71              	.LVL4:
+  72              	.L4:
+  49:motor.c       ****     }
+  50:motor.c       ****             
+  51:motor.c       ****     //then, set duty cycle
+  52:motor.c       ****     PWM_WriteCompare(pwm);    
+  73              		.loc 1 52 0
+  74 002c 2000     		movs	r0, r4
+  75 002e FFF7FEFF 		bl	PWM_WriteCompare
+  76              	.LVL5:
+  53:motor.c       **** }
+  77              		.loc 1 53 0
+  78              		@ sp needed
+  79              	.LVL6:
+  80 0032 10BD     		pop	{r4, pc}
+  81              	.L8:
+  82              		.align	2
+  83              	.L7:
+  84 0034 FFFF0000 		.word	65535
+  85 0038 0100FFFF 		.word	-65535
+  86              		.cfi_endproc
+  87              	.LFE34:
+  88              		.size	Motor_Bidirectional, .-Motor_Bidirectional
+  89              		.section	.text.Motor_Start,"ax",%progbits
+  90              		.align	2
+  91              		.global	Motor_Start
+  92              		.code	16
+  93              		.thumb_func
+  94              		.type	Motor_Start, %function
+  95              	Motor_Start:
+  96              	.LFB35:
+  54:motor.c       **** 
+  55:motor.c       **** 
+  56:motor.c       **** /*******************************************************************************
+  57:motor.c       **** * Function Name: Motor_Start
+  58:motor.c       **** ********************************************************************************
+  59:motor.c       **** *
+  60:motor.c       **** * Summary:
+  61:motor.c       **** *  Initiates the required module for motor control
+  62:motor.c       **** *
+  63:motor.c       **** * Parameters:  
+  64:motor.c       **** *   None
+  65:motor.c       **** *
+  66:motor.c       **** * Return:
+  67:motor.c       **** *   None
+  68:motor.c       **** *
+  69:motor.c       **** *******************************************************************************/
+  70:motor.c       **** void Motor_Start()
+  71:motor.c       **** {
+  97              		.loc 1 71 0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 4
+
+
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101 0000 10B5     		push	{r4, lr}
+ 102              		.cfi_def_cfa_offset 8
+ 103              		.cfi_offset 4, -8
+ 104              		.cfi_offset 14, -4
+  72:motor.c       ****     Motor_Dir_Write(0); //default to forward
+ 105              		.loc 1 72 0
+ 106 0002 0020     		movs	r0, #0
+ 107 0004 FFF7FEFF 		bl	Motor_Dir_Write
+ 108              	.LVL7:
+  73:motor.c       ****     PWM_WriteCompare(0); //0% duty cycle (maximum is 65535)
+ 109              		.loc 1 73 0
+ 110 0008 0020     		movs	r0, #0
+ 111 000a FFF7FEFF 		bl	PWM_WriteCompare
+ 112              	.LVL8:
+  74:motor.c       ****     PWM_Start(); //pwm for winch motor 
+ 113              		.loc 1 74 0
+ 114 000e FFF7FEFF 		bl	PWM_Start
+ 115              	.LVL9:
+  75:motor.c       **** }
+ 116              		.loc 1 75 0
+ 117              		@ sp needed
+ 118 0012 10BD     		pop	{r4, pc}
+ 119              		.cfi_endproc
+ 120              	.LFE35:
+ 121              		.size	Motor_Start, .-Motor_Start
+ 122              		.text
+ 123              	.Letext0:
+ 124              		.file 2 "Generated_Source\\PSoC4/Motor_Dir.h"
+ 125              		.file 3 "Generated_Source\\PSoC4/PWM.h"
+ 126              		.section	.debug_info,"",%progbits
+ 127              	.Ldebug_info0:
+ 128 0000 4E010000 		.4byte	0x14e
+ 129 0004 0400     		.2byte	0x4
+ 130 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 131 000a 04       		.byte	0x4
+ 132 000b 01       		.uleb128 0x1
+ 133 000c FC000000 		.4byte	.LASF17
+ 134 0010 0C       		.byte	0xc
+ 135 0011 79000000 		.4byte	.LASF18
+ 136 0015 94000000 		.4byte	.LASF19
+ 137 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 138 001d 00000000 		.4byte	0
+ 139 0021 00000000 		.4byte	.Ldebug_line0
+ 140 0025 02       		.uleb128 0x2
+ 141 0026 01       		.byte	0x1
+ 142 0027 06       		.byte	0x6
+ 143 0028 9D010000 		.4byte	.LASF0
+ 144 002c 02       		.uleb128 0x2
+ 145 002d 01       		.byte	0x1
+ 146 002e 08       		.byte	0x8
+ 147 002f 6B000000 		.4byte	.LASF1
+ 148 0033 02       		.uleb128 0x2
+ 149 0034 02       		.byte	0x2
+ 150 0035 05       		.byte	0x5
+ 151 0036 8A000000 		.4byte	.LASF2
+ 152 003a 02       		.uleb128 0x2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 5
+
+
+ 153 003b 02       		.byte	0x2
+ 154 003c 07       		.byte	0x7
+ 155 003d 8A010000 		.4byte	.LASF3
+ 156 0041 02       		.uleb128 0x2
+ 157 0042 04       		.byte	0x4
+ 158 0043 05       		.byte	0x5
+ 159 0044 81000000 		.4byte	.LASF4
+ 160 0048 02       		.uleb128 0x2
+ 161 0049 04       		.byte	0x4
+ 162 004a 07       		.byte	0x7
+ 163 004b 27000000 		.4byte	.LASF5
+ 164 004f 02       		.uleb128 0x2
+ 165 0050 08       		.byte	0x8
+ 166 0051 05       		.byte	0x5
+ 167 0052 00000000 		.4byte	.LASF6
+ 168 0056 02       		.uleb128 0x2
+ 169 0057 08       		.byte	0x8
+ 170 0058 07       		.byte	0x7
+ 171 0059 49000000 		.4byte	.LASF7
+ 172 005d 03       		.uleb128 0x3
+ 173 005e 04       		.byte	0x4
+ 174 005f 05       		.byte	0x5
+ 175 0060 696E7400 		.ascii	"int\000"
+ 176 0064 02       		.uleb128 0x2
+ 177 0065 04       		.byte	0x4
+ 178 0066 07       		.byte	0x7
+ 179 0067 0E000000 		.4byte	.LASF8
+ 180 006b 02       		.uleb128 0x2
+ 181 006c 04       		.byte	0x4
+ 182 006d 04       		.byte	0x4
+ 183 006e 60000000 		.4byte	.LASF9
+ 184 0072 02       		.uleb128 0x2
+ 185 0073 08       		.byte	0x8
+ 186 0074 04       		.byte	0x4
+ 187 0075 F5000000 		.4byte	.LASF10
+ 188 0079 02       		.uleb128 0x2
+ 189 007a 01       		.byte	0x1
+ 190 007b 08       		.byte	0x8
+ 191 007c 66000000 		.4byte	.LASF11
+ 192 0080 02       		.uleb128 0x2
+ 193 0081 08       		.byte	0x8
+ 194 0082 04       		.byte	0x4
+ 195 0083 A9010000 		.4byte	.LASF12
+ 196 0087 02       		.uleb128 0x2
+ 197 0088 04       		.byte	0x4
+ 198 0089 07       		.byte	0x7
+ 199 008a E4010000 		.4byte	.LASF13
+ 200 008e 04       		.uleb128 0x4
+ 201 008f B5010000 		.4byte	.LASF20
+ 202 0093 01       		.byte	0x1
+ 203 0094 20       		.byte	0x20
+ 204 0095 00000000 		.4byte	.LFB34
+ 205 0099 3C000000 		.4byte	.LFE34-.LFB34
+ 206 009d 01       		.uleb128 0x1
+ 207 009e 9C       		.byte	0x9c
+ 208 009f E9000000 		.4byte	0xe9
+ 209 00a3 05       		.uleb128 0x5
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 6
+
+
+ 210 00a4 70776D00 		.ascii	"pwm\000"
+ 211 00a8 01       		.byte	0x1
+ 212 00a9 20       		.byte	0x20
+ 213 00aa 5D000000 		.4byte	0x5d
+ 214 00ae 00000000 		.4byte	.LLST0
+ 215 00b2 06       		.uleb128 0x6
+ 216 00b3 22000000 		.4byte	.LVL2
+ 217 00b7 2E010000 		.4byte	0x12e
+ 218 00bb C5000000 		.4byte	0xc5
+ 219 00bf 07       		.uleb128 0x7
+ 220 00c0 01       		.uleb128 0x1
+ 221 00c1 50       		.byte	0x50
+ 222 00c2 01       		.uleb128 0x1
+ 223 00c3 31       		.byte	0x31
+ 224 00c4 00       		.byte	0
+ 225 00c5 06       		.uleb128 0x6
+ 226 00c6 2C000000 		.4byte	.LVL4
+ 227 00ca 2E010000 		.4byte	0x12e
+ 228 00ce D8000000 		.4byte	0xd8
+ 229 00d2 07       		.uleb128 0x7
+ 230 00d3 01       		.uleb128 0x1
+ 231 00d4 50       		.byte	0x50
+ 232 00d5 01       		.uleb128 0x1
+ 233 00d6 30       		.byte	0x30
+ 234 00d7 00       		.byte	0
+ 235 00d8 08       		.uleb128 0x8
+ 236 00d9 32000000 		.4byte	.LVL5
+ 237 00dd 39010000 		.4byte	0x139
+ 238 00e1 07       		.uleb128 0x7
+ 239 00e2 01       		.uleb128 0x1
+ 240 00e3 50       		.byte	0x50
+ 241 00e4 02       		.uleb128 0x2
+ 242 00e5 74       		.byte	0x74
+ 243 00e6 00       		.sleb128 0
+ 244 00e7 00       		.byte	0
+ 245 00e8 00       		.byte	0
+ 246 00e9 09       		.uleb128 0x9
+ 247 00ea 1B000000 		.4byte	.LASF21
+ 248 00ee 01       		.byte	0x1
+ 249 00ef 46       		.byte	0x46
+ 250 00f0 00000000 		.4byte	.LFB35
+ 251 00f4 14000000 		.4byte	.LFE35-.LFB35
+ 252 00f8 01       		.uleb128 0x1
+ 253 00f9 9C       		.byte	0x9c
+ 254 00fa 2E010000 		.4byte	0x12e
+ 255 00fe 06       		.uleb128 0x6
+ 256 00ff 08000000 		.4byte	.LVL7
+ 257 0103 2E010000 		.4byte	0x12e
+ 258 0107 11010000 		.4byte	0x111
+ 259 010b 07       		.uleb128 0x7
+ 260 010c 01       		.uleb128 0x1
+ 261 010d 50       		.byte	0x50
+ 262 010e 01       		.uleb128 0x1
+ 263 010f 30       		.byte	0x30
+ 264 0110 00       		.byte	0
+ 265 0111 06       		.uleb128 0x6
+ 266 0112 0E000000 		.4byte	.LVL8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 7
+
+
+ 267 0116 39010000 		.4byte	0x139
+ 268 011a 24010000 		.4byte	0x124
+ 269 011e 07       		.uleb128 0x7
+ 270 011f 01       		.uleb128 0x1
+ 271 0120 50       		.byte	0x50
+ 272 0121 01       		.uleb128 0x1
+ 273 0122 30       		.byte	0x30
+ 274 0123 00       		.byte	0
+ 275 0124 0A       		.uleb128 0xa
+ 276 0125 12000000 		.4byte	.LVL9
+ 277 0129 45010000 		.4byte	0x145
+ 278 012d 00       		.byte	0
+ 279 012e 0B       		.uleb128 0xb
+ 280 012f 39000000 		.4byte	.LASF14
+ 281 0133 39000000 		.4byte	.LASF14
+ 282 0137 02       		.byte	0x2
+ 283 0138 2F       		.byte	0x2f
+ 284 0139 0C       		.uleb128 0xc
+ 285 013a D3010000 		.4byte	.LASF15
+ 286 013e D3010000 		.4byte	.LASF15
+ 287 0142 03       		.byte	0x3
+ 288 0143 5501     		.2byte	0x155
+ 289 0145 0C       		.uleb128 0xc
+ 290 0146 C9010000 		.4byte	.LASF16
+ 291 014a C9010000 		.4byte	.LASF16
+ 292 014e 03       		.byte	0x3
+ 293 014f 3201     		.2byte	0x132
+ 294 0151 00       		.byte	0
+ 295              		.section	.debug_abbrev,"",%progbits
+ 296              	.Ldebug_abbrev0:
+ 297 0000 01       		.uleb128 0x1
+ 298 0001 11       		.uleb128 0x11
+ 299 0002 01       		.byte	0x1
+ 300 0003 25       		.uleb128 0x25
+ 301 0004 0E       		.uleb128 0xe
+ 302 0005 13       		.uleb128 0x13
+ 303 0006 0B       		.uleb128 0xb
+ 304 0007 03       		.uleb128 0x3
+ 305 0008 0E       		.uleb128 0xe
+ 306 0009 1B       		.uleb128 0x1b
+ 307 000a 0E       		.uleb128 0xe
+ 308 000b 55       		.uleb128 0x55
+ 309 000c 17       		.uleb128 0x17
+ 310 000d 11       		.uleb128 0x11
+ 311 000e 01       		.uleb128 0x1
+ 312 000f 10       		.uleb128 0x10
+ 313 0010 17       		.uleb128 0x17
+ 314 0011 00       		.byte	0
+ 315 0012 00       		.byte	0
+ 316 0013 02       		.uleb128 0x2
+ 317 0014 24       		.uleb128 0x24
+ 318 0015 00       		.byte	0
+ 319 0016 0B       		.uleb128 0xb
+ 320 0017 0B       		.uleb128 0xb
+ 321 0018 3E       		.uleb128 0x3e
+ 322 0019 0B       		.uleb128 0xb
+ 323 001a 03       		.uleb128 0x3
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 8
+
+
+ 324 001b 0E       		.uleb128 0xe
+ 325 001c 00       		.byte	0
+ 326 001d 00       		.byte	0
+ 327 001e 03       		.uleb128 0x3
+ 328 001f 24       		.uleb128 0x24
+ 329 0020 00       		.byte	0
+ 330 0021 0B       		.uleb128 0xb
+ 331 0022 0B       		.uleb128 0xb
+ 332 0023 3E       		.uleb128 0x3e
+ 333 0024 0B       		.uleb128 0xb
+ 334 0025 03       		.uleb128 0x3
+ 335 0026 08       		.uleb128 0x8
+ 336 0027 00       		.byte	0
+ 337 0028 00       		.byte	0
+ 338 0029 04       		.uleb128 0x4
+ 339 002a 2E       		.uleb128 0x2e
+ 340 002b 01       		.byte	0x1
+ 341 002c 3F       		.uleb128 0x3f
+ 342 002d 19       		.uleb128 0x19
+ 343 002e 03       		.uleb128 0x3
+ 344 002f 0E       		.uleb128 0xe
+ 345 0030 3A       		.uleb128 0x3a
+ 346 0031 0B       		.uleb128 0xb
+ 347 0032 3B       		.uleb128 0x3b
+ 348 0033 0B       		.uleb128 0xb
+ 349 0034 27       		.uleb128 0x27
+ 350 0035 19       		.uleb128 0x19
+ 351 0036 11       		.uleb128 0x11
+ 352 0037 01       		.uleb128 0x1
+ 353 0038 12       		.uleb128 0x12
+ 354 0039 06       		.uleb128 0x6
+ 355 003a 40       		.uleb128 0x40
+ 356 003b 18       		.uleb128 0x18
+ 357 003c 9742     		.uleb128 0x2117
+ 358 003e 19       		.uleb128 0x19
+ 359 003f 01       		.uleb128 0x1
+ 360 0040 13       		.uleb128 0x13
+ 361 0041 00       		.byte	0
+ 362 0042 00       		.byte	0
+ 363 0043 05       		.uleb128 0x5
+ 364 0044 05       		.uleb128 0x5
+ 365 0045 00       		.byte	0
+ 366 0046 03       		.uleb128 0x3
+ 367 0047 08       		.uleb128 0x8
+ 368 0048 3A       		.uleb128 0x3a
+ 369 0049 0B       		.uleb128 0xb
+ 370 004a 3B       		.uleb128 0x3b
+ 371 004b 0B       		.uleb128 0xb
+ 372 004c 49       		.uleb128 0x49
+ 373 004d 13       		.uleb128 0x13
+ 374 004e 02       		.uleb128 0x2
+ 375 004f 17       		.uleb128 0x17
+ 376 0050 00       		.byte	0
+ 377 0051 00       		.byte	0
+ 378 0052 06       		.uleb128 0x6
+ 379 0053 898201   		.uleb128 0x4109
+ 380 0056 01       		.byte	0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 9
+
+
+ 381 0057 11       		.uleb128 0x11
+ 382 0058 01       		.uleb128 0x1
+ 383 0059 31       		.uleb128 0x31
+ 384 005a 13       		.uleb128 0x13
+ 385 005b 01       		.uleb128 0x1
+ 386 005c 13       		.uleb128 0x13
+ 387 005d 00       		.byte	0
+ 388 005e 00       		.byte	0
+ 389 005f 07       		.uleb128 0x7
+ 390 0060 8A8201   		.uleb128 0x410a
+ 391 0063 00       		.byte	0
+ 392 0064 02       		.uleb128 0x2
+ 393 0065 18       		.uleb128 0x18
+ 394 0066 9142     		.uleb128 0x2111
+ 395 0068 18       		.uleb128 0x18
+ 396 0069 00       		.byte	0
+ 397 006a 00       		.byte	0
+ 398 006b 08       		.uleb128 0x8
+ 399 006c 898201   		.uleb128 0x4109
+ 400 006f 01       		.byte	0x1
+ 401 0070 11       		.uleb128 0x11
+ 402 0071 01       		.uleb128 0x1
+ 403 0072 31       		.uleb128 0x31
+ 404 0073 13       		.uleb128 0x13
+ 405 0074 00       		.byte	0
+ 406 0075 00       		.byte	0
+ 407 0076 09       		.uleb128 0x9
+ 408 0077 2E       		.uleb128 0x2e
+ 409 0078 01       		.byte	0x1
+ 410 0079 3F       		.uleb128 0x3f
+ 411 007a 19       		.uleb128 0x19
+ 412 007b 03       		.uleb128 0x3
+ 413 007c 0E       		.uleb128 0xe
+ 414 007d 3A       		.uleb128 0x3a
+ 415 007e 0B       		.uleb128 0xb
+ 416 007f 3B       		.uleb128 0x3b
+ 417 0080 0B       		.uleb128 0xb
+ 418 0081 11       		.uleb128 0x11
+ 419 0082 01       		.uleb128 0x1
+ 420 0083 12       		.uleb128 0x12
+ 421 0084 06       		.uleb128 0x6
+ 422 0085 40       		.uleb128 0x40
+ 423 0086 18       		.uleb128 0x18
+ 424 0087 9742     		.uleb128 0x2117
+ 425 0089 19       		.uleb128 0x19
+ 426 008a 01       		.uleb128 0x1
+ 427 008b 13       		.uleb128 0x13
+ 428 008c 00       		.byte	0
+ 429 008d 00       		.byte	0
+ 430 008e 0A       		.uleb128 0xa
+ 431 008f 898201   		.uleb128 0x4109
+ 432 0092 00       		.byte	0
+ 433 0093 11       		.uleb128 0x11
+ 434 0094 01       		.uleb128 0x1
+ 435 0095 31       		.uleb128 0x31
+ 436 0096 13       		.uleb128 0x13
+ 437 0097 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 10
+
+
+ 438 0098 00       		.byte	0
+ 439 0099 0B       		.uleb128 0xb
+ 440 009a 2E       		.uleb128 0x2e
+ 441 009b 00       		.byte	0
+ 442 009c 3F       		.uleb128 0x3f
+ 443 009d 19       		.uleb128 0x19
+ 444 009e 3C       		.uleb128 0x3c
+ 445 009f 19       		.uleb128 0x19
+ 446 00a0 6E       		.uleb128 0x6e
+ 447 00a1 0E       		.uleb128 0xe
+ 448 00a2 03       		.uleb128 0x3
+ 449 00a3 0E       		.uleb128 0xe
+ 450 00a4 3A       		.uleb128 0x3a
+ 451 00a5 0B       		.uleb128 0xb
+ 452 00a6 3B       		.uleb128 0x3b
+ 453 00a7 0B       		.uleb128 0xb
+ 454 00a8 00       		.byte	0
+ 455 00a9 00       		.byte	0
+ 456 00aa 0C       		.uleb128 0xc
+ 457 00ab 2E       		.uleb128 0x2e
+ 458 00ac 00       		.byte	0
+ 459 00ad 3F       		.uleb128 0x3f
+ 460 00ae 19       		.uleb128 0x19
+ 461 00af 3C       		.uleb128 0x3c
+ 462 00b0 19       		.uleb128 0x19
+ 463 00b1 6E       		.uleb128 0x6e
+ 464 00b2 0E       		.uleb128 0xe
+ 465 00b3 03       		.uleb128 0x3
+ 466 00b4 0E       		.uleb128 0xe
+ 467 00b5 3A       		.uleb128 0x3a
+ 468 00b6 0B       		.uleb128 0xb
+ 469 00b7 3B       		.uleb128 0x3b
+ 470 00b8 05       		.uleb128 0x5
+ 471 00b9 00       		.byte	0
+ 472 00ba 00       		.byte	0
+ 473 00bb 00       		.byte	0
+ 474              		.section	.debug_loc,"",%progbits
+ 475              	.Ldebug_loc0:
+ 476              	.LLST0:
+ 477 0000 00000000 		.4byte	.LVL0
+ 478 0004 18000000 		.4byte	.LVL1
+ 479 0008 0100     		.2byte	0x1
+ 480 000a 50       		.byte	0x50
+ 481 000b 18000000 		.4byte	.LVL1
+ 482 000f 32000000 		.4byte	.LVL6
+ 483 0013 0100     		.2byte	0x1
+ 484 0015 54       		.byte	0x54
+ 485 0016 00000000 		.4byte	0
+ 486 001a 00000000 		.4byte	0
+ 487              		.section	.debug_aranges,"",%progbits
+ 488 0000 24000000 		.4byte	0x24
+ 489 0004 0200     		.2byte	0x2
+ 490 0006 00000000 		.4byte	.Ldebug_info0
+ 491 000a 04       		.byte	0x4
+ 492 000b 00       		.byte	0
+ 493 000c 0000     		.2byte	0
+ 494 000e 0000     		.2byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 11
+
+
+ 495 0010 00000000 		.4byte	.LFB34
+ 496 0014 3C000000 		.4byte	.LFE34-.LFB34
+ 497 0018 00000000 		.4byte	.LFB35
+ 498 001c 14000000 		.4byte	.LFE35-.LFB35
+ 499 0020 00000000 		.4byte	0
+ 500 0024 00000000 		.4byte	0
+ 501              		.section	.debug_ranges,"",%progbits
+ 502              	.Ldebug_ranges0:
+ 503 0000 00000000 		.4byte	.LFB34
+ 504 0004 3C000000 		.4byte	.LFE34
+ 505 0008 00000000 		.4byte	.LFB35
+ 506 000c 14000000 		.4byte	.LFE35
+ 507 0010 00000000 		.4byte	0
+ 508 0014 00000000 		.4byte	0
+ 509              		.section	.debug_line,"",%progbits
+ 510              	.Ldebug_line0:
+ 511 0000 80000000 		.section	.debug_str,"MS",%progbits,1
+ 511      02004D00 
+ 511      00000201 
+ 511      FB0E0D00 
+ 511      01010101 
+ 512              	.LASF6:
+ 513 0000 6C6F6E67 		.ascii	"long long int\000"
+ 513      206C6F6E 
+ 513      6720696E 
+ 513      7400
+ 514              	.LASF8:
+ 515 000e 756E7369 		.ascii	"unsigned int\000"
+ 515      676E6564 
+ 515      20696E74 
+ 515      00
+ 516              	.LASF21:
+ 517 001b 4D6F746F 		.ascii	"Motor_Start\000"
+ 517      725F5374 
+ 517      61727400 
+ 518              	.LASF5:
+ 519 0027 6C6F6E67 		.ascii	"long unsigned int\000"
+ 519      20756E73 
+ 519      69676E65 
+ 519      6420696E 
+ 519      7400
+ 520              	.LASF14:
+ 521 0039 4D6F746F 		.ascii	"Motor_Dir_Write\000"
+ 521      725F4469 
+ 521      725F5772 
+ 521      69746500 
+ 522              	.LASF7:
+ 523 0049 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 523      206C6F6E 
+ 523      6720756E 
+ 523      7369676E 
+ 523      65642069 
+ 524              	.LASF9:
+ 525 0060 666C6F61 		.ascii	"float\000"
+ 525      7400
+ 526              	.LASF11:
+ 527 0066 63686172 		.ascii	"char\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 12
+
+
+ 527      00
+ 528              	.LASF1:
+ 529 006b 756E7369 		.ascii	"unsigned char\000"
+ 529      676E6564 
+ 529      20636861 
+ 529      7200
+ 530              	.LASF18:
+ 531 0079 6D6F746F 		.ascii	"motor.c\000"
+ 531      722E6300 
+ 532              	.LASF4:
+ 533 0081 6C6F6E67 		.ascii	"long int\000"
+ 533      20696E74 
+ 533      00
+ 534              	.LASF2:
+ 535 008a 73686F72 		.ascii	"short int\000"
+ 535      7420696E 
+ 535      7400
+ 536              	.LASF19:
+ 537 0094 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 537      73657273 
+ 537      5C416664 
+ 537      68616C41 
+ 537      74696666 
+ 538 00c3 736D6172 		.ascii	"smart_winch_prototype\\Workspace01\\Prototype.cydsn"
+ 538      745F7769 
+ 538      6E63685F 
+ 538      70726F74 
+ 538      6F747970 
+ 539 00f4 00       		.ascii	"\000"
+ 540              	.LASF10:
+ 541 00f5 646F7562 		.ascii	"double\000"
+ 541      6C6500
+ 542              	.LASF17:
+ 543 00fc 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 543      43313120 
+ 543      352E342E 
+ 543      31203230 
+ 543      31363036 
+ 544 012f 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 544      20726576 
+ 544      6973696F 
+ 544      6E203233 
+ 544      37373135 
+ 545 0162 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 545      66756E63 
+ 545      74696F6E 
+ 545      2D736563 
+ 545      74696F6E 
+ 546              	.LASF3:
+ 547 018a 73686F72 		.ascii	"short unsigned int\000"
+ 547      7420756E 
+ 547      7369676E 
+ 547      65642069 
+ 547      6E7400
+ 548              	.LASF0:
+ 549 019d 7369676E 		.ascii	"signed char\000"
+ 549      65642063 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccMgNf8d.s 			page 13
+
+
+ 549      68617200 
+ 550              	.LASF12:
+ 551 01a9 6C6F6E67 		.ascii	"long double\000"
+ 551      20646F75 
+ 551      626C6500 
+ 552              	.LASF20:
+ 553 01b5 4D6F746F 		.ascii	"Motor_Bidirectional\000"
+ 553      725F4269 
+ 553      64697265 
+ 553      6374696F 
+ 553      6E616C00 
+ 554              	.LASF16:
+ 555 01c9 50574D5F 		.ascii	"PWM_Start\000"
+ 555      53746172 
+ 555      7400
+ 556              	.LASF15:
+ 557 01d3 50574D5F 		.ascii	"PWM_WriteCompare\000"
+ 557      57726974 
+ 557      65436F6D 
+ 557      70617265 
+ 557      00
+ 558              	.LASF13:
+ 559 01e4 73697A65 		.ascii	"sizetype\000"
+ 559      74797065 
+ 559      00
+ 560              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

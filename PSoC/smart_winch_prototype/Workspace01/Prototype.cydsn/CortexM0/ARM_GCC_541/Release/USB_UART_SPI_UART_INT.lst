@@ -1,0 +1,1035 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 2
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"USB_UART_SPI_UART_INT.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.USB_UART_SPI_UART_ISR,"ax",%progbits
+  20              		.align	2
+  21              		.global	USB_UART_SPI_UART_ISR
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	USB_UART_SPI_UART_ISR, %function
+  25              	USB_UART_SPI_UART_ISR:
+  26              	.LFB1:
+  27              		.file 1 "Generated_Source\\PSoC4\\USB_UART_SPI_UART_INT.c"
+   1:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * \file USB_UART_SPI_UART_INT.c
+   3:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * \version 4.0
+   4:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *
+   5:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * \brief
+   6:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *  This file provides the source code to the Interrupt Service Routine for
+   7:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *  the SCB Component in SPI and UART modes.
+   8:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *
+   9:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * Note:
+  10:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *
+  11:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** ********************************************************************************
+  12:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * \copyright
+  13:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * Copyright 2013-2017, Cypress Semiconductor Corporation.  All rights reserved.
+  14:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * You may use this file only in accordance with the license, terms, conditions,
+  15:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  16:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * the software package with which this file was provided.
+  17:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *******************************************************************************/
+  18:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  19:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #include "USB_UART_PVT.h"
+  20:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #include "USB_UART_SPI_UART_PVT.h"
+  21:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #include "cyapicallbacks.h"
+  22:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  23:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #if (USB_UART_SCB_IRQ_INTERNAL)
+  24:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** /*******************************************************************************
+  25:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** * Function Name: USB_UART_SPI_UART_ISR
+  26:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** ****************************************************************************//**
+  27:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *
+  28:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *  Handles the Interrupt Service Routine for the SCB SPI or UART modes.
+  29:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *
+  30:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** *******************************************************************************/
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 2
+
+
+  31:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** CY_ISR(USB_UART_SPI_UART_ISR)
+  32:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** {
+  28              		.loc 1 32 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  33              		.cfi_def_cfa_offset 20
+  34              		.cfi_offset 4, -20
+  35              		.cfi_offset 5, -16
+  36              		.cfi_offset 6, -12
+  37              		.cfi_offset 7, -8
+  38              		.cfi_offset 14, -4
+  39 0002 4746     		mov	r7, r8
+  33:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #if (USB_UART_INTERNAL_RX_SW_BUFFER_CONST)
+  34:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     uint32 locHead;
+  35:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #endif /* (USB_UART_INTERNAL_RX_SW_BUFFER_CONST) */
+  36:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  37:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #if (USB_UART_INTERNAL_TX_SW_BUFFER_CONST)
+  38:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     uint32 locTail;
+  39:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #endif /* (USB_UART_INTERNAL_TX_SW_BUFFER_CONST) */
+  40:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  41:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #ifdef USB_UART_SPI_UART_ISR_ENTRY_CALLBACK
+  42:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     USB_UART_SPI_UART_ISR_EntryCallback();
+  43:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #endif /* USB_UART_SPI_UART_ISR_ENTRY_CALLBACK */
+  44:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  45:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     if (NULL != USB_UART_customIntrHandler)
+  40              		.loc 1 45 0
+  41 0004 314B     		ldr	r3, .L27
+  32:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #if (USB_UART_INTERNAL_RX_SW_BUFFER_CONST)
+  42              		.loc 1 32 0
+  43 0006 80B4     		push	{r7}
+  44              		.cfi_def_cfa_offset 24
+  45              		.cfi_offset 8, -24
+  46              		.loc 1 45 0
+  47 0008 1B68     		ldr	r3, [r3]
+  48 000a 002B     		cmp	r3, #0
+  49 000c 00D0     		beq	.L2
+  46:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     {
+  47:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         USB_UART_customIntrHandler();
+  50              		.loc 1 47 0
+  51 000e 9847     		blx	r3
+  52              	.LVL0:
+  53              	.L2:
+  48:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     }
+  49:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  50:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     #if(USB_UART_CHECK_SPI_WAKE_ENABLE)
+  51:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     {
+  52:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         /* Clear SPI wakeup source */
+  53:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         USB_UART_ClearSpiExtClkInterruptSource(USB_UART_INTR_SPI_EC_WAKE_UP);
+  54:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     }
+  55:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     #endif
+  56:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  57:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     #if (USB_UART_CHECK_RX_SW_BUFFER)
+  58:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     {
+  59:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         if (USB_UART_CHECK_INTR_RX_MASKED(USB_UART_INTR_RX_NOT_EMPTY))
+  54              		.loc 1 59 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 3
+
+
+  55 0010 2F4B     		ldr	r3, .L27+4
+  56 0012 1B68     		ldr	r3, [r3]
+  57 0014 5B07     		lsls	r3, r3, #29
+  58 0016 26D5     		bpl	.L3
+  60:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         {
+  61:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             do
+  62:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             {
+  63:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 /* Move local head index */
+  64:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 locHead = (USB_UART_rxBufferHead + 1u);
+  65:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  66:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 /* Adjust local head index */
+  67:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 if (USB_UART_INTERNAL_RX_BUFFER_SIZE == locHead)
+  68:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+  69:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     locHead = 0u;
+  70:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+  71:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  72:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 if (locHead == USB_UART_rxBufferTail)
+  73:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+  74:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     #if (USB_UART_CHECK_UART_RTS_CONTROL_FLOW)
+  75:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     {
+  76:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         /* There is no space in the software buffer - disable the
+  77:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         * RX Not Empty interrupt source. The data elements are
+  78:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         * still being received into the RX FIFO until the RTS signal
+  79:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         * stops the transmitter. After the data element is read from the
+  80:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         * buffer, the RX Not Empty interrupt source is enabled to
+  81:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         * move the next data element in the software buffer.
+  82:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         */
+  83:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         USB_UART_INTR_RX_MASK_REG &= ~USB_UART_INTR_RX_NOT_EMPTY;
+  84:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         break;
+  85:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     }
+  86:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     #else
+  87:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     {
+  88:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         /* Overflow: through away received data element */
+  89:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         (void) USB_UART_RX_FIFO_RD_REG;
+  90:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         USB_UART_rxBufferOverflow = (uint8) USB_UART_INTR_RX_OVERFLOW;
+  59              		.loc 1 90 0
+  60 0018 2E4B     		ldr	r3, .L27+8
+  61 001a 2F49     		ldr	r1, .L27+12
+  62 001c 9846     		mov	r8, r3
+  63 001e 2023     		movs	r3, #32
+  64 0020 2E4D     		ldr	r5, .L27+16
+  91:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     }
+  92:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     #endif
+  93:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+  94:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 else
+  95:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+  96:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     /* Store received data */
+  97:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     USB_UART_PutWordInRxBuffer(locHead, USB_UART_RX_FIFO_RD_REG);
+  65              		.loc 1 97 0
+  66 0022 2F4E     		ldr	r6, .L27+20
+  67 0024 2F4F     		ldr	r7, .L27+24
+  90:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     }
+  68              		.loc 1 90 0
+  69 0026 9C46     		mov	ip, r3
+  98:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  99:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     /* Move head index */
+ 100:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     USB_UART_rxBufferHead = locHead;
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 4
+
+
+ 101:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+ 102:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             }
+ 103:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             while(0u != USB_UART_GET_RX_FIFO_ENTRIES);
+  70              		.loc 1 103 0
+  71 0028 2F4C     		ldr	r4, .L27+28
+  72 002a 1F20     		movs	r0, #31
+  73 002c 09E0     		b	.L7
+  74              	.LVL1:
+  75              	.L4:
+  72:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+  76              		.loc 1 72 0
+  77 002e 2A68     		ldr	r2, [r5]
+  78 0030 9342     		cmp	r3, r2
+  79 0032 0ED0     		beq	.L25
+  80              	.L5:
+  97:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  81              		.loc 1 97 0
+  82 0034 3268     		ldr	r2, [r6]
+  83 0036 D2B2     		uxtb	r2, r2
+  84 0038 FA54     		strb	r2, [r7, r3]
+ 100:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+  85              		.loc 1 100 0
+  86 003a 0B60     		str	r3, [r1]
+  87              		.loc 1 103 0
+  88 003c 2368     		ldr	r3, [r4]
+  89              	.LVL2:
+  90 003e 1842     		tst	r0, r3
+  91 0040 0ED0     		beq	.L26
+  92              	.LVL3:
+  93              	.L7:
+  64:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+  94              		.loc 1 64 0
+  95 0042 0B68     		ldr	r3, [r1]
+  96 0044 0133     		adds	r3, r3, #1
+  97              	.LVL4:
+  67:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+  98              		.loc 1 67 0
+  99 0046 212B     		cmp	r3, #33
+ 100 0048 F1D1     		bne	.L4
+  69:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+ 101              		.loc 1 69 0
+ 102 004a 0023     		movs	r3, #0
+ 103              	.LVL5:
+  72:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+ 104              		.loc 1 72 0
+ 105 004c 2A68     		ldr	r2, [r5]
+ 106 004e 9342     		cmp	r3, r2
+ 107 0050 F0D1     		bne	.L5
+ 108              	.L25:
+  89:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         USB_UART_rxBufferOverflow = (uint8) USB_UART_INTR_RX_OVERFLOW;
+ 109              		.loc 1 89 0
+ 110 0052 3368     		ldr	r3, [r6]
+ 111              	.LVL6:
+  90:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     }
+ 112              		.loc 1 90 0
+ 113 0054 6246     		mov	r2, ip
+ 114 0056 4346     		mov	r3, r8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 5
+
+
+ 115 0058 1A70     		strb	r2, [r3]
+ 116              		.loc 1 103 0
+ 117 005a 2368     		ldr	r3, [r4]
+ 118 005c 1842     		tst	r0, r3
+ 119 005e F0D1     		bne	.L7
+ 120              	.L26:
+ 104:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 105:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             USB_UART_ClearRxInterruptSource(USB_UART_INTR_RX_NOT_EMPTY);
+ 121              		.loc 1 105 0
+ 122 0060 0422     		movs	r2, #4
+ 123 0062 224B     		ldr	r3, .L27+32
+ 124 0064 1A60     		str	r2, [r3]
+ 125              	.L3:
+ 106:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         }
+ 107:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     }
+ 108:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     #endif
+ 109:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 110:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 111:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     #if (USB_UART_CHECK_TX_SW_BUFFER)
+ 112:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     {
+ 113:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         if (USB_UART_CHECK_INTR_TX_MASKED(USB_UART_INTR_TX_NOT_FULL))
+ 126              		.loc 1 113 0
+ 127 0066 224B     		ldr	r3, .L27+36
+ 128 0068 1B68     		ldr	r3, [r3]
+ 129 006a 9B07     		lsls	r3, r3, #30
+ 130 006c 22D5     		bpl	.L1
+ 131 006e 2148     		ldr	r0, .L27+40
+ 132 0070 2149     		ldr	r1, .L27+44
+ 114:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         {
+ 115:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             do
+ 116:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             {
+ 117:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 /* Check for room in TX software buffer */
+ 118:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 if (USB_UART_txBufferHead != USB_UART_txBufferTail)
+ 119:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+ 120:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     /* Move local tail index */
+ 121:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     locTail = (USB_UART_txBufferTail + 1u);
+ 122:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 123:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     /* Adjust local tail index */
+ 124:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     if (USB_UART_TX_BUFFER_SIZE == locTail)
+ 125:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     {
+ 126:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                         locTail = 0u;
+ 127:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     }
+ 128:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 129:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     /* Put data into TX FIFO */
+ 130:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     USB_UART_TX_FIFO_WR_REG = USB_UART_GetWordFromTxBuffer(locTail);
+ 133              		.loc 1 130 0
+ 134 0072 224F     		ldr	r7, .L27+48
+ 135 0074 224E     		ldr	r6, .L27+52
+ 131:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 132:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     /* Move tail index */
+ 133:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     USB_UART_txBufferTail = locTail;
+ 134:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+ 135:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 else
+ 136:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+ 137:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     /* TX software buffer is empty: complete transfer */
+ 138:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     USB_UART_DISABLE_INTR_TX(USB_UART_INTR_TX_NOT_FULL);
+ 139:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     break;
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 6
+
+
+ 140:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+ 141:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             }
+ 142:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             while (USB_UART_SPI_UART_FIFO_SIZE != USB_UART_GET_TX_FIFO_ENTRIES);
+ 136              		.loc 1 142 0
+ 137 0076 234D     		ldr	r5, .L27+56
+ 138 0078 1F24     		movs	r4, #31
+ 139 007a 07E0     		b	.L11
+ 140              	.LVL7:
+ 141              	.L10:
+ 130:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 142              		.loc 1 130 0
+ 143 007c FA5C     		ldrb	r2, [r7, r3]
+ 144 007e D2B2     		uxtb	r2, r2
+ 145 0080 3260     		str	r2, [r6]
+ 133:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+ 146              		.loc 1 133 0
+ 147 0082 0B60     		str	r3, [r1]
+ 148              		.loc 1 142 0
+ 149 0084 2B68     		ldr	r3, [r5]
+ 150              	.LVL8:
+ 151 0086 2340     		ands	r3, r4
+ 152 0088 082B     		cmp	r3, #8
+ 153 008a 10D0     		beq	.L12
+ 154              	.LVL9:
+ 155              	.L11:
+ 118:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 {
+ 156              		.loc 1 118 0
+ 157 008c 0268     		ldr	r2, [r0]
+ 158 008e 0B68     		ldr	r3, [r1]
+ 159 0090 9A42     		cmp	r2, r3
+ 160 0092 12D0     		beq	.L9
+ 121:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 161              		.loc 1 121 0
+ 162 0094 0B68     		ldr	r3, [r1]
+ 163 0096 0133     		adds	r3, r3, #1
+ 164              	.LVL10:
+ 124:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     {
+ 165              		.loc 1 124 0
+ 166 0098 202B     		cmp	r3, #32
+ 167 009a EFD1     		bne	.L10
+ 126:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     }
+ 168              		.loc 1 126 0
+ 169 009c 0023     		movs	r3, #0
+ 170              	.LVL11:
+ 130:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 171              		.loc 1 130 0
+ 172 009e FA5C     		ldrb	r2, [r7, r3]
+ 173 00a0 D2B2     		uxtb	r2, r2
+ 174 00a2 3260     		str	r2, [r6]
+ 133:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                 }
+ 175              		.loc 1 133 0
+ 176 00a4 0B60     		str	r3, [r1]
+ 177              		.loc 1 142 0
+ 178 00a6 2B68     		ldr	r3, [r5]
+ 179              	.LVL12:
+ 180 00a8 2340     		ands	r3, r4
+ 181 00aa 082B     		cmp	r3, #8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 7
+
+
+ 182 00ac EED1     		bne	.L11
+ 183              	.LVL13:
+ 184              	.L12:
+ 143:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 144:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****             USB_UART_ClearTxInterruptSource(USB_UART_INTR_TX_NOT_FULL);
+ 185              		.loc 1 144 0
+ 186 00ae 0222     		movs	r2, #2
+ 187 00b0 154B     		ldr	r3, .L27+60
+ 188 00b2 1A60     		str	r2, [r3]
+ 189              	.L1:
+ 145:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         }
+ 146:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     }
+ 147:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     #endif
+ 148:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 149:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #ifdef USB_UART_SPI_UART_ISR_EXIT_CALLBACK
+ 150:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****     USB_UART_SPI_UART_ISR_ExitCallback();
+ 151:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** #endif /* USB_UART_SPI_UART_ISR_EXIT_CALLBACK */
+ 152:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** 
+ 153:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c **** }
+ 190              		.loc 1 153 0
+ 191              		@ sp needed
+ 192 00b4 04BC     		pop	{r2}
+ 193 00b6 9046     		mov	r8, r2
+ 194 00b8 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 195              	.L9:
+ 138:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****                     break;
+ 196              		.loc 1 138 0
+ 197 00ba 0221     		movs	r1, #2
+ 198 00bc 134A     		ldr	r2, .L27+64
+ 199 00be 1368     		ldr	r3, [r2]
+ 200 00c0 8B43     		bics	r3, r1
+ 201 00c2 1360     		str	r3, [r2]
+ 144:Generated_Source\PSoC4/USB_UART_SPI_UART_INT.c ****         }
+ 202              		.loc 1 144 0
+ 203 00c4 0222     		movs	r2, #2
+ 204 00c6 104B     		ldr	r3, .L27+60
+ 205 00c8 1A60     		str	r2, [r3]
+ 206 00ca F3E7     		b	.L1
+ 207              	.L28:
+ 208              		.align	2
+ 209              	.L27:
+ 210 00cc 00000000 		.word	USB_UART_customIntrHandler
+ 211 00d0 CC0F2740 		.word	1076301772
+ 212 00d4 00000000 		.word	USB_UART_rxBufferOverflow
+ 213 00d8 00000000 		.word	USB_UART_rxBufferHead
+ 214 00dc 00000000 		.word	USB_UART_rxBufferTail
+ 215 00e0 40032740 		.word	1076298560
+ 216 00e4 00000000 		.word	USB_UART_rxBufferInternal
+ 217 00e8 08032740 		.word	1076298504
+ 218 00ec C00F2740 		.word	1076301760
+ 219 00f0 8C0F2740 		.word	1076301708
+ 220 00f4 00000000 		.word	USB_UART_txBufferHead
+ 221 00f8 00000000 		.word	USB_UART_txBufferTail
+ 222 00fc 00000000 		.word	USB_UART_txBufferInternal
+ 223 0100 40022740 		.word	1076298304
+ 224 0104 08022740 		.word	1076298248
+ 225 0108 800F2740 		.word	1076301696
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 8
+
+
+ 226 010c 880F2740 		.word	1076301704
+ 227              		.cfi_endproc
+ 228              	.LFE1:
+ 229              		.size	USB_UART_SPI_UART_ISR, .-USB_UART_SPI_UART_ISR
+ 230              		.text
+ 231              	.Letext0:
+ 232              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 233              		.file 3 "Generated_Source\\PSoC4\\USB_UART_PVT.h"
+ 234              		.file 4 "Generated_Source\\PSoC4\\USB_UART_SPI_UART_PVT.h"
+ 235              		.section	.debug_info,"",%progbits
+ 236              	.Ldebug_info0:
+ 237 0000 82010000 		.4byte	0x182
+ 238 0004 0400     		.2byte	0x4
+ 239 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 240 000a 04       		.byte	0x4
+ 241 000b 01       		.uleb128 0x1
+ 242 000c BF000000 		.4byte	.LASF28
+ 243 0010 0C       		.byte	0xc
+ 244 0011 A1020000 		.4byte	.LASF29
+ 245 0015 28020000 		.4byte	.LASF30
+ 246 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 247 001d 00000000 		.4byte	0
+ 248 0021 00000000 		.4byte	.Ldebug_line0
+ 249 0025 02       		.uleb128 0x2
+ 250 0026 01       		.byte	0x1
+ 251 0027 06       		.byte	0x6
+ 252 0028 95020000 		.4byte	.LASF0
+ 253 002c 02       		.uleb128 0x2
+ 254 002d 01       		.byte	0x1
+ 255 002e 08       		.byte	0x8
+ 256 002f 99000000 		.4byte	.LASF1
+ 257 0033 02       		.uleb128 0x2
+ 258 0034 02       		.byte	0x2
+ 259 0035 05       		.byte	0x5
+ 260 0036 15020000 		.4byte	.LASF2
+ 261 003a 02       		.uleb128 0x2
+ 262 003b 02       		.byte	0x2
+ 263 003c 07       		.byte	0x7
+ 264 003d 48000000 		.4byte	.LASF3
+ 265 0041 02       		.uleb128 0x2
+ 266 0042 04       		.byte	0x4
+ 267 0043 05       		.byte	0x5
+ 268 0044 1F020000 		.4byte	.LASF4
+ 269 0048 02       		.uleb128 0x2
+ 270 0049 04       		.byte	0x4
+ 271 004a 07       		.byte	0x7
+ 272 004b A7000000 		.4byte	.LASF5
+ 273 004f 02       		.uleb128 0x2
+ 274 0050 08       		.byte	0x8
+ 275 0051 05       		.byte	0x5
+ 276 0052 CD010000 		.4byte	.LASF6
+ 277 0056 02       		.uleb128 0x2
+ 278 0057 08       		.byte	0x8
+ 279 0058 07       		.byte	0x7
+ 280 0059 82010000 		.4byte	.LASF7
+ 281 005d 03       		.uleb128 0x3
+ 282 005e 04       		.byte	0x4
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 9
+
+
+ 283 005f 05       		.byte	0x5
+ 284 0060 696E7400 		.ascii	"int\000"
+ 285 0064 02       		.uleb128 0x2
+ 286 0065 04       		.byte	0x4
+ 287 0066 07       		.byte	0x7
+ 288 0067 75010000 		.4byte	.LASF8
+ 289 006b 04       		.uleb128 0x4
+ 290 006c B9000000 		.4byte	.LASF9
+ 291 0070 02       		.byte	0x2
+ 292 0071 D201     		.2byte	0x1d2
+ 293 0073 2C000000 		.4byte	0x2c
+ 294 0077 04       		.uleb128 0x4
+ 295 0078 6E010000 		.4byte	.LASF10
+ 296 007c 02       		.byte	0x2
+ 297 007d D401     		.2byte	0x1d4
+ 298 007f 48000000 		.4byte	0x48
+ 299 0083 02       		.uleb128 0x2
+ 300 0084 04       		.byte	0x4
+ 301 0085 04       		.byte	0x4
+ 302 0086 7D000000 		.4byte	.LASF11
+ 303 008a 02       		.uleb128 0x2
+ 304 008b 08       		.byte	0x8
+ 305 008c 04       		.byte	0x4
+ 306 008d 4D010000 		.4byte	.LASF12
+ 307 0091 02       		.uleb128 0x2
+ 308 0092 01       		.byte	0x1
+ 309 0093 08       		.byte	0x8
+ 310 0094 DB010000 		.4byte	.LASF13
+ 311 0098 05       		.uleb128 0x5
+ 312 0099 6B000000 		.4byte	0x6b
+ 313 009d 04       		.uleb128 0x4
+ 314 009e 00000000 		.4byte	.LASF14
+ 315 00a2 02       		.byte	0x2
+ 316 00a3 7E02     		.2byte	0x27e
+ 317 00a5 A9000000 		.4byte	0xa9
+ 318 00a9 05       		.uleb128 0x5
+ 319 00aa 77000000 		.4byte	0x77
+ 320 00ae 04       		.uleb128 0x4
+ 321 00af AF010000 		.4byte	.LASF15
+ 322 00b3 02       		.byte	0x2
+ 323 00b4 8E02     		.2byte	0x28e
+ 324 00b6 BA000000 		.4byte	0xba
+ 325 00ba 06       		.uleb128 0x6
+ 326 00bb 04       		.byte	0x4
+ 327 00bc C0000000 		.4byte	0xc0
+ 328 00c0 07       		.uleb128 0x7
+ 329 00c1 02       		.uleb128 0x2
+ 330 00c2 08       		.byte	0x8
+ 331 00c3 04       		.byte	0x4
+ 332 00c4 89020000 		.4byte	.LASF16
+ 333 00c8 02       		.uleb128 0x2
+ 334 00c9 04       		.byte	0x4
+ 335 00ca 07       		.byte	0x7
+ 336 00cb C4010000 		.4byte	.LASF17
+ 337 00cf 08       		.uleb128 0x8
+ 338 00d0 1C000000 		.4byte	.LASF31
+ 339 00d4 01       		.byte	0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 10
+
+
+ 340 00d5 1F       		.byte	0x1f
+ 341 00d6 00000000 		.4byte	.LFB1
+ 342 00da 10010000 		.4byte	.LFE1-.LFB1
+ 343 00de 01       		.uleb128 0x1
+ 344 00df 9C       		.byte	0x9c
+ 345 00e0 03010000 		.4byte	0x103
+ 346 00e4 09       		.uleb128 0x9
+ 347 00e5 75000000 		.4byte	.LASF18
+ 348 00e9 01       		.byte	0x1
+ 349 00ea 22       		.byte	0x22
+ 350 00eb 77000000 		.4byte	0x77
+ 351 00ef 00000000 		.4byte	.LLST0
+ 352 00f3 09       		.uleb128 0x9
+ 353 00f4 BC010000 		.4byte	.LASF19
+ 354 00f8 01       		.byte	0x1
+ 355 00f9 26       		.byte	0x26
+ 356 00fa 77000000 		.4byte	0x77
+ 357 00fe 2A000000 		.4byte	.LLST1
+ 358 0102 00       		.byte	0
+ 359 0103 0A       		.uleb128 0xa
+ 360 0104 E0010000 		.4byte	.LASF20
+ 361 0108 03       		.byte	0x3
+ 362 0109 3B       		.byte	0x3b
+ 363 010a AE000000 		.4byte	0xae
+ 364 010e 0A       		.uleb128 0xa
+ 365 010f 99010000 		.4byte	.LASF21
+ 366 0113 04       		.byte	0x4
+ 367 0114 1F       		.byte	0x1f
+ 368 0115 A9000000 		.4byte	0xa9
+ 369 0119 0A       		.uleb128 0xa
+ 370 011a 32000000 		.4byte	.LASF22
+ 371 011e 04       		.byte	0x4
+ 372 011f 20       		.byte	0x20
+ 373 0120 A9000000 		.4byte	0xa9
+ 374 0124 0A       		.uleb128 0xa
+ 375 0125 54010000 		.4byte	.LASF23
+ 376 0129 04       		.byte	0x4
+ 377 012a 2A       		.byte	0x2a
+ 378 012b 98000000 		.4byte	0x98
+ 379 012f 0A       		.uleb128 0xa
+ 380 0130 83000000 		.4byte	.LASF24
+ 381 0134 04       		.byte	0x4
+ 382 0135 2F       		.byte	0x2f
+ 383 0136 A9000000 		.4byte	0xa9
+ 384 013a 0A       		.uleb128 0xa
+ 385 013b 06000000 		.4byte	.LASF25
+ 386 013f 04       		.byte	0x4
+ 387 0140 30       		.byte	0x30
+ 388 0141 A9000000 		.4byte	0xa9
+ 389 0145 0B       		.uleb128 0xb
+ 390 0146 98000000 		.4byte	0x98
+ 391 014a 55010000 		.4byte	0x155
+ 392 014e 0C       		.uleb128 0xc
+ 393 014f C8000000 		.4byte	0xc8
+ 394 0153 20       		.byte	0x20
+ 395 0154 00       		.byte	0
+ 396 0155 0A       		.uleb128 0xa
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 11
+
+
+ 397 0156 5B000000 		.4byte	.LASF26
+ 398 015a 04       		.byte	0x4
+ 399 015b 34       		.byte	0x34
+ 400 015c 60010000 		.4byte	0x160
+ 401 0160 05       		.uleb128 0x5
+ 402 0161 45010000 		.4byte	0x145
+ 403 0165 0B       		.uleb128 0xb
+ 404 0166 98000000 		.4byte	0x98
+ 405 016a 75010000 		.4byte	0x175
+ 406 016e 0C       		.uleb128 0xc
+ 407 016f C8000000 		.4byte	0xc8
+ 408 0173 1F       		.byte	0x1f
+ 409 0174 00       		.byte	0
+ 410 0175 0A       		.uleb128 0xa
+ 411 0176 FB010000 		.4byte	.LASF27
+ 412 017a 04       		.byte	0x4
+ 413 017b 38       		.byte	0x38
+ 414 017c 80010000 		.4byte	0x180
+ 415 0180 05       		.uleb128 0x5
+ 416 0181 65010000 		.4byte	0x165
+ 417 0185 00       		.byte	0
+ 418              		.section	.debug_abbrev,"",%progbits
+ 419              	.Ldebug_abbrev0:
+ 420 0000 01       		.uleb128 0x1
+ 421 0001 11       		.uleb128 0x11
+ 422 0002 01       		.byte	0x1
+ 423 0003 25       		.uleb128 0x25
+ 424 0004 0E       		.uleb128 0xe
+ 425 0005 13       		.uleb128 0x13
+ 426 0006 0B       		.uleb128 0xb
+ 427 0007 03       		.uleb128 0x3
+ 428 0008 0E       		.uleb128 0xe
+ 429 0009 1B       		.uleb128 0x1b
+ 430 000a 0E       		.uleb128 0xe
+ 431 000b 55       		.uleb128 0x55
+ 432 000c 17       		.uleb128 0x17
+ 433 000d 11       		.uleb128 0x11
+ 434 000e 01       		.uleb128 0x1
+ 435 000f 10       		.uleb128 0x10
+ 436 0010 17       		.uleb128 0x17
+ 437 0011 00       		.byte	0
+ 438 0012 00       		.byte	0
+ 439 0013 02       		.uleb128 0x2
+ 440 0014 24       		.uleb128 0x24
+ 441 0015 00       		.byte	0
+ 442 0016 0B       		.uleb128 0xb
+ 443 0017 0B       		.uleb128 0xb
+ 444 0018 3E       		.uleb128 0x3e
+ 445 0019 0B       		.uleb128 0xb
+ 446 001a 03       		.uleb128 0x3
+ 447 001b 0E       		.uleb128 0xe
+ 448 001c 00       		.byte	0
+ 449 001d 00       		.byte	0
+ 450 001e 03       		.uleb128 0x3
+ 451 001f 24       		.uleb128 0x24
+ 452 0020 00       		.byte	0
+ 453 0021 0B       		.uleb128 0xb
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 12
+
+
+ 454 0022 0B       		.uleb128 0xb
+ 455 0023 3E       		.uleb128 0x3e
+ 456 0024 0B       		.uleb128 0xb
+ 457 0025 03       		.uleb128 0x3
+ 458 0026 08       		.uleb128 0x8
+ 459 0027 00       		.byte	0
+ 460 0028 00       		.byte	0
+ 461 0029 04       		.uleb128 0x4
+ 462 002a 16       		.uleb128 0x16
+ 463 002b 00       		.byte	0
+ 464 002c 03       		.uleb128 0x3
+ 465 002d 0E       		.uleb128 0xe
+ 466 002e 3A       		.uleb128 0x3a
+ 467 002f 0B       		.uleb128 0xb
+ 468 0030 3B       		.uleb128 0x3b
+ 469 0031 05       		.uleb128 0x5
+ 470 0032 49       		.uleb128 0x49
+ 471 0033 13       		.uleb128 0x13
+ 472 0034 00       		.byte	0
+ 473 0035 00       		.byte	0
+ 474 0036 05       		.uleb128 0x5
+ 475 0037 35       		.uleb128 0x35
+ 476 0038 00       		.byte	0
+ 477 0039 49       		.uleb128 0x49
+ 478 003a 13       		.uleb128 0x13
+ 479 003b 00       		.byte	0
+ 480 003c 00       		.byte	0
+ 481 003d 06       		.uleb128 0x6
+ 482 003e 0F       		.uleb128 0xf
+ 483 003f 00       		.byte	0
+ 484 0040 0B       		.uleb128 0xb
+ 485 0041 0B       		.uleb128 0xb
+ 486 0042 49       		.uleb128 0x49
+ 487 0043 13       		.uleb128 0x13
+ 488 0044 00       		.byte	0
+ 489 0045 00       		.byte	0
+ 490 0046 07       		.uleb128 0x7
+ 491 0047 15       		.uleb128 0x15
+ 492 0048 00       		.byte	0
+ 493 0049 27       		.uleb128 0x27
+ 494 004a 19       		.uleb128 0x19
+ 495 004b 00       		.byte	0
+ 496 004c 00       		.byte	0
+ 497 004d 08       		.uleb128 0x8
+ 498 004e 2E       		.uleb128 0x2e
+ 499 004f 01       		.byte	0x1
+ 500 0050 3F       		.uleb128 0x3f
+ 501 0051 19       		.uleb128 0x19
+ 502 0052 03       		.uleb128 0x3
+ 503 0053 0E       		.uleb128 0xe
+ 504 0054 3A       		.uleb128 0x3a
+ 505 0055 0B       		.uleb128 0xb
+ 506 0056 3B       		.uleb128 0x3b
+ 507 0057 0B       		.uleb128 0xb
+ 508 0058 27       		.uleb128 0x27
+ 509 0059 19       		.uleb128 0x19
+ 510 005a 11       		.uleb128 0x11
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 13
+
+
+ 511 005b 01       		.uleb128 0x1
+ 512 005c 12       		.uleb128 0x12
+ 513 005d 06       		.uleb128 0x6
+ 514 005e 40       		.uleb128 0x40
+ 515 005f 18       		.uleb128 0x18
+ 516 0060 9642     		.uleb128 0x2116
+ 517 0062 19       		.uleb128 0x19
+ 518 0063 01       		.uleb128 0x1
+ 519 0064 13       		.uleb128 0x13
+ 520 0065 00       		.byte	0
+ 521 0066 00       		.byte	0
+ 522 0067 09       		.uleb128 0x9
+ 523 0068 34       		.uleb128 0x34
+ 524 0069 00       		.byte	0
+ 525 006a 03       		.uleb128 0x3
+ 526 006b 0E       		.uleb128 0xe
+ 527 006c 3A       		.uleb128 0x3a
+ 528 006d 0B       		.uleb128 0xb
+ 529 006e 3B       		.uleb128 0x3b
+ 530 006f 0B       		.uleb128 0xb
+ 531 0070 49       		.uleb128 0x49
+ 532 0071 13       		.uleb128 0x13
+ 533 0072 02       		.uleb128 0x2
+ 534 0073 17       		.uleb128 0x17
+ 535 0074 00       		.byte	0
+ 536 0075 00       		.byte	0
+ 537 0076 0A       		.uleb128 0xa
+ 538 0077 34       		.uleb128 0x34
+ 539 0078 00       		.byte	0
+ 540 0079 03       		.uleb128 0x3
+ 541 007a 0E       		.uleb128 0xe
+ 542 007b 3A       		.uleb128 0x3a
+ 543 007c 0B       		.uleb128 0xb
+ 544 007d 3B       		.uleb128 0x3b
+ 545 007e 0B       		.uleb128 0xb
+ 546 007f 49       		.uleb128 0x49
+ 547 0080 13       		.uleb128 0x13
+ 548 0081 3F       		.uleb128 0x3f
+ 549 0082 19       		.uleb128 0x19
+ 550 0083 3C       		.uleb128 0x3c
+ 551 0084 19       		.uleb128 0x19
+ 552 0085 00       		.byte	0
+ 553 0086 00       		.byte	0
+ 554 0087 0B       		.uleb128 0xb
+ 555 0088 01       		.uleb128 0x1
+ 556 0089 01       		.byte	0x1
+ 557 008a 49       		.uleb128 0x49
+ 558 008b 13       		.uleb128 0x13
+ 559 008c 01       		.uleb128 0x1
+ 560 008d 13       		.uleb128 0x13
+ 561 008e 00       		.byte	0
+ 562 008f 00       		.byte	0
+ 563 0090 0C       		.uleb128 0xc
+ 564 0091 21       		.uleb128 0x21
+ 565 0092 00       		.byte	0
+ 566 0093 49       		.uleb128 0x49
+ 567 0094 13       		.uleb128 0x13
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 14
+
+
+ 568 0095 2F       		.uleb128 0x2f
+ 569 0096 0B       		.uleb128 0xb
+ 570 0097 00       		.byte	0
+ 571 0098 00       		.byte	0
+ 572 0099 00       		.byte	0
+ 573              		.section	.debug_loc,"",%progbits
+ 574              	.Ldebug_loc0:
+ 575              	.LLST0:
+ 576 0000 2E000000 		.4byte	.LVL1
+ 577 0004 3E000000 		.4byte	.LVL2
+ 578 0008 0100     		.2byte	0x1
+ 579 000a 53       		.byte	0x53
+ 580 000b 3E000000 		.4byte	.LVL2
+ 581 000f 42000000 		.4byte	.LVL3
+ 582 0013 0200     		.2byte	0x2
+ 583 0015 71       		.byte	0x71
+ 584 0016 00       		.sleb128 0
+ 585 0017 46000000 		.4byte	.LVL4
+ 586 001b 54000000 		.4byte	.LVL6
+ 587 001f 0100     		.2byte	0x1
+ 588 0021 53       		.byte	0x53
+ 589 0022 00000000 		.4byte	0
+ 590 0026 00000000 		.4byte	0
+ 591              	.LLST1:
+ 592 002a 7C000000 		.4byte	.LVL7
+ 593 002e 86000000 		.4byte	.LVL8
+ 594 0032 0100     		.2byte	0x1
+ 595 0034 53       		.byte	0x53
+ 596 0035 86000000 		.4byte	.LVL8
+ 597 0039 8C000000 		.4byte	.LVL9
+ 598 003d 0200     		.2byte	0x2
+ 599 003f 71       		.byte	0x71
+ 600 0040 00       		.sleb128 0
+ 601 0041 98000000 		.4byte	.LVL10
+ 602 0045 A8000000 		.4byte	.LVL12
+ 603 0049 0100     		.2byte	0x1
+ 604 004b 53       		.byte	0x53
+ 605 004c A8000000 		.4byte	.LVL12
+ 606 0050 AE000000 		.4byte	.LVL13
+ 607 0054 0200     		.2byte	0x2
+ 608 0056 71       		.byte	0x71
+ 609 0057 00       		.sleb128 0
+ 610 0058 00000000 		.4byte	0
+ 611 005c 00000000 		.4byte	0
+ 612              		.section	.debug_aranges,"",%progbits
+ 613 0000 1C000000 		.4byte	0x1c
+ 614 0004 0200     		.2byte	0x2
+ 615 0006 00000000 		.4byte	.Ldebug_info0
+ 616 000a 04       		.byte	0x4
+ 617 000b 00       		.byte	0
+ 618 000c 0000     		.2byte	0
+ 619 000e 0000     		.2byte	0
+ 620 0010 00000000 		.4byte	.LFB1
+ 621 0014 10010000 		.4byte	.LFE1-.LFB1
+ 622 0018 00000000 		.4byte	0
+ 623 001c 00000000 		.4byte	0
+ 624              		.section	.debug_ranges,"",%progbits
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 15
+
+
+ 625              	.Ldebug_ranges0:
+ 626 0000 00000000 		.4byte	.LFB1
+ 627 0004 10010000 		.4byte	.LFE1
+ 628 0008 00000000 		.4byte	0
+ 629 000c 00000000 		.4byte	0
+ 630              		.section	.debug_line,"",%progbits
+ 631              	.Ldebug_line0:
+ 632 0000 E2000000 		.section	.debug_str,"MS",%progbits,1
+ 632      02007F00 
+ 632      00000201 
+ 632      FB0E0D00 
+ 632      01010101 
+ 633              	.LASF14:
+ 634 0000 72656733 		.ascii	"reg32\000"
+ 634      3200
+ 635              	.LASF25:
+ 636 0006 5553425F 		.ascii	"USB_UART_txBufferTail\000"
+ 636      55415254 
+ 636      5F747842 
+ 636      75666665 
+ 636      72546169 
+ 637              	.LASF31:
+ 638 001c 5553425F 		.ascii	"USB_UART_SPI_UART_ISR\000"
+ 638      55415254 
+ 638      5F535049 
+ 638      5F554152 
+ 638      545F4953 
+ 639              	.LASF22:
+ 640 0032 5553425F 		.ascii	"USB_UART_rxBufferTail\000"
+ 640      55415254 
+ 640      5F727842 
+ 640      75666665 
+ 640      72546169 
+ 641              	.LASF3:
+ 642 0048 73686F72 		.ascii	"short unsigned int\000"
+ 642      7420756E 
+ 642      7369676E 
+ 642      65642069 
+ 642      6E7400
+ 643              	.LASF26:
+ 644 005b 5553425F 		.ascii	"USB_UART_rxBufferInternal\000"
+ 644      55415254 
+ 644      5F727842 
+ 644      75666665 
+ 644      72496E74 
+ 645              	.LASF18:
+ 646 0075 6C6F6348 		.ascii	"locHead\000"
+ 646      65616400 
+ 647              	.LASF11:
+ 648 007d 666C6F61 		.ascii	"float\000"
+ 648      7400
+ 649              	.LASF24:
+ 650 0083 5553425F 		.ascii	"USB_UART_txBufferHead\000"
+ 650      55415254 
+ 650      5F747842 
+ 650      75666665 
+ 650      72486561 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 16
+
+
+ 651              	.LASF1:
+ 652 0099 756E7369 		.ascii	"unsigned char\000"
+ 652      676E6564 
+ 652      20636861 
+ 652      7200
+ 653              	.LASF5:
+ 654 00a7 6C6F6E67 		.ascii	"long unsigned int\000"
+ 654      20756E73 
+ 654      69676E65 
+ 654      6420696E 
+ 654      7400
+ 655              	.LASF9:
+ 656 00b9 75696E74 		.ascii	"uint8\000"
+ 656      3800
+ 657              	.LASF28:
+ 658 00bf 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 658      43313120 
+ 658      352E342E 
+ 658      31203230 
+ 658      31363036 
+ 659 00f2 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 659      20726576 
+ 659      6973696F 
+ 659      6E203233 
+ 659      37373135 
+ 660 0125 33202D66 		.ascii	"3 -ffunction-sections -ffat-lto-objects\000"
+ 660      66756E63 
+ 660      74696F6E 
+ 660      2D736563 
+ 660      74696F6E 
+ 661              	.LASF12:
+ 662 014d 646F7562 		.ascii	"double\000"
+ 662      6C6500
+ 663              	.LASF23:
+ 664 0154 5553425F 		.ascii	"USB_UART_rxBufferOverflow\000"
+ 664      55415254 
+ 664      5F727842 
+ 664      75666665 
+ 664      724F7665 
+ 665              	.LASF10:
+ 666 016e 75696E74 		.ascii	"uint32\000"
+ 666      333200
+ 667              	.LASF8:
+ 668 0175 756E7369 		.ascii	"unsigned int\000"
+ 668      676E6564 
+ 668      20696E74 
+ 668      00
+ 669              	.LASF7:
+ 670 0182 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 670      206C6F6E 
+ 670      6720756E 
+ 670      7369676E 
+ 670      65642069 
+ 671              	.LASF21:
+ 672 0199 5553425F 		.ascii	"USB_UART_rxBufferHead\000"
+ 672      55415254 
+ 672      5F727842 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 17
+
+
+ 672      75666665 
+ 672      72486561 
+ 673              	.LASF15:
+ 674 01af 63796973 		.ascii	"cyisraddress\000"
+ 674      72616464 
+ 674      72657373 
+ 674      00
+ 675              	.LASF19:
+ 676 01bc 6C6F6354 		.ascii	"locTail\000"
+ 676      61696C00 
+ 677              	.LASF17:
+ 678 01c4 73697A65 		.ascii	"sizetype\000"
+ 678      74797065 
+ 678      00
+ 679              	.LASF6:
+ 680 01cd 6C6F6E67 		.ascii	"long long int\000"
+ 680      206C6F6E 
+ 680      6720696E 
+ 680      7400
+ 681              	.LASF13:
+ 682 01db 63686172 		.ascii	"char\000"
+ 682      00
+ 683              	.LASF20:
+ 684 01e0 5553425F 		.ascii	"USB_UART_customIntrHandler\000"
+ 684      55415254 
+ 684      5F637573 
+ 684      746F6D49 
+ 684      6E747248 
+ 685              	.LASF27:
+ 686 01fb 5553425F 		.ascii	"USB_UART_txBufferInternal\000"
+ 686      55415254 
+ 686      5F747842 
+ 686      75666665 
+ 686      72496E74 
+ 687              	.LASF2:
+ 688 0215 73686F72 		.ascii	"short int\000"
+ 688      7420696E 
+ 688      7400
+ 689              	.LASF4:
+ 690 021f 6C6F6E67 		.ascii	"long int\000"
+ 690      20696E74 
+ 690      00
+ 691              	.LASF30:
+ 692 0228 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 692      73657273 
+ 692      5C416664 
+ 692      68616C41 
+ 692      74696666 
+ 693 0257 736D6172 		.ascii	"smart_winch_prototype\\Workspace01\\Prototype.cydsn"
+ 693      745F7769 
+ 693      6E63685F 
+ 693      70726F74 
+ 693      6F747970 
+ 694 0288 00       		.ascii	"\000"
+ 695              	.LASF16:
+ 696 0289 6C6F6E67 		.ascii	"long double\000"
+ 696      20646F75 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccvQHQPs.s 			page 18
+
+
+ 696      626C6500 
+ 697              	.LASF0:
+ 698 0295 7369676E 		.ascii	"signed char\000"
+ 698      65642063 
+ 698      68617200 
+ 699              	.LASF29:
+ 700 02a1 47656E65 		.ascii	"Generated_Source\\PSoC4\\USB_UART_SPI_UART_INT.c\000"
+ 700      72617465 
+ 700      645F536F 
+ 700      75726365 
+ 700      5C50536F 
+ 701              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

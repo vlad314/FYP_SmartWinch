@@ -1,0 +1,1169 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	__aeabi_i2f
+  20              		.global	__aeabi_f2iz
+  21              		.section	.text.main,"ax",%progbits
+  22              		.align	2
+  23              		.global	main
+  24              		.code	16
+  25              		.thumb_func
+  26              		.type	main, %function
+  27              	main:
+  28              	.LFB34:
+  29              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   9:main.c        ****  *
+  10:main.c        ****  * ========================================
+  11:main.c        **** */
+  12:main.c        **** #include "project.h"
+  13:main.c        **** #include "pid.h"
+  14:main.c        **** #include "motor.h"
+  15:main.c        **** #include "modbusRTU.h"
+  16:main.c        **** #include "modbus_regs.h"
+  17:main.c        **** #include "millis.h"
+  18:main.c        **** 
+  19:main.c        **** 
+  20:main.c        **** float motor_pwm, setpoint, pid_fb;
+  21:main.c        **** 
+  22:main.c        **** int main(void)
+  23:main.c        **** {
+  30              		.loc 1 23 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 2
+
+
+  35              		.cfi_def_cfa_offset 20
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 83B0     		sub	sp, sp, #12
+  42              		.cfi_def_cfa_offset 32
+  24:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  43              		.loc 1 24 0
+  44              		.syntax divided
+  45              	@ 24 "main.c" 1
+  46 0004 62B6     		CPSIE   i
+  47              	@ 0 "" 2
+  25:main.c        **** 
+  26:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  27:main.c        ****     LED_Write(0); //on board led off
+  48              		.loc 1 27 0
+  49              		.thumb
+  50              		.syntax unified
+  51 0006 0020     		movs	r0, #0
+  52 0008 FFF7FEFF 		bl	LED_Write
+  53              	.LVL0:
+  28:main.c        ****     
+  29:main.c        ****     //used mainly for modbus
+  30:main.c        ****     USB_UART_Start();
+  54              		.loc 1 30 0
+  55 000c FFF7FEFF 		bl	USB_UART_Start
+  56              	.LVL1:
+  31:main.c        ****     
+  32:main.c        ****     //arduino-like millis
+  33:main.c        ****     Millis_Start();
+  57              		.loc 1 33 0
+  58 0010 FFF7FEFF 		bl	Millis_Start
+  59              	.LVL2:
+  34:main.c        ****            
+  35:main.c        ****     QuadDec_Start(); //quadrature decoder module (to sense cable distance)
+  60              		.loc 1 35 0
+  61 0014 FFF7FEFF 		bl	QuadDec_Start
+  62              	.LVL3:
+  36:main.c        ****     QuadDec_WriteCounter(0); //reset measure cable distance (it resets to 32768)
+  63              		.loc 1 36 0
+  64 0018 0020     		movs	r0, #0
+  65 001a FFF7FEFF 		bl	QuadDec_WriteCounter
+  66              	.LVL4:
+  37:main.c        ****         
+  38:main.c        ****     Motor_Start();            
+  67              		.loc 1 38 0
+  68 001e FFF7FEFF 		bl	Motor_Start
+  69              	.LVL5:
+  39:main.c        ****     
+  40:main.c        ****     PID_Init();
+  70              		.loc 1 40 0
+  71 0022 FFF7FEFF 		bl	PID_Init
+  72              	.LVL6:
+  41:main.c        ****     PID_Set_Setpoint(&setpoint); //set the address of setpoint variable
+  73              		.loc 1 41 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 3
+
+
+  74 0026 2248     		ldr	r0, .L3
+  75 0028 FFF7FEFF 		bl	PID_Set_Setpoint
+  76              	.LVL7:
+  42:main.c        ****     PID_Set_Input(&pid_fb); //set the address of feedback variable
+  77              		.loc 1 42 0
+  78 002c 2148     		ldr	r0, .L3+4
+  79 002e FFF7FEFF 		bl	PID_Set_Input
+  80              	.LVL8:
+  43:main.c        ****     PID_Set_Output(&motor_pwm); //set the address of output variable
+  81              		.loc 1 43 0
+  82 0032 2148     		ldr	r0, .L3+8
+  83 0034 FFF7FEFF 		bl	PID_Set_Output
+  84              	.LVL9:
+  44:main.c        ****     
+  45:main.c        ****     PID_ISR_StartEx(PID_Tick); //pid ticker routine is defined in pid.c
+  85              		.loc 1 45 0
+  86 0038 2048     		ldr	r0, .L3+12
+  87 003a FFF7FEFF 		bl	PID_ISR_StartEx
+  88              	.LVL10:
+  46:main.c        ****     PID_Tick_Timer_Start(); //start 12.5Hz PID timer 
+  89              		.loc 1 46 0
+  90 003e FFF7FEFF 		bl	PID_Tick_Timer_Start
+  91              	.LVL11:
+  47:main.c        ****       
+  48:main.c        ****     //reset setpoint on startup
+  49:main.c        ****     modbus_holding_regs[PID_Setpoint] = 0;
+  92              		.loc 1 49 0
+  93 0042 0022     		movs	r2, #0
+  94 0044 1E4B     		ldr	r3, .L3+16
+  95 0046 DA60     		str	r2, [r3, #12]
+  96              	.L2:
+  97              	.LBB2:
+  50:main.c        **** 
+  51:main.c        ****     for(;;)
+  52:main.c        ****     {
+  53:main.c        ****         /* Place your application code here. */
+  54:main.c        ****         
+  55:main.c        ****         //service modbus request if available
+  56:main.c        ****         modbusRTU_Update(1, modbus_holding_regs, MB_HREGS);
+  98              		.loc 1 56 0 discriminator 1
+  99 0048 1D4C     		ldr	r4, .L3+16
+ 100 004a 0522     		movs	r2, #5
+ 101 004c 2100     		movs	r1, r4
+ 102 004e 0120     		movs	r0, #1
+ 103 0050 FFF7FEFF 		bl	modbusRTU_Update
+ 104              	.LVL12:
+  57:main.c        ****         
+  58:main.c        ****         //read current position
+  59:main.c        ****         pid_fb = (int)QuadDec_ReadCounter() - 32768;
+ 105              		.loc 1 59 0 discriminator 1
+ 106 0054 FFF7FEFF 		bl	QuadDec_ReadCounter
+ 107              	.LVL13:
+ 108 0058 1A4B     		ldr	r3, .L3+20
+ 109 005a 9C46     		mov	ip, r3
+ 110 005c 6044     		add	r0, r0, ip
+ 111 005e 154D     		ldr	r5, .L3+4
+ 112 0060 FFF7FEFF 		bl	__aeabi_i2f
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 4
+
+
+ 113              	.LVL14:
+ 114 0064 2860     		str	r0, [r5]
+  60:main.c        ****         
+  61:main.c        ****         //send pid output to motor
+  62:main.c        ****         Motor_Bidirectional((int)motor_pwm);        
+ 115              		.loc 1 62 0 discriminator 1
+ 116 0066 144B     		ldr	r3, .L3+8
+ 117 0068 1868     		ldr	r0, [r3]
+ 118 006a FFF7FEFF 		bl	__aeabi_f2iz
+ 119              	.LVL15:
+ 120 006e FFF7FEFF 		bl	Motor_Bidirectional
+ 121              	.LVL16:
+  63:main.c        ****            
+  64:main.c        ****         //send the current reading to holding register so that it can be monitored via modbus link
+  65:main.c        ****         modbus_holding_regs[Current_Encoder_Position] = (int)pid_fb;
+ 122              		.loc 1 65 0 discriminator 1
+ 123 0072 2868     		ldr	r0, [r5]
+ 124 0074 FFF7FEFF 		bl	__aeabi_f2iz
+ 125              	.LVL17:
+ 126 0078 2061     		str	r0, [r4, #16]
+  66:main.c        ****         
+  67:main.c        ****         //fetch the latest settings from hregs
+  68:main.c        ****         setpoint = (float)modbus_holding_regs[PID_Setpoint];
+ 127              		.loc 1 68 0 discriminator 1
+ 128 007a E568     		ldr	r5, [r4, #12]
+ 129 007c 2800     		movs	r0, r5
+ 130 007e FFF7FEFF 		bl	__aeabi_i2f
+ 131              	.LVL18:
+ 132 0082 0B4B     		ldr	r3, .L3
+ 133 0084 1860     		str	r0, [r3]
+  69:main.c        ****         volatile int temp = 0;
+ 134              		.loc 1 69 0 discriminator 1
+ 135 0086 0023     		movs	r3, #0
+ 136 0088 0193     		str	r3, [sp, #4]
+  70:main.c        ****         temp = modbus_holding_regs[PID_Setpoint];
+ 137              		.loc 1 70 0 discriminator 1
+ 138 008a 0195     		str	r5, [sp, #4]
+  71:main.c        ****         
+  72:main.c        ****         //define pid gains (take from hregs)
+  73:main.c        ****         PID_Set_Gains((float)modbus_holding_regs[Kp], (float)modbus_holding_regs[Ki], (float)modbus
+ 139              		.loc 1 73 0 discriminator 1
+ 140 008c 2668     		ldr	r6, [r4]
+ 141 008e 6768     		ldr	r7, [r4, #4]
+ 142 0090 A068     		ldr	r0, [r4, #8]
+ 143 0092 FFF7FEFF 		bl	__aeabi_i2f
+ 144              	.LVL19:
+ 145 0096 051C     		adds	r5, r0, #0
+ 146 0098 3800     		movs	r0, r7
+ 147 009a FFF7FEFF 		bl	__aeabi_i2f
+ 148              	.LVL20:
+ 149 009e 041C     		adds	r4, r0, #0
+ 150 00a0 3000     		movs	r0, r6
+ 151 00a2 FFF7FEFF 		bl	__aeabi_i2f
+ 152              	.LVL21:
+ 153 00a6 2A1C     		adds	r2, r5, #0
+ 154 00a8 211C     		adds	r1, r4, #0
+ 155 00aa FFF7FEFF 		bl	PID_Set_Gains
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 5
+
+
+ 156              	.LVL22:
+ 157 00ae CBE7     		b	.L2
+ 158              	.L4:
+ 159              		.align	2
+ 160              	.L3:
+ 161 00b0 00000000 		.word	setpoint
+ 162 00b4 00000000 		.word	pid_fb
+ 163 00b8 00000000 		.word	motor_pwm
+ 164 00bc 00000000 		.word	PID_Tick
+ 165 00c0 00000000 		.word	modbus_holding_regs
+ 166 00c4 0080FFFF 		.word	-32768
+ 167              	.LBE2:
+ 168              		.cfi_endproc
+ 169              	.LFE34:
+ 170              		.size	main, .-main
+ 171              		.comm	pid_fb,4,4
+ 172              		.comm	setpoint,4,4
+ 173              		.comm	motor_pwm,4,4
+ 174              		.comm	modbus_holding_regs,20,4
+ 175              		.text
+ 176              	.Letext0:
+ 177              		.file 2 "modbus_regs.h"
+ 178              		.file 3 "modbusRTU.h"
+ 179              		.file 4 "Generated_Source\\PSoC4/QuadDec.h"
+ 180              		.file 5 "motor.h"
+ 181              		.file 6 "pid.h"
+ 182              		.file 7 "Generated_Source\\PSoC4/LED.h"
+ 183              		.file 8 "Generated_Source\\PSoC4/USB_UART.h"
+ 184              		.file 9 "millis.h"
+ 185              		.file 10 "Generated_Source\\PSoC4/PID_ISR.h"
+ 186              		.file 11 "Generated_Source\\PSoC4/PID_Tick_Timer.h"
+ 187              		.section	.debug_info,"",%progbits
+ 188              	.Ldebug_info0:
+ 189 0000 EE020000 		.4byte	0x2ee
+ 190 0004 0400     		.2byte	0x4
+ 191 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 192 000a 04       		.byte	0x4
+ 193 000b 01       		.uleb128 0x1
+ 194 000c 5C010000 		.4byte	.LASF37
+ 195 0010 0C       		.byte	0xc
+ 196 0011 0E020000 		.4byte	.LASF38
+ 197 0015 67020000 		.4byte	.LASF39
+ 198 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 199 001d 00000000 		.4byte	0
+ 200 0021 00000000 		.4byte	.Ldebug_line0
+ 201 0025 02       		.uleb128 0x2
+ 202 0026 04       		.byte	0x4
+ 203 0027 04       		.byte	0x4
+ 204 0028 6B000000 		.4byte	.LASF0
+ 205 002c 02       		.uleb128 0x2
+ 206 002d 01       		.byte	0x1
+ 207 002e 06       		.byte	0x6
+ 208 002f D4020000 		.4byte	.LASF1
+ 209 0033 02       		.uleb128 0x2
+ 210 0034 01       		.byte	0x1
+ 211 0035 08       		.byte	0x8
+ 212 0036 81000000 		.4byte	.LASF2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 6
+
+
+ 213 003a 02       		.uleb128 0x2
+ 214 003b 02       		.byte	0x2
+ 215 003c 05       		.byte	0x5
+ 216 003d D1000000 		.4byte	.LASF3
+ 217 0041 02       		.uleb128 0x2
+ 218 0042 02       		.byte	0x2
+ 219 0043 07       		.byte	0x7
+ 220 0044 B7000000 		.4byte	.LASF4
+ 221 0048 02       		.uleb128 0x2
+ 222 0049 04       		.byte	0x4
+ 223 004a 05       		.byte	0x5
+ 224 004b 5E020000 		.4byte	.LASF5
+ 225 004f 02       		.uleb128 0x2
+ 226 0050 04       		.byte	0x4
+ 227 0051 07       		.byte	0x7
+ 228 0052 A0000000 		.4byte	.LASF6
+ 229 0056 02       		.uleb128 0x2
+ 230 0057 08       		.byte	0x8
+ 231 0058 05       		.byte	0x5
+ 232 0059 00020000 		.4byte	.LASF7
+ 233 005d 02       		.uleb128 0x2
+ 234 005e 08       		.byte	0x8
+ 235 005f 07       		.byte	0x7
+ 236 0060 13010000 		.4byte	.LASF8
+ 237 0064 03       		.uleb128 0x3
+ 238 0065 04       		.byte	0x4
+ 239 0066 05       		.byte	0x5
+ 240 0067 696E7400 		.ascii	"int\000"
+ 241 006b 02       		.uleb128 0x2
+ 242 006c 04       		.byte	0x4
+ 243 006d 07       		.byte	0x7
+ 244 006e F8000000 		.4byte	.LASF9
+ 245 0072 02       		.uleb128 0x2
+ 246 0073 08       		.byte	0x8
+ 247 0074 04       		.byte	0x4
+ 248 0075 CA000000 		.4byte	.LASF10
+ 249 0079 02       		.uleb128 0x2
+ 250 007a 01       		.byte	0x1
+ 251 007b 08       		.byte	0x8
+ 252 007c 15020000 		.4byte	.LASF11
+ 253 0080 02       		.uleb128 0x2
+ 254 0081 08       		.byte	0x8
+ 255 0082 04       		.byte	0x4
+ 256 0083 C8020000 		.4byte	.LASF12
+ 257 0087 02       		.uleb128 0x2
+ 258 0088 04       		.byte	0x4
+ 259 0089 07       		.byte	0x7
+ 260 008a EA010000 		.4byte	.LASF13
+ 261 008e 04       		.uleb128 0x4
+ 262 008f 01       		.byte	0x1
+ 263 0090 33000000 		.4byte	0x33
+ 264 0094 02       		.byte	0x2
+ 265 0095 0E       		.byte	0xe
+ 266 0096 BC000000 		.4byte	0xbc
+ 267 009a 05       		.uleb128 0x5
+ 268 009b 4B7000   		.ascii	"Kp\000"
+ 269 009e 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 7
+
+
+ 270 009f 05       		.uleb128 0x5
+ 271 00a0 4B6900   		.ascii	"Ki\000"
+ 272 00a3 01       		.byte	0x1
+ 273 00a4 05       		.uleb128 0x5
+ 274 00a5 4B6400   		.ascii	"Kd\000"
+ 275 00a8 02       		.byte	0x2
+ 276 00a9 06       		.uleb128 0x6
+ 277 00aa 2A010000 		.4byte	.LASF14
+ 278 00ae 03       		.byte	0x3
+ 279 00af 06       		.uleb128 0x6
+ 280 00b0 30000000 		.4byte	.LASF15
+ 281 00b4 04       		.byte	0x4
+ 282 00b5 06       		.uleb128 0x6
+ 283 00b6 E0020000 		.4byte	.LASF16
+ 284 00ba 05       		.byte	0x5
+ 285 00bb 00       		.byte	0
+ 286 00bc 07       		.uleb128 0x7
+ 287 00bd 1A020000 		.4byte	.LASF40
+ 288 00c1 01       		.byte	0x1
+ 289 00c2 16       		.byte	0x16
+ 290 00c3 64000000 		.4byte	0x64
+ 291 00c7 00000000 		.4byte	.LFB34
+ 292 00cb C8000000 		.4byte	.LFE34-.LFB34
+ 293 00cf 01       		.uleb128 0x1
+ 294 00d0 9C       		.byte	0x9c
+ 295 00d1 E4010000 		.4byte	0x1e4
+ 296 00d5 08       		.uleb128 0x8
+ 297 00d6 48000000 		.4byte	.LBB2
+ 298 00da 80000000 		.4byte	.LBE2-.LBB2
+ 299 00de 39010000 		.4byte	0x139
+ 300 00e2 09       		.uleb128 0x9
+ 301 00e3 B2000000 		.4byte	.LASF41
+ 302 00e7 01       		.byte	0x1
+ 303 00e8 45       		.byte	0x45
+ 304 00e9 E4010000 		.4byte	0x1e4
+ 305 00ed 02       		.uleb128 0x2
+ 306 00ee 91       		.byte	0x91
+ 307 00ef 64       		.sleb128 -28
+ 308 00f0 0A       		.uleb128 0xa
+ 309 00f1 54000000 		.4byte	.LVL12
+ 310 00f5 3D020000 		.4byte	0x23d
+ 311 00f9 0E010000 		.4byte	0x10e
+ 312 00fd 0B       		.uleb128 0xb
+ 313 00fe 01       		.uleb128 0x1
+ 314 00ff 50       		.byte	0x50
+ 315 0100 01       		.uleb128 0x1
+ 316 0101 31       		.byte	0x31
+ 317 0102 0B       		.uleb128 0xb
+ 318 0103 01       		.uleb128 0x1
+ 319 0104 51       		.byte	0x51
+ 320 0105 02       		.uleb128 0x2
+ 321 0106 74       		.byte	0x74
+ 322 0107 00       		.sleb128 0
+ 323 0108 0B       		.uleb128 0xb
+ 324 0109 01       		.uleb128 0x1
+ 325 010a 52       		.byte	0x52
+ 326 010b 01       		.uleb128 0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 8
+
+
+ 327 010c 35       		.byte	0x35
+ 328 010d 00       		.byte	0
+ 329 010e 0C       		.uleb128 0xc
+ 330 010f 58000000 		.4byte	.LVL13
+ 331 0113 48020000 		.4byte	0x248
+ 332 0117 0C       		.uleb128 0xc
+ 333 0118 72000000 		.4byte	.LVL16
+ 334 011c 54020000 		.4byte	0x254
+ 335 0120 0D       		.uleb128 0xd
+ 336 0121 AE000000 		.4byte	.LVL22
+ 337 0125 5F020000 		.4byte	0x25f
+ 338 0129 0B       		.uleb128 0xb
+ 339 012a 01       		.uleb128 0x1
+ 340 012b 51       		.byte	0x51
+ 341 012c 03       		.uleb128 0x3
+ 342 012d F5       		.byte	0xf5
+ 343 012e 04       		.uleb128 0x4
+ 344 012f 25       		.uleb128 0x25
+ 345 0130 0B       		.uleb128 0xb
+ 346 0131 01       		.uleb128 0x1
+ 347 0132 52       		.byte	0x52
+ 348 0133 03       		.uleb128 0x3
+ 349 0134 F5       		.byte	0xf5
+ 350 0135 05       		.uleb128 0x5
+ 351 0136 25       		.uleb128 0x25
+ 352 0137 00       		.byte	0
+ 353 0138 00       		.byte	0
+ 354 0139 0A       		.uleb128 0xa
+ 355 013a 0C000000 		.4byte	.LVL0
+ 356 013e 6A020000 		.4byte	0x26a
+ 357 0142 4C010000 		.4byte	0x14c
+ 358 0146 0B       		.uleb128 0xb
+ 359 0147 01       		.uleb128 0x1
+ 360 0148 50       		.byte	0x50
+ 361 0149 01       		.uleb128 0x1
+ 362 014a 30       		.byte	0x30
+ 363 014b 00       		.byte	0
+ 364 014c 0C       		.uleb128 0xc
+ 365 014d 10000000 		.4byte	.LVL1
+ 366 0151 75020000 		.4byte	0x275
+ 367 0155 0C       		.uleb128 0xc
+ 368 0156 14000000 		.4byte	.LVL2
+ 369 015a 80020000 		.4byte	0x280
+ 370 015e 0C       		.uleb128 0xc
+ 371 015f 18000000 		.4byte	.LVL3
+ 372 0163 8B020000 		.4byte	0x28b
+ 373 0167 0A       		.uleb128 0xa
+ 374 0168 1E000000 		.4byte	.LVL4
+ 375 016c 97020000 		.4byte	0x297
+ 376 0170 7A010000 		.4byte	0x17a
+ 377 0174 0B       		.uleb128 0xb
+ 378 0175 01       		.uleb128 0x1
+ 379 0176 50       		.byte	0x50
+ 380 0177 01       		.uleb128 0x1
+ 381 0178 30       		.byte	0x30
+ 382 0179 00       		.byte	0
+ 383 017a 0C       		.uleb128 0xc
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 9
+
+
+ 384 017b 22000000 		.4byte	.LVL5
+ 385 017f A3020000 		.4byte	0x2a3
+ 386 0183 0C       		.uleb128 0xc
+ 387 0184 26000000 		.4byte	.LVL6
+ 388 0188 AE020000 		.4byte	0x2ae
+ 389 018c 0A       		.uleb128 0xa
+ 390 018d 2C000000 		.4byte	.LVL7
+ 391 0191 B9020000 		.4byte	0x2b9
+ 392 0195 A3010000 		.4byte	0x1a3
+ 393 0199 0B       		.uleb128 0xb
+ 394 019a 01       		.uleb128 0x1
+ 395 019b 50       		.byte	0x50
+ 396 019c 05       		.uleb128 0x5
+ 397 019d 03       		.byte	0x3
+ 398 019e 00000000 		.4byte	setpoint
+ 399 01a2 00       		.byte	0
+ 400 01a3 0A       		.uleb128 0xa
+ 401 01a4 32000000 		.4byte	.LVL8
+ 402 01a8 C4020000 		.4byte	0x2c4
+ 403 01ac BA010000 		.4byte	0x1ba
+ 404 01b0 0B       		.uleb128 0xb
+ 405 01b1 01       		.uleb128 0x1
+ 406 01b2 50       		.byte	0x50
+ 407 01b3 05       		.uleb128 0x5
+ 408 01b4 03       		.byte	0x3
+ 409 01b5 00000000 		.4byte	pid_fb
+ 410 01b9 00       		.byte	0
+ 411 01ba 0A       		.uleb128 0xa
+ 412 01bb 38000000 		.4byte	.LVL9
+ 413 01bf CF020000 		.4byte	0x2cf
+ 414 01c3 D1010000 		.4byte	0x1d1
+ 415 01c7 0B       		.uleb128 0xb
+ 416 01c8 01       		.uleb128 0x1
+ 417 01c9 50       		.byte	0x50
+ 418 01ca 05       		.uleb128 0x5
+ 419 01cb 03       		.byte	0x3
+ 420 01cc 00000000 		.4byte	motor_pwm
+ 421 01d0 00       		.byte	0
+ 422 01d1 0C       		.uleb128 0xc
+ 423 01d2 3E000000 		.4byte	.LVL10
+ 424 01d6 DA020000 		.4byte	0x2da
+ 425 01da 0C       		.uleb128 0xc
+ 426 01db 42000000 		.4byte	.LVL11
+ 427 01df E5020000 		.4byte	0x2e5
+ 428 01e3 00       		.byte	0
+ 429 01e4 0E       		.uleb128 0xe
+ 430 01e5 64000000 		.4byte	0x64
+ 431 01e9 0F       		.uleb128 0xf
+ 432 01ea 64000000 		.4byte	0x64
+ 433 01ee F9010000 		.4byte	0x1f9
+ 434 01f2 10       		.uleb128 0x10
+ 435 01f3 87000000 		.4byte	0x87
+ 436 01f7 04       		.byte	0x4
+ 437 01f8 00       		.byte	0
+ 438 01f9 11       		.uleb128 0x11
+ 439 01fa E4000000 		.4byte	.LASF17
+ 440 01fe 02       		.byte	0x2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 10
+
+
+ 441 01ff 17       		.byte	0x17
+ 442 0200 E9010000 		.4byte	0x1e9
+ 443 0204 05       		.uleb128 0x5
+ 444 0205 03       		.byte	0x3
+ 445 0206 00000000 		.4byte	modbus_holding_regs
+ 446 020a 11       		.uleb128 0x11
+ 447 020b 52010000 		.4byte	.LASF18
+ 448 020f 01       		.byte	0x1
+ 449 0210 14       		.byte	0x14
+ 450 0211 25000000 		.4byte	0x25
+ 451 0215 05       		.uleb128 0x5
+ 452 0216 03       		.byte	0x3
+ 453 0217 00000000 		.4byte	motor_pwm
+ 454 021b 11       		.uleb128 0x11
+ 455 021c F7020000 		.4byte	.LASF19
+ 456 0220 01       		.byte	0x1
+ 457 0221 14       		.byte	0x14
+ 458 0222 25000000 		.4byte	0x25
+ 459 0226 05       		.uleb128 0x5
+ 460 0227 03       		.byte	0x3
+ 461 0228 00000000 		.4byte	setpoint
+ 462 022c 11       		.uleb128 0x11
+ 463 022d 43020000 		.4byte	.LASF20
+ 464 0231 01       		.byte	0x1
+ 465 0232 14       		.byte	0x14
+ 466 0233 25000000 		.4byte	0x25
+ 467 0237 05       		.uleb128 0x5
+ 468 0238 03       		.byte	0x3
+ 469 0239 00000000 		.4byte	pid_fb
+ 470 023d 12       		.uleb128 0x12
+ 471 023e 1F000000 		.4byte	.LASF21
+ 472 0242 1F000000 		.4byte	.LASF21
+ 473 0246 03       		.byte	0x3
+ 474 0247 44       		.byte	0x44
+ 475 0248 13       		.uleb128 0x13
+ 476 0249 4A020000 		.4byte	.LASF22
+ 477 024d 4A020000 		.4byte	.LASF22
+ 478 0251 04       		.byte	0x4
+ 479 0252 4B01     		.2byte	0x14b
+ 480 0254 12       		.uleb128 0x12
+ 481 0255 49000000 		.4byte	.LASF23
+ 482 0259 49000000 		.4byte	.LASF23
+ 483 025d 05       		.byte	0x5
+ 484 025e 0F       		.byte	0xf
+ 485 025f 12       		.uleb128 0x12
+ 486 0260 05010000 		.4byte	.LASF24
+ 487 0264 05010000 		.4byte	.LASF24
+ 488 0268 06       		.byte	0x6
+ 489 0269 0F       		.byte	0xf
+ 490 026a 12       		.uleb128 0x12
+ 491 026b 15000000 		.4byte	.LASF25
+ 492 026f 15000000 		.4byte	.LASF25
+ 493 0273 07       		.byte	0x7
+ 494 0274 33       		.byte	0x33
+ 495 0275 12       		.uleb128 0x12
+ 496 0276 43010000 		.4byte	.LASF26
+ 497 027a 43010000 		.4byte	.LASF26
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 11
+
+
+ 498 027e 08       		.byte	0x8
+ 499 027f 6E       		.byte	0x6e
+ 500 0280 12       		.uleb128 0x12
+ 501 0281 F3010000 		.4byte	.LASF27
+ 502 0285 F3010000 		.4byte	.LASF27
+ 503 0289 09       		.byte	0x9
+ 504 028a 15       		.byte	0x15
+ 505 028b 13       		.uleb128 0x13
+ 506 028c 5D000000 		.4byte	.LASF28
+ 507 0290 5D000000 		.4byte	.LASF28
+ 508 0294 04       		.byte	0x4
+ 509 0295 3201     		.2byte	0x132
+ 510 0297 13       		.uleb128 0x13
+ 511 0298 00000000 		.4byte	.LASF29
+ 512 029c 00000000 		.4byte	.LASF29
+ 513 02a0 04       		.byte	0x4
+ 514 02a1 4A01     		.2byte	0x14a
+ 515 02a3 12       		.uleb128 0x12
+ 516 02a4 37010000 		.4byte	.LASF30
+ 517 02a8 37010000 		.4byte	.LASF30
+ 518 02ac 05       		.byte	0x5
+ 519 02ad 10       		.byte	0x10
+ 520 02ae 12       		.uleb128 0x12
+ 521 02af DB000000 		.4byte	.LASF31
+ 522 02b3 DB000000 		.4byte	.LASF31
+ 523 02b7 06       		.byte	0x6
+ 524 02b8 10       		.byte	0x10
+ 525 02b9 12       		.uleb128 0x12
+ 526 02ba 8F000000 		.4byte	.LASF32
+ 527 02be 8F000000 		.4byte	.LASF32
+ 528 02c2 06       		.byte	0x6
+ 529 02c3 11       		.byte	0x11
+ 530 02c4 12       		.uleb128 0x12
+ 531 02c5 E9020000 		.4byte	.LASF33
+ 532 02c9 E9020000 		.4byte	.LASF33
+ 533 02cd 06       		.byte	0x6
+ 534 02ce 12       		.byte	0x12
+ 535 02cf 12       		.uleb128 0x12
+ 536 02d0 1F020000 		.4byte	.LASF34
+ 537 02d4 1F020000 		.4byte	.LASF34
+ 538 02d8 06       		.byte	0x6
+ 539 02d9 13       		.byte	0x13
+ 540 02da 12       		.uleb128 0x12
+ 541 02db 71000000 		.4byte	.LASF35
+ 542 02df 71000000 		.4byte	.LASF35
+ 543 02e3 0A       		.byte	0xa
+ 544 02e4 18       		.byte	0x18
+ 545 02e5 13       		.uleb128 0x13
+ 546 02e6 2E020000 		.4byte	.LASF36
+ 547 02ea 2E020000 		.4byte	.LASF36
+ 548 02ee 0B       		.byte	0xb
+ 549 02ef 3201     		.2byte	0x132
+ 550 02f1 00       		.byte	0
+ 551              		.section	.debug_abbrev,"",%progbits
+ 552              	.Ldebug_abbrev0:
+ 553 0000 01       		.uleb128 0x1
+ 554 0001 11       		.uleb128 0x11
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 12
+
+
+ 555 0002 01       		.byte	0x1
+ 556 0003 25       		.uleb128 0x25
+ 557 0004 0E       		.uleb128 0xe
+ 558 0005 13       		.uleb128 0x13
+ 559 0006 0B       		.uleb128 0xb
+ 560 0007 03       		.uleb128 0x3
+ 561 0008 0E       		.uleb128 0xe
+ 562 0009 1B       		.uleb128 0x1b
+ 563 000a 0E       		.uleb128 0xe
+ 564 000b 55       		.uleb128 0x55
+ 565 000c 17       		.uleb128 0x17
+ 566 000d 11       		.uleb128 0x11
+ 567 000e 01       		.uleb128 0x1
+ 568 000f 10       		.uleb128 0x10
+ 569 0010 17       		.uleb128 0x17
+ 570 0011 00       		.byte	0
+ 571 0012 00       		.byte	0
+ 572 0013 02       		.uleb128 0x2
+ 573 0014 24       		.uleb128 0x24
+ 574 0015 00       		.byte	0
+ 575 0016 0B       		.uleb128 0xb
+ 576 0017 0B       		.uleb128 0xb
+ 577 0018 3E       		.uleb128 0x3e
+ 578 0019 0B       		.uleb128 0xb
+ 579 001a 03       		.uleb128 0x3
+ 580 001b 0E       		.uleb128 0xe
+ 581 001c 00       		.byte	0
+ 582 001d 00       		.byte	0
+ 583 001e 03       		.uleb128 0x3
+ 584 001f 24       		.uleb128 0x24
+ 585 0020 00       		.byte	0
+ 586 0021 0B       		.uleb128 0xb
+ 587 0022 0B       		.uleb128 0xb
+ 588 0023 3E       		.uleb128 0x3e
+ 589 0024 0B       		.uleb128 0xb
+ 590 0025 03       		.uleb128 0x3
+ 591 0026 08       		.uleb128 0x8
+ 592 0027 00       		.byte	0
+ 593 0028 00       		.byte	0
+ 594 0029 04       		.uleb128 0x4
+ 595 002a 04       		.uleb128 0x4
+ 596 002b 01       		.byte	0x1
+ 597 002c 0B       		.uleb128 0xb
+ 598 002d 0B       		.uleb128 0xb
+ 599 002e 49       		.uleb128 0x49
+ 600 002f 13       		.uleb128 0x13
+ 601 0030 3A       		.uleb128 0x3a
+ 602 0031 0B       		.uleb128 0xb
+ 603 0032 3B       		.uleb128 0x3b
+ 604 0033 0B       		.uleb128 0xb
+ 605 0034 01       		.uleb128 0x1
+ 606 0035 13       		.uleb128 0x13
+ 607 0036 00       		.byte	0
+ 608 0037 00       		.byte	0
+ 609 0038 05       		.uleb128 0x5
+ 610 0039 28       		.uleb128 0x28
+ 611 003a 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 13
+
+
+ 612 003b 03       		.uleb128 0x3
+ 613 003c 08       		.uleb128 0x8
+ 614 003d 1C       		.uleb128 0x1c
+ 615 003e 0B       		.uleb128 0xb
+ 616 003f 00       		.byte	0
+ 617 0040 00       		.byte	0
+ 618 0041 06       		.uleb128 0x6
+ 619 0042 28       		.uleb128 0x28
+ 620 0043 00       		.byte	0
+ 621 0044 03       		.uleb128 0x3
+ 622 0045 0E       		.uleb128 0xe
+ 623 0046 1C       		.uleb128 0x1c
+ 624 0047 0B       		.uleb128 0xb
+ 625 0048 00       		.byte	0
+ 626 0049 00       		.byte	0
+ 627 004a 07       		.uleb128 0x7
+ 628 004b 2E       		.uleb128 0x2e
+ 629 004c 01       		.byte	0x1
+ 630 004d 3F       		.uleb128 0x3f
+ 631 004e 19       		.uleb128 0x19
+ 632 004f 03       		.uleb128 0x3
+ 633 0050 0E       		.uleb128 0xe
+ 634 0051 3A       		.uleb128 0x3a
+ 635 0052 0B       		.uleb128 0xb
+ 636 0053 3B       		.uleb128 0x3b
+ 637 0054 0B       		.uleb128 0xb
+ 638 0055 27       		.uleb128 0x27
+ 639 0056 19       		.uleb128 0x19
+ 640 0057 49       		.uleb128 0x49
+ 641 0058 13       		.uleb128 0x13
+ 642 0059 8701     		.uleb128 0x87
+ 643 005b 19       		.uleb128 0x19
+ 644 005c 11       		.uleb128 0x11
+ 645 005d 01       		.uleb128 0x1
+ 646 005e 12       		.uleb128 0x12
+ 647 005f 06       		.uleb128 0x6
+ 648 0060 40       		.uleb128 0x40
+ 649 0061 18       		.uleb128 0x18
+ 650 0062 9642     		.uleb128 0x2116
+ 651 0064 19       		.uleb128 0x19
+ 652 0065 01       		.uleb128 0x1
+ 653 0066 13       		.uleb128 0x13
+ 654 0067 00       		.byte	0
+ 655 0068 00       		.byte	0
+ 656 0069 08       		.uleb128 0x8
+ 657 006a 0B       		.uleb128 0xb
+ 658 006b 01       		.byte	0x1
+ 659 006c 11       		.uleb128 0x11
+ 660 006d 01       		.uleb128 0x1
+ 661 006e 12       		.uleb128 0x12
+ 662 006f 06       		.uleb128 0x6
+ 663 0070 01       		.uleb128 0x1
+ 664 0071 13       		.uleb128 0x13
+ 665 0072 00       		.byte	0
+ 666 0073 00       		.byte	0
+ 667 0074 09       		.uleb128 0x9
+ 668 0075 34       		.uleb128 0x34
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 14
+
+
+ 669 0076 00       		.byte	0
+ 670 0077 03       		.uleb128 0x3
+ 671 0078 0E       		.uleb128 0xe
+ 672 0079 3A       		.uleb128 0x3a
+ 673 007a 0B       		.uleb128 0xb
+ 674 007b 3B       		.uleb128 0x3b
+ 675 007c 0B       		.uleb128 0xb
+ 676 007d 49       		.uleb128 0x49
+ 677 007e 13       		.uleb128 0x13
+ 678 007f 02       		.uleb128 0x2
+ 679 0080 18       		.uleb128 0x18
+ 680 0081 00       		.byte	0
+ 681 0082 00       		.byte	0
+ 682 0083 0A       		.uleb128 0xa
+ 683 0084 898201   		.uleb128 0x4109
+ 684 0087 01       		.byte	0x1
+ 685 0088 11       		.uleb128 0x11
+ 686 0089 01       		.uleb128 0x1
+ 687 008a 31       		.uleb128 0x31
+ 688 008b 13       		.uleb128 0x13
+ 689 008c 01       		.uleb128 0x1
+ 690 008d 13       		.uleb128 0x13
+ 691 008e 00       		.byte	0
+ 692 008f 00       		.byte	0
+ 693 0090 0B       		.uleb128 0xb
+ 694 0091 8A8201   		.uleb128 0x410a
+ 695 0094 00       		.byte	0
+ 696 0095 02       		.uleb128 0x2
+ 697 0096 18       		.uleb128 0x18
+ 698 0097 9142     		.uleb128 0x2111
+ 699 0099 18       		.uleb128 0x18
+ 700 009a 00       		.byte	0
+ 701 009b 00       		.byte	0
+ 702 009c 0C       		.uleb128 0xc
+ 703 009d 898201   		.uleb128 0x4109
+ 704 00a0 00       		.byte	0
+ 705 00a1 11       		.uleb128 0x11
+ 706 00a2 01       		.uleb128 0x1
+ 707 00a3 31       		.uleb128 0x31
+ 708 00a4 13       		.uleb128 0x13
+ 709 00a5 00       		.byte	0
+ 710 00a6 00       		.byte	0
+ 711 00a7 0D       		.uleb128 0xd
+ 712 00a8 898201   		.uleb128 0x4109
+ 713 00ab 01       		.byte	0x1
+ 714 00ac 11       		.uleb128 0x11
+ 715 00ad 01       		.uleb128 0x1
+ 716 00ae 31       		.uleb128 0x31
+ 717 00af 13       		.uleb128 0x13
+ 718 00b0 00       		.byte	0
+ 719 00b1 00       		.byte	0
+ 720 00b2 0E       		.uleb128 0xe
+ 721 00b3 35       		.uleb128 0x35
+ 722 00b4 00       		.byte	0
+ 723 00b5 49       		.uleb128 0x49
+ 724 00b6 13       		.uleb128 0x13
+ 725 00b7 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 15
+
+
+ 726 00b8 00       		.byte	0
+ 727 00b9 0F       		.uleb128 0xf
+ 728 00ba 01       		.uleb128 0x1
+ 729 00bb 01       		.byte	0x1
+ 730 00bc 49       		.uleb128 0x49
+ 731 00bd 13       		.uleb128 0x13
+ 732 00be 01       		.uleb128 0x1
+ 733 00bf 13       		.uleb128 0x13
+ 734 00c0 00       		.byte	0
+ 735 00c1 00       		.byte	0
+ 736 00c2 10       		.uleb128 0x10
+ 737 00c3 21       		.uleb128 0x21
+ 738 00c4 00       		.byte	0
+ 739 00c5 49       		.uleb128 0x49
+ 740 00c6 13       		.uleb128 0x13
+ 741 00c7 2F       		.uleb128 0x2f
+ 742 00c8 0B       		.uleb128 0xb
+ 743 00c9 00       		.byte	0
+ 744 00ca 00       		.byte	0
+ 745 00cb 11       		.uleb128 0x11
+ 746 00cc 34       		.uleb128 0x34
+ 747 00cd 00       		.byte	0
+ 748 00ce 03       		.uleb128 0x3
+ 749 00cf 0E       		.uleb128 0xe
+ 750 00d0 3A       		.uleb128 0x3a
+ 751 00d1 0B       		.uleb128 0xb
+ 752 00d2 3B       		.uleb128 0x3b
+ 753 00d3 0B       		.uleb128 0xb
+ 754 00d4 49       		.uleb128 0x49
+ 755 00d5 13       		.uleb128 0x13
+ 756 00d6 3F       		.uleb128 0x3f
+ 757 00d7 19       		.uleb128 0x19
+ 758 00d8 02       		.uleb128 0x2
+ 759 00d9 18       		.uleb128 0x18
+ 760 00da 00       		.byte	0
+ 761 00db 00       		.byte	0
+ 762 00dc 12       		.uleb128 0x12
+ 763 00dd 2E       		.uleb128 0x2e
+ 764 00de 00       		.byte	0
+ 765 00df 3F       		.uleb128 0x3f
+ 766 00e0 19       		.uleb128 0x19
+ 767 00e1 3C       		.uleb128 0x3c
+ 768 00e2 19       		.uleb128 0x19
+ 769 00e3 6E       		.uleb128 0x6e
+ 770 00e4 0E       		.uleb128 0xe
+ 771 00e5 03       		.uleb128 0x3
+ 772 00e6 0E       		.uleb128 0xe
+ 773 00e7 3A       		.uleb128 0x3a
+ 774 00e8 0B       		.uleb128 0xb
+ 775 00e9 3B       		.uleb128 0x3b
+ 776 00ea 0B       		.uleb128 0xb
+ 777 00eb 00       		.byte	0
+ 778 00ec 00       		.byte	0
+ 779 00ed 13       		.uleb128 0x13
+ 780 00ee 2E       		.uleb128 0x2e
+ 781 00ef 00       		.byte	0
+ 782 00f0 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 16
+
+
+ 783 00f1 19       		.uleb128 0x19
+ 784 00f2 3C       		.uleb128 0x3c
+ 785 00f3 19       		.uleb128 0x19
+ 786 00f4 6E       		.uleb128 0x6e
+ 787 00f5 0E       		.uleb128 0xe
+ 788 00f6 03       		.uleb128 0x3
+ 789 00f7 0E       		.uleb128 0xe
+ 790 00f8 3A       		.uleb128 0x3a
+ 791 00f9 0B       		.uleb128 0xb
+ 792 00fa 3B       		.uleb128 0x3b
+ 793 00fb 05       		.uleb128 0x5
+ 794 00fc 00       		.byte	0
+ 795 00fd 00       		.byte	0
+ 796 00fe 00       		.byte	0
+ 797              		.section	.debug_aranges,"",%progbits
+ 798 0000 1C000000 		.4byte	0x1c
+ 799 0004 0200     		.2byte	0x2
+ 800 0006 00000000 		.4byte	.Ldebug_info0
+ 801 000a 04       		.byte	0x4
+ 802 000b 00       		.byte	0
+ 803 000c 0000     		.2byte	0
+ 804 000e 0000     		.2byte	0
+ 805 0010 00000000 		.4byte	.LFB34
+ 806 0014 C8000000 		.4byte	.LFE34-.LFB34
+ 807 0018 00000000 		.4byte	0
+ 808 001c 00000000 		.4byte	0
+ 809              		.section	.debug_ranges,"",%progbits
+ 810              	.Ldebug_ranges0:
+ 811 0000 00000000 		.4byte	.LFB34
+ 812 0004 C8000000 		.4byte	.LFE34
+ 813 0008 00000000 		.4byte	0
+ 814 000c 00000000 		.4byte	0
+ 815              		.section	.debug_line,"",%progbits
+ 816              	.Ldebug_line0:
+ 817 0000 04010000 		.section	.debug_str,"MS",%progbits,1
+ 817      0200B900 
+ 817      00000201 
+ 817      FB0E0D00 
+ 817      01010101 
+ 818              	.LASF29:
+ 819 0000 51756164 		.ascii	"QuadDec_WriteCounter\000"
+ 819      4465635F 
+ 819      57726974 
+ 819      65436F75 
+ 819      6E746572 
+ 820              	.LASF25:
+ 821 0015 4C45445F 		.ascii	"LED_Write\000"
+ 821      57726974 
+ 821      6500
+ 822              	.LASF21:
+ 823 001f 6D6F6462 		.ascii	"modbusRTU_Update\000"
+ 823      75735254 
+ 823      555F5570 
+ 823      64617465 
+ 823      00
+ 824              	.LASF15:
+ 825 0030 43757272 		.ascii	"Current_Encoder_Position\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 17
+
+
+ 825      656E745F 
+ 825      456E636F 
+ 825      6465725F 
+ 825      506F7369 
+ 826              	.LASF23:
+ 827 0049 4D6F746F 		.ascii	"Motor_Bidirectional\000"
+ 827      725F4269 
+ 827      64697265 
+ 827      6374696F 
+ 827      6E616C00 
+ 828              	.LASF28:
+ 829 005d 51756164 		.ascii	"QuadDec_Start\000"
+ 829      4465635F 
+ 829      53746172 
+ 829      7400
+ 830              	.LASF0:
+ 831 006b 666C6F61 		.ascii	"float\000"
+ 831      7400
+ 832              	.LASF35:
+ 833 0071 5049445F 		.ascii	"PID_ISR_StartEx\000"
+ 833      4953525F 
+ 833      53746172 
+ 833      74457800 
+ 834              	.LASF2:
+ 835 0081 756E7369 		.ascii	"unsigned char\000"
+ 835      676E6564 
+ 835      20636861 
+ 835      7200
+ 836              	.LASF32:
+ 837 008f 5049445F 		.ascii	"PID_Set_Setpoint\000"
+ 837      5365745F 
+ 837      53657470 
+ 837      6F696E74 
+ 837      00
+ 838              	.LASF6:
+ 839 00a0 6C6F6E67 		.ascii	"long unsigned int\000"
+ 839      20756E73 
+ 839      69676E65 
+ 839      6420696E 
+ 839      7400
+ 840              	.LASF41:
+ 841 00b2 74656D70 		.ascii	"temp\000"
+ 841      00
+ 842              	.LASF4:
+ 843 00b7 73686F72 		.ascii	"short unsigned int\000"
+ 843      7420756E 
+ 843      7369676E 
+ 843      65642069 
+ 843      6E7400
+ 844              	.LASF10:
+ 845 00ca 646F7562 		.ascii	"double\000"
+ 845      6C6500
+ 846              	.LASF3:
+ 847 00d1 73686F72 		.ascii	"short int\000"
+ 847      7420696E 
+ 847      7400
+ 848              	.LASF31:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 18
+
+
+ 849 00db 5049445F 		.ascii	"PID_Init\000"
+ 849      496E6974 
+ 849      00
+ 850              	.LASF17:
+ 851 00e4 6D6F6462 		.ascii	"modbus_holding_regs\000"
+ 851      75735F68 
+ 851      6F6C6469 
+ 851      6E675F72 
+ 851      65677300 
+ 852              	.LASF9:
+ 853 00f8 756E7369 		.ascii	"unsigned int\000"
+ 853      676E6564 
+ 853      20696E74 
+ 853      00
+ 854              	.LASF24:
+ 855 0105 5049445F 		.ascii	"PID_Set_Gains\000"
+ 855      5365745F 
+ 855      4761696E 
+ 855      7300
+ 856              	.LASF8:
+ 857 0113 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 857      206C6F6E 
+ 857      6720756E 
+ 857      7369676E 
+ 857      65642069 
+ 858              	.LASF14:
+ 859 012a 5049445F 		.ascii	"PID_Setpoint\000"
+ 859      53657470 
+ 859      6F696E74 
+ 859      00
+ 860              	.LASF30:
+ 861 0137 4D6F746F 		.ascii	"Motor_Start\000"
+ 861      725F5374 
+ 861      61727400 
+ 862              	.LASF26:
+ 863 0143 5553425F 		.ascii	"USB_UART_Start\000"
+ 863      55415254 
+ 863      5F537461 
+ 863      727400
+ 864              	.LASF18:
+ 865 0152 6D6F746F 		.ascii	"motor_pwm\000"
+ 865      725F7077 
+ 865      6D00
+ 866              	.LASF37:
+ 867 015c 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 867      43313120 
+ 867      352E342E 
+ 867      31203230 
+ 867      31363036 
+ 868 018f 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 868      20726576 
+ 868      6973696F 
+ 868      6E203233 
+ 868      37373135 
+ 869 01c2 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 869      66756E63 
+ 869      74696F6E 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 19
+
+
+ 869      2D736563 
+ 869      74696F6E 
+ 870              	.LASF13:
+ 871 01ea 73697A65 		.ascii	"sizetype\000"
+ 871      74797065 
+ 871      00
+ 872              	.LASF27:
+ 873 01f3 4D696C6C 		.ascii	"Millis_Start\000"
+ 873      69735F53 
+ 873      74617274 
+ 873      00
+ 874              	.LASF7:
+ 875 0200 6C6F6E67 		.ascii	"long long int\000"
+ 875      206C6F6E 
+ 875      6720696E 
+ 875      7400
+ 876              	.LASF38:
+ 877 020e 6D61696E 		.ascii	"main.c\000"
+ 877      2E6300
+ 878              	.LASF11:
+ 879 0215 63686172 		.ascii	"char\000"
+ 879      00
+ 880              	.LASF40:
+ 881 021a 6D61696E 		.ascii	"main\000"
+ 881      00
+ 882              	.LASF34:
+ 883 021f 5049445F 		.ascii	"PID_Set_Output\000"
+ 883      5365745F 
+ 883      4F757470 
+ 883      757400
+ 884              	.LASF36:
+ 885 022e 5049445F 		.ascii	"PID_Tick_Timer_Start\000"
+ 885      5469636B 
+ 885      5F54696D 
+ 885      65725F53 
+ 885      74617274 
+ 886              	.LASF20:
+ 887 0243 7069645F 		.ascii	"pid_fb\000"
+ 887      666200
+ 888              	.LASF22:
+ 889 024a 51756164 		.ascii	"QuadDec_ReadCounter\000"
+ 889      4465635F 
+ 889      52656164 
+ 889      436F756E 
+ 889      74657200 
+ 890              	.LASF5:
+ 891 025e 6C6F6E67 		.ascii	"long int\000"
+ 891      20696E74 
+ 891      00
+ 892              	.LASF39:
+ 893 0267 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 893      73657273 
+ 893      5C416664 
+ 893      68616C41 
+ 893      74696666 
+ 894 0296 736D6172 		.ascii	"smart_winch_prototype\\Workspace01\\Prototype.cydsn"
+ 894      745F7769 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cc3oooGx.s 			page 20
+
+
+ 894      6E63685F 
+ 894      70726F74 
+ 894      6F747970 
+ 895 02c7 00       		.ascii	"\000"
+ 896              	.LASF12:
+ 897 02c8 6C6F6E67 		.ascii	"long double\000"
+ 897      20646F75 
+ 897      626C6500 
+ 898              	.LASF1:
+ 899 02d4 7369676E 		.ascii	"signed char\000"
+ 899      65642063 
+ 899      68617200 
+ 900              	.LASF16:
+ 901 02e0 4D425F48 		.ascii	"MB_HREGS\000"
+ 901      52454753 
+ 901      00
+ 902              	.LASF33:
+ 903 02e9 5049445F 		.ascii	"PID_Set_Input\000"
+ 903      5365745F 
+ 903      496E7075 
+ 903      7400
+ 904              	.LASF19:
+ 905 02f7 73657470 		.ascii	"setpoint\000"
+ 905      6F696E74 
+ 905      00
+ 906              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

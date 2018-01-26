@@ -1,0 +1,50 @@
+--------------- Build Started: 12/25/2017 11:24:26 Project: Prototype, Configuration: ARM GCC 5.4-2016-q2-update Release ---------------
+The code generation step is up to date.
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Release/main.lst -g -D NDEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -O3 -c main.c -o .\CortexM0\ARM_GCC_541\Release\main.o
+main.c: In function 'main':
+main.c:120:42: warning: pointer targets in passing argument 1 of 'USB_UART_SpiUartPutArray' differ in signedness [-Wpointer-sign]
+                 USB_UART_SpiUartPutArray(tmt, sizeof(tmt));
+                                          ^
+In file included from Generated_Source\PSoC4/project.h:39:0,
+                 from main.c:13:
+Generated_Source\PSoC4/USB_UART_SPI_UART.h:837:12: note: expected 'const uint8 * {aka const unsigned char *}' but argument is of type 'char *'
+     void   USB_UART_SpiUartPutArray(const uint8 wrBuf[], uint32 count);
+            ^
+main.c:137:38: warning: pointer targets in passing argument 1 of 'USB_UART_SpiUartPutArray' differ in signedness [-Wpointer-sign]
+             USB_UART_SpiUartPutArray(tmt, sizeof(tmt));
+                                      ^
+In file included from Generated_Source\PSoC4/project.h:39:0,
+                 from main.c:13:
+Generated_Source\PSoC4/USB_UART_SPI_UART.h:837:12: note: expected 'const uint8 * {aka const unsigned char *}' but argument is of type 'char *'
+     void   USB_UART_SpiUartPutArray(const uint8 wrBuf[], uint32 count);
+            ^
+main.c:152:42: warning: pointer targets in passing argument 1 of 'USB_UART_SpiUartPutArray' differ in signedness [-Wpointer-sign]
+                 USB_UART_SpiUartPutArray(tmt, sizeof(tmt)); CyDelay(10);                
+                                          ^
+In file included from Generated_Source\PSoC4/project.h:39:0,
+                 from main.c:13:
+Generated_Source\PSoC4/USB_UART_SPI_UART.h:837:12: note: expected 'const uint8 * {aka const unsigned char *}' but argument is of type 'char *'
+     void   USB_UART_SpiUartPutArray(const uint8 wrBuf[], uint32 count);
+            ^
+main.c:155:38: warning: pointer targets in passing argument 1 of 'USB_UART_SpiUartPutArray' differ in signedness [-Wpointer-sign]
+             USB_UART_SpiUartPutArray(tmt, sizeof(tmt)); CyDelay(10);
+                                      ^
+In file included from Generated_Source\PSoC4/project.h:39:0,
+                 from main.c:13:
+Generated_Source\PSoC4/USB_UART_SPI_UART.h:837:12: note: expected 'const uint8 * {aka const unsigned char *}' but argument is of type 'char *'
+     void   USB_UART_SpiUartPutArray(const uint8 wrBuf[], uint32 count);
+            ^
+main.c:83:10: warning: unused variable 'tmt2' [-Wunused-variable]
+     char tmt2[] = "transmited\r\n";
+          ^
+main.c:82:10: warning: unused variable 'tmt1' [-Wunused-variable]
+     char tmt1[] = "whynot\r\n";
+          ^
+arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_541\Release\Prototype.a .\CortexM0\ARM_GCC_541\Release\QuadDec.o .\CortexM0\ARM_GCC_541\Release\QuadDec_PM.o .\CortexM0\ARM_GCC_541\Release\PWM.o .\CortexM0\ARM_GCC_541\Release\PWM_PM.o .\CortexM0\ARM_GCC_541\Release\PID_ISR.o .\CortexM0\ARM_GCC_541\Release\Clock_1.o .\CortexM0\ARM_GCC_541\Release\Bridge_1.o .\CortexM0\ARM_GCC_541\Release\Bridge_1_PM.o .\CortexM0\ARM_GCC_541\Release\Bridge_2.o .\CortexM0\ARM_GCC_541\Release\Bridge_2_PM.o .\CortexM0\ARM_GCC_541\Release\Motor_Dir.o .\CortexM0\ARM_GCC_541\Release\Motor_Dir_PM.o .\CortexM0\ARM_GCC_541\Release\QE_A.o .\CortexM0\ARM_GCC_541\Release\QE_A_PM.o .\CortexM0\ARM_GCC_541\Release\QE_B.o .\CortexM0\ARM_GCC_541\Release\QE_B_PM.o .\CortexM0\ARM_GCC_541\Release\Clock_3.o .\CortexM0\ARM_GCC_541\Release\LED.o .\CortexM0\ARM_GCC_541\Release\LED_PM.o .\CortexM0\ARM_GCC_541\Release\CyFlash.o .\CortexM0\ARM_GCC_541\Release\CyLib.o .\CortexM0\ARM_GCC_541\Release\cyPm.o .\CortexM0\ARM_GCC_541\Release\cyutils.o .\CortexM0\ARM_GCC_541\Release\CyDMA.o .\CortexM0\ARM_GCC_541\Release\CyLFClk.o .\CortexM0\ARM_GCC_541\Release\PID_Tick_Timer.o .\CortexM0\ARM_GCC_541\Release\PID_Tick_Timer_PM.o .\CortexM0\ARM_GCC_541\Release\USB_UART.o .\CortexM0\ARM_GCC_541\Release\USB_UART_SPI_UART.o .\CortexM0\ARM_GCC_541\Release\USB_UART_SPI_UART_INT.o .\CortexM0\ARM_GCC_541\Release\USB_UART_PM.o .\CortexM0\ARM_GCC_541\Release\USB_UART_UART.o .\CortexM0\ARM_GCC_541\Release\USB_UART_BOOT.o .\CortexM0\ARM_GCC_541\Release\USB_UART_UART_BOOT.o .\CortexM0\ARM_GCC_541\Release\USB_UART_SCBCLK.o .\CortexM0\ARM_GCC_541\Release\USB_UART_tx.o .\CortexM0\ARM_GCC_541\Release\USB_UART_tx_PM.o .\CortexM0\ARM_GCC_541\Release\USB_UART_SCB_IRQ.o .\CortexM0\ARM_GCC_541\Release\USB_UART_rx.o .\CortexM0\ARM_GCC_541\Release\USB_UART_rx_PM.o .\CortexM0\ARM_GCC_541\Release\Millis_TMR.o .\CortexM0\ARM_GCC_541\Release\Millis_TMR_PM.o .\CortexM0\ARM_GCC_541\Release\Millis_ISR.o .\CortexM0\ARM_GCC_541\Release\Direction_Flag.o .\CortexM0\ARM_GCC_541\Release\Direction_Flag_PM.o .\CortexM0\ARM_GCC_541\Release\ADC.o .\CortexM0\ARM_GCC_541\Release\ADC_PM.o .\CortexM0\ARM_GCC_541\Release\ADC_INT.o .\CortexM0\ARM_GCC_541\Release\Current_A.o .\CortexM0\ARM_GCC_541\Release\Current_A_PM.o .\CortexM0\ARM_GCC_541\Release\Current_B.o .\CortexM0\ARM_GCC_541\Release\Current_B_PM.o .\CortexM0\ARM_GCC_541\Release\ADC_IRQ.o .\CortexM0\ARM_GCC_541\Release\ADC_intClock.o .\CortexM0\ARM_GCC_541\Release\SPI.o .\CortexM0\ARM_GCC_541\Release\SPI_SPI_UART.o .\CortexM0\ARM_GCC_541\Release\SPI_PM.o .\CortexM0\ARM_GCC_541\Release\SPI_SPI.o .\CortexM0\ARM_GCC_541\Release\SPI_BOOT.o .\CortexM0\ARM_GCC_541\Release\SPI_SPI_BOOT.o .\CortexM0\ARM_GCC_541\Release\nRF24_FUNCS.o .\CortexM0\ARM_GCC_541\Release\nRF24_LL_SPI.o .\CortexM0\ARM_GCC_541\Release\nRF24_COMMANDS.o .\CortexM0\ARM_GCC_541\Release\CE.o .\CortexM0\ARM_GCC_541\Release\CE_PM.o .\CortexM0\ARM_GCC_541\Release\SS.o .\CortexM0\ARM_GCC_541\Release\SS_PM.o .\CortexM0\ARM_GCC_541\Release\NRF_IRQ.o .\CortexM0\ARM_GCC_541\Release\NRF_IRQ_PM.o .\CortexM0\ARM_GCC_541\Release\NRF_ISR.o .\CortexM0\ARM_GCC_541\Release\SPI_SCBCLK.o .\CortexM0\ARM_GCC_541\Release\SPI_sclk_m.o .\CortexM0\ARM_GCC_541\Release\SPI_sclk_m_PM.o .\CortexM0\ARM_GCC_541\Release\SPI_miso_m.o .\CortexM0\ARM_GCC_541\Release\SPI_miso_m_PM.o .\CortexM0\ARM_GCC_541\Release\SPI_mosi_m.o .\CortexM0\ARM_GCC_541\Release\SPI_mosi_m_PM.o .\CortexM0\ARM_GCC_541\Release\CyBootAsmGnu.o
+arm-none-eabi-ar.exe: creating .\CortexM0\ARM_GCC_541\Release\Prototype.a
+arm-none-eabi-gcc.exe -Wl,--start-group -o "C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\CortexM0\ARM_GCC_541\Release\Prototype.elf" .\CortexM0\ARM_GCC_541\Release\pid.o .\CortexM0\ARM_GCC_541\Release\motor.o .\CortexM0\ARM_GCC_541\Release\modbusRTU.o .\CortexM0\ARM_GCC_541\Release\millis.o .\CortexM0\ARM_GCC_541\Release\nRF24_Adapter.o .\CortexM0\ARM_GCC_541\Release\main.o .\CortexM0\ARM_GCC_541\Release\cyfitter_cfg.o .\CortexM0\ARM_GCC_541\Release\cymetadata.o .\CortexM0\ARM_GCC_541\Release\Cm0Start.o .\CortexM0\ARM_GCC_541\Release\Prototype.a "C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM0\ARM_GCC_541\Release\CyComponentLibrary.a" -mcpu=cortex-m0 -mthumb -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_541\Release/Prototype.map -T Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -O3 -ffat-lto-objects -Wl,--end-group
+cyelftool.exe -C "C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\CortexM0\ARM_GCC_541\Release\Prototype.elf" --flash_row_size 128 --flash_size 131072 --flash_offset 0x00000000
+cyelftool.exe -S "C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\CortexM0\ARM_GCC_541\Release\Prototype.elf"
+Flash used: 9054 of 131072 bytes (6.9%).
+SRAM used: 2752 of 16384 bytes (16.8%). Stack: 2048 bytes. Heap: 128 bytes.
+--------------- Build Succeeded: 12/25/2017 11:24:28 ---------------

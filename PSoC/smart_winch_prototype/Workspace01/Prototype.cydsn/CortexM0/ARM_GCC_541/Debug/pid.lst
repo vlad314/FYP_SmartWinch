@@ -1,0 +1,1601 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"pid.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.PID_Set_Gains,"ax",%progbits
+  20              		.align	2
+  21              		.global	PID_Set_Gains
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	PID_Set_Gains, %function
+  25              	PID_Set_Gains:
+  26              	.LFB34:
+  27              		.file 1 "pid.c"
+   1:pid.c         **** /*******************************************************************************
+   2:pid.c         **** * File Name: pid.c  
+   3:pid.c         **** * Version 0.1
+   4:pid.c         **** * 16th October 2017
+   5:pid.c         **** *
+   6:pid.c         **** *  Description:
+   7:pid.c         **** *   APIs for PID controller.
+   8:pid.c         **** *
+   9:pid.c         **** *
+  10:pid.c         **** *  Note:  
+  11:pid.c         **** *   Future: 
+  12:pid.c         **** *       -Implement decay variable for integral.
+  13:pid.c         **** *       -Implement filter for PD.
+  14:pid.c         **** ********************************************************************************
+  15:pid.c         ****  * Copyright AfdhalAtiffTan, 2017
+  16:pid.c         ****  * All Rights Reserved
+  17:pid.c         ****  * UNPUBLISHED, LICENSED SOFTWARE.
+  18:pid.c         **** *******************************************************************************/
+  19:pid.c         **** 
+  20:pid.c         **** #include "pid.h"
+  21:pid.c         **** 
+  22:pid.c         **** //gain for p, i, and d.
+  23:pid.c         **** static float kp,ki,kd;
+  24:pid.c         **** 
+  25:pid.c         **** //setpoint is the desired target, input is the feedback (e.g. rotary encoder), and output is the fi
+  26:pid.c         **** static float *setpoint, *input, *output;
+  27:pid.c         **** 
+  28:pid.c         **** //errors
+  29:pid.c         **** static float error, input_previous, error_integrated, input_differentiated;
+  30:pid.c         **** 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 2
+
+
+  31:pid.c         **** //limits
+  32:pid.c         **** static float out_min, out_max;
+  33:pid.c         **** 
+  34:pid.c         **** 
+  35:pid.c         **** /*******************************************************************************
+  36:pid.c         **** * Function Name: PID_Set_Gains
+  37:pid.c         **** ********************************************************************************
+  38:pid.c         **** *
+  39:pid.c         **** * Summary:
+  40:pid.c         **** *  Set the gain for all components (Propotional, Integral, Derivative)
+  41:pid.c         **** *
+  42:pid.c         **** * Parameters:  
+  43:pid.c         **** *   *_kp: Gain for proportional.
+  44:pid.c         **** *   *_ki: Gain for integral.
+  45:pid.c         **** *   *_kd: Gain for derivative.
+  46:pid.c         **** *
+  47:pid.c         **** * Return:
+  48:pid.c         **** *   None
+  49:pid.c         **** *
+  50:pid.c         **** *******************************************************************************/
+  51:pid.c         **** void PID_Set_Gains(float _kp, float _ki, float _kd)
+  52:pid.c         **** {
+  28              		.loc 1 52 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  53:pid.c         ****     kp = _kp;
+  34              		.loc 1 53 0
+  35 0000 024B     		ldr	r3, .L2
+  36 0002 1860     		str	r0, [r3]
+  54:pid.c         ****     ki = _ki;
+  37              		.loc 1 54 0
+  38 0004 5960     		str	r1, [r3, #4]
+  55:pid.c         ****     kd = _kd;
+  39              		.loc 1 55 0
+  40 0006 9A60     		str	r2, [r3, #8]
+  56:pid.c         **** }
+  41              		.loc 1 56 0
+  42              		@ sp needed
+  43 0008 7047     		bx	lr
+  44              	.L3:
+  45 000a C046     		.align	2
+  46              	.L2:
+  47 000c 00000000 		.word	.LANCHOR0
+  48              		.cfi_endproc
+  49              	.LFE34:
+  50              		.size	PID_Set_Gains, .-PID_Set_Gains
+  51              		.section	.text.PID_Init,"ax",%progbits
+  52              		.align	2
+  53              		.global	PID_Init
+  54              		.code	16
+  55              		.thumb_func
+  56              		.type	PID_Init, %function
+  57              	PID_Init:
+  58              	.LFB35:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 3
+
+
+  57:pid.c         **** 
+  58:pid.c         **** 
+  59:pid.c         **** /*******************************************************************************
+  60:pid.c         **** * Function Name: PID_Init
+  61:pid.c         **** ********************************************************************************
+  62:pid.c         **** *
+  63:pid.c         **** * Summary:
+  64:pid.c         **** *  Initialised all cumulated variables to zero and initialise variables.
+  65:pid.c         **** *
+  66:pid.c         **** * Parameters:  
+  67:pid.c         **** *   None.
+  68:pid.c         **** *
+  69:pid.c         **** * Return:
+  70:pid.c         **** *   None
+  71:pid.c         **** *
+  72:pid.c         **** *******************************************************************************/
+  73:pid.c         **** void PID_Init()
+  74:pid.c         **** {
+  59              		.loc 1 74 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 0
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63              		@ link register save eliminated.
+  75:pid.c         ****     kp = 1.0;
+  64              		.loc 1 75 0
+  65 0000 064B     		ldr	r3, .L5
+  66 0002 FE22     		movs	r2, #254
+  67 0004 9205     		lsls	r2, r2, #22
+  68 0006 1A60     		str	r2, [r3]
+  76:pid.c         ****     ki = 0.0;
+  69              		.loc 1 76 0
+  70 0008 0022     		movs	r2, #0
+  71 000a 5A60     		str	r2, [r3, #4]
+  77:pid.c         ****     kd = 0.0;
+  72              		.loc 1 77 0
+  73 000c 9A60     		str	r2, [r3, #8]
+  78:pid.c         ****     
+  79:pid.c         ****     input_previous = 0.0;
+  74              		.loc 1 79 0
+  75 000e DA60     		str	r2, [r3, #12]
+  80:pid.c         ****     error_integrated = 0.0;
+  76              		.loc 1 80 0
+  77 0010 1A61     		str	r2, [r3, #16]
+  81:pid.c         ****     
+  82:pid.c         ****     out_min = -65535.0;
+  78              		.loc 1 82 0
+  79 0012 034A     		ldr	r2, .L5+4
+  80 0014 5A61     		str	r2, [r3, #20]
+  83:pid.c         ****     out_max = 65535.0;
+  81              		.loc 1 83 0
+  82 0016 034A     		ldr	r2, .L5+8
+  83 0018 9A61     		str	r2, [r3, #24]
+  84:pid.c         **** }
+  84              		.loc 1 84 0
+  85              		@ sp needed
+  86 001a 7047     		bx	lr
+  87              	.L6:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 4
+
+
+  88              		.align	2
+  89              	.L5:
+  90 001c 00000000 		.word	.LANCHOR0
+  91 0020 00FF7FC7 		.word	-947912960
+  92 0024 00FF7F47 		.word	1199570688
+  93              		.cfi_endproc
+  94              	.LFE35:
+  95              		.size	PID_Init, .-PID_Init
+  96              		.section	.text.PID_Set_Setpoint,"ax",%progbits
+  97              		.align	2
+  98              		.global	PID_Set_Setpoint
+  99              		.code	16
+ 100              		.thumb_func
+ 101              		.type	PID_Set_Setpoint, %function
+ 102              	PID_Set_Setpoint:
+ 103              	.LFB36:
+  85:pid.c         **** 
+  86:pid.c         **** 
+  87:pid.c         **** /*******************************************************************************
+  88:pid.c         **** * Function Name: PID_Set_Setpoint
+  89:pid.c         **** ********************************************************************************
+  90:pid.c         **** *
+  91:pid.c         **** * Summary:
+  92:pid.c         **** *  Set the location of "setpoint" variable (e.g. desired position)
+  93:pid.c         **** *
+  94:pid.c         **** * Parameters:  
+  95:pid.c         **** *   *_setpoint: The address of an "setpoint" variable (must use & operator)
+  96:pid.c         **** *
+  97:pid.c         **** * Return:
+  98:pid.c         **** *   None
+  99:pid.c         **** *
+ 100:pid.c         **** *******************************************************************************/
+ 101:pid.c         **** void PID_Set_Setpoint(float *_setpoint)
+ 102:pid.c         **** {
+ 104              		.loc 1 102 0
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109              	.LVL1:
+ 103:pid.c         ****     setpoint = _setpoint;
+ 110              		.loc 1 103 0
+ 111 0000 014B     		ldr	r3, .L8
+ 112 0002 D861     		str	r0, [r3, #28]
+ 104:pid.c         **** }
+ 113              		.loc 1 104 0
+ 114              		@ sp needed
+ 115 0004 7047     		bx	lr
+ 116              	.L9:
+ 117 0006 C046     		.align	2
+ 118              	.L8:
+ 119 0008 00000000 		.word	.LANCHOR0
+ 120              		.cfi_endproc
+ 121              	.LFE36:
+ 122              		.size	PID_Set_Setpoint, .-PID_Set_Setpoint
+ 123              		.section	.text.PID_Set_Input,"ax",%progbits
+ 124              		.align	2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 5
+
+
+ 125              		.global	PID_Set_Input
+ 126              		.code	16
+ 127              		.thumb_func
+ 128              		.type	PID_Set_Input, %function
+ 129              	PID_Set_Input:
+ 130              	.LFB37:
+ 105:pid.c         **** 
+ 106:pid.c         **** 
+ 107:pid.c         **** /*******************************************************************************
+ 108:pid.c         **** * Function Name: PID_Set_Input
+ 109:pid.c         **** ********************************************************************************
+ 110:pid.c         **** *
+ 111:pid.c         **** * Summary:
+ 112:pid.c         **** *  Set the location of "feedback" variable (e.g. reading from rotary decoder)
+ 113:pid.c         **** *
+ 114:pid.c         **** * Parameters:  
+ 115:pid.c         **** *   *_input: The address of a "feedback" variable (must use & operator)
+ 116:pid.c         **** *
+ 117:pid.c         **** * Return:
+ 118:pid.c         **** *   None
+ 119:pid.c         **** *
+ 120:pid.c         **** *******************************************************************************/
+ 121:pid.c         **** void PID_Set_Input(float *_input)
+ 122:pid.c         **** {
+ 131              		.loc 1 122 0
+ 132              		.cfi_startproc
+ 133              		@ args = 0, pretend = 0, frame = 0
+ 134              		@ frame_needed = 0, uses_anonymous_args = 0
+ 135              		@ link register save eliminated.
+ 136              	.LVL2:
+ 123:pid.c         ****     input = _input;
+ 137              		.loc 1 123 0
+ 138 0000 014B     		ldr	r3, .L11
+ 139 0002 1862     		str	r0, [r3, #32]
+ 124:pid.c         **** }
+ 140              		.loc 1 124 0
+ 141              		@ sp needed
+ 142 0004 7047     		bx	lr
+ 143              	.L12:
+ 144 0006 C046     		.align	2
+ 145              	.L11:
+ 146 0008 00000000 		.word	.LANCHOR0
+ 147              		.cfi_endproc
+ 148              	.LFE37:
+ 149              		.size	PID_Set_Input, .-PID_Set_Input
+ 150              		.section	.text.PID_Set_Output,"ax",%progbits
+ 151              		.align	2
+ 152              		.global	PID_Set_Output
+ 153              		.code	16
+ 154              		.thumb_func
+ 155              		.type	PID_Set_Output, %function
+ 156              	PID_Set_Output:
+ 157              	.LFB38:
+ 125:pid.c         **** 
+ 126:pid.c         **** 
+ 127:pid.c         **** /*******************************************************************************
+ 128:pid.c         **** * Function Name: PID_Set_Output
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 6
+
+
+ 129:pid.c         **** ********************************************************************************
+ 130:pid.c         **** *
+ 131:pid.c         **** * Summary:
+ 132:pid.c         **** *  Set the location of "output" variable (e.g. output to pwm)
+ 133:pid.c         **** *
+ 134:pid.c         **** * Parameters:  
+ 135:pid.c         **** *   *_output: The address of an "output" variable (must use & operator)
+ 136:pid.c         **** *
+ 137:pid.c         **** * Return:
+ 138:pid.c         **** *   None
+ 139:pid.c         **** *
+ 140:pid.c         **** *******************************************************************************/
+ 141:pid.c         **** void PID_Set_Output(float *_output)
+ 142:pid.c         **** {
+ 158              		.loc 1 142 0
+ 159              		.cfi_startproc
+ 160              		@ args = 0, pretend = 0, frame = 0
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162              		@ link register save eliminated.
+ 163              	.LVL3:
+ 143:pid.c         ****     output = _output;
+ 164              		.loc 1 143 0
+ 165 0000 014B     		ldr	r3, .L14
+ 166 0002 5862     		str	r0, [r3, #36]
+ 144:pid.c         **** }
+ 167              		.loc 1 144 0
+ 168              		@ sp needed
+ 169 0004 7047     		bx	lr
+ 170              	.L15:
+ 171 0006 C046     		.align	2
+ 172              	.L14:
+ 173 0008 00000000 		.word	.LANCHOR0
+ 174              		.cfi_endproc
+ 175              	.LFE38:
+ 176              		.size	PID_Set_Output, .-PID_Set_Output
+ 177              		.section	.text.PID_Set_Output_Limits,"ax",%progbits
+ 178              		.align	2
+ 179              		.global	PID_Set_Output_Limits
+ 180              		.code	16
+ 181              		.thumb_func
+ 182              		.type	PID_Set_Output_Limits, %function
+ 183              	PID_Set_Output_Limits:
+ 184              	.LFB39:
+ 145:pid.c         **** 
+ 146:pid.c         **** 
+ 147:pid.c         **** /*******************************************************************************
+ 148:pid.c         **** * Function Name: PID_Set_Output_Limits
+ 149:pid.c         **** ********************************************************************************
+ 150:pid.c         **** *
+ 151:pid.c         **** * Summary:
+ 152:pid.c         **** *  Set the upper and lower limit for the output so that windup can be avoided.
+ 153:pid.c         **** *
+ 154:pid.c         **** * Parameters:  
+ 155:pid.c         **** *   _out_min: The lowest number that the output is allowed.
+ 156:pid.c         **** *   _out_max: The highest number that the output is allowed.
+ 157:pid.c         **** *
+ 158:pid.c         **** * Return:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 7
+
+
+ 159:pid.c         **** *   None
+ 160:pid.c         **** *
+ 161:pid.c         **** *******************************************************************************/
+ 162:pid.c         **** void PID_Set_Output_Limits(float _out_min, float _out_max)
+ 163:pid.c         **** {
+ 185              		.loc 1 163 0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ 189              		@ link register save eliminated.
+ 190              	.LVL4:
+ 164:pid.c         ****     out_min = _out_min;
+ 191              		.loc 1 164 0
+ 192 0000 014B     		ldr	r3, .L17
+ 193 0002 5861     		str	r0, [r3, #20]
+ 165:pid.c         ****     out_max = _out_max;
+ 194              		.loc 1 165 0
+ 195 0004 9961     		str	r1, [r3, #24]
+ 166:pid.c         **** }
+ 196              		.loc 1 166 0
+ 197              		@ sp needed
+ 198 0006 7047     		bx	lr
+ 199              	.L18:
+ 200              		.align	2
+ 201              	.L17:
+ 202 0008 00000000 		.word	.LANCHOR0
+ 203              		.cfi_endproc
+ 204              	.LFE39:
+ 205              		.size	PID_Set_Output_Limits, .-PID_Set_Output_Limits
+ 206              		.global	__aeabi_fsub
+ 207              		.global	__aeabi_fmul
+ 208              		.global	__aeabi_fadd
+ 209              		.global	__aeabi_fcmpgt
+ 210              		.global	__aeabi_fcmplt
+ 211              		.section	.text.PID_Tick,"ax",%progbits
+ 212              		.align	2
+ 213              		.global	PID_Tick
+ 214              		.code	16
+ 215              		.thumb_func
+ 216              		.type	PID_Tick, %function
+ 217              	PID_Tick:
+ 218              	.LFB40:
+ 167:pid.c         **** 
+ 168:pid.c         **** 
+ 169:pid.c         **** /*******************************************************************************
+ 170:pid.c         **** * Function Name: PID_Tick
+ 171:pid.c         **** ********************************************************************************
+ 172:pid.c         **** *
+ 173:pid.c         **** * Summary:
+ 174:pid.c         **** *   This function should be called periodically (e.g. 100Hz) during runtime.
+ 175:pid.c         **** *   It handles PID maths and its output.
+ 176:pid.c         **** *
+ 177:pid.c         **** * Parameters:  
+ 178:pid.c         **** *   None
+ 179:pid.c         **** *
+ 180:pid.c         **** * Return:
+ 181:pid.c         **** *   None
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 8
+
+
+ 182:pid.c         **** *
+ 183:pid.c         **** *******************************************************************************/
+ 184:pid.c         **** CY_ISR(PID_Tick)
+ 185:pid.c         **** {
+ 219              		.loc 1 185 0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 16
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 224              		.cfi_def_cfa_offset 20
+ 225              		.cfi_offset 4, -20
+ 226              		.cfi_offset 5, -16
+ 227              		.cfi_offset 6, -12
+ 228              		.cfi_offset 7, -8
+ 229              		.cfi_offset 14, -4
+ 230 0002 85B0     		sub	sp, sp, #20
+ 231              		.cfi_def_cfa_offset 40
+ 186:pid.c         ****     static int cnt=0;
+ 187:pid.c         ****      
+ 188:pid.c         ****     //heartbeat on led
+ 189:pid.c         ****     if(cnt++>15)
+ 232              		.loc 1 189 0
+ 233 0004 334A     		ldr	r2, .L33
+ 234 0006 936A     		ldr	r3, [r2, #40]
+ 235 0008 591C     		adds	r1, r3, #1
+ 236 000a 9162     		str	r1, [r2, #40]
+ 237 000c 0F2B     		cmp	r3, #15
+ 238 000e 08DD     		ble	.L20
+ 190:pid.c         ****     {
+ 191:pid.c         ****         cnt=0;
+ 239              		.loc 1 191 0
+ 240 0010 0022     		movs	r2, #0
+ 241 0012 304B     		ldr	r3, .L33
+ 242 0014 9A62     		str	r2, [r3, #40]
+ 192:pid.c         ****         LED_Write(~LED_Read());
+ 243              		.loc 1 192 0
+ 244 0016 FFF7FEFF 		bl	LED_Read
+ 245              	.LVL5:
+ 246 001a C043     		mvns	r0, r0
+ 247 001c C0B2     		uxtb	r0, r0
+ 248 001e FFF7FEFF 		bl	LED_Write
+ 249              	.LVL6:
+ 250              	.L20:
+ 193:pid.c         ****     }        
+ 194:pid.c         ****      
+ 195:pid.c         ****     //<Proportional>
+ 196:pid.c         ****     error = *setpoint - *input;    
+ 251              		.loc 1 196 0
+ 252 0022 2C4C     		ldr	r4, .L33
+ 253 0024 E369     		ldr	r3, [r4, #28]
+ 254 0026 1868     		ldr	r0, [r3]
+ 255 0028 266A     		ldr	r6, [r4, #32]
+ 256 002a 3168     		ldr	r1, [r6]
+ 257 002c FFF7FEFF 		bl	__aeabi_fsub
+ 258              	.LVL7:
+ 259 0030 051C     		adds	r5, r0, #0
+ 197:pid.c         ****     *output = kp*error;
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 9
+
+
+ 260              		.loc 1 197 0
+ 261 0032 676A     		ldr	r7, [r4, #36]
+ 262 0034 2168     		ldr	r1, [r4]
+ 263 0036 FFF7FEFF 		bl	__aeabi_fmul
+ 264              	.LVL8:
+ 265 003a 0290     		str	r0, [sp, #8]
+ 266 003c 3860     		str	r0, [r7]
+ 198:pid.c         ****     //</Proportional>
+ 199:pid.c         ****     
+ 200:pid.c         ****     //<Integration>
+ 201:pid.c         ****     error_integrated += ki*error;
+ 267              		.loc 1 201 0
+ 268 003e 6168     		ldr	r1, [r4, #4]
+ 269 0040 281C     		adds	r0, r5, #0
+ 270 0042 FFF7FEFF 		bl	__aeabi_fmul
+ 271              	.LVL9:
+ 272 0046 2169     		ldr	r1, [r4, #16]
+ 273 0048 FFF7FEFF 		bl	__aeabi_fadd
+ 274              	.LVL10:
+ 275 004c 051C     		adds	r5, r0, #0
+ 202:pid.c         ****         
+ 203:pid.c         ****     //preventing integrator windup   
+ 204:pid.c         ****     error_integrated = error_integrated > out_max ? out_max : error_integrated;
+ 276              		.loc 1 204 0
+ 277 004e A369     		ldr	r3, [r4, #24]
+ 278 0050 1C1C     		adds	r4, r3, #0
+ 279 0052 0393     		str	r3, [sp, #12]
+ 280 0054 191C     		adds	r1, r3, #0
+ 281 0056 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 282              	.LVL11:
+ 283 005a 0028     		cmp	r0, #0
+ 284 005c 00D0     		beq	.L21
+ 285 005e 251C     		adds	r5, r4, #0
+ 286              	.L21:
+ 287              		.loc 1 204 0 is_stmt 0 discriminator 4
+ 288 0060 1C4B     		ldr	r3, .L33
+ 205:pid.c         ****     error_integrated = error_integrated < out_min ? out_min : error_integrated;
+ 289              		.loc 1 205 0 is_stmt 1 discriminator 4
+ 290 0062 5B69     		ldr	r3, [r3, #20]
+ 291 0064 1C1C     		adds	r4, r3, #0
+ 292 0066 0193     		str	r3, [sp, #4]
+ 293 0068 191C     		adds	r1, r3, #0
+ 294 006a 281C     		adds	r0, r5, #0
+ 295 006c FFF7FEFF 		bl	__aeabi_fcmplt
+ 296              	.LVL12:
+ 297 0070 0028     		cmp	r0, #0
+ 298 0072 00D0     		beq	.L23
+ 299              		.loc 1 205 0 is_stmt 0
+ 300 0074 251C     		adds	r5, r4, #0
+ 301              	.L23:
+ 302              		.loc 1 205 0 discriminator 4
+ 303 0076 174C     		ldr	r4, .L33
+ 304 0078 2561     		str	r5, [r4, #16]
+ 206:pid.c         ****     
+ 207:pid.c         ****     *output += error_integrated;
+ 305              		.loc 1 207 0 is_stmt 1 discriminator 4
+ 306 007a 0299     		ldr	r1, [sp, #8]
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 10
+
+
+ 307 007c 281C     		adds	r0, r5, #0
+ 308 007e FFF7FEFF 		bl	__aeabi_fadd
+ 309              	.LVL13:
+ 310 0082 051C     		adds	r5, r0, #0
+ 311 0084 3860     		str	r0, [r7]
+ 208:pid.c         ****     //</Integration>
+ 209:pid.c         ****     
+ 210:pid.c         ****     //<Differentiation> (“Derivative on Measurement”)
+ 211:pid.c         ****     input_differentiated = *input - input_previous;    
+ 312              		.loc 1 211 0 discriminator 4
+ 313 0086 3668     		ldr	r6, [r6]
+ 314 0088 E168     		ldr	r1, [r4, #12]
+ 315 008a 301C     		adds	r0, r6, #0
+ 316 008c FFF7FEFF 		bl	__aeabi_fsub
+ 317              	.LVL14:
+ 212:pid.c         ****     input_previous = *input;
+ 318              		.loc 1 212 0 discriminator 4
+ 319 0090 E660     		str	r6, [r4, #12]
+ 213:pid.c         ****     
+ 214:pid.c         ****     *output -= kd * input_differentiated;
+ 320              		.loc 1 214 0 discriminator 4
+ 321 0092 A168     		ldr	r1, [r4, #8]
+ 322 0094 FFF7FEFF 		bl	__aeabi_fmul
+ 323              	.LVL15:
+ 324 0098 011C     		adds	r1, r0, #0
+ 325 009a 281C     		adds	r0, r5, #0
+ 326 009c FFF7FEFF 		bl	__aeabi_fsub
+ 327              	.LVL16:
+ 328 00a0 051C     		adds	r5, r0, #0
+ 329 00a2 3860     		str	r0, [r7]
+ 215:pid.c         ****     //</Differentiation>
+ 216:pid.c         ****     
+ 217:pid.c         ****     //output clamp
+ 218:pid.c         ****     *output = *output > out_max ? out_max : *output;
+ 330              		.loc 1 218 0 discriminator 4
+ 331 00a4 011C     		adds	r1, r0, #0
+ 332 00a6 039C     		ldr	r4, [sp, #12]
+ 333 00a8 201C     		adds	r0, r4, #0
+ 334 00aa FFF7FEFF 		bl	__aeabi_fcmplt
+ 335              	.LVL17:
+ 336 00ae 0028     		cmp	r0, #0
+ 337 00b0 00D0     		beq	.L25
+ 338              		.loc 1 218 0 is_stmt 0
+ 339 00b2 251C     		adds	r5, r4, #0
+ 340              	.L25:
+ 341              		.loc 1 218 0 discriminator 4
+ 342 00b4 3D60     		str	r5, [r7]
+ 219:pid.c         ****     *output = *output < out_min ? out_min : *output;
+ 343              		.loc 1 219 0 is_stmt 1 discriminator 4
+ 344 00b6 0199     		ldr	r1, [sp, #4]
+ 345 00b8 281C     		adds	r0, r5, #0
+ 346 00ba FFF7FEFF 		bl	__aeabi_fcmplt
+ 347              	.LVL18:
+ 348 00be 0028     		cmp	r0, #0
+ 349 00c0 00D0     		beq	.L27
+ 350              		.loc 1 219 0 is_stmt 0
+ 351 00c2 019D     		ldr	r5, [sp, #4]
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 11
+
+
+ 352              	.L27:
+ 353              		.loc 1 219 0 discriminator 4
+ 354 00c4 3D60     		str	r5, [r7]
+ 220:pid.c         ****             
+ 221:pid.c         ****     PID_Tick_Timer_ClearInterrupt(PID_Tick_Timer_INTR_MASK_TC);
+ 355              		.loc 1 221 0 is_stmt 1 discriminator 4
+ 356 00c6 0120     		movs	r0, #1
+ 357 00c8 FFF7FEFF 		bl	PID_Tick_Timer_ClearInterrupt
+ 358              	.LVL19:
+ 222:pid.c         ****     PID_ISR_ClearPending();
+ 359              		.loc 1 222 0 discriminator 4
+ 360 00cc FFF7FEFF 		bl	PID_ISR_ClearPending
+ 361              	.LVL20:
+ 223:pid.c         **** }
+ 362              		.loc 1 223 0 discriminator 4
+ 363 00d0 05B0     		add	sp, sp, #20
+ 364              		@ sp needed
+ 365 00d2 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 366              	.L34:
+ 367              		.align	2
+ 368              	.L33:
+ 369 00d4 00000000 		.word	.LANCHOR0
+ 370              		.cfi_endproc
+ 371              	.LFE40:
+ 372              		.size	PID_Tick, .-PID_Tick
+ 373              		.bss
+ 374              		.align	2
+ 375              		.set	.LANCHOR0,. + 0
+ 376              		.type	kp, %object
+ 377              		.size	kp, 4
+ 378              	kp:
+ 379 0000 00000000 		.space	4
+ 380              		.type	ki, %object
+ 381              		.size	ki, 4
+ 382              	ki:
+ 383 0004 00000000 		.space	4
+ 384              		.type	kd, %object
+ 385              		.size	kd, 4
+ 386              	kd:
+ 387 0008 00000000 		.space	4
+ 388              		.type	input_previous, %object
+ 389              		.size	input_previous, 4
+ 390              	input_previous:
+ 391 000c 00000000 		.space	4
+ 392              		.type	error_integrated, %object
+ 393              		.size	error_integrated, 4
+ 394              	error_integrated:
+ 395 0010 00000000 		.space	4
+ 396              		.type	out_min, %object
+ 397              		.size	out_min, 4
+ 398              	out_min:
+ 399 0014 00000000 		.space	4
+ 400              		.type	out_max, %object
+ 401              		.size	out_max, 4
+ 402              	out_max:
+ 403 0018 00000000 		.space	4
+ 404              		.type	setpoint, %object
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 12
+
+
+ 405              		.size	setpoint, 4
+ 406              	setpoint:
+ 407 001c 00000000 		.space	4
+ 408              		.type	input, %object
+ 409              		.size	input, 4
+ 410              	input:
+ 411 0020 00000000 		.space	4
+ 412              		.type	output, %object
+ 413              		.size	output, 4
+ 414              	output:
+ 415 0024 00000000 		.space	4
+ 416              		.type	cnt.6070, %object
+ 417              		.size	cnt.6070, 4
+ 418              	cnt.6070:
+ 419 0028 00000000 		.space	4
+ 420              		.text
+ 421              	.Letext0:
+ 422              		.file 2 "Generated_Source\\PSoC4/LED.h"
+ 423              		.file 3 "Generated_Source\\PSoC4/PID_Tick_Timer.h"
+ 424              		.file 4 "Generated_Source\\PSoC4/PID_ISR.h"
+ 425              		.file 5 "Generated_Source\\PSoC4/cytypes.h"
+ 426              		.section	.debug_info,"",%progbits
+ 427              	.Ldebug_info0:
+ 428 0000 C3020000 		.4byte	0x2c3
+ 429 0004 0400     		.2byte	0x4
+ 430 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 431 000a 04       		.byte	0x4
+ 432 000b 01       		.uleb128 0x1
+ 433 000c B9010000 		.4byte	.LASF38
+ 434 0010 0C       		.byte	0xc
+ 435 0011 C0000000 		.4byte	.LASF39
+ 436 0015 50000000 		.4byte	.LASF40
+ 437 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 438 001d 00000000 		.4byte	0
+ 439 0021 00000000 		.4byte	.Ldebug_line0
+ 440 0025 02       		.uleb128 0x2
+ 441 0026 01       		.byte	0x1
+ 442 0027 06       		.byte	0x6
+ 443 0028 BA020000 		.4byte	.LASF0
+ 444 002c 02       		.uleb128 0x2
+ 445 002d 01       		.byte	0x1
+ 446 002e 08       		.byte	0x8
+ 447 002f F1000000 		.4byte	.LASF1
+ 448 0033 02       		.uleb128 0x2
+ 449 0034 02       		.byte	0x2
+ 450 0035 05       		.byte	0x5
+ 451 0036 53010000 		.4byte	.LASF2
+ 452 003a 02       		.uleb128 0x2
+ 453 003b 02       		.byte	0x2
+ 454 003c 07       		.byte	0x7
+ 455 003d 28010000 		.4byte	.LASF3
+ 456 0041 02       		.uleb128 0x2
+ 457 0042 04       		.byte	0x4
+ 458 0043 05       		.byte	0x5
+ 459 0044 47000000 		.4byte	.LASF4
+ 460 0048 02       		.uleb128 0x2
+ 461 0049 04       		.byte	0x4
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 13
+
+
+ 462 004a 07       		.byte	0x7
+ 463 004b 16010000 		.4byte	.LASF5
+ 464 004f 02       		.uleb128 0x2
+ 465 0050 08       		.byte	0x8
+ 466 0051 05       		.byte	0x5
+ 467 0052 00000000 		.4byte	.LASF6
+ 468 0056 02       		.uleb128 0x2
+ 469 0057 08       		.byte	0x8
+ 470 0058 07       		.byte	0x7
+ 471 0059 8F010000 		.4byte	.LASF7
+ 472 005d 03       		.uleb128 0x3
+ 473 005e 04       		.byte	0x4
+ 474 005f 05       		.byte	0x5
+ 475 0060 696E7400 		.ascii	"int\000"
+ 476 0064 02       		.uleb128 0x2
+ 477 0065 04       		.byte	0x4
+ 478 0066 07       		.byte	0x7
+ 479 0067 6D010000 		.4byte	.LASF8
+ 480 006b 04       		.uleb128 0x4
+ 481 006c 66010000 		.4byte	.LASF41
+ 482 0070 05       		.byte	0x5
+ 483 0071 D401     		.2byte	0x1d4
+ 484 0073 48000000 		.4byte	0x48
+ 485 0077 02       		.uleb128 0x2
+ 486 0078 04       		.byte	0x4
+ 487 0079 04       		.byte	0x4
+ 488 007a D6000000 		.4byte	.LASF9
+ 489 007e 02       		.uleb128 0x2
+ 490 007f 08       		.byte	0x8
+ 491 0080 04       		.byte	0x4
+ 492 0081 4C010000 		.4byte	.LASF10
+ 493 0085 02       		.uleb128 0x2
+ 494 0086 01       		.byte	0x1
+ 495 0087 08       		.byte	0x8
+ 496 0088 5F020000 		.4byte	.LASF11
+ 497 008c 02       		.uleb128 0x2
+ 498 008d 08       		.byte	0x8
+ 499 008e 04       		.byte	0x4
+ 500 008f AE020000 		.4byte	.LASF12
+ 501 0093 02       		.uleb128 0x2
+ 502 0094 04       		.byte	0x4
+ 503 0095 07       		.byte	0x7
+ 504 0096 47020000 		.4byte	.LASF13
+ 505 009a 05       		.uleb128 0x5
+ 506 009b 81010000 		.4byte	.LASF14
+ 507 009f 01       		.byte	0x1
+ 508 00a0 33       		.byte	0x33
+ 509 00a1 00000000 		.4byte	.LFB34
+ 510 00a5 10000000 		.4byte	.LFE34-.LFB34
+ 511 00a9 01       		.uleb128 0x1
+ 512 00aa 9C       		.byte	0x9c
+ 513 00ab D7000000 		.4byte	0xd7
+ 514 00af 06       		.uleb128 0x6
+ 515 00b0 5F6B7000 		.ascii	"_kp\000"
+ 516 00b4 01       		.byte	0x1
+ 517 00b5 33       		.byte	0x33
+ 518 00b6 77000000 		.4byte	0x77
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 14
+
+
+ 519 00ba 01       		.uleb128 0x1
+ 520 00bb 50       		.byte	0x50
+ 521 00bc 06       		.uleb128 0x6
+ 522 00bd 5F6B6900 		.ascii	"_ki\000"
+ 523 00c1 01       		.byte	0x1
+ 524 00c2 33       		.byte	0x33
+ 525 00c3 77000000 		.4byte	0x77
+ 526 00c7 01       		.uleb128 0x1
+ 527 00c8 51       		.byte	0x51
+ 528 00c9 06       		.uleb128 0x6
+ 529 00ca 5F6B6400 		.ascii	"_kd\000"
+ 530 00ce 01       		.byte	0x1
+ 531 00cf 33       		.byte	0x33
+ 532 00d0 77000000 		.4byte	0x77
+ 533 00d4 01       		.uleb128 0x1
+ 534 00d5 52       		.byte	0x52
+ 535 00d6 00       		.byte	0
+ 536 00d7 07       		.uleb128 0x7
+ 537 00d8 5D010000 		.4byte	.LASF42
+ 538 00dc 01       		.byte	0x1
+ 539 00dd 49       		.byte	0x49
+ 540 00de 00000000 		.4byte	.LFB35
+ 541 00e2 28000000 		.4byte	.LFE35-.LFB35
+ 542 00e6 01       		.uleb128 0x1
+ 543 00e7 9C       		.byte	0x9c
+ 544 00e8 05       		.uleb128 0x5
+ 545 00e9 FF000000 		.4byte	.LASF15
+ 546 00ed 01       		.byte	0x1
+ 547 00ee 65       		.byte	0x65
+ 548 00ef 00000000 		.4byte	.LFB36
+ 549 00f3 0C000000 		.4byte	.LFE36-.LFB36
+ 550 00f7 01       		.uleb128 0x1
+ 551 00f8 9C       		.byte	0x9c
+ 552 00f9 0B010000 		.4byte	0x10b
+ 553 00fd 08       		.uleb128 0x8
+ 554 00fe AF010000 		.4byte	.LASF16
+ 555 0102 01       		.byte	0x1
+ 556 0103 65       		.byte	0x65
+ 557 0104 0B010000 		.4byte	0x10b
+ 558 0108 01       		.uleb128 0x1
+ 559 0109 50       		.byte	0x50
+ 560 010a 00       		.byte	0
+ 561 010b 09       		.uleb128 0x9
+ 562 010c 04       		.byte	0x4
+ 563 010d 77000000 		.4byte	0x77
+ 564 0111 05       		.uleb128 0x5
+ 565 0112 C6020000 		.4byte	.LASF17
+ 566 0116 01       		.byte	0x1
+ 567 0117 79       		.byte	0x79
+ 568 0118 00000000 		.4byte	.LFB37
+ 569 011c 0C000000 		.4byte	.LFE37-.LFB37
+ 570 0120 01       		.uleb128 0x1
+ 571 0121 9C       		.byte	0x9c
+ 572 0122 34010000 		.4byte	0x134
+ 573 0126 08       		.uleb128 0x8
+ 574 0127 7A010000 		.4byte	.LASF18
+ 575 012b 01       		.byte	0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 15
+
+
+ 576 012c 79       		.byte	0x79
+ 577 012d 0B010000 		.4byte	0x10b
+ 578 0131 01       		.uleb128 0x1
+ 579 0132 50       		.byte	0x50
+ 580 0133 00       		.byte	0
+ 581 0134 05       		.uleb128 0x5
+ 582 0135 7A020000 		.4byte	.LASF19
+ 583 0139 01       		.byte	0x1
+ 584 013a 8D       		.byte	0x8d
+ 585 013b 00000000 		.4byte	.LFB38
+ 586 013f 0C000000 		.4byte	.LFE38-.LFB38
+ 587 0143 01       		.uleb128 0x1
+ 588 0144 9C       		.byte	0x9c
+ 589 0145 57010000 		.4byte	0x157
+ 590 0149 08       		.uleb128 0x8
+ 591 014a CE000000 		.4byte	.LASF20
+ 592 014e 01       		.byte	0x1
+ 593 014f 8D       		.byte	0x8d
+ 594 0150 0B010000 		.4byte	0x10b
+ 595 0154 01       		.uleb128 0x1
+ 596 0155 50       		.byte	0x50
+ 597 0156 00       		.byte	0
+ 598 0157 05       		.uleb128 0x5
+ 599 0158 64020000 		.4byte	.LASF21
+ 600 015c 01       		.byte	0x1
+ 601 015d A2       		.byte	0xa2
+ 602 015e 00000000 		.4byte	.LFB39
+ 603 0162 0C000000 		.4byte	.LFE39-.LFB39
+ 604 0166 01       		.uleb128 0x1
+ 605 0167 9C       		.byte	0x9c
+ 606 0168 87010000 		.4byte	0x187
+ 607 016c 08       		.uleb128 0x8
+ 608 016d 90020000 		.4byte	.LASF22
+ 609 0171 01       		.byte	0x1
+ 610 0172 A2       		.byte	0xa2
+ 611 0173 77000000 		.4byte	0x77
+ 612 0177 01       		.uleb128 0x1
+ 613 0178 50       		.byte	0x50
+ 614 0179 08       		.uleb128 0x8
+ 615 017a 56020000 		.4byte	.LASF23
+ 616 017e 01       		.byte	0x1
+ 617 017f A2       		.byte	0xa2
+ 618 0180 77000000 		.4byte	0x77
+ 619 0184 01       		.uleb128 0x1
+ 620 0185 51       		.byte	0x51
+ 621 0186 00       		.byte	0
+ 622 0187 0A       		.uleb128 0xa
+ 623 0188 A6010000 		.4byte	.LASF24
+ 624 018c 01       		.byte	0x1
+ 625 018d B8       		.byte	0xb8
+ 626 018e 00000000 		.4byte	.LFB40
+ 627 0192 D8000000 		.4byte	.LFE40-.LFB40
+ 628 0196 01       		.uleb128 0x1
+ 629 0197 9C       		.byte	0x9c
+ 630 0198 DC010000 		.4byte	0x1dc
+ 631 019c 0B       		.uleb128 0xb
+ 632 019d 636E7400 		.ascii	"cnt\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 16
+
+
+ 633 01a1 01       		.byte	0x1
+ 634 01a2 BA       		.byte	0xba
+ 635 01a3 5D000000 		.4byte	0x5d
+ 636 01a7 05       		.uleb128 0x5
+ 637 01a8 03       		.byte	0x3
+ 638 01a9 28000000 		.4byte	cnt.6070
+ 639 01ad 0C       		.uleb128 0xc
+ 640 01ae 1A000000 		.4byte	.LVL5
+ 641 01b2 99020000 		.4byte	0x299
+ 642 01b6 0C       		.uleb128 0xc
+ 643 01b7 22000000 		.4byte	.LVL6
+ 644 01bb A4020000 		.4byte	0x2a4
+ 645 01bf 0D       		.uleb128 0xd
+ 646 01c0 CC000000 		.4byte	.LVL19
+ 647 01c4 AF020000 		.4byte	0x2af
+ 648 01c8 D2010000 		.4byte	0x1d2
+ 649 01cc 0E       		.uleb128 0xe
+ 650 01cd 01       		.uleb128 0x1
+ 651 01ce 50       		.byte	0x50
+ 652 01cf 01       		.uleb128 0x1
+ 653 01d0 31       		.byte	0x31
+ 654 01d1 00       		.byte	0
+ 655 01d2 0C       		.uleb128 0xc
+ 656 01d3 D0000000 		.4byte	.LVL20
+ 657 01d7 BB020000 		.4byte	0x2bb
+ 658 01db 00       		.byte	0
+ 659 01dc 0B       		.uleb128 0xb
+ 660 01dd 6B7000   		.ascii	"kp\000"
+ 661 01e0 01       		.byte	0x1
+ 662 01e1 17       		.byte	0x17
+ 663 01e2 77000000 		.4byte	0x77
+ 664 01e6 05       		.uleb128 0x5
+ 665 01e7 03       		.byte	0x3
+ 666 01e8 00000000 		.4byte	kp
+ 667 01ec 0B       		.uleb128 0xb
+ 668 01ed 6B6900   		.ascii	"ki\000"
+ 669 01f0 01       		.byte	0x1
+ 670 01f1 17       		.byte	0x17
+ 671 01f2 77000000 		.4byte	0x77
+ 672 01f6 05       		.uleb128 0x5
+ 673 01f7 03       		.byte	0x3
+ 674 01f8 04000000 		.4byte	ki
+ 675 01fc 0B       		.uleb128 0xb
+ 676 01fd 6B6400   		.ascii	"kd\000"
+ 677 0200 01       		.byte	0x1
+ 678 0201 17       		.byte	0x17
+ 679 0202 77000000 		.4byte	0x77
+ 680 0206 05       		.uleb128 0x5
+ 681 0207 03       		.byte	0x3
+ 682 0208 08000000 		.4byte	kd
+ 683 020c 0F       		.uleb128 0xf
+ 684 020d D4020000 		.4byte	.LASF25
+ 685 0211 01       		.byte	0x1
+ 686 0212 1A       		.byte	0x1a
+ 687 0213 0B010000 		.4byte	0x10b
+ 688 0217 05       		.uleb128 0x5
+ 689 0218 03       		.byte	0x3
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 17
+
+
+ 690 0219 1C000000 		.4byte	setpoint
+ 691 021d 0F       		.uleb128 0xf
+ 692 021e 10010000 		.4byte	.LASF26
+ 693 0222 01       		.byte	0x1
+ 694 0223 1A       		.byte	0x1a
+ 695 0224 0B010000 		.4byte	0x10b
+ 696 0228 05       		.uleb128 0x5
+ 697 0229 03       		.byte	0x3
+ 698 022a 20000000 		.4byte	input
+ 699 022e 0F       		.uleb128 0xf
+ 700 022f 89020000 		.4byte	.LASF27
+ 701 0233 01       		.byte	0x1
+ 702 0234 1A       		.byte	0x1a
+ 703 0235 0B010000 		.4byte	0x10b
+ 704 0239 05       		.uleb128 0x5
+ 705 023a 03       		.byte	0x3
+ 706 023b 24000000 		.4byte	output
+ 707 023f 10       		.uleb128 0x10
+ 708 0240 50020000 		.4byte	.LASF30
+ 709 0244 01       		.byte	0x1
+ 710 0245 1D       		.byte	0x1d
+ 711 0246 77000000 		.4byte	0x77
+ 712 024a 0F       		.uleb128 0xf
+ 713 024b B1000000 		.4byte	.LASF28
+ 714 024f 01       		.byte	0x1
+ 715 0250 1D       		.byte	0x1d
+ 716 0251 77000000 		.4byte	0x77
+ 717 0255 05       		.uleb128 0x5
+ 718 0256 03       		.byte	0x3
+ 719 0257 0C000000 		.4byte	input_previous
+ 720 025b 0F       		.uleb128 0xf
+ 721 025c 0E000000 		.4byte	.LASF29
+ 722 0260 01       		.byte	0x1
+ 723 0261 1D       		.byte	0x1d
+ 724 0262 77000000 		.4byte	0x77
+ 725 0266 05       		.uleb128 0x5
+ 726 0267 03       		.byte	0x3
+ 727 0268 10000000 		.4byte	error_integrated
+ 728 026c 10       		.uleb128 0x10
+ 729 026d 99020000 		.4byte	.LASF31
+ 730 0271 01       		.byte	0x1
+ 731 0272 1D       		.byte	0x1d
+ 732 0273 77000000 		.4byte	0x77
+ 733 0277 0F       		.uleb128 0xf
+ 734 0278 3B010000 		.4byte	.LASF32
+ 735 027c 01       		.byte	0x1
+ 736 027d 20       		.byte	0x20
+ 737 027e 77000000 		.4byte	0x77
+ 738 0282 05       		.uleb128 0x5
+ 739 0283 03       		.byte	0x3
+ 740 0284 14000000 		.4byte	out_min
+ 741 0288 0F       		.uleb128 0xf
+ 742 0289 C6000000 		.4byte	.LASF33
+ 743 028d 01       		.byte	0x1
+ 744 028e 20       		.byte	0x20
+ 745 028f 77000000 		.4byte	0x77
+ 746 0293 05       		.uleb128 0x5
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 18
+
+
+ 747 0294 03       		.byte	0x3
+ 748 0295 18000000 		.4byte	out_max
+ 749 0299 11       		.uleb128 0x11
+ 750 029a 43010000 		.4byte	.LASF34
+ 751 029e 43010000 		.4byte	.LASF34
+ 752 02a2 02       		.byte	0x2
+ 753 02a3 32       		.byte	0x32
+ 754 02a4 11       		.uleb128 0x11
+ 755 02a5 1F000000 		.4byte	.LASF35
+ 756 02a9 1F000000 		.4byte	.LASF35
+ 757 02ad 02       		.byte	0x2
+ 758 02ae 33       		.byte	0x33
+ 759 02af 12       		.uleb128 0x12
+ 760 02b0 29000000 		.4byte	.LASF36
+ 761 02b4 29000000 		.4byte	.LASF36
+ 762 02b8 03       		.byte	0x3
+ 763 02b9 4701     		.2byte	0x147
+ 764 02bb 11       		.uleb128 0x11
+ 765 02bc DC000000 		.4byte	.LASF37
+ 766 02c0 DC000000 		.4byte	.LASF37
+ 767 02c4 04       		.byte	0x4
+ 768 02c5 28       		.byte	0x28
+ 769 02c6 00       		.byte	0
+ 770              		.section	.debug_abbrev,"",%progbits
+ 771              	.Ldebug_abbrev0:
+ 772 0000 01       		.uleb128 0x1
+ 773 0001 11       		.uleb128 0x11
+ 774 0002 01       		.byte	0x1
+ 775 0003 25       		.uleb128 0x25
+ 776 0004 0E       		.uleb128 0xe
+ 777 0005 13       		.uleb128 0x13
+ 778 0006 0B       		.uleb128 0xb
+ 779 0007 03       		.uleb128 0x3
+ 780 0008 0E       		.uleb128 0xe
+ 781 0009 1B       		.uleb128 0x1b
+ 782 000a 0E       		.uleb128 0xe
+ 783 000b 55       		.uleb128 0x55
+ 784 000c 17       		.uleb128 0x17
+ 785 000d 11       		.uleb128 0x11
+ 786 000e 01       		.uleb128 0x1
+ 787 000f 10       		.uleb128 0x10
+ 788 0010 17       		.uleb128 0x17
+ 789 0011 00       		.byte	0
+ 790 0012 00       		.byte	0
+ 791 0013 02       		.uleb128 0x2
+ 792 0014 24       		.uleb128 0x24
+ 793 0015 00       		.byte	0
+ 794 0016 0B       		.uleb128 0xb
+ 795 0017 0B       		.uleb128 0xb
+ 796 0018 3E       		.uleb128 0x3e
+ 797 0019 0B       		.uleb128 0xb
+ 798 001a 03       		.uleb128 0x3
+ 799 001b 0E       		.uleb128 0xe
+ 800 001c 00       		.byte	0
+ 801 001d 00       		.byte	0
+ 802 001e 03       		.uleb128 0x3
+ 803 001f 24       		.uleb128 0x24
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 19
+
+
+ 804 0020 00       		.byte	0
+ 805 0021 0B       		.uleb128 0xb
+ 806 0022 0B       		.uleb128 0xb
+ 807 0023 3E       		.uleb128 0x3e
+ 808 0024 0B       		.uleb128 0xb
+ 809 0025 03       		.uleb128 0x3
+ 810 0026 08       		.uleb128 0x8
+ 811 0027 00       		.byte	0
+ 812 0028 00       		.byte	0
+ 813 0029 04       		.uleb128 0x4
+ 814 002a 16       		.uleb128 0x16
+ 815 002b 00       		.byte	0
+ 816 002c 03       		.uleb128 0x3
+ 817 002d 0E       		.uleb128 0xe
+ 818 002e 3A       		.uleb128 0x3a
+ 819 002f 0B       		.uleb128 0xb
+ 820 0030 3B       		.uleb128 0x3b
+ 821 0031 05       		.uleb128 0x5
+ 822 0032 49       		.uleb128 0x49
+ 823 0033 13       		.uleb128 0x13
+ 824 0034 00       		.byte	0
+ 825 0035 00       		.byte	0
+ 826 0036 05       		.uleb128 0x5
+ 827 0037 2E       		.uleb128 0x2e
+ 828 0038 01       		.byte	0x1
+ 829 0039 3F       		.uleb128 0x3f
+ 830 003a 19       		.uleb128 0x19
+ 831 003b 03       		.uleb128 0x3
+ 832 003c 0E       		.uleb128 0xe
+ 833 003d 3A       		.uleb128 0x3a
+ 834 003e 0B       		.uleb128 0xb
+ 835 003f 3B       		.uleb128 0x3b
+ 836 0040 0B       		.uleb128 0xb
+ 837 0041 27       		.uleb128 0x27
+ 838 0042 19       		.uleb128 0x19
+ 839 0043 11       		.uleb128 0x11
+ 840 0044 01       		.uleb128 0x1
+ 841 0045 12       		.uleb128 0x12
+ 842 0046 06       		.uleb128 0x6
+ 843 0047 40       		.uleb128 0x40
+ 844 0048 18       		.uleb128 0x18
+ 845 0049 9742     		.uleb128 0x2117
+ 846 004b 19       		.uleb128 0x19
+ 847 004c 01       		.uleb128 0x1
+ 848 004d 13       		.uleb128 0x13
+ 849 004e 00       		.byte	0
+ 850 004f 00       		.byte	0
+ 851 0050 06       		.uleb128 0x6
+ 852 0051 05       		.uleb128 0x5
+ 853 0052 00       		.byte	0
+ 854 0053 03       		.uleb128 0x3
+ 855 0054 08       		.uleb128 0x8
+ 856 0055 3A       		.uleb128 0x3a
+ 857 0056 0B       		.uleb128 0xb
+ 858 0057 3B       		.uleb128 0x3b
+ 859 0058 0B       		.uleb128 0xb
+ 860 0059 49       		.uleb128 0x49
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 20
+
+
+ 861 005a 13       		.uleb128 0x13
+ 862 005b 02       		.uleb128 0x2
+ 863 005c 18       		.uleb128 0x18
+ 864 005d 00       		.byte	0
+ 865 005e 00       		.byte	0
+ 866 005f 07       		.uleb128 0x7
+ 867 0060 2E       		.uleb128 0x2e
+ 868 0061 00       		.byte	0
+ 869 0062 3F       		.uleb128 0x3f
+ 870 0063 19       		.uleb128 0x19
+ 871 0064 03       		.uleb128 0x3
+ 872 0065 0E       		.uleb128 0xe
+ 873 0066 3A       		.uleb128 0x3a
+ 874 0067 0B       		.uleb128 0xb
+ 875 0068 3B       		.uleb128 0x3b
+ 876 0069 0B       		.uleb128 0xb
+ 877 006a 11       		.uleb128 0x11
+ 878 006b 01       		.uleb128 0x1
+ 879 006c 12       		.uleb128 0x12
+ 880 006d 06       		.uleb128 0x6
+ 881 006e 40       		.uleb128 0x40
+ 882 006f 18       		.uleb128 0x18
+ 883 0070 9742     		.uleb128 0x2117
+ 884 0072 19       		.uleb128 0x19
+ 885 0073 00       		.byte	0
+ 886 0074 00       		.byte	0
+ 887 0075 08       		.uleb128 0x8
+ 888 0076 05       		.uleb128 0x5
+ 889 0077 00       		.byte	0
+ 890 0078 03       		.uleb128 0x3
+ 891 0079 0E       		.uleb128 0xe
+ 892 007a 3A       		.uleb128 0x3a
+ 893 007b 0B       		.uleb128 0xb
+ 894 007c 3B       		.uleb128 0x3b
+ 895 007d 0B       		.uleb128 0xb
+ 896 007e 49       		.uleb128 0x49
+ 897 007f 13       		.uleb128 0x13
+ 898 0080 02       		.uleb128 0x2
+ 899 0081 18       		.uleb128 0x18
+ 900 0082 00       		.byte	0
+ 901 0083 00       		.byte	0
+ 902 0084 09       		.uleb128 0x9
+ 903 0085 0F       		.uleb128 0xf
+ 904 0086 00       		.byte	0
+ 905 0087 0B       		.uleb128 0xb
+ 906 0088 0B       		.uleb128 0xb
+ 907 0089 49       		.uleb128 0x49
+ 908 008a 13       		.uleb128 0x13
+ 909 008b 00       		.byte	0
+ 910 008c 00       		.byte	0
+ 911 008d 0A       		.uleb128 0xa
+ 912 008e 2E       		.uleb128 0x2e
+ 913 008f 01       		.byte	0x1
+ 914 0090 3F       		.uleb128 0x3f
+ 915 0091 19       		.uleb128 0x19
+ 916 0092 03       		.uleb128 0x3
+ 917 0093 0E       		.uleb128 0xe
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 21
+
+
+ 918 0094 3A       		.uleb128 0x3a
+ 919 0095 0B       		.uleb128 0xb
+ 920 0096 3B       		.uleb128 0x3b
+ 921 0097 0B       		.uleb128 0xb
+ 922 0098 27       		.uleb128 0x27
+ 923 0099 19       		.uleb128 0x19
+ 924 009a 11       		.uleb128 0x11
+ 925 009b 01       		.uleb128 0x1
+ 926 009c 12       		.uleb128 0x12
+ 927 009d 06       		.uleb128 0x6
+ 928 009e 40       		.uleb128 0x40
+ 929 009f 18       		.uleb128 0x18
+ 930 00a0 9642     		.uleb128 0x2116
+ 931 00a2 19       		.uleb128 0x19
+ 932 00a3 01       		.uleb128 0x1
+ 933 00a4 13       		.uleb128 0x13
+ 934 00a5 00       		.byte	0
+ 935 00a6 00       		.byte	0
+ 936 00a7 0B       		.uleb128 0xb
+ 937 00a8 34       		.uleb128 0x34
+ 938 00a9 00       		.byte	0
+ 939 00aa 03       		.uleb128 0x3
+ 940 00ab 08       		.uleb128 0x8
+ 941 00ac 3A       		.uleb128 0x3a
+ 942 00ad 0B       		.uleb128 0xb
+ 943 00ae 3B       		.uleb128 0x3b
+ 944 00af 0B       		.uleb128 0xb
+ 945 00b0 49       		.uleb128 0x49
+ 946 00b1 13       		.uleb128 0x13
+ 947 00b2 02       		.uleb128 0x2
+ 948 00b3 18       		.uleb128 0x18
+ 949 00b4 00       		.byte	0
+ 950 00b5 00       		.byte	0
+ 951 00b6 0C       		.uleb128 0xc
+ 952 00b7 898201   		.uleb128 0x4109
+ 953 00ba 00       		.byte	0
+ 954 00bb 11       		.uleb128 0x11
+ 955 00bc 01       		.uleb128 0x1
+ 956 00bd 31       		.uleb128 0x31
+ 957 00be 13       		.uleb128 0x13
+ 958 00bf 00       		.byte	0
+ 959 00c0 00       		.byte	0
+ 960 00c1 0D       		.uleb128 0xd
+ 961 00c2 898201   		.uleb128 0x4109
+ 962 00c5 01       		.byte	0x1
+ 963 00c6 11       		.uleb128 0x11
+ 964 00c7 01       		.uleb128 0x1
+ 965 00c8 31       		.uleb128 0x31
+ 966 00c9 13       		.uleb128 0x13
+ 967 00ca 01       		.uleb128 0x1
+ 968 00cb 13       		.uleb128 0x13
+ 969 00cc 00       		.byte	0
+ 970 00cd 00       		.byte	0
+ 971 00ce 0E       		.uleb128 0xe
+ 972 00cf 8A8201   		.uleb128 0x410a
+ 973 00d2 00       		.byte	0
+ 974 00d3 02       		.uleb128 0x2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 22
+
+
+ 975 00d4 18       		.uleb128 0x18
+ 976 00d5 9142     		.uleb128 0x2111
+ 977 00d7 18       		.uleb128 0x18
+ 978 00d8 00       		.byte	0
+ 979 00d9 00       		.byte	0
+ 980 00da 0F       		.uleb128 0xf
+ 981 00db 34       		.uleb128 0x34
+ 982 00dc 00       		.byte	0
+ 983 00dd 03       		.uleb128 0x3
+ 984 00de 0E       		.uleb128 0xe
+ 985 00df 3A       		.uleb128 0x3a
+ 986 00e0 0B       		.uleb128 0xb
+ 987 00e1 3B       		.uleb128 0x3b
+ 988 00e2 0B       		.uleb128 0xb
+ 989 00e3 49       		.uleb128 0x49
+ 990 00e4 13       		.uleb128 0x13
+ 991 00e5 02       		.uleb128 0x2
+ 992 00e6 18       		.uleb128 0x18
+ 993 00e7 00       		.byte	0
+ 994 00e8 00       		.byte	0
+ 995 00e9 10       		.uleb128 0x10
+ 996 00ea 34       		.uleb128 0x34
+ 997 00eb 00       		.byte	0
+ 998 00ec 03       		.uleb128 0x3
+ 999 00ed 0E       		.uleb128 0xe
+ 1000 00ee 3A       		.uleb128 0x3a
+ 1001 00ef 0B       		.uleb128 0xb
+ 1002 00f0 3B       		.uleb128 0x3b
+ 1003 00f1 0B       		.uleb128 0xb
+ 1004 00f2 49       		.uleb128 0x49
+ 1005 00f3 13       		.uleb128 0x13
+ 1006 00f4 00       		.byte	0
+ 1007 00f5 00       		.byte	0
+ 1008 00f6 11       		.uleb128 0x11
+ 1009 00f7 2E       		.uleb128 0x2e
+ 1010 00f8 00       		.byte	0
+ 1011 00f9 3F       		.uleb128 0x3f
+ 1012 00fa 19       		.uleb128 0x19
+ 1013 00fb 3C       		.uleb128 0x3c
+ 1014 00fc 19       		.uleb128 0x19
+ 1015 00fd 6E       		.uleb128 0x6e
+ 1016 00fe 0E       		.uleb128 0xe
+ 1017 00ff 03       		.uleb128 0x3
+ 1018 0100 0E       		.uleb128 0xe
+ 1019 0101 3A       		.uleb128 0x3a
+ 1020 0102 0B       		.uleb128 0xb
+ 1021 0103 3B       		.uleb128 0x3b
+ 1022 0104 0B       		.uleb128 0xb
+ 1023 0105 00       		.byte	0
+ 1024 0106 00       		.byte	0
+ 1025 0107 12       		.uleb128 0x12
+ 1026 0108 2E       		.uleb128 0x2e
+ 1027 0109 00       		.byte	0
+ 1028 010a 3F       		.uleb128 0x3f
+ 1029 010b 19       		.uleb128 0x19
+ 1030 010c 3C       		.uleb128 0x3c
+ 1031 010d 19       		.uleb128 0x19
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 23
+
+
+ 1032 010e 6E       		.uleb128 0x6e
+ 1033 010f 0E       		.uleb128 0xe
+ 1034 0110 03       		.uleb128 0x3
+ 1035 0111 0E       		.uleb128 0xe
+ 1036 0112 3A       		.uleb128 0x3a
+ 1037 0113 0B       		.uleb128 0xb
+ 1038 0114 3B       		.uleb128 0x3b
+ 1039 0115 05       		.uleb128 0x5
+ 1040 0116 00       		.byte	0
+ 1041 0117 00       		.byte	0
+ 1042 0118 00       		.byte	0
+ 1043              		.section	.debug_aranges,"",%progbits
+ 1044 0000 4C000000 		.4byte	0x4c
+ 1045 0004 0200     		.2byte	0x2
+ 1046 0006 00000000 		.4byte	.Ldebug_info0
+ 1047 000a 04       		.byte	0x4
+ 1048 000b 00       		.byte	0
+ 1049 000c 0000     		.2byte	0
+ 1050 000e 0000     		.2byte	0
+ 1051 0010 00000000 		.4byte	.LFB34
+ 1052 0014 10000000 		.4byte	.LFE34-.LFB34
+ 1053 0018 00000000 		.4byte	.LFB35
+ 1054 001c 28000000 		.4byte	.LFE35-.LFB35
+ 1055 0020 00000000 		.4byte	.LFB36
+ 1056 0024 0C000000 		.4byte	.LFE36-.LFB36
+ 1057 0028 00000000 		.4byte	.LFB37
+ 1058 002c 0C000000 		.4byte	.LFE37-.LFB37
+ 1059 0030 00000000 		.4byte	.LFB38
+ 1060 0034 0C000000 		.4byte	.LFE38-.LFB38
+ 1061 0038 00000000 		.4byte	.LFB39
+ 1062 003c 0C000000 		.4byte	.LFE39-.LFB39
+ 1063 0040 00000000 		.4byte	.LFB40
+ 1064 0044 D8000000 		.4byte	.LFE40-.LFB40
+ 1065 0048 00000000 		.4byte	0
+ 1066 004c 00000000 		.4byte	0
+ 1067              		.section	.debug_ranges,"",%progbits
+ 1068              	.Ldebug_ranges0:
+ 1069 0000 00000000 		.4byte	.LFB34
+ 1070 0004 10000000 		.4byte	.LFE34
+ 1071 0008 00000000 		.4byte	.LFB35
+ 1072 000c 28000000 		.4byte	.LFE35
+ 1073 0010 00000000 		.4byte	.LFB36
+ 1074 0014 0C000000 		.4byte	.LFE36
+ 1075 0018 00000000 		.4byte	.LFB37
+ 1076 001c 0C000000 		.4byte	.LFE37
+ 1077 0020 00000000 		.4byte	.LFB38
+ 1078 0024 0C000000 		.4byte	.LFE38
+ 1079 0028 00000000 		.4byte	.LFB39
+ 1080 002c 0C000000 		.4byte	.LFE39
+ 1081 0030 00000000 		.4byte	.LFB40
+ 1082 0034 D8000000 		.4byte	.LFE40
+ 1083 0038 00000000 		.4byte	0
+ 1084 003c 00000000 		.4byte	0
+ 1085              		.section	.debug_line,"",%progbits
+ 1086              	.Ldebug_line0:
+ 1087 0000 4C010000 		.section	.debug_str,"MS",%progbits,1
+ 1087      02006A00 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 24
+
+
+ 1087      00000201 
+ 1087      FB0E0D00 
+ 1087      01010101 
+ 1088              	.LASF6:
+ 1089 0000 6C6F6E67 		.ascii	"long long int\000"
+ 1089      206C6F6E 
+ 1089      6720696E 
+ 1089      7400
+ 1090              	.LASF29:
+ 1091 000e 6572726F 		.ascii	"error_integrated\000"
+ 1091      725F696E 
+ 1091      74656772 
+ 1091      61746564 
+ 1091      00
+ 1092              	.LASF35:
+ 1093 001f 4C45445F 		.ascii	"LED_Write\000"
+ 1093      57726974 
+ 1093      6500
+ 1094              	.LASF36:
+ 1095 0029 5049445F 		.ascii	"PID_Tick_Timer_ClearInterrupt\000"
+ 1095      5469636B 
+ 1095      5F54696D 
+ 1095      65725F43 
+ 1095      6C656172 
+ 1096              	.LASF4:
+ 1097 0047 6C6F6E67 		.ascii	"long int\000"
+ 1097      20696E74 
+ 1097      00
+ 1098              	.LASF40:
+ 1099 0050 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 1099      73657273 
+ 1099      5C416664 
+ 1099      68616C41 
+ 1099      74696666 
+ 1100 007f 736D6172 		.ascii	"smart_winch_prototype\\Workspace01\\Prototype.cydsn"
+ 1100      745F7769 
+ 1100      6E63685F 
+ 1100      70726F74 
+ 1100      6F747970 
+ 1101 00b0 00       		.ascii	"\000"
+ 1102              	.LASF28:
+ 1103 00b1 696E7075 		.ascii	"input_previous\000"
+ 1103      745F7072 
+ 1103      6576696F 
+ 1103      757300
+ 1104              	.LASF39:
+ 1105 00c0 7069642E 		.ascii	"pid.c\000"
+ 1105      6300
+ 1106              	.LASF33:
+ 1107 00c6 6F75745F 		.ascii	"out_max\000"
+ 1107      6D617800 
+ 1108              	.LASF20:
+ 1109 00ce 5F6F7574 		.ascii	"_output\000"
+ 1109      70757400 
+ 1110              	.LASF9:
+ 1111 00d6 666C6F61 		.ascii	"float\000"
+ 1111      7400
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 25
+
+
+ 1112              	.LASF37:
+ 1113 00dc 5049445F 		.ascii	"PID_ISR_ClearPending\000"
+ 1113      4953525F 
+ 1113      436C6561 
+ 1113      7250656E 
+ 1113      64696E67 
+ 1114              	.LASF1:
+ 1115 00f1 756E7369 		.ascii	"unsigned char\000"
+ 1115      676E6564 
+ 1115      20636861 
+ 1115      7200
+ 1116              	.LASF15:
+ 1117 00ff 5049445F 		.ascii	"PID_Set_Setpoint\000"
+ 1117      5365745F 
+ 1117      53657470 
+ 1117      6F696E74 
+ 1117      00
+ 1118              	.LASF26:
+ 1119 0110 696E7075 		.ascii	"input\000"
+ 1119      7400
+ 1120              	.LASF5:
+ 1121 0116 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1121      20756E73 
+ 1121      69676E65 
+ 1121      6420696E 
+ 1121      7400
+ 1122              	.LASF3:
+ 1123 0128 73686F72 		.ascii	"short unsigned int\000"
+ 1123      7420756E 
+ 1123      7369676E 
+ 1123      65642069 
+ 1123      6E7400
+ 1124              	.LASF32:
+ 1125 013b 6F75745F 		.ascii	"out_min\000"
+ 1125      6D696E00 
+ 1126              	.LASF34:
+ 1127 0143 4C45445F 		.ascii	"LED_Read\000"
+ 1127      52656164 
+ 1127      00
+ 1128              	.LASF10:
+ 1129 014c 646F7562 		.ascii	"double\000"
+ 1129      6C6500
+ 1130              	.LASF2:
+ 1131 0153 73686F72 		.ascii	"short int\000"
+ 1131      7420696E 
+ 1131      7400
+ 1132              	.LASF42:
+ 1133 015d 5049445F 		.ascii	"PID_Init\000"
+ 1133      496E6974 
+ 1133      00
+ 1134              	.LASF41:
+ 1135 0166 75696E74 		.ascii	"uint32\000"
+ 1135      333200
+ 1136              	.LASF8:
+ 1137 016d 756E7369 		.ascii	"unsigned int\000"
+ 1137      676E6564 
+ 1137      20696E74 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 26
+
+
+ 1137      00
+ 1138              	.LASF18:
+ 1139 017a 5F696E70 		.ascii	"_input\000"
+ 1139      757400
+ 1140              	.LASF14:
+ 1141 0181 5049445F 		.ascii	"PID_Set_Gains\000"
+ 1141      5365745F 
+ 1141      4761696E 
+ 1141      7300
+ 1142              	.LASF7:
+ 1143 018f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1143      206C6F6E 
+ 1143      6720756E 
+ 1143      7369676E 
+ 1143      65642069 
+ 1144              	.LASF24:
+ 1145 01a6 5049445F 		.ascii	"PID_Tick\000"
+ 1145      5469636B 
+ 1145      00
+ 1146              	.LASF16:
+ 1147 01af 5F736574 		.ascii	"_setpoint\000"
+ 1147      706F696E 
+ 1147      7400
+ 1148              	.LASF38:
+ 1149 01b9 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1149      43313120 
+ 1149      352E342E 
+ 1149      31203230 
+ 1149      31363036 
+ 1150 01ec 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1150      20726576 
+ 1150      6973696F 
+ 1150      6E203233 
+ 1150      37373135 
+ 1151 021f 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1151      66756E63 
+ 1151      74696F6E 
+ 1151      2D736563 
+ 1151      74696F6E 
+ 1152              	.LASF13:
+ 1153 0247 73697A65 		.ascii	"sizetype\000"
+ 1153      74797065 
+ 1153      00
+ 1154              	.LASF30:
+ 1155 0250 6572726F 		.ascii	"error\000"
+ 1155      7200
+ 1156              	.LASF23:
+ 1157 0256 5F6F7574 		.ascii	"_out_max\000"
+ 1157      5F6D6178 
+ 1157      00
+ 1158              	.LASF11:
+ 1159 025f 63686172 		.ascii	"char\000"
+ 1159      00
+ 1160              	.LASF21:
+ 1161 0264 5049445F 		.ascii	"PID_Set_Output_Limits\000"
+ 1161      5365745F 
+ 1161      4F757470 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cck0kMy6.s 			page 27
+
+
+ 1161      75745F4C 
+ 1161      696D6974 
+ 1162              	.LASF19:
+ 1163 027a 5049445F 		.ascii	"PID_Set_Output\000"
+ 1163      5365745F 
+ 1163      4F757470 
+ 1163      757400
+ 1164              	.LASF27:
+ 1165 0289 6F757470 		.ascii	"output\000"
+ 1165      757400
+ 1166              	.LASF22:
+ 1167 0290 5F6F7574 		.ascii	"_out_min\000"
+ 1167      5F6D696E 
+ 1167      00
+ 1168              	.LASF31:
+ 1169 0299 696E7075 		.ascii	"input_differentiated\000"
+ 1169      745F6469 
+ 1169      66666572 
+ 1169      656E7469 
+ 1169      61746564 
+ 1170              	.LASF12:
+ 1171 02ae 6C6F6E67 		.ascii	"long double\000"
+ 1171      20646F75 
+ 1171      626C6500 
+ 1172              	.LASF0:
+ 1173 02ba 7369676E 		.ascii	"signed char\000"
+ 1173      65642063 
+ 1173      68617200 
+ 1174              	.LASF17:
+ 1175 02c6 5049445F 		.ascii	"PID_Set_Input\000"
+ 1175      5365745F 
+ 1175      496E7075 
+ 1175      7400
+ 1176              	.LASF25:
+ 1177 02d4 73657470 		.ascii	"setpoint\000"
+ 1177      6F696E74 
+ 1177      00
+ 1178              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
