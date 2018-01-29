@@ -232,6 +232,10 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\SPI_mosi_m.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\SPI_mosi_m_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\SPI_mosi_m_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ID.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ID.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ID_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ID_PM.c</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\nRF24_v1_6\API">

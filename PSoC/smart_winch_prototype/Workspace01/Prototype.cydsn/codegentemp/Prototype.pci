@@ -1,5 +1,5 @@
 # Prototype
-# 2017-12-25 11:24:02Z
+# 2018-01-28 04:31:28Z
 
 # IO_2@[IOP=(3)][IoId=(2)] is reserved: SWDDebugEnabled
 dont_use_io iocell 3 2
@@ -22,4 +22,5 @@ set_io "\SPI:mosi_m(0)\" iocell 4 0
 set_io "CE(0)" iocell 4 4
 set_io "SS(0)" iocell 4 3
 set_io "NRF_IRQ(0)" iocell 4 5
+set_io "ID(0)" iocell 6 5
 set_location "\ADC:cy_psoc4_sar\" p4sarcell -1 -1 0

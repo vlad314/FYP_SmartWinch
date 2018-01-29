@@ -2,7 +2,7 @@
 --	Conversion of Prototype.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Mon Dec 25 11:24:01 2017
+--	Sun Jan 28 04:31:27 2018
 --
 
 USE cypress.cypress.all;
@@ -52,7 +52,7 @@ SIGNAL Net_90 : bit;
 SIGNAL Net_91 : bit;
 SIGNAL Net_86 : bit;
 SIGNAL tmpOE__Bridge_1_net_0 : bit;
-SIGNAL Net_30 : bit;
+SIGNAL Net_526 : bit;
 SIGNAL tmpFB_0__Bridge_1_net_0 : bit;
 SIGNAL tmpIO_0__Bridge_1_net_0 : bit;
 TERMINAL tmpSIOVREF__Bridge_1_net_0 : bit;
@@ -60,13 +60,14 @@ SIGNAL zero : bit;
 SIGNAL one : bit;
 SIGNAL tmpINTERRUPT_0__Bridge_1_net_0 : bit;
 SIGNAL tmpOE__Bridge_2_net_0 : bit;
-SIGNAL Net_41 : bit;
+SIGNAL Net_535 : bit;
 SIGNAL tmpFB_0__Bridge_2_net_0 : bit;
 SIGNAL tmpIO_0__Bridge_2_net_0 : bit;
 TERMINAL tmpSIOVREF__Bridge_2_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Bridge_2_net_0 : bit;
 SIGNAL \Motor_Dir:clk\ : bit;
 SIGNAL \Motor_Dir:rst\ : bit;
+SIGNAL Net_532 : bit;
 SIGNAL \Motor_Dir:control_out_0\ : bit;
 SIGNAL Net_43 : bit;
 SIGNAL \Motor_Dir:control_out_1\ : bit;
@@ -372,6 +373,13 @@ SIGNAL tmpFB_0__NRF_IRQ_net_0 : bit;
 SIGNAL tmpIO_0__NRF_IRQ_net_0 : bit;
 TERMINAL tmpSIOVREF__NRF_IRQ_net_0 : bit;
 SIGNAL Net_465 : bit;
+SIGNAL tmpOE__ID_net_0 : bit;
+SIGNAL tmpFB_0__ID_net_0 : bit;
+SIGNAL tmpIO_0__ID_net_0 : bit;
+TERMINAL tmpSIOVREF__ID_net_0 : bit;
+SIGNAL tmpINTERRUPT_0__ID_net_0 : bit;
+SIGNAL \demux:tmp__demux_0_reg\ : bit;
+SIGNAL \demux:tmp__demux_1_reg\ : bit;
 SIGNAL cydff_2D : bit;
 BEGIN
 
@@ -379,8 +387,9 @@ zero <=  ('0') ;
 
 tmpOE__Bridge_1_net_0 <=  ('1') ;
 
-Net_30 <= ((not Net_41 and Net_40)
-	OR (not Net_40 and Net_41));
+Net_535 <= ((not Net_532 and Net_40));
+
+Net_526 <= ((Net_40 and Net_532));
 
 \QuadDec:cy_m0s8_tcpwm_1\:cy_m0s8_tcpwm_v1_0
 	GENERIC MAP(cy_registers=>"")
@@ -495,7 +504,7 @@ Bridge_1:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__Bridge_1_net_0),
-		y=>Net_30,
+		y=>Net_526,
 		fb=>(tmpFB_0__Bridge_1_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__Bridge_1_net_0),
@@ -565,7 +574,7 @@ Bridge_2:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__Bridge_1_net_0),
-		y=>Net_41,
+		y=>Net_535,
 		fb=>(tmpFB_0__Bridge_2_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__Bridge_2_net_0),
@@ -587,7 +596,7 @@ Bridge_2:cy_psoc3_pins_v1_10
 	PORT MAP(reset=>zero,
 		clock=>zero,
 		control=>(\Motor_Dir:control_7\, \Motor_Dir:control_6\, \Motor_Dir:control_5\, \Motor_Dir:control_4\,
-			\Motor_Dir:control_3\, \Motor_Dir:control_2\, \Motor_Dir:control_1\, Net_41));
+			\Motor_Dir:control_3\, \Motor_Dir:control_2\, \Motor_Dir:control_1\, Net_532));
 QE_A:cy_psoc3_pins_v1_10
 	GENERIC MAP(id=>"8d318d8b-cf7b-4b6b-b02c-ab1c5c49d0ba",
 		drive_mode=>"010",
@@ -2022,6 +2031,76 @@ NRF_ISR:cy_isr_v1_0
 	GENERIC MAP(int_type=>"10",
 		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_465);
+ID:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"985682c8-cce6-4aeb-9ca9-5f3355e5f37e",
+		drive_mode=>"010",
+		ibuf_enabled=>"1",
+		init_dr_st=>"1",
+		input_sync=>"0",
+		input_clk_en=>'0',
+		input_sync_mode=>"0",
+		intr_mode=>"00",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>"",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"0",
+		output_sync=>"0",
+		output_clk_en=>'0',
+		output_mode=>"0",
+		output_reset=>'0',
+		output_clock_mode=>"0",
+		oe_sync=>"0",
+		oe_conn=>"0",
+		oe_reset=>'0',
+		pin_aliases=>"",
+		pin_mode=>"I",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"00000000",
+		sio_hyst=>"1",
+		sio_ibuf=>"00000000",
+		sio_info=>"00",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		sio_vohsel=>"00000000",
+		slew_rate=>"0",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"00",
+		width=>1,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"0",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1,
+		ovt_needed=>"0",
+		ovt_slew_control=>"00",
+		ovt_hyst_trim=>"0",
+		input_buffer_sel=>"00")
+	PORT MAP(oe=>(tmpOE__Bridge_1_net_0),
+		y=>(zero),
+		fb=>(tmpFB_0__ID_net_0),
+		analog=>(open),
+		io=>(tmpIO_0__ID_net_0),
+		siovref=>(tmpSIOVREF__ID_net_0),
+		annotation=>(open),
+		in_clock=>zero,
+		in_clock_en=>tmpOE__Bridge_1_net_0,
+		in_reset=>zero,
+		out_clock=>zero,
+		out_clock_en=>tmpOE__Bridge_1_net_0,
+		out_reset=>zero,
+		interrupt=>tmpINTERRUPT_0__ID_net_0);
 cydff_2:cy_dff
 	PORT MAP(d=>Net_386,
 		clk=>Net_3,

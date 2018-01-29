@@ -68,6 +68,8 @@
 #include "NRF_IRQ.h"
 #include "NRF_IRQ_aliases.h"
 #include "NRF_ISR.h"
+#include "ID.h"
+#include "ID_aliases.h"
 #include "USB_UART_SCBCLK.h"
 #include "USB_UART_tx.h"
 #include "USB_UART_tx_aliases.h"

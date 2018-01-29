@@ -119,6 +119,10 @@
   <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\NRF_IRQ_PM.c" value="SOURCE_C;CortexM0;;;;NRF_IRQ" />
   <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\NRF_ISR.c" value="SOURCE_C;CortexM0;;;;NRF_ISR" />
   <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\NRF_ISR.h" value="HEADER;;;;;NRF_ISR" />
+  <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\ID.c" value="SOURCE_C;CortexM0;;;;ID" />
+  <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\ID.h" value="HEADER;;;;;ID" />
+  <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\ID_aliases.h" value="HEADER;;;;;ID" />
+  <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\ID_PM.c" value="SOURCE_C;CortexM0;;;;ID" />
   <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\USB_UART_SCBCLK.c" value="SOURCE_C;CortexM0;;;;USB_UART_SCBCLK" />
   <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\USB_UART_SCBCLK.h" value="HEADER;;;;;USB_UART_SCBCLK" />
   <file name="C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\codegentemp\USB_UART_tx.c" value="SOURCE_C;CortexM0;;;;USB_UART_tx" />

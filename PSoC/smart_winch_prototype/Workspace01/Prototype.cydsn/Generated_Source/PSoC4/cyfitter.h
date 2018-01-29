@@ -189,7 +189,7 @@
 #define Bridge_1__0__MASK 0x01u
 #define Bridge_1__0__OUT_SEL CYREG_UDB_PA1_CFG10
 #define Bridge_1__0__OUT_SEL_SHIFT 0u
-#define Bridge_1__0__OUT_SEL_VAL 0u
+#define Bridge_1__0__OUT_SEL_VAL 2u
 #define Bridge_1__0__PA__CFG0 CYREG_UDB_PA1_CFG0
 #define Bridge_1__0__PA__CFG1 CYREG_UDB_PA1_CFG1
 #define Bridge_1__0__PA__CFG10 CYREG_UDB_PA1_CFG10
@@ -255,7 +255,7 @@
 #define Bridge_2__0__MASK 0x02u
 #define Bridge_2__0__OUT_SEL CYREG_UDB_PA1_CFG10
 #define Bridge_2__0__OUT_SEL_SHIFT 2u
-#define Bridge_2__0__OUT_SEL_VAL 2u
+#define Bridge_2__0__OUT_SEL_VAL 1u
 #define Bridge_2__0__PA__CFG0 CYREG_UDB_PA1_CFG0
 #define Bridge_2__0__PA__CFG1 CYREG_UDB_PA1_CFG1
 #define Bridge_2__0__PA__CFG10 CYREG_UDB_PA1_CFG10
@@ -542,6 +542,39 @@
 #define Direction_Flag__PORT 0u
 #define Direction_Flag__PS CYREG_GPIO_PRT0_PS
 #define Direction_Flag__SHIFT 7u
+
+/* ID */
+#define ID__0__DR CYREG_GPIO_PRT6_DR
+#define ID__0__DR_CLR CYREG_GPIO_PRT6_DR_CLR
+#define ID__0__DR_INV CYREG_GPIO_PRT6_DR_INV
+#define ID__0__DR_SET CYREG_GPIO_PRT6_DR_SET
+#define ID__0__HSIOM CYREG_HSIOM_PORT_SEL6
+#define ID__0__HSIOM_MASK 0x00F00000u
+#define ID__0__HSIOM_SHIFT 20u
+#define ID__0__INTCFG CYREG_GPIO_PRT6_INTR_CFG
+#define ID__0__INTR CYREG_GPIO_PRT6_INTR
+#define ID__0__INTR_CFG CYREG_GPIO_PRT6_INTR_CFG
+#define ID__0__INTSTAT CYREG_GPIO_PRT6_INTR
+#define ID__0__MASK 0x20u
+#define ID__0__PC CYREG_GPIO_PRT6_PC
+#define ID__0__PC2 CYREG_GPIO_PRT6_PC2
+#define ID__0__PORT 6u
+#define ID__0__PS CYREG_GPIO_PRT6_PS
+#define ID__0__SHIFT 5u
+#define ID__DR CYREG_GPIO_PRT6_DR
+#define ID__DR_CLR CYREG_GPIO_PRT6_DR_CLR
+#define ID__DR_INV CYREG_GPIO_PRT6_DR_INV
+#define ID__DR_SET CYREG_GPIO_PRT6_DR_SET
+#define ID__INTCFG CYREG_GPIO_PRT6_INTR_CFG
+#define ID__INTR CYREG_GPIO_PRT6_INTR
+#define ID__INTR_CFG CYREG_GPIO_PRT6_INTR_CFG
+#define ID__INTSTAT CYREG_GPIO_PRT6_INTR
+#define ID__MASK 0x20u
+#define ID__PC CYREG_GPIO_PRT6_PC
+#define ID__PC2 CYREG_GPIO_PRT6_PC2
+#define ID__PORT 6u
+#define ID__PS CYREG_GPIO_PRT6_PS
+#define ID__SHIFT 5u
 
 /* LED */
 #define LED__0__DR CYREG_GPIO_PRT1_DR

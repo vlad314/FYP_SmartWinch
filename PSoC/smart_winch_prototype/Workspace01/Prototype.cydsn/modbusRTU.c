@@ -57,6 +57,8 @@
 
 //Private prototypes and vars
   unsigned char slave;
+  unsigned char modbusRTU_Written = 0;  
+  unsigned long modbusRTU_written_register_flags = 0;
   unsigned int crc(unsigned char *buf, unsigned char start, unsigned char cnt);
   void build_read_packet(unsigned char function, unsigned char count, unsigned char *packet);
   void build_write_packet(unsigned char function, unsigned int start_addr, unsigned char count, unsigned char *packet);
@@ -596,18 +598,34 @@ unsigned int regs_size)
                         regs);
                 break;
                 case FC_WRITE_REGS:
-                        return preset_multiple_registers(
-                        start_addr,
-                        query[REGS_L],
-                        query,
-                        regs);
-                break;
+                {
+                    modbusRTU_Written = 1;
+                    
+                    char index = 0;
+                    for(index = 0; index < query[REGS_L]; index++)
+                    {
+                        modbusRTU_written_register_flags |= 1<<(start_addr+index);
+                    }
+                    
+                    return preset_multiple_registers(
+                    start_addr,
+                    query[REGS_L],
+                    query,
+                    regs);
+                    break;
+                }
                 case FC_WRITE_REG:
-                        write_single_register(
-                        start_addr,
-                        query,
-                        regs);
-                break;                                
+                {
+                    modbusRTU_Written = 1;
+                    
+                    modbusRTU_written_register_flags |= 1<<(start_addr);
+                    
+                    write_single_register(
+                    start_addr,
+                    query,
+                    regs);
+                    break;                                
+                }
         }      
         return 0;
 }

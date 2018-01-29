@@ -11,18 +11,22 @@
 */
 
 // Slave registers
-enum {                         
-  Kp,
-  Ki,
-  Kd,
-  PID_Setpoint,
-  Current_Encoder_Position, 
-  Current_PWM,
-  Reset_Source,
-  Soft_Reset,  
-  CurrSense_A,
-  CurrSense_B,  
-  MB_HREGS                    // Dummy register. using 0 offset to keep size of array
+enum 
+{                         
+    Kp,
+    Ki,
+    Kd,
+    PID_Setpoint,
+    Current_Encoder_Position, 
+    Current_PWM,
+    Reset_Source,
+    Soft_Reset,  
+    CurrSense_A,
+    CurrSense_B, 
+    PID_Setpoint1,  
+    Current_X,
+    Current_Y,        
+    MB_HREGS                    // Dummy register. using 0 offset to keep size of array
 };
 
 int modbus_holding_regs[MB_HREGS];

@@ -65,6 +65,11 @@
  * 	an exception code (1 to 4) in case of a modbus exceptions
  * 	the number of bytes sent as reply ( > 4) if OK.
  */
+  unsigned char modbusRTU_Written;  
+  
+  //to do: change this to struct
+  unsigned long modbusRTU_written_register_flags;
+    
   int modbusRTU_Update(unsigned char slave_id, int *regs, unsigned int regs_size); 
 
 #endif

@@ -63,7 +63,7 @@ All values are in Picoseconds
 
 Port Name    Setup to Clk  Clock Name:Phase  
 -----------  ------------  ----------------  
-QE_A(0)_PAD  5502          QE_B(0)_PAD:R     
+QE_A(0)_PAD  5512          QE_B(0)_PAD:R     
 
 
                        3.2::Clock to Out
@@ -71,10 +71,11 @@ QE_A(0)_PAD  5502          QE_B(0)_PAD:R
 
 Port Name              Clock to Out  Clock Name:Phase  
 ---------------------  ------------  ----------------  
-Bridge_1(0)_PAD        30451         CyHFClk:R         
-Bridge_1(0)_PAD        29054         Clock_1(FFB):R    
-Bridge_2(0)_PAD        24102         CyHFClk:R         
-Direction_Flag(0)_PAD  42700         QE_B(0)_PAD:R     
+Bridge_1(0)_PAD        29307         CyHFClk:R         
+Bridge_1(0)_PAD        29084         Clock_1(FFB):R    
+Bridge_2(0)_PAD        29446         CyHFClk:R         
+Bridge_2(0)_PAD        29223         Clock_1(FFB):R    
+Direction_Flag(0)_PAD  42731         QE_B(0)_PAD:R     
 
 
                          3.3::Pad to Pad
