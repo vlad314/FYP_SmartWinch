@@ -1,0 +1,20 @@
+#include <SPI.h>
+#include "nRF24L01.h"
+#include "RF24.h"
+
+RF24 radio(7,8);
+
+enum{M2A, A2M};
+const uint64_t pipes[2] = {0x3a294d3241LL, 0x3a2941324dLL};
+
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  radio.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}

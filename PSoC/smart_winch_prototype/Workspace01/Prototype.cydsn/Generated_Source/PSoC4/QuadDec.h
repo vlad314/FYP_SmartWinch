@@ -54,7 +54,7 @@ extern uint8  QuadDec_initVar;
 
 /* Quad Mode */
 /* Parameters */
-#define QuadDec_QUAD_ENCODING_MODES            (2lu)
+#define QuadDec_QUAD_ENCODING_MODES            (0lu)
 #define QuadDec_QUAD_AUTO_START                (1lu)
 
 /* Signal modes */

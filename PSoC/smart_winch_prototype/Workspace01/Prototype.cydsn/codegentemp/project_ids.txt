@@ -1,6 +1,6 @@
-C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Prototype.cyprj|1bf3b25b-da83-4ba2-b3b1-6a6aaf5fe93b
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|5fd91d62-988d-4241-920b-9efea67213f2
-C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|c99d43ca-272a-464b-9768-4c7ffcb51fb4
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|c8e5c9a4-1b3b-4da3-9512-18dcd6caea90
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|13c45884-d835-4020-b3f3-f20dd4f18145
-C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|cf6fcbe0-f4cf-4645-ace4-0f2193114a0d
+C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\smart_winch_prototype\Workspace01\Prototype.cydsn\Prototype.cyprj|27cb92a2-ba30-46d2-bc4c-ff6c0b679f9a
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|d0ab1f54-57da-48aa-bf7e-eeec85dd7ad7
+C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|7b8db8fd-c8ab-4ecb-94ce-9d2462f0f4e2
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|8bf93f1a-bc6f-4b9c-a75a-9bc8931c9584
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|207ecbe0-a543-4ece-a595-2c63fbf54cb2
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|448faf4d-1691-41c7-9893-a9774684ea52

@@ -25,3 +25,11 @@
 23rd Nov 2017 (archive7)
 -fixed the fractional math for integrator
 -changed pid sampling to 12.5Hz
+
+26th Jan 2018
+-smart_winch.cywrk.Archive01
+-First push for github
+
+1st Feb 2018
+-smart_winch.cywrk.Archive02
+-Got it working with Node A, B and C

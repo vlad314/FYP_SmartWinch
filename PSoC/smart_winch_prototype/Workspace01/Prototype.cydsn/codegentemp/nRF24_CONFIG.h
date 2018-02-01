@@ -54,7 +54,7 @@
 
 // Data from customizer
 #define ENABLE_PIPE0    1
-#define ENABLE_PIPE1    0
+#define ENABLE_PIPE1    1
 #define ENABLE_PIPE2    0
 #define ENABLE_PIPE3    0
 #define ENABLE_PIPE4    0
@@ -65,11 +65,11 @@
                                 (0 << NRF_EN_AA_ENAA_P1) | (0 << NRF_EN_AA_ENAA_P0))
 #define CUSTOMIZER_EN_RXADDR    ((0 << NRF_EN_RXADDR_ERX_P5) | (0 << NRF_EN_RXADDR_ERX_P4) | \
                                 (0 << NRF_EN_RXADDR_ERX_P3) | (0 << NRF_EN_RXADDR_ERX_P2) | \
-                                (0 << NRF_EN_RXADDR_ERX_P1) | (1 << NRF_EN_RXADDR_ERX_P0))
+                                (1 << NRF_EN_RXADDR_ERX_P1) | (1 << NRF_EN_RXADDR_ERX_P0))
 #define CUSTOMIZER_SETUP_AW     (3)
 #define CUSTOMIZER_SETUP_RETR   ((1 << NRF_SETUP_RETR_ARD) | (8 << NRF_SETUP_RETR_ARC))
 #define CUSTOMIZER_RF_CH        (120)
-#define CUSTOMIZER_RF_SETUP     ((0 << NRF_RF_SETUP_CONT_WAVE) | (1 << NRF_RF_SETUP_RF_DR) | \
+#define CUSTOMIZER_RF_SETUP     ((0 << NRF_RF_SETUP_CONT_WAVE) | (4 << NRF_RF_SETUP_RF_DR) | \
                                 (3 << NRF_RF_SETUP_RF_PWR))
 #define CUSTOMIZER_DYNPD        ((0 << NRF_DYNPD_DPL_P5) | (0 << NRF_DYNPD_DPL_P4) | \
                                 (0 << NRF_DYNPD_DPL_P3) | (0 << NRF_DYNPD_DPL_P2) | \
@@ -80,7 +80,7 @@
                                 (1 << NRF_CONFIG_MASK_MAX_RT) | (1 << NRF_CONFIG_EN_CRC) | \
                                 (1 << NRF_CONFIG_CRCO) | (1<< NRF_CONFIG_PWR_UP) | (1 << NRF_CONFIG_PRIM_RX))
 #define CUSTOMIZER_RX_PW_P0     (4)
-#define CUSTOMIZER_RX_PW_P1     (0)
+#define CUSTOMIZER_RX_PW_P1     (4)
 #define CUSTOMIZER_RX_PW_P2     (0)
 #define CUSTOMIZER_RX_ADDR_P2   (195)
 #define CUSTOMIZER_RX_PW_P3     (0)

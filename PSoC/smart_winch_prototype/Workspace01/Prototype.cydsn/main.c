@@ -54,8 +54,8 @@ int main(void)
         case 0:
         {
             nRF24_set_tx_address(A2B, 5);
-            nRF24_set_rx_pipe_0_address(B2A, 5);
-            nRF24_set_rx_pipe_1_address(M2A, 5);
+            nRF24_set_rx_pipe_0_address(M2A, 5);
+            //nRF24_set_rx_pipe_1_address(B2A, 5);
             break;
         }
         
@@ -151,9 +151,32 @@ int main(void)
         
         //Emergency Stop
         if(modbus_holding_regs[Soft_Reset] != 0)
-        {
+        {     
+            if(station_id==0)
+            {
+                static uint8_t dataToSend[4];
+                nRF24_set_tx_mode();            
+                
+                dataToSend[0] = Soft_Reset;
+                dataToSend[1] = modbus_holding_regs[Soft_Reset]>>8; //msb
+                dataToSend[2] = modbus_holding_regs[Soft_Reset]&0xff; //lsb
+                dataToSend[3] = 0;
+                
+                nRF24_transmit(dataToSend, 4); 
+                CyDelay(10);
+                nRF24_transmit(dataToSend, 4); 
+                CyDelay(10);
+                nRF24_transmit(dataToSend, 4); 
+                CyDelay(10);
+                nRF24_transmit(dataToSend, 4); 
+                CyDelay(10);
+                nRF24_transmit(dataToSend, 4); 
+                CyDelay(10);
+            }
+                                    
             Motor_Bidirectional(0); 
-            PID_Set_Gains(0.0, 0.0, 0.0);
+            PID_Set_Gains(0.0, 0.0, 0.0);   
+            QuadDec_WriteCounter(0x8000); //reset measure cable distance (it resets to 32768)
             CySoftwareReset();
         }                
         
@@ -172,17 +195,18 @@ void handle_rf()
     static uint8_t updated_input = 0;
     
     if(station_id == 0)
-    {
-        nRF24_set_tx_mode();
-        
+    {                
         if(modbusRTU_Written == 1)
-        {                                                                   
+        {    
+            nRF24_stop_listening();
+            nRF24_set_tx_mode();            
+            
             if((modbusRTU_written_register_flags)&(1<<Kp))
             {
                 dataToSend[0] = Kp;
                 dataToSend[1] = modbus_holding_regs[Kp]>>8; //msb
                 dataToSend[2] = modbus_holding_regs[Kp]&0xff; //lsb
-                dataToSend[4] = 0;
+                dataToSend[3] = 0;
                 modbusRTU_written_register_flags &= ~(1<<Kp);
                 
             }
@@ -191,7 +215,7 @@ void handle_rf()
                 dataToSend[0] = Ki;
                 dataToSend[1] = modbus_holding_regs[Ki]>>8; //msb
                 dataToSend[2] = modbus_holding_regs[Ki]&0xff; //lsb
-                dataToSend[4] = 0;
+                dataToSend[3] = 0;
                 modbusRTU_written_register_flags &= ~(1<<Ki);
             }
             else if((modbusRTU_written_register_flags)&(1<<Kd))
@@ -199,7 +223,7 @@ void handle_rf()
                 dataToSend[0] = Kd;
                 dataToSend[1] = modbus_holding_regs[Kd]>>8; //msb
                 dataToSend[2] = modbus_holding_regs[Kd]&0xff; //lsb
-                dataToSend[4] = 0;
+                dataToSend[3] = 0;
                 modbusRTU_written_register_flags &= ~(1<<Kd);
             }
             else if((modbusRTU_written_register_flags)&(1<<PID_Setpoint1))
@@ -207,10 +231,18 @@ void handle_rf()
                 dataToSend[0] = PID_Setpoint;
                 dataToSend[1] = modbus_holding_regs[PID_Setpoint1]>>8; //msb
                 dataToSend[2] = modbus_holding_regs[PID_Setpoint1]&0xff; //lsb
-                dataToSend[4] = 0;
+                dataToSend[3] = 0;
                 modbusRTU_written_register_flags &= ~(1<<PID_Setpoint1);
             }
             
+            else if((modbusRTU_written_register_flags)&(1<<Soft_Reset))
+            {
+                dataToSend[0] = Soft_Reset;
+                dataToSend[1] = modbus_holding_regs[Soft_Reset]>>8; //msb
+                dataToSend[2] = modbus_holding_regs[Soft_Reset]&0xff; //lsb
+                dataToSend[3] = 0;
+                modbusRTU_written_register_flags &= ~(1<<Soft_Reset);
+            }
                         
             nRF24_transmit(dataToSend, 4); 
             CyDelay(10);
@@ -251,10 +283,19 @@ void handle_rf()
             //clear flag when all changes acknowledged            
             if((modbusRTU_written_register_flags&0x00000407) == 0)
                 modbusRTU_Written = 0;    
-        }        
+        }   
+        else
+        {
+            nRF24_set_rx_mode();
+            //nRF24_set_mode(NRF_MODE_RX);
+            
+            nRF24_start_listening();
+        }
     }
     
-    if(station_id==1 && nRF24_is_data_ready())
+    
+    //future: use interrupt
+    if(nRF24_is_data_ready())
     {
         LED_Write(~LED_Read());        
         nRF24_clear_irq_flag(NRF_RX_DR_IRQ);
@@ -280,6 +321,59 @@ void handle_rf()
             }
             
             full_rx_fifo_address = nRF24_get_data_pipe_with_payload();
+        }
+        
+        //Node A
+        if (station_id == 0)
+        {
+            if(updated_input&(1<<0))
+            {                                
+                switch(rcv0[0])
+                {
+                    case Kp:
+                    {
+                        modbus_holding_regs[Kp] = (rcv0[1]<<8) | rcv0[2];
+                        modbusRTU_Written |= 1;
+                        modbusRTU_written_register_flags |= (1<<Kp);                        
+                        break;
+                    }
+                    case Ki:
+                    {
+                        modbus_holding_regs[Ki] = (rcv0[1]<<8) | rcv0[2];
+                        modbusRTU_Written |= 1;
+                        modbusRTU_written_register_flags |= (1<<Ki);
+                        break;
+                    }
+                    case Kd:
+                    {
+                        modbus_holding_regs[Kd] = (rcv0[1]<<8) | rcv0[2];
+                        modbusRTU_Written |= 1;
+                        modbusRTU_written_register_flags |= (1<<Kd);
+                        break;
+                    }
+                    case PID_Setpoint:
+                    {
+                        modbus_holding_regs[PID_Setpoint] = (rcv0[1]<<8) | rcv0[2];                        
+                        break;
+                    }
+                    case PID_Setpoint1:
+                    {
+                        modbus_holding_regs[PID_Setpoint1] = (rcv0[1]<<8) | rcv0[2];
+                        modbusRTU_Written |= 1;
+                        modbusRTU_written_register_flags |= (1<<PID_Setpoint1);
+                        break;
+                    }
+                    case Soft_Reset:
+                    {
+                        modbus_holding_regs[Soft_Reset] = (rcv0[1]<<8) | rcv0[2];
+                        modbusRTU_Written |= 1;
+                        modbusRTU_written_register_flags |= (1<<Soft_Reset);
+                        break;
+                    }
+                }
+                //clear flag
+                updated_input &= ~(1<<0);
+            }
         }
         
         //Node B
@@ -309,14 +403,16 @@ void handle_rf()
                         modbus_holding_regs[PID_Setpoint] = (rcv0[1]<<8) | rcv0[2];
                         break;
                     }
+                    case Soft_Reset:
+                    {
+                        modbus_holding_regs[Soft_Reset] = (rcv0[1]<<8) | rcv0[2];
+                        break;
+                    }
                 }
                 //clear flag
                 updated_input &= ~(1<<0);
             }
-        }
-            
-        
-                    
+        }                                        
     }
 }
 
