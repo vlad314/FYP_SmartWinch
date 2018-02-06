@@ -1,0 +1,1 @@
+"./main.obj" "./device/F2837xS_CodeStartBranch.obj" "./device/device.obj" "../2837xS_Generic_FLASH_lnk.cmd" "../driverlib.lib" -llibc.a 
