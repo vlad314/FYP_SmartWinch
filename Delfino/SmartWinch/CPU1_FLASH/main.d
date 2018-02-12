@@ -1,6 +1,7 @@
 # FIXED
 
 main.obj: ../main.c
+main.obj: ../includes.h
 main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/stdio.h
 main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/linkage.h
 main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/stdarg.h
@@ -74,8 +75,14 @@ main.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xs/driverlib/inc/hw_up
 main.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xs/driverlib/version.h
 main.obj: D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/SmartWinch/device/device.h
 main.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/stddef.h
+main.obj: ../DCL/include/DCL.h
+main.obj: ../device_init.h
+main.obj: ../includes.h
+main.obj: ../interrupt_handlers.h
+main.obj: ../motor_driver.h
 
 ../main.c: 
+../includes.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/stdio.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/linkage.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/stdarg.h: 
@@ -149,3 +156,8 @@ C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xs/driverlib/inc/hw_upp.h:
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xs/driverlib/version.h: 
 D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/SmartWinch/device/device.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include/stddef.h: 
+../DCL/include/DCL.h: 
+../device_init.h: 
+../includes.h: 
+../interrupt_handlers.h: 
+../motor_driver.h: 

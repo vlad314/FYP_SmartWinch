@@ -1,0 +1,39 @@
+/*
+ * motor_driver.c
+ *
+ *  Created on: 10 Feb 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+#include "motor_driver.h"
+
+//simple pwm motor control
+void bidirectional_motor(signed long pwm)
+{
+    //sanity check
+    if(pwm>65000)
+        pwm=65000;
+    if(pwm<-65000)
+        pwm= -65000;
+
+    if(pwm>=0)
+    {
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_A,
+                                    pwm);
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_B,
+                                    0);
+    }
+    else
+    {
+        pwm *= -1;
+
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_A,
+                                    0);
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_B,
+                                    pwm);
+    }
+}

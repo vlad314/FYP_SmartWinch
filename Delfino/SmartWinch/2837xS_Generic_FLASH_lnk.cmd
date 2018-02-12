@@ -56,6 +56,8 @@ PAGE 1 : /* Data Memory */
 
 SECTIONS
 {
+   dclfuncs            : > RAMLS4, PAGE = 0
+	
    /* Allocate program areas: */
    .cinit              : > FLASHB      PAGE = 0, ALIGN(4)
    .pinit              : > FLASHB,     PAGE = 0, ALIGN(4)

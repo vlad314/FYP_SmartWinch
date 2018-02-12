@@ -1,0 +1,183 @@
+//#############################################################################
+//
+// FILE:   main.c
+//
+// TITLE:  Empty Project
+//
+// Empty Project Example
+//
+// This example is an empty project setup for Driverlib development.
+//
+//#############################################################################
+// $TI Release: F2837xS Support Library v3.03.00.00 $
+// $Release Date: Thu Dec  7 18:53:06 CST 2017 $
+// $Copyright:
+// Copyright (C) 2014-2017 Texas Instruments Incorporated - http://www.ti.com/
+//
+// Redistribution and use in source and binary forms, with or without 
+// modification, are permitted provided that the following conditions 
+// are met:
+// 
+//   Redistributions of source code must retain the above copyright 
+//   notice, this list of conditions and the following disclaimer.
+// 
+//   Redistributions in binary form must reproduce the above copyright
+//   notice, this list of conditions and the following disclaimer in the 
+//   documentation and/or other materials provided with the   
+//   distribution.
+// 
+//   Neither the name of Texas Instruments Incorporated nor the names of
+//   its contributors may be used to endorse or promote products derived
+//   from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// $
+//#############################################################################
+
+
+
+//
+// Included Files
+//
+#include "includes.h"
+
+//
+// Globals
+//
+char *msg; //for fixed msg
+char str[128]; //for runtime msg
+uint16_t receivedChar[32]; //for general purpose reception
+
+
+
+
+void bidirectional_motor(signed long pwm);
+
+
+//simple motor control
+void bidirectional_motor(signed long pwm)
+{
+    //sanity check
+    if(pwm>65000)
+        pwm=65000;
+    if(pwm<-65000)
+        pwm= -65000;
+
+    if(pwm>=0)
+    {
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_A,
+                                    pwm);
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_B,
+                                    0);
+    }
+    else
+    {
+        pwm *= -1;
+
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_A,
+                                    0);
+        EPWM_setCounterCompareValue(EPWM2_BASE,
+                                    EPWM_COUNTER_COMPARE_B,
+                                    pwm);
+    }
+}
+
+
+
+//
+// Main
+//
+void main(void)
+{
+    //
+    // Initialize device clock and peripherals
+    //
+    Device_init();
+
+    //
+    // Disable pin locks and enable internal pull ups.
+    //
+    Device_initGPIO();
+
+    //
+    // Initialize PIE and clear PIE registers. Disables CPU interrupts.
+    //
+    Interrupt_initModule();
+
+    //
+    // Initialize the PIE vector table with pointers to the shell Interrupt
+    // Service Routines (ISR).
+    //
+    Interrupt_initVectorTable();
+
+    //init required modules
+    init_smartwinch();
+
+
+    //
+    // Enable Global Interrupt (INTM) and realtime interrupt (DBGM)
+    //
+    EINT;
+    ERTM;
+
+
+
+    //
+    // Send starting message.
+    //
+    msg = "Heeyaa\n\r";
+    SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 8);
+
+    //give some time for power supply to settle before powering the motor
+    DEVICE_DELAY_US(100000);
+    kp=150.0;
+
+    while(1)
+    {
+        uint32_t temp;
+
+        if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_UNIT_POS_EVNT) != 0)
+        {
+            //
+            // No capture overflow
+            //
+            if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_CAP_OVRFLW_ERROR) == 0)
+            {
+                temp = EQEP_getCapturePeriodLatch(EQEP1_BASE);
+
+
+                float freq = (DEVICE_SYSCLK_FREQ / 128) / temp / 2; // 60/120
+
+                temp = (uint32_t) freq;
+                uint32_t currentCount = EQEP_getPositionLatch(EQEP1_BASE);
+
+
+                int len = sprintf(str, "cnt: %lu, rpm: %lu\n\r", currentCount, temp);
+                SCI_writeCharArray(SCIA_BASE, (uint16_t*)str, len);
+            }
+
+            //
+            // Clear unit position event flag and overflow error flag
+            //
+            EQEP_clearStatus(EQEP1_BASE, (EQEP_STS_UNIT_POS_EVNT |
+                                          EQEP_STS_CAP_OVRFLW_ERROR));
+        }
+    }
+}
+
+//
+// End of File
+//

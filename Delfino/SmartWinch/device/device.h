@@ -105,6 +105,7 @@
 #define DEVICE_GPIO_CFG_EPWM2A        GPIO_2_EPWM2A  // "pinConfig" for LD2
 #define DEVICE_GPIO_CFG_EPWM2B        GPIO_3_EPWM2B  // "pinConfig" for LD3
 
+
 //*****************************************************************************
 //
 // Defines related to clock configuration

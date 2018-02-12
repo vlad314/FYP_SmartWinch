@@ -1,0 +1,1 @@
+"./device_init.obj" "./interrupt_handlers.obj" "./main.obj" "./motor_driver.obj" "./device/F2837xS_CodeStartBranch.obj" "./device/device.obj" "../2837xS_Generic_FLASH_lnk.cmd" "../driverlib.lib" -llibc.a 
