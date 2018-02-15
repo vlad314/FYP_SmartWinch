@@ -1,0 +1,7 @@
+MODULES_CODE_OFFSET=
+MODULES_DATA_OFFSET=
+MODULES_MRU_PATH=D\:\\AcademicRelated\\Y4S1\\FYP\\Codes\\Delfino\\DualCore\\SmartWinchDualCore\\CPU1_FLASH\\SmartWinchDualCore.out\#THREAD_IDS\#Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1\#THREAD_IDS\#Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU2\#THREAD_IDS\#UARTConnection_0/ComPort\#THREAD_IDS\#Texas Instruments XDS100v2 USB Debug Probe/C28xx_CPU1
+MODULES_MRU_PATH.1=\#SYM_\#(,)path\=D\:\\AcademicRelated\\Y4S1\\FYP\\Codes\\Delfino\\DualCore\\SmartWinchDualCore\\CPU1_FLASH\\SmartWinchDualCore.out
+RELOAD_PROGRAM_IF_CHANGED=always
+eclipse.preferences.version=1
+useAnnotationsPrefPage=true

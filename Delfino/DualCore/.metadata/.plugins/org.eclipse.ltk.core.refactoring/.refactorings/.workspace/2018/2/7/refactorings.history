@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;empty_driverlib_project&apos; to &apos;SmartWinchDualCore&apos;" description="Rename resource &apos;empty_driverlib_project&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/empty_driverlib_project" name="SmartWinchDualCore" stamp="1518660206477" updateReferences="true"/>
+</session>

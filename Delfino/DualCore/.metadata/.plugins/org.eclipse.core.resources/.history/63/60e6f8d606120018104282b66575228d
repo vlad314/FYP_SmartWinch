@@ -1,0 +1,25 @@
+/*
+ * buffered_serial.c
+ *
+ *  Created on: 15 Feb 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+
+#include "buffered_serial.h"
+
+// static data
+static char _receive_buffer[MAX_BUFF];
+static char _transmit_buffer[MAX_BUFF];
+static volatile char _receive_buffer_tail=0;
+static volatile char _receive_buffer_head=0;
+
+
+void buffered_serial_receive()
+{
+}
+
+void buffered_serial_transmit()
+{
+
+}

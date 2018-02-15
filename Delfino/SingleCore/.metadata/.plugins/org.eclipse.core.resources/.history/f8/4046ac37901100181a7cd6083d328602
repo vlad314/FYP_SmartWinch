@@ -1,0 +1,23 @@
+/*
+ * kinematics.h
+ *
+ *  Created on: 14 Feb 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+#ifndef KINEMATICS_H_
+#define KINEMATICS_H_
+
+#include "includes.h"
+
+typedef struct {
+    float X,Y,Z;
+} XYZ_coord_struct;
+
+typedef struct {
+    float lengtha,lengthb,lengthc,lengthd;
+} length4_struct;
+
+
+
+#endif /* KINEMATICS_H_ */

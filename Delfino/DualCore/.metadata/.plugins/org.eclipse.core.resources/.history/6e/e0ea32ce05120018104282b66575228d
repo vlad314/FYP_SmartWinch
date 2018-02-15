@@ -1,0 +1,22 @@
+/*
+ * buffered_serial.h
+ *
+ *  Created on: 15 Feb 2018
+ *      Author: AfdhalAtiffTan
+ *      Based on Arduino SoftSerial Library.
+ */
+
+#ifndef BUFFERED_SERIAL_H_
+#define BUFFERED_SERIAL_H_
+
+#include "includes.h"
+
+#define _SS_MAX_RX_BUFF 64
+
+
+// static data
+static uint8_t _receive_buffer[_SS_MAX_RX_BUFF];
+static volatile uint8_t _receive_buffer_tail;
+static volatile uint8_t _receive_buffer_head;
+
+#endif /* BUFFERED_SERIAL_H_ */

@@ -1,0 +1,20 @@
+6th Feb 2018
+-added primitive delfino code
+-added pwm and simple motor driver
+-added simple uart
+-added quadrature decoder (speed and position)
+
+12th Feb 2018
+-added adc
+-added dcl_pid
+-added hrpwm
+-better organised files
+
+
+15th Feb 2018
+-migrated to dual-core mcu (single-core abandoned, but retained here as refererence)
+-added serial buffer (rx only)
+-added cpu timer (count down!)
+-added modbus
+-added kinematics (matt danby)
+-setpoint is now in mm (not in count)

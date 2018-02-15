@@ -1,0 +1,15 @@
+/*
+ * buffered_serial.c
+ *
+ *  Created on: 15 Feb 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+
+#include "buffered_serial.h"
+
+// static data
+static char _receive_buffer[MAX_RX_BUFF];
+static volatile char _receive_buffer_tail;
+static volatile char _receive_buffer_head;
+

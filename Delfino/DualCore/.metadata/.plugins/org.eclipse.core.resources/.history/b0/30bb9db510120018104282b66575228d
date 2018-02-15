@@ -1,0 +1,141 @@
+/*
+ * interrupt_handlers.c
+ *
+ *  Created on: 10 Feb 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+#include "interrupt_handlers.h"
+
+//temporary pid
+/*
+volatile float setpoint = 7680.0;
+volatile float kp=0.0,ki=0.0,kd=700;
+volatile float error=0.0, input_previous=0.0, error_integrated=0.0, input_differentiated=0.0;
+volatile float out_min = -8000000.0, out_max = 8000000.0;
+volatile float input=0.0, output=0.0;*/
+
+volatile uint16_t adc_temp = 0;
+
+volatile PID pid1 = PID_DEFAULTS;
+volatile float uk; // control
+volatile float rk = 0.0f; // reference
+volatile float yk = 0.0f; // feedback
+volatile float lk = 1.0f; // saturation
+
+
+//
+// epwm2ISR - ePWM 2 ISR
+//
+__interrupt void epwm2ISR(void)
+{
+    volatile static int cnt=0;
+
+    //if the conversion was done
+    if(ADC_getInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1))
+    {
+        adc_temp = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
+        ADC_clearInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1);
+    }
+
+    //heartbeat on led
+    if(cnt++>15)
+    {
+        cnt=0;
+        GPIO_togglePin(DEVICE_GPIO_PIN_LED1);
+
+        //static char _str[32];
+        //int len = sprintf(_str, "adc: %04lu\r", (uint32_t) adc_temp*3000/4096);
+        //SCI_writeCharArray(SCIA_BASE, (uint16_t*)_str, len);
+    }
+
+    //
+    // PID here
+    //
+    rk = 7680.0f;
+    yk = (float) EQEP_getPosition(EQEP1_BASE);
+    uk = DCL_runPID(&pid1, rk, yk, lk);
+    bidirectional_motor((signed long) uk);
+
+
+/*
+    input = (float) EQEP_getPositionLatch(EQEP1_BASE);
+
+    //<Proportional>
+    error = setpoint - input;
+    output = kp*error;
+    //</Proportional>
+
+    //<Integration>
+    error_integrated += error;
+
+    //preventing integrator windup
+    error_integrated = error_integrated > out_max ? out_max : error_integrated;
+    error_integrated = error_integrated < out_min ? out_min : error_integrated;
+
+    //reseting integrator
+    if(ki == 0.0)
+        error_integrated = 0.0;
+
+    output += ki/1000.0*error_integrated; //added divide by 1000 to allow for fractional math
+    //</Integration>
+
+    //<Differentiation> (“Derivative on Measurement”)
+    input_differentiated = input - input_previous;
+    input_previous = input;
+
+    output -= kd * input_differentiated;
+    //</Differentiation>
+
+    //output clamp
+    output = output > out_max ? out_max : output;
+    output = output < out_min ? out_min : output;
+
+    bidirectional_motor((signed long) output);
+*/
+
+    //
+    // Clear INT flag for this timer
+    //
+    EPWM_clearEventTriggerInterruptFlag(EPWM2_BASE);
+
+    //
+    // Acknowledge interrupt group
+    //
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP3);
+}
+
+
+
+
+//
+// sciaTXFIFOISR - SCIA Transmit FIFO ISR
+//
+__interrupt void sciaTXFIFOISR(void)
+{
+    buffered_serial_transmit();
+
+    SCI_clearInterruptStatus(SCIA_BASE, SCI_INT_TXFF);
+
+    //
+    // Issue PIE ACK
+    //
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP9);
+}
+
+//
+// sciaRXFIFOISR - SCIA Receive FIFO ISR
+//
+__interrupt void sciaRXFIFOISR(void)
+{
+    buffered_serial_receive();
+
+    SCI_clearOverflowStatus(SCIA_BASE);
+
+    SCI_clearInterruptStatus(SCIA_BASE, SCI_INT_RXFF);
+
+    //
+    // Issue PIE ack
+    //
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP9);
+}
