@@ -1,0 +1,223 @@
+23rd Sept 2017
+-did small research on kevlar and its density
+
+24th Sept 2017
+-did small research on base station positioning system 
+(Vive Lighthouse, LIDAR, time-of-flight, IMU)
+
+26th Sept 2017
+-did plannar math test from Daniel using Processing
+-did small research on spooling mechanism to get leveled wind
+-did small research on rotary encoder (Daniel's idea)
+
+27th Sept 2017
+-did demo on arduino for servo/stepper/touch_screen
+
+28th Sept 2017
+-did microcontroller research
+-found Micah's Winch Bot
+
+30th Sept 2017
+-did algorithm research and found S-curve and Brensemham's Algorithm
+-did small research on wireless tranceiver
+-found GBRL for motion control
+
+1st Oct 2017
+-did path planner 2d
+
+2nd Oct 2017
+-printed a small model for testing 3d positioning (Vlad's design)
+
+3rd Oct 2017
+-did research on motor and battery
+-found that stabilisation for the toolhead is important
+
+4th Oct 2017
+-printed spool from Andrei
+
+5th Oct 2017
+-printed spool from Andrei
+-printed pulley from Syahidah
+
+6th Oct 2017
+-did shopping list as requested by Syahidah
+-contacted rs for datasheet on motor (they dont have it)
+-contacted parvaflux for cad model, received it, but, not compatible with rs motor
+
+7th Oct 2017
+-did path planner 3d and sent to Matt
+-did literature review
+-did analysis on optimal position of winch (on toolhead vs on ground)
+
+8th Oct 2017
+-did rev1 block diagram
+
+16th Oct 2017
+-printed planetary gearbox, but failed :(
+
+18th Oct 2017
+-uploaded simple pid code draft
+
+2nd Nov 2017
+-motor shopping again
+
+4th Nov 2017
+-found radiolocation module (DWM1000)
+
+6th Nov 2017
+-gave wireless modules to Tim
+
+9th Nov 2017
+-designed simple 3d model and printed for testing pid code
+-prototype code now has modbus implemented
+
+10th Nov 2017
+-printed Andrei's designs
+
+11th Nov 2017
+-printed Andrei's designs
+
+12th Nov 2017
+-updated psoc code
+-made node-red dashboard rev1
+
+14th Nov 2017
+-printed syahidah encoder parts
+-soldered psoc, h-bridge, and quadrature encoder
+-test psoc code with geared motor, seemed to work fine
+-addded current measurement capability in psoc and node-red dashboard
+-had to modify dfrobot motor driver devboard because of bad design
+
+22nd Nov 2017
+-received delfino board and psoc 5
+
+29th Nov 2017
+-successfully programmed delfino using matlab simulink
+
+1st Dec 2017
+-ordered motors and psoc from syahidah
+
+2nd Dec 2017
+-successfully programmed delfino using solidthinking embed
+-ordered hall switches and magnets
+
+8th Dec 2017
+-researched on nRF24L01 wireless tranceiver
+-researched half-bridge for motors
+
+9th Dec 2017
+-received motors/hall sensors/psoc/magnets from vlad
+-designed helical pulley in fusion360
+-drafted simple motor bracket
+-drafted simple gui
+
+10th Dec 2017
+-downloaded nrf24l01 library for psoc
+-downloaded gbrl library for psoc
+
+12th Dec 2017
+-drafted communication protocol for wireless comms
+-searched for nrf24l01 on all known suppliers
+-collaborated with syahidah on encoder design
+
+13th Dec 2017
+-ordered nrf24L01 and antenna from syahidah
+
+14th Dec 2017
+-collaborated with daniel on kivy python gui design 
+
+15th Dec 2017
+-sucessfully run nrf24l01 scanner on arduino
+
+16th Dec 2017
+-ordered LDO regulator from syahidah
+-collaborated with andrei on motor driver design
+-collaborated with vlad on motor/battery order for york
+-tested hall switches, both works fine
+
+17th Dec 2017
+-spent all day researching about electric and manual winches
+-found the optimum distance for cable pivot point to achieve auto leveling 
+
+18th Dec 2017
+-spent entire day on psoc and arduino wireless comms, nothing worked yet
+
+19th Dec 2017
+-research on h-bridge for presentation
+
+20th Dec 2017
+-printed spool holder
+
+21st Dec 2017
+-made h-bridge on breadboard and tested ok
+-designed, printed, and tested helical pulley. it failed :(
+
+22nd Dec 2017
+-designed, printed, and tested motor mount, works ok
+
+23rd Dec 2017
+-designed, printed, and tested motor mount rev2, works better
+-designed, printed, and tested knurled pulley, works ok
+-designed pcb, soldered and tested h-bridge, works ok
+
+24th Dec 2017
+-spent entire day programming psoc and nrf24l01, got simplex comms working properly ;)
+
+1st Jan 2018
+-ordered motor controller components from syahidah
+-mosfets, gatedrivers, solderpaste, and fastdiodes
+
+5th Jan 2018
+-setup a project presentation slides on github
+
+29th Jan 2018
+-modified daniel's python gui kivy code to work with modbus
+-got node A, B and C to work on wireless
+-prepared demo for presentation
+
+31st Jan 2018
+-working on delfino
+
+1st Feb 2018
+-designed motor driver for anthony
+-still working on delfino
+
+2nd Feb 2018
+-designed cable length encoder 3d-model, works ok
+
+3rd Feb 2018
+-printed the design, works as expected
+-working on delfino
+
+6th Feb 2018
+-received MCP260A from anthony and sam (thank you!)
+
+7th Feb 2018
+-tested MCP260A in bridged mode
+
+8th Feb 2018
+-went to york with matt, syahidah and andrei
+
+10th Feb 2018
+-explained to vlad about homing algorithm
+
+12th Feb 2018
+-research on optical flow sensor as disturbance compensation sensor
+
+14th Feb 2018
+-basic delfino code working
+-printed 4 mini winches for demo
+-worked with tim on wireless
+-worked with daniel on gui
+
+16th Feb 2018
+-discussed with matt on speed control
+-discussed with daniel on gui
+-discussed with vlad on homing algorithm
+-discussed with andrei on levelwinder
+-discussed with all about anthony's motor choice
+-received IMU from anthony (thank you!)
+
+19th Feb 2018
+-printed andrei's level winder
+-updated delfino code

@@ -1,0 +1,118 @@
+/*
+ * buffered_serial.c
+ *
+ *  Created on: 15 Feb 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+
+#include "buffered_serial.h"
+
+// static data
+#define EUSART_TX_BUFFER_SIZE 0x100
+static char eusartTxHead = 0;
+static char eusartTxTail = 0;
+static char eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
+volatile char eusartTxBufferRemaining=EUSART_TX_BUFFER_SIZE;
+volatile char TXIE = 0;
+
+#define MAX_BUFF 0x100
+static char _receive_buffer[MAX_BUFF];
+static volatile char _receive_buffer_tail=0;
+static volatile char _receive_buffer_head=0;
+
+
+//ported from microchip mcc usart driver
+void buffered_serial_write(char c)
+{
+    while(0 == eusartTxBufferRemaining)
+    {
+    }
+
+
+    if(0 == TXIE)
+    {
+        //TX1REG = txData;
+        SCI_writeCharBlockingFIFO(SCIA_BASE, c);
+    }
+    else
+    {
+        TXIE = 0;
+        Interrupt_disable(INT_SCIA_TX);
+
+        eusartTxBuffer[eusartTxHead++] = c;
+        if(EUSART_TX_BUFFER_SIZE <= eusartTxHead)
+        {
+            eusartTxHead = 0;
+        }
+        eusartTxBufferRemaining--;
+    }
+
+    //only set isr when tx fifo is full
+    if(SCI_getTxFIFOStatus(SCIA_BASE) < SCI_FIFO_TX16) //this might not work properly
+    {
+        TXIE = 1;
+        Interrupt_enable(INT_SCIA_TX);
+    }
+}
+
+//ported from arduino softserial library
+char buffered_serial_read()
+{
+    // Empty buffer?
+    if (_receive_buffer_head == _receive_buffer_tail)
+      return -1;
+
+    // Read from "head"
+    char d = _receive_buffer[_receive_buffer_head]; // grab next byte
+    _receive_buffer_head = (_receive_buffer_head + 1) % MAX_BUFF;
+    return d;
+}
+
+//ported from arduino softserial library
+char buffered_serial_available()
+{
+    return (_receive_buffer_tail + MAX_BUFF - _receive_buffer_head) % MAX_BUFF;
+}
+
+//ported from arduino softserial library
+void buffered_serial_receive()
+{
+    // if buffer full, set the overflow flag and return
+    char next = (_receive_buffer_tail + 1) % MAX_BUFF;
+    if (next != _receive_buffer_head)
+    {
+      // save new data in buffer: tail points to where byte goes
+      _receive_buffer[_receive_buffer_tail] = SCI_readCharNonBlocking(SCIA_BASE); // save new byte
+      _receive_buffer_tail = next;
+    }
+
+}
+
+//ported from microchip mcc usart driver
+void buffered_serial_transmit()
+{
+    // add your EUSART interrupt custom code
+    if(EUSART_TX_BUFFER_SIZE > eusartTxBufferRemaining)
+    {
+        //TX1REG = eusartTxBuffer[eusartTxTail++];
+
+        //fillup fifo
+        while((EUSART_TX_BUFFER_SIZE > eusartTxBufferRemaining) && (SCI_getTxFIFOStatus(SCIA_BASE) < SCI_FIFO_TX16)) //this might not work properly
+        {
+            SCI_writeCharBlockingFIFO(SCIA_BASE, eusartTxBuffer[eusartTxTail++]);
+            if(EUSART_TX_BUFFER_SIZE <= eusartTxTail)
+            {
+                eusartTxTail = 0;
+            }
+            eusartTxBufferRemaining++;
+        }
+    }
+    else
+    {
+        TXIE = 0;
+        Interrupt_disable(INT_SCIA_TX);
+    }
+
+    GPIO_togglePin(DEVICE_GPIO_PIN_LED2);
+}

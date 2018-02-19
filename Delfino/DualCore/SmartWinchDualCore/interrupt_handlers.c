@@ -30,10 +30,13 @@ __interrupt void epwm2ISR(void)
     volatile static int cnt=0;
 
     //if the conversion was done
-    if(ADC_getInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1))
+    if(ADC_getInterruptStatus(ADCD_BASE, ADC_INT_NUMBER1))
     {
-        modbus_holding_regs[CurrSense] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0)*3000/4096;
-        ADC_clearInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1);
+        modbus_holding_regs[ADC0] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER0);
+        modbus_holding_regs[ADC1] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER1);
+        modbus_holding_regs[ADC2] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER2);
+        modbus_holding_regs[ADC3] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER3);
+        ADC_clearInterruptStatus(ADCD_BASE, ADC_INT_NUMBER1);
     }
 
     //heartbeat on led
@@ -46,7 +49,7 @@ __interrupt void epwm2ISR(void)
     //
     // PID here
     //
-    pid1.Kp = (float)modbus_holding_regs[Kp]*512.0f;
+    pid1.Kp = (float)modbus_holding_regs[Kp] * 512.0f;
     pid1.Ki = (float)modbus_holding_regs[Ki] / 1000.0f;
     pid1.Kd = (float)modbus_holding_regs[Kd] * 128.0f;
 

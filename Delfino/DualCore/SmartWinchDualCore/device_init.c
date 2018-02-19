@@ -10,13 +10,15 @@
 
 void init_gpio()
 {
+    //////////////////////////////////////////////
+    //<for on-board LEDs>
     //set pin12 and pin13 as gpio
     GPIO_setPinConfig(DEVICE_GPIO_CFG_LED1);
     GPIO_setPinConfig(DEVICE_GPIO_CFG_LED2);
 
-    //set gpio12 and gpio13 as pushpullOut or HiZin
+    //set gpio12 and gpio13 as pushpullOut
     GPIO_setPadConfig(DEVICE_GPIO_PIN_LED1, GPIO_PIN_TYPE_STD);
-    GPIO_setPadConfig(DEVICE_GPIO_PIN_LED1, GPIO_PIN_TYPE_STD);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_LED2, GPIO_PIN_TYPE_STD);
 
     //turn off both led (active-low)
     GPIO_writePin(DEVICE_GPIO_PIN_LED1, 1);
@@ -25,6 +27,20 @@ void init_gpio()
     //set both pins as output
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED1, GPIO_DIR_MODE_OUT);
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED2, GPIO_DIR_MODE_OUT);
+
+    //////////////////////////////////////////////
+    //<for setting winchID via 2-bit dip-switches>
+    //set pin61 and pin123 as gpio
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_ID0);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_ID1);
+
+    //set pull up on gpio61 and gpio123
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_ID0, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_ID1, GPIO_PIN_TYPE_PULLUP);
+
+    //set both pins as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_ID0, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_ID1, GPIO_DIR_MODE_IN);
 }
 
 void init_uart()
@@ -65,7 +81,7 @@ void init_uart()
     SCI_enableInterrupt(SCIA_BASE, (SCI_INT_RXFF | SCI_INT_TXFF));
     SCI_disableInterrupt(SCIA_BASE, SCI_INT_RXERR);
 
-    SCI_setFIFOInterruptLevel(SCIA_BASE, SCI_FIFO_TX16, SCI_FIFO_RX1);
+    SCI_setFIFOInterruptLevel(SCIA_BASE, SCI_FIFO_TX0, SCI_FIFO_RX1);
     SCI_performSoftwareReset(SCIA_BASE);
 
     Interrupt_enable(INT_SCIA_RX);
@@ -160,6 +176,7 @@ void init_pwm()
     // Enabling SOCA (start-of-conversion)
     //
     EPWM_enableADCTrigger(EPWM2_BASE, EPWM_SOC_A);
+
 
 
     //
@@ -272,47 +289,51 @@ void init_adc()
     //
     // Set ADCCLK divider to /4
     //
-    ADC_setPrescaler(ADCA_BASE, ADC_CLK_DIV_4_0);
+    ADC_setPrescaler(ADCD_BASE, ADC_CLK_DIV_4_0);
 
     //
     // Set resolution and signal mode (see #defines above) and load
     // corresponding trims.
     //
-    ADC_setMode(ADCA_BASE, ADC_RESOLUTION_12BIT, ADC_MODE_SINGLE_ENDED);
+    ADC_setMode(ADCD_BASE, ADC_RESOLUTION_12BIT, ADC_MODE_SINGLE_ENDED);
 
     //
     // Set pulse positions to late
     //
-    ADC_setInterruptPulseMode(ADCA_BASE, ADC_PULSE_END_OF_CONV);
+    ADC_setInterruptPulseMode(ADCD_BASE, ADC_PULSE_END_OF_CONV);
 
     //
     // Power up the ADC and then delay for 1 ms
     //
-    ADC_enableConverter(ADCA_BASE);
+    ADC_enableConverter(ADCD_BASE);
     DEVICE_DELAY_US(1000);
 
     //
-    // Configure SOC0 of ADCA to convert pin A0. The EPWM1SOCA signal will be
+    // Configure SOC of ADCD to convert pins on J21. The EPWM2SOCA signal will be
     // the trigger.
     //
     // For 12-bit resolution, a sampling window of 15 (75 ns at a 200MHz
     // SYSCLK rate) will be used.  For 16-bit resolution, a sampling window of
     // 64 (320 ns at a 200MHz SYSCLK rate) will be used.
     //
-    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM2_SOCA,
-                     ADC_CH_ADCIN14, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN0, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN1, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER2, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN2, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER3, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN3, 15);
 
-
-    //ADC_enableContinuousMode(ADCA_BASE, ADC_INT_NUMBER1);
 
 
     //
-    // Set SOC1 to set the interrupt 1 flag. Enable the interrupt and make
+    // Set SOC to set the interrupt 1 flag. Enable the interrupt and make
     // sure its flag is cleared.
     //
-    ADC_setInterruptSource(ADCA_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER0);
-    ADC_enableInterrupt(ADCA_BASE, ADC_INT_NUMBER1);
-    ADC_clearInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1);
+    ADC_setInterruptSource(ADCD_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER0);
+    ADC_setInterruptSource(ADCD_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER1);
+    ADC_setInterruptSource(ADCD_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER2);
+    ADC_setInterruptSource(ADCD_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER3);
+
+    ADC_enableInterrupt(ADCD_BASE, ADC_INT_NUMBER1);
+    ADC_clearInterruptStatus(ADCD_BASE, ADC_INT_NUMBER1);
 }
 
 void init_timer()

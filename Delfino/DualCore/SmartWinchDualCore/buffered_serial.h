@@ -11,8 +11,6 @@
 
 #include "includes.h"
 
-#define MAX_BUFF 64
-
 void buffered_serial_write(char c);
 char buffered_serial_read();
 char buffered_serial_available();
@@ -21,5 +19,8 @@ void buffered_serial_flush();
 //for ISRs
 void buffered_serial_receive();
 void buffered_serial_transmit();
+
+
+extern volatile char eusartTxBufferRemaining;
 
 #endif /* BUFFERED_SERIAL_H_ */

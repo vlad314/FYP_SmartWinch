@@ -115,7 +115,13 @@ a single CPU should be defined."
 #define DEVICE_GPIO_CFG_EPWM2B        GPIO_3_EPWM2B  // "pinConfig" for LD3
 
 
-
+//
+// WinchID Pins (used to set 2-bit Winch Address)
+//
+#define DEVICE_GPIO_PIN_ID0        61U  // GPIO number for LD2
+#define DEVICE_GPIO_PIN_ID1        123U  // GPIO number for LD3
+#define DEVICE_GPIO_CFG_ID0        GPIO_61_GPIO61  // "pinConfig" for LD2
+#define DEVICE_GPIO_CFG_ID1        GPIO_123_GPIO123  // "pinConfig" for LD3
 
 
 

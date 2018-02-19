@@ -18,3 +18,12 @@
 -added modbus
 -added kinematics (matt danby)
 -setpoint is now in mm (not in count)
+
+19th Feb 2018
+-added tx serial buffer
+-fixed modbus crc function
+-added bresenham algorithm
+-add memory section for path_task 3d points
+-added 12-bit 4-channel adc registers
+-added winchID reader
+-added systick macro (200us tick)

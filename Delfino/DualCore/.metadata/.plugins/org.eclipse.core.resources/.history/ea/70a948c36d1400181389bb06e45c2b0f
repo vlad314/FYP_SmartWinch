@@ -1,0 +1,11 @@
+/*
+ * modbus_regs.c
+ *
+ *  Created on: 14 Feb 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+
+#include "modbus_regs.h"
+
+signed int modbus_holding_regs[65536];

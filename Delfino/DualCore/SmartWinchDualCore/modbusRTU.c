@@ -80,10 +80,10 @@
  ****************************************************************************/
 
 /* constants */
-enum { 
-        MAX_READ_REGS = 0x7D, 
-        MAX_WRITE_REGS = 0x7B, 
-        MAX_MESSAGE_LENGTH = 256 
+enum {
+        MAX_READ_REGS = 0x7D,
+        MAX_WRITE_REGS = 0x7B,
+        MAX_MESSAGE_LENGTH = 256
 };
 
 
@@ -143,12 +143,12 @@ unsigned int crc(unsigned char *buf, unsigned char start,
 unsigned char cnt) 
 {
         unsigned char i, j;
-        unsigned temp, temp2, flag;
+        unsigned int temp, temp2, flag;
 
         temp = 0xFFFF;
 
         for (i = start; i < cnt; i++) {
-                temp = temp ^ buf[i];
+                temp = temp ^ (buf[i]&0xff); //afdhal: added signed fix on 18th feb 2018
 
                 for (j = 1; j <= 8; j++) {
                         flag = temp & 0x0001;
@@ -566,7 +566,7 @@ unsigned int regs_size)
 
         int length = buffered_serial_available();
 
-        uint32_t now = 4294967295 - CPUTimer_getTimerCount(CPUTIMER0_BASE);
+        uint32_t now = systick();
         static uint32_t Nowdt = 0;
         static unsigned int lastBytesReceived;
         

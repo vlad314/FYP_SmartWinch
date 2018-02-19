@@ -1,0 +1,46 @@
+/* ========================================
+ *
+ * Copyright YOUR COMPANY, THE YEAR
+ * All Rights Reserved
+ * UNPUBLISHED, LICENSED SOFTWARE.
+ *
+ * CONFIDENTIAL AND PROPRIETARY INFORMATION
+ * WHICH IS THE PROPERTY OF your company.
+ *
+ * ========================================
+*/
+
+
+#ifndef MODBUS_REGS_H_
+#define MODBUS_REGS_H_
+
+
+
+
+// Slave registers
+enum 
+{
+    Winch_ID,
+    Kp,
+    Ki,
+    Kd,
+    PID_Setpoint, //for cable length
+    Current_Encoder_Count,
+    Current_PWM, //in percent
+    Current_RPM,
+    Soft_Reset,  
+    CurrSense1,
+    CurrSense2,
+    Current_X,
+    Current_Y,
+    Current_Z,
+    Sync,
+    MB_HREGS                    // Dummy register. using 0 offset to keep size of array
+};
+
+extern signed int modbus_holding_regs[65536];
+
+#endif /* MODBUS_REGS_H_ */
+
+
+/* [] END OF FILE */

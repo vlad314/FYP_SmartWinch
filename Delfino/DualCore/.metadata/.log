@@ -1347,3 +1347,193 @@ java.lang.NullPointerException
 !MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@2f511c): Status ERROR: com.ti.ccstudio.debug code=20003 File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: a data verification error occurred, file load failed. null' resulted in an error.
 !SUBENTRY 1 com.ti.ccstudio.debug 4 20003 2018-02-15 08:50:07.277
 !MESSAGE File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: a data verification error occurred, file load failed.
+!SESSION 2018-02-16 08:17:47.312 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_112
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Framework arguments:  -product com.ti.ccstudio.branding.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.ti.ccstudio.branding.product
+
+!ENTRY com.ti.common.core 4 0 2018-02-16 08:17:56.416
+!MESSAGE path=ccs_base/DebugServer
+
+!ENTRY com.ti.common.core 4 0 2018-02-16 08:17:56.454
+!MESSAGE debugServerDir=C:/ti/ccsv7/ccs_base/DebugServer
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:24:35.497
+!MESSAGE DS_ERROR: C28xx_CPU2: File Loader: Verification failed: Values at address 0x0A000@Program do not match Please verify target memory and memory map.
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:24:35.513
+!MESSAGE DS_ERROR: C28xx_CPU2: GEL: File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: a data verification error occurred, file load failed.
+
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2018-02-16 10:24:35.520
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@140bee0): Status ERROR: com.ti.ccstudio.debug code=20003 File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: a data verification error occurred, file load failed. null' resulted in an error.
+!SUBENTRY 1 com.ti.ccstudio.debug 4 20003 2018-02-16 10:24:35.520
+!MESSAGE File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: a data verification error occurred, file load failed.
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:01.053
+!MESSAGE DS_ERROR: IcePick_C_0: Error: (Error -150 @ 0x0) One of the FTDI driver functions used during configuration returned a invalid status or an error. (Emulation package 7.0.100.1) 
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:01.229
+!MESSAGE DS_ERROR: IcePick_C_0: Unable to determine target status after 20 attempts
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:01.245
+!MESSAGE DS_ERROR: IcePick_C_0: Failed to remove the debug state from the target before disconnecting.  There may still be breakpoint op-codes embedded in program memory.  It is recommended that you reset the emulator before you connect and reload your program before you continue debugging
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:01.299
+!MESSAGE DS_ERROR: C28xx_CPU1: Error: (Error -150 @ 0x0) One of the FTDI driver functions used during configuration returned a invalid status or an error. (Emulation package 7.0.100.1) 
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:01.665
+!MESSAGE DS_ERROR: C28xx_CPU1: Unable to determine target status after 20 attempts
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:01.683
+!MESSAGE DS_ERROR: C28xx_CPU1: Failed to remove the debug state from the target before disconnecting.  There may still be breakpoint op-codes embedded in program memory.  It is recommended that you reset the emulator before you connect and reload your program before you continue debugging
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:03.460
+!MESSAGE DS_ERROR: C28xx_CPU2: Error: (Error -150 @ 0x0) One of the FTDI driver functions used during configuration returned a invalid status or an error. (Emulation package 7.0.100.1) 
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:03.637
+!MESSAGE DS_ERROR: C28xx_CPU2: Unable to determine target status after 20 attempts
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-16 10:51:03.655
+!MESSAGE DS_ERROR: C28xx_CPU2: Failed to remove the debug state from the target before disconnecting.  There may still be breakpoint op-codes embedded in program memory.  It is recommended that you reset the emulator before you connect and reload your program before you continue debugging
+
+!SESSION 2018-02-18 03:43:25.891 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_112
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Framework arguments:  -product com.ti.ccstudio.branding.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.ti.ccstudio.branding.product
+
+!ENTRY com.ti.common.core 4 0 2018-02-18 03:43:40.091
+!MESSAGE path=ccs_base/DebugServer
+
+!ENTRY com.ti.common.core 4 0 2018-02-18 03:43:40.097
+!MESSAGE debugServerDir=C:/ti/ccsv7/ccs_base/DebugServer
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-02-18 04:27:18.044
+!MESSAGE Indexed 'SmartWinchDualCore' (9 sources, 85 headers) in 1.22 sec: 5,810 declarations; 13,531 references; 0 unresolved inclusions; 8 syntax errors; 3 unresolved names (0.016%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-02-18 05:13:45.205
+!MESSAGE Indexed 'SmartWinchDualCore' (9 sources, 85 headers) in 1.56 sec: 5,810 declarations; 13,531 references; 0 unresolved inclusions; 8 syntax errors; 3 unresolved names (0.016%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-02-18 05:14:14.193
+!MESSAGE Indexed 'SmartWinchDualCore' (9 sources, 85 headers) in 1.23 sec: 5,810 declarations; 13,531 references; 0 unresolved inclusions; 8 syntax errors; 3 unresolved names (0.016%)
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:15:04.605
+!MESSAGE DS_ERROR: IcePick_C_0: Error connecting to the target: (Error -151 @ 0x0) One of the FTDI driver functions used during the connect returned bad status or an error. The cause may be one or more of: no XDS100 is plugged in, invalid XDS100 serial number, blank XDS100 EEPROM, missing FTDI drivers, faulty USB cable. Use the xds100serial command-line utility in the 'common/uscif' folder to verify the XDS100 can be located. (Emulation package 7.0.100.1) 
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:15:04.794
+!MESSAGE DS_ERROR: Error connecting to the target:
+(Error -151 @ 0x0)
+One of the FTDI driver functions used during the connect
+returned bad status or an error. The cause may be one or
+more of: no XDS100 is plugged in, invalid XDS100 serial number,
+blank XDS100 EEPROM, missing FTDI drivers, faulty USB cable.
+Use the xds100serial command-line utility in the 'common/uscif'
+folder to verify the XDS100 can be located.
+(Emulation package 7.0.100.1)
+
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-02-18 05:18:18.349
+!MESSAGE Indexed 'SmartWinchDualCore' (9 sources, 85 headers) in 1.6 sec: 5,810 declarations; 13,531 references; 0 unresolved inclusions; 8 syntax errors; 3 unresolved names (0.016%)
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:27:49.162
+!MESSAGE DS_ERROR: C28xx_CPU1: Error occurred during flash operation: Internal error while writing 0x0005F444@Data
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:27:49.283
+!MESSAGE DS_ERROR: C28xx_CPU2: Error setting the GSxMSEL register for Flash operations
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:27:49.319
+!MESSAGE DS_ERROR: C28xx_CPU2: Error executing PLL configuration algorithm. Operation cancelled. (0xAA55AA55)
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:27:49.328
+!MESSAGE DS_ERROR: C28xx_CPU2: File Loader: Memory write failed: Unknown error
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:27:49.340
+!MESSAGE DS_ERROR: C28xx_CPU2: GEL: File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: Load failed.
+
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2018-02-18 05:27:49.347
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@15c63c3): Status ERROR: com.ti.ccstudio.debug code=20003 File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: Load failed. null' resulted in an error.
+!SUBENTRY 1 com.ti.ccstudio.debug 4 20003 2018-02-18 05:27:49.347
+!MESSAGE File: D:\AcademicRelated\Y4S1\FYP\Codes\Delfino\DualCore\SmartWinchDualCore\CPU1_FLASH\SmartWinchDualCore.out: Load failed.
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:38.836
+!MESSAGE DS_ERROR: IcePick_C_0: Error: (Error -150 @ 0x0) One of the FTDI driver functions used during configuration returned a invalid status or an error. (Emulation package 7.0.100.1) 
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:39.038
+!MESSAGE DS_ERROR: IcePick_C_0: Unable to determine target status after 20 attempts
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:39.055
+!MESSAGE DS_ERROR: IcePick_C_0: Failed to remove the debug state from the target before disconnecting.  There may still be breakpoint op-codes embedded in program memory.  It is recommended that you reset the emulator before you connect and reload your program before you continue debugging
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:39.960
+!MESSAGE DS_ERROR: C28xx_CPU1: Error: (Error -150 @ 0x0) One of the FTDI driver functions used during configuration returned a invalid status or an error. (Emulation package 7.0.100.1) 
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:40.137
+!MESSAGE DS_ERROR: C28xx_CPU1: Unable to determine target status after 20 attempts
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:40.153
+!MESSAGE DS_ERROR: C28xx_CPU1: Failed to remove the debug state from the target before disconnecting.  There may still be breakpoint op-codes embedded in program memory.  It is recommended that you reset the emulator before you connect and reload your program before you continue debugging
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:40.169
+!MESSAGE DS_ERROR: C28xx_CPU2: Error: (Error -150 @ 0x0) One of the FTDI driver functions used during configuration returned a invalid status or an error. (Emulation package 7.0.100.1) 
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:40.356
+!MESSAGE DS_ERROR: C28xx_CPU2: Unable to determine target status after 20 attempts
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2018-02-18 05:29:40.372
+!MESSAGE DS_ERROR: C28xx_CPU2: Failed to remove the debug state from the target before disconnecting.  There may still be breakpoint op-codes embedded in program memory.  It is recommended that you reset the emulator before you connect and reload your program before you continue debugging
+
+!SESSION 2018-02-18 21:29:03.993 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_112
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Framework arguments:  -product com.ti.ccstudio.branding.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.ti.ccstudio.branding.product
+
+!ENTRY com.ti.common.core 4 0 2018-02-18 21:29:09.596
+!MESSAGE path=ccs_base/DebugServer
+
+!ENTRY com.ti.common.core 4 0 2018-02-18 21:29:09.601
+!MESSAGE debugServerDir=C:/ti/ccsv7/ccs_base/DebugServer
+!SESSION 2018-02-19 03:42:44.698 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_112
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Framework arguments:  -product com.ti.ccstudio.branding.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.ti.ccstudio.branding.product
+
+!ENTRY com.ti.common.core 4 0 2018-02-19 03:42:48.876
+!MESSAGE path=ccs_base/DebugServer
+
+!ENTRY com.ti.common.core 4 0 2018-02-19 03:42:48.882
+!MESSAGE debugServerDir=C:/ti/ccsv7/ccs_base/DebugServer

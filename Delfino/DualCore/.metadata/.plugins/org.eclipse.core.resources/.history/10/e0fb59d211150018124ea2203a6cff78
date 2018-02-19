@@ -1,0 +1,44 @@
+/*
+ * kinematics.c
+ *
+ *  Created on: 14 Feb 2018
+ *      Author: AfdhalAtiffTan + MattDanby
+ *      Original Author: Matthew Danby
+ */
+
+
+#include "kinematics.h"
+
+length4_struct XYZ_to_length4(float X, float Y, float Z, float distance) {
+    //Int X,Y and Z are the payload coordinates
+
+    length4_struct lengths;
+
+    lengths.lengtha = sqrt((pow(X,2))+(pow(Y,2))+(pow(Z,2)));
+    lengths.lengthb = sqrt((pow((distance-X),2))+(pow(Y,2))+(pow(Z,2)));
+    lengths.lengthc = sqrt((pow(X,2))+(pow((distance-Y),2))+(pow(Z,2)));
+    lengths.lengthd = sqrt((pow((distance-X),2))+(pow((distance-Y),2))+(pow(Z,2)));
+
+    return lengths;
+}
+
+XYZ_coord_struct length4_to_XYZ(float a, float b, float c, float distance) {
+    //a,b and c are the cable lengths respectively
+    //Cable d is neglected is this model as assumes no sag at all
+    //Distance is the gap between the motors assuming they are...
+    //at the same vertical height
+    XYZ_coord_struct coords;
+
+    coords.X = (pow(distance,2)+pow(a,2)-pow(b,2))/(2*distance);
+    coords.Y = (pow(distance,2)+pow(b,2)-pow(c,2))/(2*distance);
+    coords.Z = sqrt(pow(a,2)-pow(coords.X,2)-pow(coords.Y,2));
+
+    return coords;
+}
+
+
+
+
+
+
+XYZ_coord_struct_int generated_path[1355];

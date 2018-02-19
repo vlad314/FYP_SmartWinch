@@ -66,6 +66,9 @@ void main(void)
     //init required modules
     init_smartwinch();
 
+    //read WinchId on dip-switches - added on 18th feb 2018
+    modbus_holding_regs[Winch_ID] = 0x03^((GPIO_readPin(DEVICE_GPIO_PIN_ID1)<<1) | (GPIO_readPin(DEVICE_GPIO_PIN_ID0))); //active-low switches
+
     //
     // Send starting message.
     //
@@ -75,6 +78,7 @@ void main(void)
     modbus_holding_regs[Kp] = 0;
     modbus_holding_regs[Ki] = 0;
     modbus_holding_regs[Kd] = 0;
+    modbus_holding_regs[Winch_ID] = 0;
 
     pid1.Umax = 8000000.0f;
     pid1.Umin = -8000000.0f;
@@ -82,36 +86,16 @@ void main(void)
 
     while(1)
     {
-        //if a full 32-pulse was received (i.e. one full motor revolution has happened)
-//        if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_UNIT_POS_EVNT) != 0)
-//        {
-//            GPIO_togglePin(DEVICE_GPIO_PIN_LED2);
-//
-//            //
-//            // No capture overflow, i.e. if 2 consecutive revolutions happened within 10ms
-//            //
-//            if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_CAP_OVRFLW_ERROR) == 0)
-//            {
-//                float rpm = (DEVICE_SYSCLK_FREQ / 128.0) / 2.0 / EQEP_getCapturePeriodLatch(EQEP1_BASE) / 4; // 60 seconds / 120 gearbox_ratio = 2
-//
-//                int len = sprintf(str, "cnt: %lu, rpm: %lu\n\r", EQEP_getPosition(EQEP1_BASE), (uint32_t) rpm);
-//                SCI_writeCharArray(SCIA_BASE, (uint16_t*)str, len);
-//            }
-//
-//            //
-//            // Clear unit position event flag and overflow error flag
-//            //
-//            EQEP_clearStatus(EQEP1_BASE, (EQEP_STS_UNIT_POS_EVNT |
-//                                          EQEP_STS_CAP_OVRFLW_ERROR));
-//        }
-
-
-//        int len = sprintf(str, "%lu\n\r", 4294967295 - CPUTimer_getTimerCount(CPUTIMER0_BASE));
-//        SCI_writeCharArray(SCIA_BASE, (uint16_t*)str, len);
-//        DEVICE_DELAY_US(1000000);
-
         //service modbus request if available
-        modbusRTU_Update(1, modbus_holding_regs, MB_HREGS);
+        modbusRTU_Update((modbus_holding_regs[Winch_ID]+1), modbus_holding_regs, MB_HREGS);
+
+        //check address switch every 1 second
+        static uint32_t prev_systick = 0;
+        if(systick() - prev_systick > 5000)
+        {
+            prev_systick = systick();
+            modbus_holding_regs[Winch_ID] = 0x03^((GPIO_readPin(DEVICE_GPIO_PIN_ID1)<<1) | (GPIO_readPin(DEVICE_GPIO_PIN_ID0))); //active-low switches
+        }
     }
 }
 

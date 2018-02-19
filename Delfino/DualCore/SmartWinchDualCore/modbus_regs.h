@@ -21,19 +21,61 @@
 enum 
 {
     Winch_ID,
+    Soft_Reset, //for emergency stop
+
+    Kp_Feedrate,
+    Ki_Feedrate,
+    Kd_Feedrate,
+    Global_Feedrate, //in rpm for now (future: in mm/s)
+
     Kp,
     Ki,
     Kd,
-    PID_Setpoint, //for cable length
-    Current_Encoder_Count,
+    PID_Setpoint, //for cable length in mm
+
+    Target_X,
+    Target_Y,
+    Target_Z,
+
+    Field_Length, //in mm
+    Field_Width, //in mm
+
+    Homing_switch,
+
+    Current_Encoder_Count, //in mm
     Current_PWM, //in percent
     Current_RPM,
-    Soft_Reset,  
-    CurrSense,
+
     Current_X,
     Current_Y,
     Current_Z,
-    MB_HREGS                    // Dummy register. using 0 offset to keep size of array
+
+    Current_Length_Winch0,
+    Current_Length_Winch1,
+    Current_Length_Winch2,
+    Current_Length_Winch3,
+
+    ADC0,
+    ADC1,
+    ADC2,
+    ADC3,
+
+    Global_Dwell_Time,
+    Number_of_Points,
+    Homing_Flag,
+    Enable_Path_Follower,
+    Current_Path_Pointer,
+    Sync,
+
+    //start of path points
+    X1 = 41,
+    Y1,
+    Z1,
+    X2,
+    Y2,
+    Z2, //etc..
+
+    MB_HREGS  = 4096 //should give ~1350 3D points
 };
 
 extern signed int modbus_holding_regs[MB_HREGS];

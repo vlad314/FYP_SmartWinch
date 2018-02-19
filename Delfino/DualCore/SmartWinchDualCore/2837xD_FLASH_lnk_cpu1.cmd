@@ -63,11 +63,6 @@ PAGE 1 : /* Data Memory */
 
 SECTIONS
 {
-	/* Added by Afdhal, For TI DCL PID Library */
-	dclfuncs 		   : > RAMLS4, PAGE = 0
-	.scratchpad 	   : > RAMLS4, PAGE = 0
-	Cla1Prog 		   : > RAMLS4, PAGE = 0
-
    /* Allocate program areas: */
    .cinit              : > FLASHB      PAGE = 0, ALIGN(4)
    .pinit              : > FLASHB,     PAGE = 0, ALIGN(4)
@@ -80,6 +75,11 @@ SECTIONS
    .esysmem            : > RAMLS5       PAGE = 1
    .cio                : > RAMLS5     PAGE = 1
    
+   	/* Added by Afdhal, For TI DCL PID Library */
+	dclfuncs 		   : > RAMLS4, PAGE = 0
+	.scratchpad 	   : > RAMLS4, PAGE = 0
+	Cla1Prog 		   : > RAMLS4, PAGE = 0
+
    /* Initalized sections go in Flash */
    .econst             : >> FLASHF | FLASHG | FLASHH      PAGE = 0, ALIGN(4)
    .switch             : > FLASHB      PAGE = 0, ALIGN(4)
