@@ -221,3 +221,6 @@
 19th Feb 2018
 -printed andrei's level winder
 -updated delfino code
+
+20th Feb 2018
+-trajectory planner implemented on delfino

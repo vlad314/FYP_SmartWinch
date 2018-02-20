@@ -182,7 +182,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="device/driverlib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="DCL/source/DCL_PID_CLA.asm|DCL/source/DCL_PI_CLA.asm|DCL/source/DCL_DF23_CLA.asm|DCL/source/DCL_DF22_CLA.asm|DCL/source/DCL_DF13_CLA.asm|device/driverlib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

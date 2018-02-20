@@ -20,18 +20,18 @@
 // Slave registers
 enum 
 {
-    Winch_ID,
+    Winch_ID, //set via dip_switches
     Soft_Reset, //for emergency stop
 
-    Kp_Feedrate,
-    Ki_Feedrate,
-    Kd_Feedrate,
-    Global_Feedrate, //in rpm for now (future: in mm/s)
+    Max_Velocity,       // this is in mm/s
+    Max_Acceleration,   // this is in mm/s^2
+
+    Target_Setpoint, //for cable length in mm
 
     Kp,
     Ki,
     Kd,
-    PID_Setpoint, //for cable length in mm
+    PID_Setpoint, //for motion planner (read only)
 
     Target_X,
     Target_Y,
@@ -40,7 +40,7 @@ enum
     Field_Length, //in mm
     Field_Width, //in mm
 
-    Homing_switch,
+    Homing_switch, //read only
 
     Current_Encoder_Count, //in mm
     Current_PWM, //in percent
@@ -55,27 +55,35 @@ enum
     Current_Length_Winch2,
     Current_Length_Winch3,
 
+    Current_Force_Winch0,
+    Current_Force_Winch1,
+    Current_Force_Winch2,
+    Current_Force_Winch3,
+
     ADC0,
     ADC1,
     ADC2,
     ADC3,
 
     Global_Dwell_Time,
-    Number_of_Points,
+
     Homing_Flag,
-    Enable_Path_Follower,
-    Current_Path_Pointer,
+    Auto_mode,
     Sync,
 
-    //start of path points
-    X1 = 41,
+    Follow_Waypoints,
+    Current_Waypoints_Pointer,
+    Number_of_Waypoints,
+
+    //start of waypoints
+    X1 = 64,
     Y1,
     Z1,
     X2,
     Y2,
     Z2, //etc..
 
-    MB_HREGS  = 4096 //should give ~1350 3D points
+    MB_HREGS  = 4096 //should give ~1344 3D points
 };
 
 extern signed int modbus_holding_regs[MB_HREGS];

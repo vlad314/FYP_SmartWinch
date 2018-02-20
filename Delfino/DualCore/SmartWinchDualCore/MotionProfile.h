@@ -1,0 +1,53 @@
+#ifndef __MOTIONPROFILE_H__
+#define __MOTIONPROFILE_H__
+
+#include "includes.h"
+
+//taken from https://github.com/WRidder/MotionProfileGenerator
+//simplified to C from C++ by Afdhal
+
+/**
+ * Provides a simple trapezoidal motion profile generator.
+ *
+ * <p>
+ * Usage:
+ * // Includes
+ * #include "MotionProfile.h"
+ *
+ * // Define state functions
+ * static const State stateArr[] = {
+ *		State(STATE_NAME_ENTER, STATE_NAME_UPDATE, STATE_NAME_EXIT)
+ * };
+ *
+ * </p>
+ *
+ * @author      Wilbert van de Ridder <l.w.vanderidder @ student.utwente.nl>
+ * @version     1.0 
+ * @since       2014-05-12
+ */
+
+		/**	
+		 * Constructor
+		 * 
+		 * @param int aVelocityMax maximum velocity
+		 * @param int aAccelerationMax maximum acceleration
+		 * @param short aMethod method of profile generation
+		 * @param int aSampleTime sample time (ms)
+		 */
+		void MotionProfile(float aVelocityMax, float aAccelerationMax, short aMethod, int aSampleTime);
+
+
+		/**	
+		 * Updates the state, generating new setpoints
+		 *
+		 * @param aSetpoint The current setpoint.
+		 */
+		float MotionProfile_update(float aSetpoint);
+		bool MotionProfile_getFinished();
+		void MotionProfile_setCompFactor(int aFactor);
+		void MotionProfile_setMaxVelocity(float aMaxVelocity);
+		void MotionProfile_setMaxAcceleration(float aMaxVelocity);
+		void MotionProfile_pause();
+		void MotionProfile_reset();
+
+#endif

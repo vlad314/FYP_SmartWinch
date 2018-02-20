@@ -21,7 +21,7 @@ typedef struct {
 } length4_struct;
 
 length4_struct XYZ_to_length4(float X, float Y, float Z, float distance);
-XYZ_coord_struct length4_to_XYZ(float a, float b, float c, float distance);
+XYZ_coord_struct length4_to_XYZ(float c1, float c2, float c3,float c4,float distance);
 //</Matt Danby>
 
 

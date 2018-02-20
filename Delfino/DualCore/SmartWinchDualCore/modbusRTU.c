@@ -554,7 +554,7 @@ unsigned char reg_count, int *regs)
  * 	the number of bytes sent as reply ( > 4) if OK.
  */
 
-uint32_t T35 = 16U; //this should give around 3.5 char long for 200us per tick @ 115200bps
+uint32_t T35 = 2U; //this should give around 3.5 char long for 200us per tick @ 115200bps
 
 int modbusRTU_Update(unsigned char slave_id, int *regs,
 unsigned int regs_size) 

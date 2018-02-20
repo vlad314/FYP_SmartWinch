@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SmartWinchDualCore/MotionProfile.cpp&apos; to &apos;MotionProfile.c&apos;" description="Rename resource &apos;MotionProfile.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="MotionProfile.cpp" name="MotionProfile.c" stamp="1519080329891" updateReferences="true"/>
+</session>

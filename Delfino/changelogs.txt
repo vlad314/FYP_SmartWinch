@@ -27,3 +27,10 @@
 -added 12-bit 4-channel adc registers
 -added winchID reader
 -added systick macro (200us tick)
+
+20th Feb 2018
+-added motion planner
+-added homing switch
+-updated kinematics maths (matt danby)
+-fixed non-standalone issues
+

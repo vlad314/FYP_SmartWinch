@@ -76,9 +76,9 @@ SECTIONS
    .cio                : > RAMLS5     PAGE = 1
    
    	/* Added by Afdhal, For TI DCL PID Library */
-	dclfuncs 		   : > RAMLS4, PAGE = 0
-	.scratchpad 	   : > RAMLS4, PAGE = 0
-	Cla1Prog 		   : > RAMLS4, PAGE = 0
+	dclfuncs 		   : > FLASHA, PAGE = 0
+	//.scratchpad 	   : > RAMLS4, PAGE = 0
+	//Cla1Prog 		   : > RAMLS4, PAGE = 0
 
    /* Initalized sections go in Flash */
    .econst             : >> FLASHF | FLASHG | FLASHH      PAGE = 0, ALIGN(4)

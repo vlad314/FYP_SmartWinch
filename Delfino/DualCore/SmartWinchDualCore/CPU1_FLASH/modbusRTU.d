@@ -87,6 +87,8 @@ modbusRTU.obj: ../motor_driver.h
 modbusRTU.obj: ../modbusRTU.h
 modbusRTU.obj: ../modbus_regs.h
 modbusRTU.obj: ../buffered_serial.h
+modbusRTU.obj: ../MotionProfile.h
+modbusRTU.obj: ../kinematics.h
 
 ../modbusRTU.c: 
 ../modbusRTU.h: 
@@ -175,3 +177,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../modbusRTU.h: 
 ../modbus_regs.h: 
 ../buffered_serial.h: 
+../MotionProfile.h: 
+../kinematics.h: 
