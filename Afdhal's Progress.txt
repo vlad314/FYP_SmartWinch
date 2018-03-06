@@ -179,7 +179,7 @@
 -working on delfino
 
 1st Feb 2018
--designed motor driver for anthony
+-designed motor driver for antony
 -still working on delfino
 
 2nd Feb 2018
@@ -190,7 +190,7 @@
 -working on delfino
 
 6th Feb 2018
--received MCP260A from anthony and sam (thank you!)
+-received MCP260A from antony and sam (thank you!)
 
 7th Feb 2018
 -tested MCP260A in bridged mode
@@ -215,12 +215,33 @@
 -discussed with daniel on gui
 -discussed with vlad on homing algorithm
 -discussed with andrei on levelwinder
--discussed with all about anthony's motor choice
--received IMU from anthony (thank you!)
+-discussed with all about antony's motor choice
+-received IMU from antony (thank you!)
 
 19th Feb 2018
 -printed andrei's level winder
 -updated delfino code
 
-20th Feb 2018
--trajectory planner implemented on delfino
+21st Feb 2018
+-received and tested brushed motor on MCP266 from sam/antony
+
+25th Feb 2018
+-soldered address switches
+-tested BNO055 IMU (thanks antony!)
+
+26th Feb 2018
+-printed andrei's cam follower
+
+27th Feb 2018
+-researched on linear actuator based level winder
+
+28th Feb 2018
+-discussed with antony on load cell supplier and adc+pga
+
+2nd March 2018
+-received ps2 joystick from syahidah (thank you!) and tested it, works great
+-added external pull-resistor to the joystick to improve response time
+
+3rd March
+-drafted homing algorithm for manual, semi auto, and auto mode
+
