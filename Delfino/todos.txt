@@ -1,0 +1,14 @@
+5th March 2018
+-task scheduler
+-waypoint circular fifo buffer
+-homing routine
+-bresenham algorithm
+-MCP266 API integration
+-wireless comms
+-load cell integration
+-level winder driver (optional)
+-kinematic test
+-ps2 controller integration
+-basic gui
+-current sense (optional)
+-auto/semiauto/manual trajectory control
