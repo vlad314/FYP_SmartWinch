@@ -9,10 +9,12 @@ modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/linkag
 modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/_defs.h
 modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdio.h
 modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdarg.h
+modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlib.h
+modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlibf.h
+modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdbool.h
 modbusRTU.obj: D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/DualCore/SmartWinchDualCore/device/driverlib.h
 modbusRTU.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_memmap.h
 modbusRTU.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/adc.h
-modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdbool.h
 modbusRTU.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdint.h
 modbusRTU.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_adc.h
 modbusRTU.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_sysctl.h
@@ -87,8 +89,11 @@ modbusRTU.obj: ../motor_driver.h
 modbusRTU.obj: ../modbusRTU.h
 modbusRTU.obj: ../modbus_regs.h
 modbusRTU.obj: ../buffered_serial.h
+modbusRTU.obj: ../buffered_serial_B.h
 modbusRTU.obj: ../MotionProfile.h
 modbusRTU.obj: ../kinematics.h
+modbusRTU.obj: ../motion_buffer.h
+modbusRTU.obj: ../task_scheduler.h
 
 ../modbusRTU.c: 
 ../modbusRTU.h: 
@@ -99,10 +104,12 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/linkage.h:
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/_defs.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdio.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdarg.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlib.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlibf.h: 
+C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdbool.h: 
 D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/DualCore/SmartWinchDualCore/device/driverlib.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_memmap.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/adc.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdbool.h: 
 C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdint.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_adc.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_sysctl.h: 
@@ -177,5 +184,8 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../modbusRTU.h: 
 ../modbus_regs.h: 
 ../buffered_serial.h: 
+../buffered_serial_B.h: 
 ../MotionProfile.h: 
 ../kinematics.h: 
+../motion_buffer.h: 
+../task_scheduler.h: 

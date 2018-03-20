@@ -7,13 +7,7 @@
 
 #include "interrupt_handlers.h"
 
-//temporary pid
-/*
-volatile float setpoint = 7680.0;
-volatile float kp=0.0,ki=0.0,kd=700;
-volatile float error=0.0, input_previous=0.0, error_integrated=0.0, input_differentiated=0.0;
-volatile float out_min = -8000000.0, out_max = 8000000.0;
-volatile float input=0.0, output=0.0;*/
+
 
 volatile PID pid1 = PID_DEFAULTS;
 volatile float uk; // control
@@ -27,160 +21,44 @@ volatile float lk = 1.0f; // saturation
 //
 __interrupt void epwm2ISR(void)
 {
-    volatile static int cnt=0;
-    volatile static length4_struct cable_lengths;
-    volatile static XYZ_coord_struct actual_point;
+    //GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0); //tic
 
-    //if the conversion was done
-    if(ADC_getInterruptStatus(ADCD_BASE, ADC_INT_NUMBER1))
-    {
-        modbus_holding_regs[ADC0] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER0);
-        modbus_holding_regs[ADC1] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER1);
-        modbus_holding_regs[ADC2] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER2);
-        modbus_holding_regs[ADC3] = ADC_readResult(ADCDRESULT_BASE, ADC_SOC_NUMBER3);
-        ADC_clearInterruptStatus(ADCD_BASE, ADC_INT_NUMBER1);
-    }
+    volatile static int cnt=0;            
 
     //heartbeat on led
-    if(cnt++>15)
+    if(cnt++>48) //almost once a second 100MHz/2/8/0xffff/48 (2Hz)
     {
         cnt=0;
         GPIO_togglePin(DEVICE_GPIO_PIN_LED1);
     }
 
     //homing switch
-    modbus_holding_regs[Homing_switch] = EQEP_getIndexPositionLatch(EQEP1_BASE);
+    modbus_holding_regs[Homing_switch] = GPIO_readPin(DEVICE_GPIO_PIN_EQEP1I)^1; //active-low switch
 
-
-    //auto mode means using kinematic maths
-    if(modbus_holding_regs[Auto_mode]!=0)
-    {
-        cable_lengths = XYZ_to_length4((float) modbus_holding_regs[Target_X], (float) modbus_holding_regs[Target_Y], (float) modbus_holding_regs[Target_Z], (float) modbus_holding_regs[Field_Length]);
-
-        switch(modbus_holding_regs[Winch_ID])
-        {
-            case 0:
-            {
-                modbus_holding_regs[Target_Setpoint] = cable_lengths.lengtha;
-                break;
-            }
-            case 1:
-            {
-                modbus_holding_regs[Target_Setpoint] = cable_lengths.lengthb;
-                break;
-            }
-            case 2:
-            {
-                modbus_holding_regs[Target_Setpoint] = cable_lengths.lengthc;
-                break;
-            }
-            case 3:
-            {
-                modbus_holding_regs[Target_Setpoint] = cable_lengths.lengthd;
-                break;
-            }
-        }
-    }
-
-
+    task_scheduler_handler();
 
     //
     // PID here
     //
     pid1.Kp = (float)modbus_holding_regs[Kp] * 512.0f;
-    pid1.Ki = (float)modbus_holding_regs[Ki] / 1000.0f;
+    pid1.Ki = (float)modbus_holding_regs[Ki] / 1024.0f;
     pid1.Kd = (float)modbus_holding_regs[Kd] * 128.0f;
 
-    float cable_length = (float) EQEP_getPosition(EQEP1_BASE);
-    cable_length = cable_length*47.124f/32.0f/120.0f;
-    modbus_holding_regs[Current_Encoder_Count] = (int) cable_length;
+    float cable_length = (float)EQEP_getPosition(EQEP1_BASE) - (float)0x80000000; //should be able to accept negative length
+    cable_length = cable_length*47.124f/32.0f/120.0f; /*  count*circumference/pulse_per_rotation/gear_ratio  */
+    modbus_holding_regs[Current_Encoder_Count] = (int32_t) cable_length;
+
+    //assign length to appropriate id
+    modbus_holding_regs[Current_Length_Winch0   + modbus_holding_regs[Winch_ID]] = modbus_holding_regs[Current_Encoder_Count];   
+    modbus_holding_regs[Target_Length_Winch0    + modbus_holding_regs[Winch_ID]] = modbus_holding_regs[Target_Setpoint];   
 
 
     rk = (float) MotionProfile_update((float)modbus_holding_regs[Target_Setpoint]);
     yk = cable_length;
     uk = DCL_runPID(&pid1, rk, yk, lk);
     bidirectional_motor((signed long) uk);
-
     modbus_holding_regs[PID_Setpoint] = (signed int) rk;
-
-    modbus_holding_regs[Current_PWM] = (int)(uk/16777215.0f*100.0f);
-
-
-    //modbus_holding_regs[Current_Length_Winch0 + modbus_holding_regs[Winch_ID]] = modbus_holding_regs[Current_Encoder_Count];
-
-    //calculate current point based on cable length
-        actual_point = length4_to_XYZ((float) modbus_holding_regs[Current_Length_Winch0],
-                                      (float) modbus_holding_regs[Current_Length_Winch1],
-                                      (float) modbus_holding_regs[Current_Length_Winch2],
-                                      (float) modbus_holding_regs[Current_Length_Winch3],
-                                      (float) modbus_holding_regs[Field_Length]);
-
-        modbus_holding_regs[Current_X] =  (signed int) actual_point.X;
-        modbus_holding_regs[Current_Y] =  (signed int) actual_point.Y;
-        modbus_holding_regs[Current_Z] =  (signed int) actual_point.Z;
-
-
-
-    //if a full 32-pulse was received (i.e. one full motor revolution has happened)
-    if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_UNIT_POS_EVNT) != 0)
-    {
-        //
-        // No capture overflow, i.e. if 2 consecutive revolutions happened within 10ms
-        //
-        if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_CAP_OVRFLW_ERROR) == 0)
-        {
-            float rpm = (DEVICE_SYSCLK_FREQ / 128.0) / 2.0 / EQEP_getCapturePeriodLatch(EQEP1_BASE) / 4; // 60 seconds / 120 gearbox_ratio = 2
-            modbus_holding_regs[Current_RPM] = (int) rpm;
-        }
-
-
-        //
-        // Clear unit position event flag and overflow error flag
-        //
-        EQEP_clearStatus(EQEP1_BASE, (EQEP_STS_UNIT_POS_EVNT |
-                                      EQEP_STS_CAP_OVRFLW_ERROR));
-    }
-    else
-    {
-        modbus_holding_regs[Current_RPM] = 0;
-    }
-
-
-/*
-    input = (float) EQEP_getPositionLatch(EQEP1_BASE);
-
-    //<Proportional>
-    error = setpoint - input;
-    output = kp*error;
-    //</Proportional>
-
-    //<Integration>
-    error_integrated += error;
-
-    //preventing integrator windup
-    error_integrated = error_integrated > out_max ? out_max : error_integrated;
-    error_integrated = error_integrated < out_min ? out_min : error_integrated;
-
-    //reseting integrator
-    if(ki == 0.0)
-        error_integrated = 0.0;
-
-    output += ki/1000.0*error_integrated; //added divide by 1000 to allow for fractional math
-    //</Integration>
-
-    //<Differentiation> (“Derivative on Measurement”)
-    input_differentiated = input - input_previous;
-    input_previous = input;
-
-    output -= kd * input_differentiated;
-    //</Differentiation>
-
-    //output clamp
-    output = output > out_max ? out_max : output;
-    output = output < out_min ? out_min : output;
-
-    bidirectional_motor((signed long) output);
-*/
+    modbus_holding_regs[Current_PWM] = (int)(uk/16777215.0f*100.0f); //in % (pwm is 24 bit)
 
     //
     // Clear INT flag for this timer
@@ -191,8 +69,9 @@ __interrupt void epwm2ISR(void)
     // Acknowledge interrupt group
     //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP3);
-}
 
+    //GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1); //toc
+}
 
 
 
@@ -221,6 +100,40 @@ __interrupt void sciaRXFIFOISR(void)
     SCI_clearOverflowStatus(SCIA_BASE);
 
     SCI_clearInterruptStatus(SCIA_BASE, SCI_INT_RXFF);
+
+    //
+    // Issue PIE ack
+    //
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP9);
+}
+
+
+
+//
+// scibTXFIFOISR - SCIB Transmit FIFO ISR
+//
+__interrupt void scibTXFIFOISR(void)
+{
+    buffered_serial_B_transmit();
+
+    SCI_clearInterruptStatus(SCIB_BASE, SCI_INT_TXFF);
+
+    //
+    // Issue PIE ACK
+    //
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP9);
+}
+
+//
+// scibRXFIFOISR - SCIB Receive FIFO ISR
+//
+__interrupt void scibRXFIFOISR(void)
+{
+    buffered_serial_B_receive();
+
+    SCI_clearOverflowStatus(SCIB_BASE);
+
+    SCI_clearInterruptStatus(SCIB_BASE, SCI_INT_RXFF);
 
     //
     // Issue PIE ack

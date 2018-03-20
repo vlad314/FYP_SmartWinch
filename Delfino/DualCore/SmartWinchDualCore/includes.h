@@ -13,6 +13,9 @@
 //
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>  /* malloc, free, rand */
+#include <stdbool.h>
+
 #include "driverlib.h"
 #include "device.h"
 #include "DCL/include/DCL.h"
@@ -25,9 +28,14 @@
 #include "modbus_regs.h"
 
 #include "buffered_serial.h"
+#include "buffered_serial_B.h"
 
 #include "MotionProfile.h"
 #include "kinematics.h"
+
+#include "motion_buffer.h"
+
+#include "task_scheduler.h"
 
 //utilities
 #define systick() ((uint32_t)(4294967295 - CPUTimer_getTimerCount(CPUTIMER0_BASE))) //needed because the cpu_timer is cnt_dwn, not up! (200us per tick)

@@ -80,6 +80,14 @@ a single CPU should be defined."
 #define DEVICE_GPIO_CFG_SCITXDA     GPIO_42_SCITXDA // "pinConfig" for SCI TX
 
 //
+// SCI on Jumper1
+//
+#define DEVICE_GPIO_PIN_SCIRXDB     19U             // GPIO number for SCI RX
+#define DEVICE_GPIO_PIN_SCITXDB     18U             // GPIO number for SCI TX
+#define DEVICE_GPIO_CFG_SCIRXDB     GPIO_19_SCIRXDB // "pinConfig" for SCI RX
+#define DEVICE_GPIO_CFG_SCITXDB     GPIO_18_SCITXDB // "pinConfig" for SCI TX
+
+//
 // CANA
 //
 #define DEVICE_GPIO_PIN_CANTXA      31U  // GPIO number for CANTXA
@@ -123,6 +131,13 @@ a single CPU should be defined."
 #define DEVICE_GPIO_CFG_ID0        GPIO_61_GPIO61  // "pinConfig" for LD2
 #define DEVICE_GPIO_CFG_ID1        GPIO_123_GPIO123  // "pinConfig" for LD3
 
+
+
+//
+// Debug-mode Pin (used to enter debug mode)
+//
+#define DEVICE_GPIO_PIN_DBG        66U  // GPIO number for LD2
+#define DEVICE_GPIO_CFG_DBG        GPIO_66_GPIO66  // "pinConfig" for LD2
 
 
 

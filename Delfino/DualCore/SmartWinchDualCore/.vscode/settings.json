@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "kinematics.h": "c",
+        "includes.h": "c",
+        "buffered_serial.h": "c",
+        "math.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "modbusrtu.h": "c"
+    }
+}

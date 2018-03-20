@@ -1,7 +1,7 @@
 ******************************************************************************
              TMS320C2000 Linker PC v18.1.0                     
 ******************************************************************************
->> Linked Tue Feb 20 02:13:41 2018
+>> Linked Tue Mar 20 11:44:52 2018
 
 OUTPUT FILE NAME:   <SmartWinchDualCore.out>
 ENTRY POINT SYMBOL: "code_start"  address: 00080000
@@ -23,8 +23,8 @@ PAGE 0:
   RAMGS15               0001b000   00001000  00000000  00001000  RWIX
   BEGIN                 00080000   00000002  00000002  00000000  RWIX
   FLASHA                00080002   00001ffe  00000266  00001d98  RWIX
-  FLASHB                00082000   00002000  00002000  00000000  RWIX
-  FLASHC                00084000   00002000  000003e1  00001c1f  RWIX
+  FLASHB                00082000   00002000  00001fff  00000001  RWIX
+  FLASHC                00084000   00002000  00000882  0000177e  RWIX
   FLASHD                00086000   00002000  00000135  00001ecb  RWIX
   FLASHE                00088000   00008000  00000000  00008000  RWIX
   FLASHF                00090000   00008000  00000449  00007bb7  RWIX
@@ -115,10 +115,10 @@ PAGE 1:
   OUTPUT_XBAR           00007a80   00000040  00000000  00000040  RWIX
   GPIOCTRL              00007c00   00000180  00000000  00000180  RWIX
   GPIODAT               00007f00   00000030  00000000  00000030  RWIX
-  RAMLS5                0000a800   00000800  0000035a  000004a6  RWIX
+  RAMLS5                0000a800   00000800  000007ee  00000012  RWIX
   RAMD1                 0000b800   00000800  00000000  00000800  RWIX
   RAMGS0                0000c000   00001000  00001000  00000000  RWIX
-  RAMGS1                0000d000   00001000  00000c40  000003c0  RWIX
+  RAMGS1                0000d000   00001000  00000e7f  00000181  RWIX
   RAMGS2                0000e000   00001000  00000000  00001000  RWIX
   RAMGS3                0000f000   00001000  00000000  00001000  RWIX
   RAMGS4                00010000   00001000  00000000  00001000  RWIX
@@ -162,16 +162,18 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.cinit     0    00082000    0000007c     
+.cinit     0    00082000    00000093     
                   00082000    0000002e     interrupt_handlers.obj (.cinit)
                   0008202e    00000018     buffered_serial.obj (.cinit)
-                  00082046    00000013     modbusRTU.obj (.cinit)
-                  00082059    0000000e     rts2800_fpu32.lib : exit.c.obj (.cinit)
-                  00082067    00000005                       : _lock.c.obj (.cinit:__lock)
-                  0008206c    00000005                       : _lock.c.obj (.cinit:__unlock)
-                  00082071    00000005     main.obj (.cinit)
-                  00082076    00000004     rts2800_fpu32.lib : errno.c.obj (.cinit)
-                  0008207a    00000002     --HOLE-- [fill = 0]
+                  00082046    00000018     buffered_serial_B.obj (.cinit)
+                  0008205e    0000000e     modbusRTU.obj (.cinit)
+                  0008206c    0000000e     rts2800_fpu32.lib : exit.c.obj (.cinit)
+                  0008207a    00000005                       : _lock.c.obj (.cinit:__lock)
+                  0008207f    00000005                       : _lock.c.obj (.cinit:__unlock)
+                  00082084    00000005     main.obj (.cinit)
+                  00082089    00000004     rts2800_fpu32.lib : errno.c.obj (.cinit)
+                  0008208d    00000004                       : memory.c.obj (.cinit)
+                  00082091    00000002     --HOLE-- [fill = 0]
 
 .pinit     0    00082000    00000000     UNINITIALIZED
 
@@ -181,6 +183,10 @@ codestart
 
 .stack     1    00000400    00000100     UNINITIALIZED
                   00000400    00000100     --HOLE--
+
+.esysmem   1    0000a800    00000400     UNINITIALIZED
+                  0000a800    00000001     rts2800_fpu32.lib : memory.c.obj (.esysmem)
+                  0000a801    000003ff     --HOLE--
 
 dclfuncs   0    00080002    00000266     
                   00080002    000000af     DCL_DF13.obj (dclfuncs)
@@ -217,71 +223,73 @@ PUTREADIDX
 Cla1SoftIntRegsFile 
 *          1    00000ce0    00000000     DSECT
 
-.text.1    0    0008207c    00001f84     
-                  0008207c    0000069f     device_init.obj (.text)
-                  0008271b    00000380     rts2800_fpu32.lib : e_powf.c.obj (.text)
-                  00082a9b    000002e3     modbusRTU.obj (.text)
-                  00082d7e    000002df     kinematics.obj (.text)
-                  0008305d    0000029f     MotionProfile.obj (.text)
-                  000832fc    00000246     interrupt_handlers.obj (.text:retain)
-                  00083542    00000221     driverlib.lib : sysctl.obj (.text:_SysCtl_setClock)
-                  00083763    000001cb     device.obj (.text)
-                  0008392e    000000df     buffered_serial.obj (.text)
-                  00083a0d    0000009a     driverlib.lib : adc.obj (.text:_ADC_setMode)
-                  00083aa7    00000096     main.obj (.text)
-                  00083b3d    00000088     rts2800_fpu32.lib : fs_div28.asm.obj (.text)
-                  00083bc5    00000085     driverlib.lib : interrupt.obj (.text:_Interrupt_clearIFR)
-                  00083c4a    0000007e     interrupt_handlers.obj (.text)
-                  00083cc8    00000057     rts2800_fpu32.lib : s_scalbnf.c.obj (.text)
-                  00083d1f    00000056                       : boot28.asm.obj (.text)
-                  00083d75    00000054     driverlib.lib : interrupt.obj (.text:_Interrupt_initModule)
-                  00083dc9    00000052                   : gpio.obj (.text:_GPIO_setPadConfig)
-                  00083e1b    0000004d                   : sysctl.obj (.text:_SysCtl_selectOscSource)
-                  00083e68    0000004a                   : interrupt.obj (.text:_Interrupt_disable)
-                  00083eb2    00000049     motor_driver.obj (.text)
-                  00083efb    00000046     driverlib.lib : sci.obj (.text:_SCI_clearInterruptStatus)
-                  00083f41    00000046                   : sci.obj (.text:_SCI_disableInterrupt)
-                  00083f87    00000044                   : sci.obj (.text:_SCI_enableInterrupt)
-                  00083fcb    00000033                   : interrupt.obj (.text:_Interrupt_enable)
-                  00083ffe    00000002                   : interrupt.obj (.text:_Interrupt_illegalOperationHandler)
+.text.1    0    00082094    00001f6c     
+                  00082094    0000075b     device_init.obj (.text)
+                  000827ef    00000380     rts2800_fpu32.lib : e_powf.c.obj (.text)
+                  00082b6f    00000348     task_scheduler.obj (.text)
+                  00082eb7    0000031d     modbusRTU.obj (.text)
+                  000831d4    000002df     kinematics.obj (.text)
+                  000834b3    000002a8     MotionProfile.obj (.text)
+                  0008375b    00000221     driverlib.lib : sysctl.obj (.text:_SysCtl_setClock)
+                  0008397c    000001ed     interrupt_handlers.obj (.text:retain)
+                  00083b69    000001cb     device.obj (.text)
+                  00083d34    000000c8     buffered_serial.obj (.text)
+                  00083dfc    000000c8     buffered_serial_B.obj (.text)
+                  00083ec4    000000b4     main.obj (.text)
+                  00083f78    00000088     rts2800_fpu32.lib : fs_div28.asm.obj (.text)
 
-.text.2    0    00084000    000003e1     
-                  00084000    00000041     driverlib.lib : sci.obj (.text:_SCI_writeCharArray)
-                  00084041    00000040                   : sci.obj (.text:_SCI_setConfig)
-                  00084081    0000003d                   : gpio.obj (.text:_GPIO_setPinConfig)
-                  000840be    00000038                   : gpio.obj (.text:_GPIO_setMasterCore)
-                  000840f6    00000038                   : gpio.obj (.text:_GPIO_setQualificationMode)
-                  0008412e    00000031                   : gpio.obj (.text:_GPIO_setDirectionMode)
-                  0008415f    00000029                   : flash.obj (.text:_Flash_setBankPowerUpDelay)
-                  00084188    00000029     rts2800_fpu32.lib : exit.c.obj (.text)
-                  000841b1    00000001                       : startup.c.obj (.text)
-                  000841b2    00000026                       : e_sqrtf.c.obj (.text)
-                  000841d8    00000024                       : cpy_tbl.c.obj (.text)
-                  000841fc    00000022     driverlib.lib : sci.obj (.text:_SCI_isFIFOEnabled)
-                  0008421e    00000022     rts2800_fpu32.lib : i_div28.asm.obj (.text)
-                  00084240    00000020     driverlib.lib : interrupt.obj (.text:_Interrupt_initVectorTable)
-                  00084260    0000001f                   : sci.obj (.text:_SCI_isBaseValid)
-                  0008427f    0000001e     rts2800_fpu32.lib : memcpy.c.obj (.text)
-                  0008429d    0000001b     driverlib.lib : sci.obj (.text:_SCI_isSpaceAvailableNonFIFO)
-                  000842b8    0000001a                   : cputimer.obj (.text:_CPUTimer_isBaseValid)
-                  000842d2    00000019                   : sci.obj (.text:_SCI_disableModule)
-                  000842eb    00000019                   : sci.obj (.text:_SCI_performSoftwareReset)
-                  00084304    00000019     rts2800_fpu32.lib : args_main.c.obj (.text)
-                  0008431d    00000015     driverlib.lib : sci.obj (.text:_SCI_getTxFIFOStatus)
-                  00084332    00000014                   : sci.obj (.text:_SCI_enableModule)
-                  00084346    00000013                   : cputimer.obj (.text:_CPUTimer_setEmulationMode)
-                  00084359    00000011     rts2800_fpu32.lib : s_copysignf.c.obj (.text)
-                  0008436a    00000010     driverlib.lib : flash.obj (.text:_Flash_isCtrlBaseValid)
-                  0008437a    00000010                   : flash.obj (.text:_Flash_isECCBaseValid)
-                  0008438a    0000000e                   : gpio.obj (.text:_GPIO_isPinValid)
-                  00084398    0000000e                   : interrupt.obj (.text:_Interrupt_defaultHandler)
-                  000843a6    0000000d                   : interrupt.obj (.text:_Interrupt_disableMaster)
-                  000843b3    0000000d                   : interrupt.obj (.text:_Interrupt_enableMaster)
-                  000843c0    0000000b                   : sysctl.obj (.text:_SysCtl_isMCDClockFailureDetected)
-                  000843cb    00000009                   : sysctl.obj (.text:_SysCtl_serviceWatchdog)
-                  000843d4    00000009     rts2800_fpu32.lib : _lock.c.obj (.text)
-                  000843dd    00000002     driverlib.lib : interrupt.obj (.text:_Interrupt_nmiHandler)
-                  000843df    00000002     rts2800_fpu32.lib : pre_init.c.obj (.text)
+.text.2    0    00084000    00000882     
+                  00084000    0000009a     driverlib.lib : adc.obj (.text:_ADC_setMode)
+                  0008409a    00000085                   : interrupt.obj (.text:_Interrupt_clearIFR)
+                  0008411f    00000057     rts2800_fpu32.lib : s_scalbnf.c.obj (.text)
+                  00084176    00000056                       : boot28.asm.obj (.text)
+                  000841cc    00000054     driverlib.lib : interrupt.obj (.text:_Interrupt_initModule)
+                  00084220    00000052                   : gpio.obj (.text:_GPIO_setPadConfig)
+                  00084272    0000004d                   : sysctl.obj (.text:_SysCtl_selectOscSource)
+                  000842bf    0000004a                   : interrupt.obj (.text:_Interrupt_disable)
+                  00084309    0000004a     interrupt_handlers.obj (.text)
+                  00084353    00000049     motor_driver.obj (.text)
+                  0008439c    00000046     driverlib.lib : sci.obj (.text:_SCI_clearInterruptStatus)
+                  000843e2    00000046                   : sci.obj (.text:_SCI_disableInterrupt)
+                  00084428    00000044                   : sci.obj (.text:_SCI_enableInterrupt)
+                  0008446c    00000041                   : sci.obj (.text:_SCI_writeCharArray)
+                  000844ad    00000040                   : sci.obj (.text:_SCI_setConfig)
+                  000844ed    0000003d                   : gpio.obj (.text:_GPIO_setPinConfig)
+                  0008452a    00000038                   : gpio.obj (.text:_GPIO_setMasterCore)
+                  00084562    00000038                   : gpio.obj (.text:_GPIO_setQualificationMode)
+                  0008459a    00000033                   : interrupt.obj (.text:_Interrupt_enable)
+                  000845cd    00000031                   : gpio.obj (.text:_GPIO_setDirectionMode)
+                  000845fe    00000029                   : flash.obj (.text:_Flash_setBankPowerUpDelay)
+                  00084627    00000029     rts2800_fpu32.lib : exit.c.obj (.text)
+                  00084650    00000026                       : e_sqrtf.c.obj (.text)
+                  00084676    00000024                       : cpy_tbl.c.obj (.text)
+                  0008469a    00000022     driverlib.lib : sci.obj (.text:_SCI_isFIFOEnabled)
+                  000846bc    00000022     rts2800_fpu32.lib : i_div28.asm.obj (.text)
+                  000846de    00000020     driverlib.lib : interrupt.obj (.text:_Interrupt_initVectorTable)
+                  000846fe    0000001f                   : sci.obj (.text:_SCI_isBaseValid)
+                  0008471d    0000001e     rts2800_fpu32.lib : memcpy.c.obj (.text)
+                  0008473b    0000001b     driverlib.lib : sci.obj (.text:_SCI_isSpaceAvailableNonFIFO)
+                  00084756    0000001a                   : cputimer.obj (.text:_CPUTimer_isBaseValid)
+                  00084770    00000019                   : sci.obj (.text:_SCI_disableModule)
+                  00084789    00000019                   : sci.obj (.text:_SCI_performSoftwareReset)
+                  000847a2    00000019     rts2800_fpu32.lib : args_main.c.obj (.text)
+                  000847bb    00000015     driverlib.lib : sci.obj (.text:_SCI_getTxFIFOStatus)
+                  000847d0    00000014                   : sci.obj (.text:_SCI_enableModule)
+                  000847e4    00000013                   : cputimer.obj (.text:_CPUTimer_setEmulationMode)
+                  000847f7    00000011     rts2800_fpu32.lib : s_copysignf.c.obj (.text)
+                  00084808    00000010     driverlib.lib : flash.obj (.text:_Flash_isCtrlBaseValid)
+                  00084818    00000010                   : flash.obj (.text:_Flash_isECCBaseValid)
+                  00084828    0000000e                   : gpio.obj (.text:_GPIO_isPinValid)
+                  00084836    0000000e                   : interrupt.obj (.text:_Interrupt_defaultHandler)
+                  00084844    0000000d                   : interrupt.obj (.text:_Interrupt_disableMaster)
+                  00084851    0000000d                   : interrupt.obj (.text:_Interrupt_enableMaster)
+                  0008485e    0000000b                   : sysctl.obj (.text:_SysCtl_isMCDClockFailureDetected)
+                  00084869    00000009                   : sysctl.obj (.text:_SysCtl_serviceWatchdog)
+                  00084872    00000009     rts2800_fpu32.lib : _lock.c.obj (.text)
+                  0008487b    00000002     driverlib.lib : interrupt.obj (.text:_Interrupt_illegalOperationHandler)
+                  0008487d    00000002                   : interrupt.obj (.text:_Interrupt_nmiHandler)
+                  0008487f    00000002     rts2800_fpu32.lib : pre_init.c.obj (.text)
+                  00084881    00000001                       : startup.c.obj (.text)
 
 .econst    0    00090000    00000449     
                   00090000    000000cb     driverlib.lib : flash.obj (.econst:.string)
@@ -304,22 +312,26 @@ Cla1SoftIntRegsFile
                   00090442    00000004                       : e_powf.c.obj (.econst:_dp_l)
                   00090446    00000003     modbusRTU.obj (.econst:.string:_fsupported)
 
-.ebss.1    1    0000a800    0000035a     UNINITIALIZED
-                  0000a800    0000023f     buffered_serial.obj (.ebss)
-                  0000aa3f    00000001     rts2800_fpu32.lib : errno.c.obj (.ebss)
-                  0000aa40    000000c0     main.obj (.ebss)
-                  0000ab00    00000030     interrupt_handlers.obj (.ebss)
-                  0000ab30    0000000a     modbusRTU.obj (.ebss)
-                  0000ab3a    00000006     rts2800_fpu32.lib : exit.c.obj (.ebss)
-                  0000ab40    00000016     MotionProfile.obj (.ebss)
-                  0000ab56    00000002     rts2800_fpu32.lib : _lock.c.obj (.ebss:__lock)
-                  0000ab58    00000002                       : _lock.c.obj (.ebss:__unlock)
+.ebss.1    1    0000ac00    000003ee     UNINITIALIZED
+                  0000ac00    0000023f     buffered_serial.obj (.ebss)
+                  0000ae3f    00000001     rts2800_fpu32.lib : errno.c.obj (.ebss)
+                  0000ae40    000000c0     main.obj (.ebss)
+                  0000af00    00000080     modbusRTU.obj (.ebss)
+                  0000af80    00000022     interrupt_handlers.obj (.ebss)
+                  0000afa2    0000001c     task_scheduler.obj (.ebss)
+                  0000afbe    00000002     rts2800_fpu32.lib : _lock.c.obj (.ebss:__lock)
+                  0000afc0    00000016     MotionProfile.obj (.ebss)
+                  0000afd6    00000008     motion_buffer.obj (.ebss)
+                  0000afde    00000008     rts2800_fpu32.lib : memory.c.obj (.ebss)
+                  0000afe6    00000006                       : exit.c.obj (.ebss)
+                  0000afec    00000002                       : _lock.c.obj (.ebss:__unlock)
 
 .ebss.2    1    0000c000    00001000     UNINITIALIZED
                   0000c000    00001000     modbus_regs.obj (.ebss)
 
-.ebss.3    1    0000d000    00000c40     UNINITIALIZED
+.ebss.3    1    0000d000    00000e7f     UNINITIALIZED
                   0000d000    00000c40     kinematics.obj (.ebss)
+                  0000dc40    0000023f     buffered_serial_B.obj (.ebss)
 
 MODULE SUMMARY
 
@@ -328,15 +340,18 @@ MODULE SUMMARY
     .\
        modbus_regs.obj               0       0                  4096              
        kinematics.obj                735     0                  3136              
-       device_init.obj               1695    0                  0                 
-       buffered_serial.obj           223     24                 575               
-       interrupt_handlers.obj        708     46                 48                
-       modbusRTU.obj                 739     22                 10                
-       MotionProfile.obj             671     0                  22                
-       main.obj                      150     14                 192               
+       device_init.obj               1883    0                  0                 
+       modbusRTU.obj                 797     17                 128               
+       task_scheduler.obj            840     0                  28                
+       buffered_serial.obj           200     24                 575               
+       buffered_serial_B.obj         200     24                 575               
+       MotionProfile.obj             680     0                  22                
+       interrupt_handlers.obj        567     46                 34                
+       main.obj                      180     14                 192               
        motor_driver.obj              73      0                  0                 
+       motion_buffer.obj             0       0                  8                 
     +--+-----------------------------+-------+------------------+--------------------+
-       Total:                        4994    106                8079              
+       Total:                        6155    125                8794              
                                                                                   
     .\DCL\source\
        DCL_DF13.obj                  175     0                  0                 
@@ -377,15 +392,17 @@ MODULE SUMMARY
        args_main.c.obj               25      0                  0                 
        _lock.c.obj                   9       10                 4                 
        s_copysignf.c.obj             17      0                  0                 
+       memory.c.obj                  0       4                  8                 
        errno.c.obj                   0       4                  1                 
        pre_init.c.obj                2       0                  0                 
        startup.c.obj                 1       0                  0                 
     +--+-----------------------------+-------+------------------+--------------------+
-       Total:                        1438    96                 11                
+       Total:                        1438    100                19                
                                                                                   
+       Heap:                         0       0                  1024              
        Stack:                        0       0                  256               
     +--+-----------------------------+-------+------------------+--------------------+
-       Grand Total:                  10295   1214               8346              
+       Grand Total:                  11456   1237               10093             
 
 
 GLOBAL DATA SYMBOLS: SORTED BY DATA PAGE
@@ -394,50 +411,59 @@ address     data page           name
 --------    ----------------    ----
 00000400      10 (00000400)     __stack
 
-0000a800     2a0 (0000a800)     _eusartTxBufferRemaining
-0000a801     2a0 (0000a800)     _TXIE
+0000a800     2a0 (0000a800)     __sys_memory
 
-0000aa3f     2a8 (0000aa00)     _errno
+0000ac00     2b0 (0000ac00)     _eusartTxBufferRemaining
+0000ac01     2b0 (0000ac00)     _TXIE
 
-0000aa40     2a9 (0000aa40)     _msg
-0000aa44     2a9 (0000aa40)     _receivedChar
+0000ae3f     2b8 (0000ae00)     _errno
 
-0000aa80     2aa (0000aa80)     _str
+0000ae42     2b9 (0000ae40)     _msg
+0000ae44     2b9 (0000ae40)     _receivedChar
 
-0000ab02     2ac (0000ab00)     _lk
-0000ab04     2ac (0000ab00)     _uk
-0000ab06     2ac (0000ab00)     _rk
-0000ab08     2ac (0000ab00)     _yk
-0000ab18     2ac (0000ab00)     _pid1
-0000ab30     2ac (0000ab00)     _slave
-0000ab32     2ac (0000ab00)     _modbusRTU_Written
-0000ab34     2ac (0000ab00)     _modbusRTU_written_register_flags
-0000ab38     2ac (0000ab00)     _T35
-0000ab3a     2ac (0000ab00)     ___TI_enable_exit_profile_output
-0000ab3c     2ac (0000ab00)     ___TI_cleanup_ptr
-0000ab3e     2ac (0000ab00)     ___TI_dtors_ptr
+0000ae80     2ba (0000ae80)     _str
 
-0000ab40     2ad (0000ab40)     _method
-0000ab41     2ad (0000ab40)     _compFactor
-0000ab42     2ad (0000ab40)     _sampleTime
-0000ab43     2ad (0000ab40)     _isFinished
-0000ab44     2ad (0000ab40)     _acceleration
-0000ab46     2ad (0000ab40)     _oldVelocity
-0000ab48     2ad (0000ab40)     _delta
-0000ab4a     2ad (0000ab40)     _lastTime
-0000ab4c     2ad (0000ab40)     _position
-0000ab4e     2ad (0000ab40)     _maxVelocity
-0000ab50     2ad (0000ab40)     _velocity
-0000ab52     2ad (0000ab40)     _maxAcceleration
-0000ab54     2ad (0000ab40)     _oldPosition
-0000ab56     2ad (0000ab40)     __lock
-0000ab58     2ad (0000ab40)     __unlock
+0000af00     2bc (0000af00)     _DEBUGGING
+0000af01     2bc (0000af00)     _slave
+0000af03     2bc (0000af00)     _modbusRTU_Written
+0000af06     2bc (0000af00)     _T35
+
+0000af40     2bd (0000af40)     _modbusRTU_written_register_flags
+
+0000af82     2be (0000af80)     _uk
+0000af84     2be (0000af80)     _yk
+0000af86     2be (0000af80)     _rk
+0000af88     2be (0000af80)     _lk
+0000af8a     2be (0000af80)     _pid1
+0000afbe     2be (0000af80)     __lock
+
+0000afc0     2bf (0000afc0)     _method
+0000afc1     2bf (0000afc0)     _compFactor
+0000afc2     2bf (0000afc0)     _sampleTime
+0000afc3     2bf (0000afc0)     _isFinished
+0000afc4     2bf (0000afc0)     _acceleration
+0000afc6     2bf (0000afc0)     _oldVelocity
+0000afc8     2bf (0000afc0)     _delta
+0000afca     2bf (0000afc0)     _lastTime
+0000afcc     2bf (0000afc0)     _position
+0000afce     2bf (0000afc0)     _maxVelocity
+0000afd0     2bf (0000afc0)     _velocity
+0000afd2     2bf (0000afc0)     _maxAcceleration
+0000afd4     2bf (0000afc0)     _oldPosition
+0000afd6     2bf (0000afc0)     _cbuf
+0000afe6     2bf (0000afc0)     ___TI_enable_exit_profile_output
+0000afe8     2bf (0000afc0)     ___TI_cleanup_ptr
+0000afea     2bf (0000afc0)     ___TI_dtors_ptr
+0000afec     2bf (0000afc0)     __unlock
 
 0000c000     300 (0000c000)     _modbus_holding_regs
 
 0000d000     340 (0000d000)     _total_path_points
 
 0000d040     341 (0000d040)     _generated_path
+
+0000dc40     371 (0000dc40)     _eusartTxBufferRemaining_B
+0000dc41     371 (0000dc40)     _TXIE_B
 
 00090446    2411 (00090440)     _fsupported
 
@@ -447,12 +473,12 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                                      
 ----  -------   ----                                      
 abs   ffffffff  .text                                     
-0     00084188  C$$EXIT                                   
-0     00083b3d  FS$$DIV                                   
-0     0008421e  I$$DIV                                    
-0     0008422f  I$$MOD                                    
-0     00083a0d  _ADC_setMode                              
-0     00084346  _CPUTimer_setEmulationMode                
+0     00084627  C$$EXIT                                   
+0     00083f78  FS$$DIV                                   
+0     000846bc  I$$DIV                                    
+0     000846cd  I$$MOD                                    
+0     00084000  _ADC_setMode                              
+0     000847e4  _CPUTimer_setEmulationMode                
 0     00080002  _DCL_runDF13                              
 0     00080050  _DCL_runDF13i                             
 0     0008005d  _DCL_runDF13p                             
@@ -464,158 +490,181 @@ abs   ffffffff  .text
 0     0008010c  _DCL_runDF23p                             
 0     0008022e  _DCL_runPI                                
 0     000801c7  _DCL_runPID                               
-0     000837c7  _Device_enableAllPeripherals              
-0     00083911  _Device_enableUnbondedGPIOPullups         
-0     000838ee  _Device_enableUnbondedGPIOPullupsFor100Pin
-0     000838d7  _Device_enableUnbondedGPIOPullupsFor176Pin
-0     000837a5  _Device_init                              
-0     000838b6  _Device_initGPIO                          
+1     0000af00  _DEBUGGING                                
+0     00083bcd  _Device_enableAllPeripherals              
+0     00083d17  _Device_enableUnbondedGPIOPullups         
+0     00083cf4  _Device_enableUnbondedGPIOPullupsFor100Pin
+0     00083cdd  _Device_enableUnbondedGPIOPullupsFor176Pin
+0     00083bab  _Device_init                              
+0     00083cbc  _Device_initGPIO                          
 0     00008000  _Flash_initModule                         
-0     0008412e  _GPIO_setDirectionMode                    
-0     000840be  _GPIO_setMasterCore                       
-0     00083dc9  _GPIO_setPadConfig                        
-0     00084081  _GPIO_setPinConfig                        
-0     000840f6  _GPIO_setQualificationMode                
-0     00083e68  _Interrupt_disable                        
-0     00083fcb  _Interrupt_enable                         
-0     00083d75  _Interrupt_initModule                     
-0     00084240  _Interrupt_initVectorTable                
-0     00083063  _MotionProfile                            
-0     000832d1  _MotionProfile_getFinished                
-0     000832cc  _MotionProfile_pause                      
-0     000832ee  _MotionProfile_reset                      
-0     000832e7  _MotionProfile_setCompFactor              
-0     000832de  _MotionProfile_setMaxAcceleration         
-0     000832d5  _MotionProfile_setMaxVelocity             
-0     0008308b  _MotionProfile_update                     
+0     000845cd  _GPIO_setDirectionMode                    
+0     0008452a  _GPIO_setMasterCore                       
+0     00084220  _GPIO_setPadConfig                        
+0     000844ed  _GPIO_setPinConfig                        
+0     00084562  _GPIO_setQualificationMode                
+0     000842bf  _Interrupt_disable                        
+0     0008459a  _Interrupt_enable                         
+0     000841cc  _Interrupt_initModule                     
+0     000846de  _Interrupt_initVectorTable                
+0     000834b9  _MotionProfile                            
+0     00083727  _MotionProfile_getFinished                
+0     00083722  _MotionProfile_pause                      
+0     00083744  _MotionProfile_reset                      
+0     00083752  _MotionProfile_reset_position             
+0     0008373d  _MotionProfile_setCompFactor              
+0     00083734  _MotionProfile_setMaxAcceleration         
+0     0008372b  _MotionProfile_setMaxVelocity             
+0     000834e1  _MotionProfile_update                     
 0     00086135  _RamfuncsLoadEnd                          
 abs   00000135  _RamfuncsLoadSize                         
 0     00086000  _RamfuncsLoadStart                        
 0     00008135  _RamfuncsRunEnd                           
 abs   00000135  _RamfuncsRunSize                          
 0     00008000  _RamfuncsRunStart                         
-0     00083efb  _SCI_clearInterruptStatus                 
-0     00083f41  _SCI_disableInterrupt                     
-0     00083f87  _SCI_enableInterrupt                      
-0     00084041  _SCI_setConfig                            
-0     00084000  _SCI_writeCharArray                       
+0     0008439c  _SCI_clearInterruptStatus                 
+0     000843e2  _SCI_disableInterrupt                     
+0     00084428  _SCI_enableInterrupt                      
+0     000844ad  _SCI_setConfig                            
+0     0008446c  _SCI_writeCharArray                       
 0     00008131  _SysCtl_delay                             
-0     00083e1b  _SysCtl_selectOscSource                   
-0     00083542  _SysCtl_setClock                          
-1     0000ab38  _T35                                      
-1     0000a801  _TXIE                                     
-0     00082e33  _XYZ_to_length4                           
+0     00084272  _SysCtl_selectOscSource                   
+0     0008375b  _SysCtl_setClock                          
+1     0000af06  _T35                                      
+1     0000ac01  _TXIE                                     
+1     0000dc41  _TXIE_B                                   
+0     00083289  _XYZ_to_length4                           
 1     00000500  __STACK_END                               
 abs   00000100  __STACK_SIZE                              
-1     0000ab3c  ___TI_cleanup_ptr                         
-1     0000ab3e  ___TI_dtors_ptr                           
-1     0000ab3a  ___TI_enable_exit_profile_output          
+abs   00000400  __SYSMEM_SIZE                             
+1     0000afe8  ___TI_cleanup_ptr                         
+1     0000afea  ___TI_dtors_ptr                           
+1     0000afe6  ___TI_enable_exit_profile_output          
 abs   ffffffff  ___TI_pprof_out_hndl                      
 abs   ffffffff  ___TI_prof_data_size                      
 abs   ffffffff  ___TI_prof_data_start                     
 abs   ffffffff  ___binit__                                
 abs   ffffffff  ___c_args__                               
 0     00082000  ___cinit__                                
-0     00083927  ___error__                                
+0     00083d2d  ___error__                                
 abs   ffffffff  ___etext__                                
 abs   ffffffff  ___pinit__                                
 abs   ffffffff  ___text__                                 
-0     00084304  __args_main                               
-1     0000ab56  __lock                                    
-0     000843dc  __nop                                     
-0     000843d8  __register_lock                           
-0     000843d4  __register_unlock                         
+0     000847a2  __args_main                               
+1     0000afbe  __lock                                    
+0     0008487a  __nop                                     
+0     00084876  __register_lock                           
+0     00084872  __register_unlock                         
 1     00000400  __stack                                   
-0     000841b1  __system_post_cinit                       
-0     000843df  __system_pre_init                         
-1     0000ab58  __unlock                                  
-0     00084188  _abort                                    
-1     0000ab44  _acceleration                             
-0     00083ec8  _bidirectional_motor                      
-0     00082fc0  _brensenham3d                             
-0     000839b6  _buffered_serial_available                
-0     0008399c  _buffered_serial_read                     
-0     000839c0  _buffered_serial_receive                  
-0     000839dd  _buffered_serial_transmit                 
-0     00083962  _buffered_serial_write                    
-0     00082b1a  _build_error_packet                       
-0     00082acd  _build_read_packet                        
-0     00082adf  _build_write_packet                       
-0     00082afb  _build_write_single_packet                
-0     00083d1f  _c_int00                                  
-0     00083164  _calculateConstantVelocityProfile         
-0     000831b3  _calculateTrapezoidalProfile              
-1     0000ab41  _compFactor                               
-0     000841d8  _copy_in                                  
-0     00084359  _copysign                                 
-0     00084359  _copysignf                                
-0     00082aa1  _crc                                      
-1     0000ab48  _delta                                    
-0     000832fc  _epwm2ISR                                 
-1     0000aa3f  _errno                                    
-1     0000a800  _eusartTxBufferRemaining                  
-0     0008418a  _exit                                     
+1     0000a800  __sys_memory                              
+0     00084881  __system_post_cinit                       
+0     0008487f  __system_pre_init                         
+1     0000afec  __unlock                                  
+0     00084627  _abort                                    
+1     0000afc4  _acceleration                             
+0     00082ea2  _auto_mode                                
+0     00084369  _bidirectional_motor                      
+0     00083416  _brensenham3d                             
+0     00083e70  _buffered_serial_B_available              
+0     00083e56  _buffered_serial_B_read                   
+0     00083e7a  _buffered_serial_B_receive                
+0     00083e97  _buffered_serial_B_transmit               
+0     00083e1c  _buffered_serial_B_write                  
+0     00083da8  _buffered_serial_available                
+0     00083d8e  _buffered_serial_read                     
+0     00083db2  _buffered_serial_receive                  
+0     00083dcf  _buffered_serial_transmit                 
+0     00083d54  _buffered_serial_write                    
+0     00082f36  _build_error_packet                       
+0     00082ee9  _build_read_packet                        
+0     00082efb  _build_write_packet                       
+0     00082f17  _build_write_single_packet                
+0     00084176  _c_int00                                  
+0     000835ba  _calculateConstantVelocityProfile         
+0     00083609  _calculateTrapezoidalProfile              
+1     0000afd6  _cbuf                                     
+0     00082cd7  _check_current_coordinate                 
+1     0000afc1  _compFactor                               
+0     00084676  _copy_in                                  
+0     000847f7  _copysign                                 
+0     000847f7  _copysignf                                
+0     00082ebd  _crc                                      
+1     0000afc8  _delta                                    
+0     0008397c  _epwm2ISR                                 
+1     0000ae3f  _errno                                    
+1     0000ac00  _eusartTxBufferRemaining                  
+1     0000dc40  _eusartTxBufferRemaining_B                
+0     00084629  _exit                                     
+0     00082c93  _fetch_current_rpm                        
 0     00090446  _fsupported                               
 1     0000d040  _generated_path                           
-0     00083076  _init                                     
-0     00082678  _init_adc                                 
-0     0008253c  _init_eqep                                
-0     00082461  _init_gpio                                
-0     000825a6  _init_pwm                                 
-0     00082703  _init_smartwinch                          
-0     000826dd  _init_timer                               
-0     000824a3  _init_uart                                
-1     0000ab43  _isFinished                               
-1     0000ab4a  _lastTime                                 
-0     00083cc8  _ldexp                                    
-0     00083cc8  _ldexpf                                   
-0     00082eda  _length4_to_XYZ                           
-1     0000ab02  _lk                                       
-0     00083ac5  _main                                     
-0     00082fa9  _max                                      
-1     0000ab52  _maxAcceleration                          
-1     0000ab4e  _maxVelocity                              
-0     00082d87  _max_val4_loc                             
-0     0008427f  _memcpy                                   
-1     0000ab40  _method                                   
-0     00082cbd  _modbusRTU_Update                         
-1     0000ab32  _modbusRTU_Written                        
-1     0000ab34  _modbusRTU_written_register_flags         
+0     000834cc  _init                                     
+0     00082748  _init_adc                                 
+0     00082601  _init_eqep                                
+0     00082480  _init_gpio                                
+0     00082676  _init_pwm                                 
+0     000827d3  _init_smartwinch                          
+0     000827ad  _init_timer                               
+0     000824cf  _init_uart_A                              
+0     00082568  _init_uart_B                              
+1     0000afc3  _isFinished                               
+1     0000afca  _lastTime                                 
+0     0008411f  _ldexp                                    
+0     0008411f  _ldexpf                                   
+0     00083330  _length4_to_XYZ                           
+1     0000af88  _lk                                       
+0     00083eeb  _main                                     
+0     00082d3b  _manual_control                           
+0     000833ff  _max                                      
+1     0000afd2  _maxAcceleration                          
+1     0000afce  _maxVelocity                              
+0     000831dd  _max_val4_loc                             
+0     0008471d  _memcpy                                   
+1     0000afc0  _method                                   
+0     000830fc  _modbusRTU_Update                         
+1     0000af03  _modbusRTU_Written                        
+0     000831c2  _modbusRTU_init                           
+1     0000af40  _modbusRTU_written_register_flags         
 1     0000c000  _modbus_holding_regs                      
-0     00082b2c  _modbus_reply                             
-0     00082b70  _modbus_request                           
-1     0000aa40  _msg                                      
-1     0000ab54  _oldPosition                              
-1     0000ab46  _oldVelocity                              
-1     0000ab18  _pid1                                     
-1     0000ab4c  _position                                 
-0     0008271b  _pow                                      
-0     0008271b  _powf                                     
-0     00082c20  _preset_multiple_registers                
-0     00082c63  _read_holding_registers                   
-0     00082b55  _receive_request                          
-1     0000aa44  _receivedChar                             
-1     0000ab06  _rk                                       
-0     00082dbe  _rotate_about_center                      
-1     0000ab42  _sampleTime                               
-0     00083cc8  _scalbn                                   
-0     00083cc8  _scalbnf                                  
-0     00083503  _sciaRXFIFOISR                            
-0     000834c9  _sciaTXFIFOISR                            
-0     00082b40  _send_reply                               
-1     0000ab30  _slave                                    
-0     000841b2  _sqrt                                     
-0     000841b2  _sqrtf                                    
-0     0008312b  _stateCalculation                         
-1     0000aa80  _str                                      
-0     000830f9  _timeCalculation                          
+0     00082f48  _modbus_reply                             
+0     00082faf  _modbus_request                           
+1     0000ae42  _msg                                      
+1     0000afd4  _oldPosition                              
+1     0000afc6  _oldVelocity                              
+1     0000af8a  _pid1                                     
+1     0000afcc  _position                                 
+0     000827ef  _pow                                      
+0     000827ef  _powf                                     
+0     0008305f  _preset_multiple_registers                
+0     00082d14  _read_all_adc                             
+0     000830a2  _read_holding_registers                   
+0     00082f7b  _receive_request                          
+1     0000ae44  _receivedChar                             
+1     0000af86  _rk                                       
+0     00083214  _rotate_about_center                      
+1     0000afc2  _sampleTime                               
+0     0008411f  _scalbn                                   
+0     0008411f  _scalbnf                                  
+0     00083ab1  _sciaRXFIFOISR                            
+0     00083a77  _sciaTXFIFOISR                            
+0     00083b2a  _scibRXFIFOISR                            
+0     00083af0  _scibTXFIFOISR                            
+0     00082f5c  _send_reply                               
+0     00082bba  _simple_homing_routine                    
+1     0000af01  _slave                                    
+0     00084650  _sqrt                                     
+0     00084650  _sqrtf                                    
+0     00083581  _stateCalculation                         
+1     0000ae80  _str                                      
+0     00082ea3  _task_scheduler_handler                   
+0     0008354f  _timeCalculation                          
 1     0000d000  _total_path_points                        
-1     0000ab04  _uk                                       
-0     00082ba6  _validate_request                         
-1     0000ab50  _velocity                                 
-0     00082bff  _write_regs                               
-0     00082c41  _write_single_register                    
-1     0000ab08  _yk                                       
+1     0000af82  _uk                                       
+0     00082fe5  _validate_request                         
+1     0000afd0  _velocity                                 
+0     0008303e  _write_regs                               
+0     00083080  _write_single_register                    
+1     0000af84  _yk                                       
 abs   ffffffff  binit                                     
 0     00082000  cinit                                     
 0     00080000  code_start                                
@@ -645,151 +694,174 @@ page  address   name
 0     0008022e  _DCL_runPI                                
 0     00082000  ___cinit__                                
 0     00082000  cinit                                     
-0     00082461  _init_gpio                                
-0     000824a3  _init_uart                                
-0     0008253c  _init_eqep                                
-0     000825a6  _init_pwm                                 
-0     00082678  _init_adc                                 
-0     000826dd  _init_timer                               
-0     00082703  _init_smartwinch                          
-0     0008271b  _pow                                      
-0     0008271b  _powf                                     
-0     00082aa1  _crc                                      
-0     00082acd  _build_read_packet                        
-0     00082adf  _build_write_packet                       
-0     00082afb  _build_write_single_packet                
-0     00082b1a  _build_error_packet                       
-0     00082b2c  _modbus_reply                             
-0     00082b40  _send_reply                               
-0     00082b55  _receive_request                          
-0     00082b70  _modbus_request                           
-0     00082ba6  _validate_request                         
-0     00082bff  _write_regs                               
-0     00082c20  _preset_multiple_registers                
-0     00082c41  _write_single_register                    
-0     00082c63  _read_holding_registers                   
-0     00082cbd  _modbusRTU_Update                         
-0     00082d87  _max_val4_loc                             
-0     00082dbe  _rotate_about_center                      
-0     00082e33  _XYZ_to_length4                           
-0     00082eda  _length4_to_XYZ                           
-0     00082fa9  _max                                      
-0     00082fc0  _brensenham3d                             
-0     00083063  _MotionProfile                            
-0     00083076  _init                                     
-0     0008308b  _MotionProfile_update                     
-0     000830f9  _timeCalculation                          
-0     0008312b  _stateCalculation                         
-0     00083164  _calculateConstantVelocityProfile         
-0     000831b3  _calculateTrapezoidalProfile              
-0     000832cc  _MotionProfile_pause                      
-0     000832d1  _MotionProfile_getFinished                
-0     000832d5  _MotionProfile_setMaxVelocity             
-0     000832de  _MotionProfile_setMaxAcceleration         
-0     000832e7  _MotionProfile_setCompFactor              
-0     000832ee  _MotionProfile_reset                      
-0     000832fc  _epwm2ISR                                 
-0     000834c9  _sciaTXFIFOISR                            
-0     00083503  _sciaRXFIFOISR                            
-0     00083542  _SysCtl_setClock                          
-0     000837a5  _Device_init                              
-0     000837c7  _Device_enableAllPeripherals              
-0     000838b6  _Device_initGPIO                          
-0     000838d7  _Device_enableUnbondedGPIOPullupsFor176Pin
-0     000838ee  _Device_enableUnbondedGPIOPullupsFor100Pin
-0     00083911  _Device_enableUnbondedGPIOPullups         
-0     00083927  ___error__                                
-0     00083962  _buffered_serial_write                    
-0     0008399c  _buffered_serial_read                     
-0     000839b6  _buffered_serial_available                
-0     000839c0  _buffered_serial_receive                  
-0     000839dd  _buffered_serial_transmit                 
-0     00083a0d  _ADC_setMode                              
-0     00083ac5  _main                                     
-0     00083b3d  FS$$DIV                                   
-0     00083cc8  _ldexp                                    
-0     00083cc8  _ldexpf                                   
-0     00083cc8  _scalbn                                   
-0     00083cc8  _scalbnf                                  
-0     00083d1f  _c_int00                                  
-0     00083d75  _Interrupt_initModule                     
-0     00083dc9  _GPIO_setPadConfig                        
-0     00083e1b  _SysCtl_selectOscSource                   
-0     00083e68  _Interrupt_disable                        
-0     00083ec8  _bidirectional_motor                      
-0     00083efb  _SCI_clearInterruptStatus                 
-0     00083f41  _SCI_disableInterrupt                     
-0     00083f87  _SCI_enableInterrupt                      
-0     00083fcb  _Interrupt_enable                         
-0     00084000  _SCI_writeCharArray                       
-0     00084041  _SCI_setConfig                            
-0     00084081  _GPIO_setPinConfig                        
-0     000840be  _GPIO_setMasterCore                       
-0     000840f6  _GPIO_setQualificationMode                
-0     0008412e  _GPIO_setDirectionMode                    
-0     00084188  C$$EXIT                                   
-0     00084188  _abort                                    
-0     0008418a  _exit                                     
-0     000841b1  __system_post_cinit                       
-0     000841b2  _sqrt                                     
-0     000841b2  _sqrtf                                    
-0     000841d8  _copy_in                                  
-0     0008421e  I$$DIV                                    
-0     0008422f  I$$MOD                                    
-0     00084240  _Interrupt_initVectorTable                
-0     0008427f  _memcpy                                   
-0     00084304  __args_main                               
-0     00084346  _CPUTimer_setEmulationMode                
-0     00084359  _copysign                                 
-0     00084359  _copysignf                                
-0     000843d4  __register_unlock                         
-0     000843d8  __register_lock                           
-0     000843dc  __nop                                     
-0     000843df  __system_pre_init                         
+0     00082480  _init_gpio                                
+0     000824cf  _init_uart_A                              
+0     00082568  _init_uart_B                              
+0     00082601  _init_eqep                                
+0     00082676  _init_pwm                                 
+0     00082748  _init_adc                                 
+0     000827ad  _init_timer                               
+0     000827d3  _init_smartwinch                          
+0     000827ef  _pow                                      
+0     000827ef  _powf                                     
+0     00082bba  _simple_homing_routine                    
+0     00082c93  _fetch_current_rpm                        
+0     00082cd7  _check_current_coordinate                 
+0     00082d14  _read_all_adc                             
+0     00082d3b  _manual_control                           
+0     00082ea2  _auto_mode                                
+0     00082ea3  _task_scheduler_handler                   
+0     00082ebd  _crc                                      
+0     00082ee9  _build_read_packet                        
+0     00082efb  _build_write_packet                       
+0     00082f17  _build_write_single_packet                
+0     00082f36  _build_error_packet                       
+0     00082f48  _modbus_reply                             
+0     00082f5c  _send_reply                               
+0     00082f7b  _receive_request                          
+0     00082faf  _modbus_request                           
+0     00082fe5  _validate_request                         
+0     0008303e  _write_regs                               
+0     0008305f  _preset_multiple_registers                
+0     00083080  _write_single_register                    
+0     000830a2  _read_holding_registers                   
+0     000830fc  _modbusRTU_Update                         
+0     000831c2  _modbusRTU_init                           
+0     000831dd  _max_val4_loc                             
+0     00083214  _rotate_about_center                      
+0     00083289  _XYZ_to_length4                           
+0     00083330  _length4_to_XYZ                           
+0     000833ff  _max                                      
+0     00083416  _brensenham3d                             
+0     000834b9  _MotionProfile                            
+0     000834cc  _init                                     
+0     000834e1  _MotionProfile_update                     
+0     0008354f  _timeCalculation                          
+0     00083581  _stateCalculation                         
+0     000835ba  _calculateConstantVelocityProfile         
+0     00083609  _calculateTrapezoidalProfile              
+0     00083722  _MotionProfile_pause                      
+0     00083727  _MotionProfile_getFinished                
+0     0008372b  _MotionProfile_setMaxVelocity             
+0     00083734  _MotionProfile_setMaxAcceleration         
+0     0008373d  _MotionProfile_setCompFactor              
+0     00083744  _MotionProfile_reset                      
+0     00083752  _MotionProfile_reset_position             
+0     0008375b  _SysCtl_setClock                          
+0     0008397c  _epwm2ISR                                 
+0     00083a77  _sciaTXFIFOISR                            
+0     00083ab1  _sciaRXFIFOISR                            
+0     00083af0  _scibTXFIFOISR                            
+0     00083b2a  _scibRXFIFOISR                            
+0     00083bab  _Device_init                              
+0     00083bcd  _Device_enableAllPeripherals              
+0     00083cbc  _Device_initGPIO                          
+0     00083cdd  _Device_enableUnbondedGPIOPullupsFor176Pin
+0     00083cf4  _Device_enableUnbondedGPIOPullupsFor100Pin
+0     00083d17  _Device_enableUnbondedGPIOPullups         
+0     00083d2d  ___error__                                
+0     00083d54  _buffered_serial_write                    
+0     00083d8e  _buffered_serial_read                     
+0     00083da8  _buffered_serial_available                
+0     00083db2  _buffered_serial_receive                  
+0     00083dcf  _buffered_serial_transmit                 
+0     00083e1c  _buffered_serial_B_write                  
+0     00083e56  _buffered_serial_B_read                   
+0     00083e70  _buffered_serial_B_available              
+0     00083e7a  _buffered_serial_B_receive                
+0     00083e97  _buffered_serial_B_transmit               
+0     00083eeb  _main                                     
+0     00083f78  FS$$DIV                                   
+0     00084000  _ADC_setMode                              
+0     0008411f  _ldexp                                    
+0     0008411f  _ldexpf                                   
+0     0008411f  _scalbn                                   
+0     0008411f  _scalbnf                                  
+0     00084176  _c_int00                                  
+0     000841cc  _Interrupt_initModule                     
+0     00084220  _GPIO_setPadConfig                        
+0     00084272  _SysCtl_selectOscSource                   
+0     000842bf  _Interrupt_disable                        
+0     00084369  _bidirectional_motor                      
+0     0008439c  _SCI_clearInterruptStatus                 
+0     000843e2  _SCI_disableInterrupt                     
+0     00084428  _SCI_enableInterrupt                      
+0     0008446c  _SCI_writeCharArray                       
+0     000844ad  _SCI_setConfig                            
+0     000844ed  _GPIO_setPinConfig                        
+0     0008452a  _GPIO_setMasterCore                       
+0     00084562  _GPIO_setQualificationMode                
+0     0008459a  _Interrupt_enable                         
+0     000845cd  _GPIO_setDirectionMode                    
+0     00084627  C$$EXIT                                   
+0     00084627  _abort                                    
+0     00084629  _exit                                     
+0     00084650  _sqrt                                     
+0     00084650  _sqrtf                                    
+0     00084676  _copy_in                                  
+0     000846bc  I$$DIV                                    
+0     000846cd  I$$MOD                                    
+0     000846de  _Interrupt_initVectorTable                
+0     0008471d  _memcpy                                   
+0     000847a2  __args_main                               
+0     000847e4  _CPUTimer_setEmulationMode                
+0     000847f7  _copysign                                 
+0     000847f7  _copysignf                                
+0     00084872  __register_unlock                         
+0     00084876  __register_lock                           
+0     0008487a  __nop                                     
+0     0008487f  __system_pre_init                         
+0     00084881  __system_post_cinit                       
 0     00086000  _RamfuncsLoadStart                        
 0     00086135  _RamfuncsLoadEnd                          
 0     00090446  _fsupported                               
 1     00000400  __stack                                   
 1     00000500  __STACK_END                               
-1     0000a800  _eusartTxBufferRemaining                  
-1     0000a801  _TXIE                                     
-1     0000aa3f  _errno                                    
-1     0000aa40  _msg                                      
-1     0000aa44  _receivedChar                             
-1     0000aa80  _str                                      
-1     0000ab02  _lk                                       
-1     0000ab04  _uk                                       
-1     0000ab06  _rk                                       
-1     0000ab08  _yk                                       
-1     0000ab18  _pid1                                     
-1     0000ab30  _slave                                    
-1     0000ab32  _modbusRTU_Written                        
-1     0000ab34  _modbusRTU_written_register_flags         
-1     0000ab38  _T35                                      
-1     0000ab3a  ___TI_enable_exit_profile_output          
-1     0000ab3c  ___TI_cleanup_ptr                         
-1     0000ab3e  ___TI_dtors_ptr                           
-1     0000ab40  _method                                   
-1     0000ab41  _compFactor                               
-1     0000ab42  _sampleTime                               
-1     0000ab43  _isFinished                               
-1     0000ab44  _acceleration                             
-1     0000ab46  _oldVelocity                              
-1     0000ab48  _delta                                    
-1     0000ab4a  _lastTime                                 
-1     0000ab4c  _position                                 
-1     0000ab4e  _maxVelocity                              
-1     0000ab50  _velocity                                 
-1     0000ab52  _maxAcceleration                          
-1     0000ab54  _oldPosition                              
-1     0000ab56  __lock                                    
-1     0000ab58  __unlock                                  
+1     0000a800  __sys_memory                              
+1     0000ac00  _eusartTxBufferRemaining                  
+1     0000ac01  _TXIE                                     
+1     0000ae3f  _errno                                    
+1     0000ae42  _msg                                      
+1     0000ae44  _receivedChar                             
+1     0000ae80  _str                                      
+1     0000af00  _DEBUGGING                                
+1     0000af01  _slave                                    
+1     0000af03  _modbusRTU_Written                        
+1     0000af06  _T35                                      
+1     0000af40  _modbusRTU_written_register_flags         
+1     0000af82  _uk                                       
+1     0000af84  _yk                                       
+1     0000af86  _rk                                       
+1     0000af88  _lk                                       
+1     0000af8a  _pid1                                     
+1     0000afbe  __lock                                    
+1     0000afc0  _method                                   
+1     0000afc1  _compFactor                               
+1     0000afc2  _sampleTime                               
+1     0000afc3  _isFinished                               
+1     0000afc4  _acceleration                             
+1     0000afc6  _oldVelocity                              
+1     0000afc8  _delta                                    
+1     0000afca  _lastTime                                 
+1     0000afcc  _position                                 
+1     0000afce  _maxVelocity                              
+1     0000afd0  _velocity                                 
+1     0000afd2  _maxAcceleration                          
+1     0000afd4  _oldPosition                              
+1     0000afd6  _cbuf                                     
+1     0000afe6  ___TI_enable_exit_profile_output          
+1     0000afe8  ___TI_cleanup_ptr                         
+1     0000afea  ___TI_dtors_ptr                           
+1     0000afec  __unlock                                  
 1     0000c000  _modbus_holding_regs                      
 1     0000d000  _total_path_points                        
 1     0000d040  _generated_path                           
+1     0000dc40  _eusartTxBufferRemaining_B                
+1     0000dc41  _TXIE_B                                   
 abs   00000100  __STACK_SIZE                              
 abs   00000135  _RamfuncsLoadSize                         
 abs   00000135  _RamfuncsRunSize                          
+abs   00000400  __SYSMEM_SIZE                             
 abs   ffffffff  .text                                     
 abs   ffffffff  ___TI_pprof_out_hndl                      
 abs   ffffffff  ___TI_prof_data_size                      
@@ -803,4 +875,4 @@ abs   ffffffff  binit
 abs   ffffffff  etext                                     
 abs   ffffffff  pinit                                     
 
-[175 symbols]
+[198 symbols]

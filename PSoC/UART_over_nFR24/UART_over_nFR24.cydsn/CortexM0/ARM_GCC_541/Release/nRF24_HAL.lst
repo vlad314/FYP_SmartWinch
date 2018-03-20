@@ -1,0 +1,3033 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"nRF24_HAL.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.nRF24_read_register,"ax",%progbits
+  20              		.align	1
+  21              		.global	nRF24_read_register
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	nRF24_read_register, %function
+  25              	nRF24_read_register:
+  26              	.LFB1:
+  27              		.file 1 "Generated_Source\\PSoC4\\nRF24_HAL.c"
+   1:Generated_Source\PSoC4/nRF24_HAL.c **** /****************************************************************************
+   2:Generated_Source\PSoC4/nRF24_HAL.c **** * This file is part of the nRF24 Custom Component for PSoC Devices.
+   3:Generated_Source\PSoC4/nRF24_HAL.c **** *
+   4:Generated_Source\PSoC4/nRF24_HAL.c **** * Copyright (C) 2017 Carlos Diaz <carlos.santiago.diaz@gmail.com>
+   5:Generated_Source\PSoC4/nRF24_HAL.c **** *
+   6:Generated_Source\PSoC4/nRF24_HAL.c **** * Permission to use, copy, modify, and/or distribute this software for any
+   7:Generated_Source\PSoC4/nRF24_HAL.c **** * purpose with or without fee is hereby granted, provided that the above
+   8:Generated_Source\PSoC4/nRF24_HAL.c **** * copyright notice and this permission notice appear in all copies.
+   9:Generated_Source\PSoC4/nRF24_HAL.c **** *
+  10:Generated_Source\PSoC4/nRF24_HAL.c **** * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  11:Generated_Source\PSoC4/nRF24_HAL.c **** * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  12:Generated_Source\PSoC4/nRF24_HAL.c **** * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  13:Generated_Source\PSoC4/nRF24_HAL.c **** * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  14:Generated_Source\PSoC4/nRF24_HAL.c **** * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  15:Generated_Source\PSoC4/nRF24_HAL.c **** * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  16:Generated_Source\PSoC4/nRF24_HAL.c **** * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  17:Generated_Source\PSoC4/nRF24_HAL.c **** ****************************************************************************/
+  18:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  19:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+  20:Generated_Source\PSoC4/nRF24_HAL.c **** * @file nRF24_HAL.c
+  21:Generated_Source\PSoC4/nRF24_HAL.c **** *
+  22:Generated_Source\PSoC4/nRF24_HAL.c **** * @brief The nRF24 radio is controlled via SPI, this file have all the SPI
+  23:Generated_Source\PSoC4/nRF24_HAL.c **** * communication between the PSoC and the nRF24 radio.
+  24:Generated_Source\PSoC4/nRF24_HAL.c **** */
+  25:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  26:Generated_Source\PSoC4/nRF24_HAL.c **** #include "nRF24_CONFIG.h"
+  27:Generated_Source\PSoC4/nRF24_HAL.c **** #include "nRF24_HAL.h"
+  28:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  29:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+  30:Generated_Source\PSoC4/nRF24_HAL.c ****  * Read the specified nRF24 register (1byte).
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 2
+
+
+  31:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+  32:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be read.
+  33:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+  34:Generated_Source\PSoC4/nRF24_HAL.c ****  * @return uint8_t: Content of the specified register.
+  35:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+  36:Generated_Source\PSoC4/nRF24_HAL.c **** uint8_t nRF24_read_register(const nrf_register reg)
+  37:Generated_Source\PSoC4/nRF24_HAL.c **** {
+  28              		.loc 1 37 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 10B5     		push	{r4, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  37              		.loc 1 37 0
+  38 0002 0400     		movs	r4, r0
+  38:Generated_Source\PSoC4/nRF24_HAL.c ****     uint8_t data = 0;
+  39:Generated_Source\PSoC4/nRF24_HAL.c **** #if defined (_PSOC6) // PSoC6
+  40:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+  41:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+  42:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  43:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+  44:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  45:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_WriteArrayBlocking(SPI_HW, (uint8_t []){NRF_CMD_R_REGISTER | reg, NRF_CMD_NOP}, 2);
+  46:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  47:Generated_Source\PSoC4/nRF24_HAL.c ****     while (Cy_SCB_IsTxComplete(SPI_HW) == false) {
+  48:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+  49:Generated_Source\PSoC4/nRF24_HAL.c ****     CyDelayUs(1);
+  50:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  51:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+  52:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  53:Generated_Source\PSoC4/nRF24_HAL.c ****     (void)Cy_SCB_ReadRxFifo(SPI_HW);
+  54:Generated_Source\PSoC4/nRF24_HAL.c ****     data = Cy_SCB_ReadRxFifo(SPI_HW);
+  55:Generated_Source\PSoC4/nRF24_HAL.c **** #elif defined (_PSOC4_SCB) // PSoC4
+  56:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearRxBuffer();
+  39              		.loc 1 56 0
+  40 0004 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+  41              	.LVL1:
+  57:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearTxBuffer();
+  42              		.loc 1 57 0
+  43 0008 FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+  44              	.LVL2:
+  58:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  59:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+  45              		.loc 1 59 0
+  46 000c 0020     		movs	r0, #0
+  47 000e FFF7FEFF 		bl	SS_Write
+  48              	.LVL3:
+  60:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartWriteTxData(NRF_CMD_R_REGISTER | reg);
+  49              		.loc 1 60 0
+  50 0012 2000     		movs	r0, r4
+  51 0014 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+  52              	.LVL4:
+  61:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartWriteTxData(NRF_CMD_NOP);
+  53              		.loc 1 61 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 3
+
+
+  54 0018 FF20     		movs	r0, #255
+  55 001a FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+  56              	.LVL5:
+  57              	.L2:
+  62:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  63:Generated_Source\PSoC4/nRF24_HAL.c ****     while (SPI_SpiUartGetRxBufferSize() != 2) {
+  58              		.loc 1 63 0 discriminator 1
+  59 001e FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+  60              	.LVL6:
+  61 0022 0228     		cmp	r0, #2
+  62 0024 FBD1     		bne	.L2
+  64:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+  65:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+  63              		.loc 1 65 0
+  64 0026 0138     		subs	r0, r0, #1
+  65 0028 FFF7FEFF 		bl	SS_Write
+  66              	.LVL7:
+  66:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  67:Generated_Source\PSoC4/nRF24_HAL.c ****     // This is the STATUS Register
+  68:Generated_Source\PSoC4/nRF24_HAL.c ****     (void)SPI_SpiUartReadRxData();
+  67              		.loc 1 68 0
+  68 002c FFF7FEFF 		bl	SPI_SpiUartReadRxData
+  69              	.LVL8:
+  69:Generated_Source\PSoC4/nRF24_HAL.c ****     // This is the data we want
+  70:Generated_Source\PSoC4/nRF24_HAL.c ****     data = SPI_SpiUartReadRxData();
+  70              		.loc 1 70 0
+  71 0030 FFF7FEFF 		bl	SPI_SpiUartReadRxData
+  72              	.LVL9:
+  71:Generated_Source\PSoC4/nRF24_HAL.c **** #else // _PSOC_UDB
+  72:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_ClearFIFO();
+  73:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  74:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+  75:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_WriteTxData(NRF_CMD_R_REGISTER | reg);
+  76:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_WriteTxData(NRF_CMD_NOP);
+  77:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  78:Generated_Source\PSoC4/nRF24_HAL.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_SPI_IDLE)) {
+  79:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+  80:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+  81:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  82:Generated_Source\PSoC4/nRF24_HAL.c ****     // This is the STATUS Register
+  83:Generated_Source\PSoC4/nRF24_HAL.c ****     (void)SPI_ReadRxData();
+  84:Generated_Source\PSoC4/nRF24_HAL.c ****     // This is the data we want
+  85:Generated_Source\PSoC4/nRF24_HAL.c ****     data = SPI_ReadRxData();
+  86:Generated_Source\PSoC4/nRF24_HAL.c **** #endif
+  87:Generated_Source\PSoC4/nRF24_HAL.c ****     return data;
+  88:Generated_Source\PSoC4/nRF24_HAL.c **** }
+  73              		.loc 1 88 0
+  74              		@ sp needed
+  87:Generated_Source\PSoC4/nRF24_HAL.c **** }
+  75              		.loc 1 87 0
+  76 0034 C0B2     		uxtb	r0, r0
+  77              		.loc 1 88 0
+  78 0036 10BD     		pop	{r4, pc}
+  79              		.cfi_endproc
+  80              	.LFE1:
+  81              		.size	nRF24_read_register, .-nRF24_read_register
+  82              		.section	.text.nRF24_read_long_register,"ax",%progbits
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 4
+
+
+  83              		.align	1
+  84              		.global	nRF24_read_long_register
+  85              		.code	16
+  86              		.thumb_func
+  87              		.type	nRF24_read_long_register, %function
+  88              	nRF24_read_long_register:
+  89              	.LFB2:
+  89:Generated_Source\PSoC4/nRF24_HAL.c **** 
+  90:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+  91:Generated_Source\PSoC4/nRF24_HAL.c ****  * Read the specified nRF24 register (bigger than 1 byte).
+  92:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+  93:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be read.
+  94:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param uint8_t* data: Pointer to where the content of the register
+  95:Generated_Source\PSoC4/nRF24_HAL.c ****  * will be stored.
+  96:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param size_t size: Size of the register and data.
+  97:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+  98:Generated_Source\PSoC4/nRF24_HAL.c **** void nRF24_read_long_register(const nrf_register reg,
+  99:Generated_Source\PSoC4/nRF24_HAL.c ****                                            uint8_t* data, const size_t size)
+ 100:Generated_Source\PSoC4/nRF24_HAL.c **** {
+  90              		.loc 1 100 0
+  91              		.cfi_startproc
+  92              		@ args = 0, pretend = 0, frame = 0
+  93              		@ frame_needed = 0, uses_anonymous_args = 0
+  94              	.LVL10:
+  95 0000 70B5     		push	{r4, r5, r6, lr}
+  96              		.cfi_def_cfa_offset 16
+  97              		.cfi_offset 4, -16
+  98              		.cfi_offset 5, -12
+  99              		.cfi_offset 6, -8
+ 100              		.cfi_offset 14, -4
+ 101              		.loc 1 100 0
+ 102 0002 0600     		movs	r6, r0
+ 103 0004 0C00     		movs	r4, r1
+ 104 0006 1500     		movs	r5, r2
+ 101:Generated_Source\PSoC4/nRF24_HAL.c **** #if defined (_PSOC6) // PSoC6
+ 102:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 103:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 104:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 105:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 106:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_R_REGISTER | reg);
+ 107:Generated_Source\PSoC4/nRF24_HAL.c ****     while (Cy_SCB_GetNumInRxFifo(SPI_HW) == 0) {
+ 108:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 109:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 110:Generated_Source\PSoC4/nRF24_HAL.c ****     (void)Cy_SCB_ReadRxFifo(SPI_HW);
+ 111:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 112:Generated_Source\PSoC4/nRF24_HAL.c ****     for(size_t i = 0; i < size; i++){
+ 113:Generated_Source\PSoC4/nRF24_HAL.c ****         while(Cy_SCB_Write(SPI_HW, NRF_CMD_NOP) == 0);
+ 114:Generated_Source\PSoC4/nRF24_HAL.c ****         while (Cy_SCB_GetNumInRxFifo(SPI_HW) == 0) {}
+ 115:Generated_Source\PSoC4/nRF24_HAL.c ****         data[1] = Cy_SCB_ReadRxFifo(SPI_HW);
+ 116:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 117:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 118:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 119:Generated_Source\PSoC4/nRF24_HAL.c **** #elif defined (_PSOC4_SCB) // PSoC4
+ 120:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearRxBuffer();
+ 105              		.loc 1 120 0
+ 106 0008 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 107              	.LVL11:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 5
+
+
+ 121:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearTxBuffer();
+ 108              		.loc 1 121 0
+ 109 000c FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 110              	.LVL12:
+ 122:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 123:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+ 111              		.loc 1 123 0
+ 112 0010 0020     		movs	r0, #0
+ 113 0012 FFF7FEFF 		bl	SS_Write
+ 114              	.LVL13:
+ 124:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartWriteTxData(NRF_CMD_R_REGISTER | reg);
+ 115              		.loc 1 124 0
+ 116 0016 3000     		movs	r0, r6
+ 117 0018 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 118              	.LVL14:
+ 119              	.L6:
+ 125:Generated_Source\PSoC4/nRF24_HAL.c ****     while (SPI_SpiUartGetRxBufferSize() == 0){
+ 120              		.loc 1 125 0 discriminator 1
+ 121 001c FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 122              	.LVL15:
+ 123 0020 0028     		cmp	r0, #0
+ 124 0022 FBD0     		beq	.L6
+ 126:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 127:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 128:Generated_Source\PSoC4/nRF24_HAL.c ****     // Read the status register, just to clear the rx fifo
+ 129:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartReadRxData();
+ 125              		.loc 1 129 0
+ 126 0024 FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 127              	.LVL16:
+ 128 0028 6519     		adds	r5, r4, r5
+ 129              	.LVL17:
+ 130              	.L7:
+ 131              	.LBB2:
+ 130:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 131:Generated_Source\PSoC4/nRF24_HAL.c ****     for (size_t i = 0; i < size; i++) {
+ 132              		.loc 1 131 0 discriminator 1
+ 133 002a AC42     		cmp	r4, r5
+ 134 002c 0BD0     		beq	.L14
+ 132:Generated_Source\PSoC4/nRF24_HAL.c ****         SPI_SpiUartWriteTxData(NRF_CMD_NOP);
+ 135              		.loc 1 132 0
+ 136 002e FF20     		movs	r0, #255
+ 137 0030 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 138              	.LVL18:
+ 139              	.L8:
+ 133:Generated_Source\PSoC4/nRF24_HAL.c ****         while (SPI_SpiUartGetRxBufferSize() == 0){}
+ 140              		.loc 1 133 0 discriminator 1
+ 141 0034 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 142              	.LVL19:
+ 143 0038 0028     		cmp	r0, #0
+ 144 003a FBD0     		beq	.L8
+ 134:Generated_Source\PSoC4/nRF24_HAL.c ****         data[i] = SPI_SpiUartReadRxData();
+ 145              		.loc 1 134 0 discriminator 2
+ 146 003c FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 147              	.LVL20:
+ 148 0040 2070     		strb	r0, [r4]
+ 149              	.LVL21:
+ 150 0042 0134     		adds	r4, r4, #1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 6
+
+
+ 151              	.LVL22:
+ 152 0044 F1E7     		b	.L7
+ 153              	.L14:
+ 154              	.LBE2:
+ 135:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 136:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+ 155              		.loc 1 136 0
+ 156 0046 0120     		movs	r0, #1
+ 157 0048 FFF7FEFF 		bl	SS_Write
+ 158              	.LVL23:
+ 137:Generated_Source\PSoC4/nRF24_HAL.c **** #else // _PSOC_UDB
+ 138:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_ClearFIFO();
+ 139:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 140:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+ 141:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_WriteTxData(NRF_CMD_R_REGISTER | reg);
+ 142:Generated_Source\PSoC4/nRF24_HAL.c ****     
+ 143:Generated_Source\PSoC4/nRF24_HAL.c ****     // Wait for the byte to be sent
+ 144:Generated_Source\PSoC4/nRF24_HAL.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+ 145:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 146:Generated_Source\PSoC4/nRF24_HAL.c ****     // Read the status register, just to clear the rx fifo
+ 147:Generated_Source\PSoC4/nRF24_HAL.c ****     (void)SPI_ReadRxData();
+ 148:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 149:Generated_Source\PSoC4/nRF24_HAL.c ****     for (size_t i = 0; i < size; i++) {
+ 150:Generated_Source\PSoC4/nRF24_HAL.c ****         SPI_WriteTxData(NRF_CMD_NOP);
+ 151:Generated_Source\PSoC4/nRF24_HAL.c ****         while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+ 152:Generated_Source\PSoC4/nRF24_HAL.c ****         }
+ 153:Generated_Source\PSoC4/nRF24_HAL.c ****         data[i] = SPI_ReadRxData();
+ 154:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 155:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 156:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+ 157:Generated_Source\PSoC4/nRF24_HAL.c **** #endif
+ 158:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 159              		.loc 1 158 0
+ 160              		@ sp needed
+ 161              	.LVL24:
+ 162 004c 70BD     		pop	{r4, r5, r6, pc}
+ 163              		.cfi_endproc
+ 164              	.LFE2:
+ 165              		.size	nRF24_read_long_register, .-nRF24_read_long_register
+ 166              		.section	.text.nRF24_write_register,"ax",%progbits
+ 167              		.align	1
+ 168              		.global	nRF24_write_register
+ 169              		.code	16
+ 170              		.thumb_func
+ 171              		.type	nRF24_write_register, %function
+ 172              	nRF24_write_register:
+ 173              	.LFB3:
+ 159:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 160:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+ 161:Generated_Source\PSoC4/nRF24_HAL.c ****  * Write to the specified nRF24 Register (1byte).
+ 162:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 163:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be written.
+ 164:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const uint8_t data: Data to be written into the specified register.
+ 165:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+ 166:Generated_Source\PSoC4/nRF24_HAL.c **** void nRF24_write_register(const nrf_register reg, const uint8_t data)
+ 167:Generated_Source\PSoC4/nRF24_HAL.c **** {
+ 174              		.loc 1 167 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 7
+
+
+ 175              		.cfi_startproc
+ 176              		@ args = 0, pretend = 0, frame = 0
+ 177              		@ frame_needed = 0, uses_anonymous_args = 0
+ 178              	.LVL25:
+ 179 0000 70B5     		push	{r4, r5, r6, lr}
+ 180              		.cfi_def_cfa_offset 16
+ 181              		.cfi_offset 4, -16
+ 182              		.cfi_offset 5, -12
+ 183              		.cfi_offset 6, -8
+ 184              		.cfi_offset 14, -4
+ 185              		.loc 1 167 0
+ 186 0002 0D00     		movs	r5, r1
+ 187 0004 0400     		movs	r4, r0
+ 168:Generated_Source\PSoC4/nRF24_HAL.c **** #if defined (_PSOC6)
+ 169:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 170:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 171:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 172:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 173:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 174:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_WriteArrayBlocking(SPI_HW, (uint8_t []){NRF_CMD_W_REGISTER | reg, data}, 2);
+ 175:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 176:Generated_Source\PSoC4/nRF24_HAL.c ****     while (Cy_SCB_IsTxComplete(SPI_HW) == false) {
+ 177:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 178:Generated_Source\PSoC4/nRF24_HAL.c ****     CyDelayUs(1);
+ 179:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 180:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 181:Generated_Source\PSoC4/nRF24_HAL.c **** #elif defined (_PSOC4_SCB)
+ 182:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearRxBuffer();
+ 188              		.loc 1 182 0
+ 189 0006 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 190              	.LVL26:
+ 183:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearTxBuffer();
+ 191              		.loc 1 183 0
+ 192 000a FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 193              	.LVL27:
+ 184:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 185:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+ 194              		.loc 1 185 0
+ 195 000e 0020     		movs	r0, #0
+ 196 0010 FFF7FEFF 		bl	SS_Write
+ 197              	.LVL28:
+ 186:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartWriteTxData(NRF_CMD_W_REGISTER | reg);
+ 198              		.loc 1 186 0
+ 199 0014 2020     		movs	r0, #32
+ 200 0016 2043     		orrs	r0, r4
+ 201 0018 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 202              	.LVL29:
+ 187:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartWriteTxData(data);
+ 203              		.loc 1 187 0
+ 204 001c 2800     		movs	r0, r5
+ 205 001e FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 206              	.LVL30:
+ 207              	.L16:
+ 188:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 189:Generated_Source\PSoC4/nRF24_HAL.c ****     while (SPI_SpiUartGetRxBufferSize() != 2) {
+ 208              		.loc 1 189 0 discriminator 1
+ 209 0022 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 8
+
+
+ 210              	.LVL31:
+ 211 0026 0228     		cmp	r0, #2
+ 212 0028 FBD1     		bne	.L16
+ 190:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 191:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+ 213              		.loc 1 191 0
+ 214 002a 0138     		subs	r0, r0, #1
+ 215 002c FFF7FEFF 		bl	SS_Write
+ 216              	.LVL32:
+ 192:Generated_Source\PSoC4/nRF24_HAL.c **** #else // _PSOC_UDB
+ 193:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_ClearFIFO();
+ 194:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 195:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+ 196:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_WriteTxData(NRF_CMD_W_REGISTER | reg);
+ 197:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_WriteTxData(data);
+ 198:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 199:Generated_Source\PSoC4/nRF24_HAL.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_SPI_IDLE)) {
+ 200:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 201:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+ 202:Generated_Source\PSoC4/nRF24_HAL.c **** #endif
+ 203:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 217              		.loc 1 203 0
+ 218              		@ sp needed
+ 219 0030 70BD     		pop	{r4, r5, r6, pc}
+ 220              		.cfi_endproc
+ 221              	.LFE3:
+ 222              		.size	nRF24_write_register, .-nRF24_write_register
+ 223              		.section	.text.nRF24_write_long_register,"ax",%progbits
+ 224              		.align	1
+ 225              		.global	nRF24_write_long_register
+ 226              		.code	16
+ 227              		.thumb_func
+ 228              		.type	nRF24_write_long_register, %function
+ 229              	nRF24_write_long_register:
+ 230              	.LFB4:
+ 204:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 205:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+ 206:Generated_Source\PSoC4/nRF24_HAL.c ****  * Write one or more bytes to the specified nRF24 Register.
+ 207:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 208:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be written.
+ 209:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const uint8_t* data: Data to writen into the register.
+ 210:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param size_t size: Bytes of the data to be written in the specified register.
+ 211:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+ 212:Generated_Source\PSoC4/nRF24_HAL.c **** void nRF24_write_long_register(const nrf_register reg,
+ 213:Generated_Source\PSoC4/nRF24_HAL.c ****                                             const uint8_t* data, const size_t size)
+ 214:Generated_Source\PSoC4/nRF24_HAL.c **** {
+ 231              		.loc 1 214 0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 0
+ 234              		@ frame_needed = 0, uses_anonymous_args = 0
+ 235              	.LVL33:
+ 236 0000 70B5     		push	{r4, r5, r6, lr}
+ 237              		.cfi_def_cfa_offset 16
+ 238              		.cfi_offset 4, -16
+ 239              		.cfi_offset 5, -12
+ 240              		.cfi_offset 6, -8
+ 241              		.cfi_offset 14, -4
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 9
+
+
+ 242              		.loc 1 214 0
+ 243 0002 0E00     		movs	r6, r1
+ 244 0004 1500     		movs	r5, r2
+ 245 0006 0400     		movs	r4, r0
+ 215:Generated_Source\PSoC4/nRF24_HAL.c **** #if defined (_PSOC6)
+ 216:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 217:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 218:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 219:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 220:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_SPI_Write(SPI_HW, NRF_CMD_W_REGISTER | reg);
+ 221:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_SCB_SPI_WriteArrayBlocking(SPI_HW, (void *) data, size);
+ 222:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 223:Generated_Source\PSoC4/nRF24_HAL.c ****     while (Cy_SCB_IsTxComplete(SPI_HW) == false) {
+ 224:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 225:Generated_Source\PSoC4/nRF24_HAL.c ****     CyDelayUs(1);
+ 226:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 227:Generated_Source\PSoC4/nRF24_HAL.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 228:Generated_Source\PSoC4/nRF24_HAL.c **** #elif defined (_PSOC4_SCB)
+ 229:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearRxBuffer();
+ 246              		.loc 1 229 0
+ 247 0008 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 248              	.LVL34:
+ 230:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartClearTxBuffer();
+ 249              		.loc 1 230 0
+ 250 000c FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 251              	.LVL35:
+ 231:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 232:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+ 252              		.loc 1 232 0
+ 253 0010 0020     		movs	r0, #0
+ 254 0012 FFF7FEFF 		bl	SS_Write
+ 255              	.LVL36:
+ 233:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 234:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartWriteTxData(NRF_CMD_W_REGISTER | reg);
+ 256              		.loc 1 234 0
+ 257 0016 2020     		movs	r0, #32
+ 258 0018 2043     		orrs	r0, r4
+ 259 001a FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 260              	.LVL37:
+ 235:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_SpiUartPutArray(data, size);
+ 261              		.loc 1 235 0
+ 262 001e 2900     		movs	r1, r5
+ 263 0020 3000     		movs	r0, r6
+ 264 0022 FFF7FEFF 		bl	SPI_SpiUartPutArray
+ 265              	.LVL38:
+ 266              	.L19:
+ 236:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 237:Generated_Source\PSoC4/nRF24_HAL.c ****     // we're not using the embedded SS pin on the SCB component, can't use the
+ 238:Generated_Source\PSoC4/nRF24_HAL.c ****     // SPI_Status function, we have to count the bytes on the RxBuffer to know
+ 239:Generated_Source\PSoC4/nRF24_HAL.c ****     // when the transition is done, size + 1 bytes == W_REGISTER_CMD + data
+ 240:Generated_Source\PSoC4/nRF24_HAL.c ****     while (SPI_SpiUartGetRxBufferSize() != (1 + size)) {
+ 267              		.loc 1 240 0 discriminator 1
+ 268 0026 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 269              	.LVL39:
+ 270 002a 6B1C     		adds	r3, r5, #1
+ 271 002c 9842     		cmp	r0, r3
+ 272 002e FAD1     		bne	.L19
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 10
+
+
+ 241:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 242:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+ 273              		.loc 1 242 0
+ 274 0030 0120     		movs	r0, #1
+ 275 0032 FFF7FEFF 		bl	SS_Write
+ 276              	.LVL40:
+ 243:Generated_Source\PSoC4/nRF24_HAL.c **** #else // _PSOC_UDB
+ 244:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_ClearFIFO();
+ 245:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 246:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(0);
+ 247:Generated_Source\PSoC4/nRF24_HAL.c ****     SPI_WriteTxData(NRF_CMD_W_REGISTER | reg);
+ 248:Generated_Source\PSoC4/nRF24_HAL.c ****     for (size_t i = 0; i < size; i++) {
+ 249:Generated_Source\PSoC4/nRF24_HAL.c ****         SPI_WriteTxData(data[i]);
+ 250:Generated_Source\PSoC4/nRF24_HAL.c ****         while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)){
+ 251:Generated_Source\PSoC4/nRF24_HAL.c ****         }
+ 252:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 253:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 254:Generated_Source\PSoC4/nRF24_HAL.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_SPI_IDLE)) {
+ 255:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 256:Generated_Source\PSoC4/nRF24_HAL.c ****     SS_Write(1);
+ 257:Generated_Source\PSoC4/nRF24_HAL.c **** #endif
+ 258:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 277              		.loc 1 258 0
+ 278              		@ sp needed
+ 279              	.LVL41:
+ 280              	.LVL42:
+ 281 0036 70BD     		pop	{r4, r5, r6, pc}
+ 282              		.cfi_endproc
+ 283              	.LFE4:
+ 284              		.size	nRF24_write_long_register, .-nRF24_write_long_register
+ 285              		.section	.text.nRF24_read_bit,"ax",%progbits
+ 286              		.align	1
+ 287              		.global	nRF24_read_bit
+ 288              		.code	16
+ 289              		.thumb_func
+ 290              		.type	nRF24_read_bit, %function
+ 291              	nRF24_read_bit:
+ 292              	.LFB5:
+ 259:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 260:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+ 261:Generated_Source\PSoC4/nRF24_HAL.c ****  * Read the content of the specified bit of the specified nrf_register.
+ 262:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 263:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be read.
+ 264:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param uint8_t bit: Bit to be read.
+ 265:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 266:Generated_Source\PSoC4/nRF24_HAL.c ****  * @return bool: Return the content of the bit.
+ 267:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+ 268:Generated_Source\PSoC4/nRF24_HAL.c **** bool nRF24_read_bit(const nrf_register reg, const uint8_t bit)
+ 269:Generated_Source\PSoC4/nRF24_HAL.c **** {
+ 293              		.loc 1 269 0
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 0
+ 296              		@ frame_needed = 0, uses_anonymous_args = 0
+ 297              	.LVL43:
+ 298 0000 10B5     		push	{r4, lr}
+ 299              		.cfi_def_cfa_offset 8
+ 300              		.cfi_offset 4, -8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 11
+
+
+ 301              		.cfi_offset 14, -4
+ 302              		.loc 1 269 0
+ 303 0002 0C00     		movs	r4, r1
+ 270:Generated_Source\PSoC4/nRF24_HAL.c **** #if 0
+ 271:Generated_Source\PSoC4/nRF24_HAL.c ****     if (8 < bit) {
+ 272:Generated_Source\PSoC4/nRF24_HAL.c ****         return false; // how to deal with this?
+ 273:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 274:Generated_Source\PSoC4/nRF24_HAL.c **** #endif
+ 275:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 276:Generated_Source\PSoC4/nRF24_HAL.c ****     return (nRF24_read_register(reg) & (1 << bit)) != 0;
+ 304              		.loc 1 276 0
+ 305 0004 FFF7FEFF 		bl	nRF24_read_register
+ 306              	.LVL44:
+ 307 0008 0123     		movs	r3, #1
+ 308 000a 2041     		asrs	r0, r0, r4
+ 277:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 309              		.loc 1 277 0
+ 310              		@ sp needed
+ 276:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 311              		.loc 1 276 0
+ 312 000c 1840     		ands	r0, r3
+ 313              		.loc 1 277 0
+ 314 000e 10BD     		pop	{r4, pc}
+ 315              		.cfi_endproc
+ 316              	.LFE5:
+ 317              		.size	nRF24_read_bit, .-nRF24_read_bit
+ 318              		.section	.text.nRF24_clear_bit,"ax",%progbits
+ 319              		.align	1
+ 320              		.global	nRF24_clear_bit
+ 321              		.code	16
+ 322              		.thumb_func
+ 323              		.type	nRF24_clear_bit, %function
+ 324              	nRF24_clear_bit:
+ 325              	.LFB7:
+ 278:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 279:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+ 280:Generated_Source\PSoC4/nRF24_HAL.c ****  * Set (1) or clear (0) the specified bit of the specified nRF24 register.
+ 281:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 282:Generated_Source\PSoC4/nRF24_HAL.c ****  * First we read the specified register and check the content of the specified
+ 283:Generated_Source\PSoC4/nRF24_HAL.c ****  * bit, exit early if the bit already is the value we wanted, otherwise we set
+ 284:Generated_Source\PSoC4/nRF24_HAL.c ****  * the bit to the specified value.
+ 285:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 286:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be written.
+ 287:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const uint8_t bit: Position of the bit to be written.
+ 288:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const bool value: Value (1 or 0) to write into the bit.
+ 289:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+ 290:Generated_Source\PSoC4/nRF24_HAL.c **** static void nRF24_write_bit(const nrf_register reg,
+ 291:Generated_Source\PSoC4/nRF24_HAL.c ****                                   const uint8_t bit, const bool value)
+ 292:Generated_Source\PSoC4/nRF24_HAL.c **** {
+ 293:Generated_Source\PSoC4/nRF24_HAL.c ****     uint8_t temp = nRF24_read_register(reg);
+ 294:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 295:Generated_Source\PSoC4/nRF24_HAL.c ****     // Check if the bit is 1
+ 296:Generated_Source\PSoC4/nRF24_HAL.c ****     if ((temp & (1 << bit)) != 0) {
+ 297:Generated_Source\PSoC4/nRF24_HAL.c ****         // it is 1, return if we wanted to set it to 1
+ 298:Generated_Source\PSoC4/nRF24_HAL.c ****         if (value) {
+ 299:Generated_Source\PSoC4/nRF24_HAL.c ****             return;
+ 300:Generated_Source\PSoC4/nRF24_HAL.c ****         }
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 12
+
+
+ 301:Generated_Source\PSoC4/nRF24_HAL.c ****     } else { // the bit is 0
+ 302:Generated_Source\PSoC4/nRF24_HAL.c ****         // it is 0, return if we wanted to set it to 0
+ 303:Generated_Source\PSoC4/nRF24_HAL.c ****         if (!value) {
+ 304:Generated_Source\PSoC4/nRF24_HAL.c ****             return;
+ 305:Generated_Source\PSoC4/nRF24_HAL.c ****         }
+ 306:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 307:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 308:Generated_Source\PSoC4/nRF24_HAL.c ****     // Calculate the new value to be written into the register
+ 309:Generated_Source\PSoC4/nRF24_HAL.c ****     temp = value ? temp | (1 << bit) : temp & ~(1 << bit);
+ 310:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 311:Generated_Source\PSoC4/nRF24_HAL.c ****     nRF24_write_register(reg, temp);
+ 312:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 313:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 314:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+ 315:Generated_Source\PSoC4/nRF24_HAL.c ****  * Set to 0 the specified bit of the specified nRF24 register.
+ 316:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 317:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be written.
+ 318:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const uint8_t bit: Bit to be written.
+ 319:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+ 320:Generated_Source\PSoC4/nRF24_HAL.c **** void nRF24_clear_bit(const nrf_register reg, const uint8_t bit)
+ 321:Generated_Source\PSoC4/nRF24_HAL.c **** {
+ 326              		.loc 1 321 0
+ 327              		.cfi_startproc
+ 328              		@ args = 0, pretend = 0, frame = 0
+ 329              		@ frame_needed = 0, uses_anonymous_args = 0
+ 330              	.LVL45:
+ 331 0000 70B5     		push	{r4, r5, r6, lr}
+ 332              		.cfi_def_cfa_offset 16
+ 333              		.cfi_offset 4, -16
+ 334              		.cfi_offset 5, -12
+ 335              		.cfi_offset 6, -8
+ 336              		.cfi_offset 14, -4
+ 337              		.loc 1 321 0
+ 338 0002 0400     		movs	r4, r0
+ 339 0004 0D00     		movs	r5, r1
+ 322:Generated_Source\PSoC4/nRF24_HAL.c ****     if (8 < bit) {
+ 340              		.loc 1 322 0
+ 341 0006 0829     		cmp	r1, #8
+ 342 0008 0CD8     		bhi	.L22
+ 343              	.LVL46:
+ 344              	.LBB5:
+ 345              	.LBB6:
+ 293:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 346              		.loc 1 293 0
+ 347 000a FFF7FEFF 		bl	nRF24_read_register
+ 348              	.LVL47:
+ 296:Generated_Source\PSoC4/nRF24_HAL.c ****         // it is 1, return if we wanted to set it to 1
+ 349              		.loc 1 296 0
+ 350 000e 0200     		movs	r2, r0
+ 351 0010 0123     		movs	r3, #1
+ 352 0012 2A41     		asrs	r2, r2, r5
+ 353 0014 1A42     		tst	r2, r3
+ 354 0016 05D0     		beq	.L22
+ 355              	.LVL48:
+ 311:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 356              		.loc 1 311 0
+ 357 0018 AB40     		lsls	r3, r3, r5
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 13
+
+
+ 358 001a 9843     		bics	r0, r3
+ 359              	.LVL49:
+ 360 001c C1B2     		uxtb	r1, r0
+ 361 001e 2000     		movs	r0, r4
+ 362 0020 FFF7FEFF 		bl	nRF24_write_register
+ 363              	.LVL50:
+ 364              	.L22:
+ 365              	.LBE6:
+ 366              	.LBE5:
+ 323:Generated_Source\PSoC4/nRF24_HAL.c ****         return;
+ 324:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 325:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 326:Generated_Source\PSoC4/nRF24_HAL.c ****     nRF24_write_bit(reg, bit, 0);
+ 327:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 367              		.loc 1 327 0
+ 368              		@ sp needed
+ 369 0024 70BD     		pop	{r4, r5, r6, pc}
+ 370              		.cfi_endproc
+ 371              	.LFE7:
+ 372              		.size	nRF24_clear_bit, .-nRF24_clear_bit
+ 373              		.section	.text.nRF24_set_bit,"ax",%progbits
+ 374              		.align	1
+ 375              		.global	nRF24_set_bit
+ 376              		.code	16
+ 377              		.thumb_func
+ 378              		.type	nRF24_set_bit, %function
+ 379              	nRF24_set_bit:
+ 380              	.LFB8:
+ 328:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 329:Generated_Source\PSoC4/nRF24_HAL.c **** /**
+ 330:Generated_Source\PSoC4/nRF24_HAL.c ****  * Set to 1 the specified bit of the specified nRF24 register.
+ 331:Generated_Source\PSoC4/nRF24_HAL.c ****  *
+ 332:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const nrf_register reg: Register to be written.
+ 333:Generated_Source\PSoC4/nRF24_HAL.c ****  * @param const uint8_t bit: Bit to be written.
+ 334:Generated_Source\PSoC4/nRF24_HAL.c ****  */
+ 335:Generated_Source\PSoC4/nRF24_HAL.c **** void nRF24_set_bit(const nrf_register reg, const uint8_t bit)
+ 336:Generated_Source\PSoC4/nRF24_HAL.c **** {
+ 381              		.loc 1 336 0
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 0
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385              	.LVL51:
+ 386 0000 70B5     		push	{r4, r5, r6, lr}
+ 387              		.cfi_def_cfa_offset 16
+ 388              		.cfi_offset 4, -16
+ 389              		.cfi_offset 5, -12
+ 390              		.cfi_offset 6, -8
+ 391              		.cfi_offset 14, -4
+ 392              		.loc 1 336 0
+ 393 0002 0400     		movs	r4, r0
+ 394 0004 0D00     		movs	r5, r1
+ 337:Generated_Source\PSoC4/nRF24_HAL.c ****     if (8 < bit) {
+ 395              		.loc 1 337 0
+ 396 0006 0829     		cmp	r1, #8
+ 397 0008 0CD8     		bhi	.L29
+ 398              	.LVL52:
+ 399              	.LBB9:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 14
+
+
+ 400              	.LBB10:
+ 293:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 401              		.loc 1 293 0
+ 402 000a FFF7FEFF 		bl	nRF24_read_register
+ 403              	.LVL53:
+ 296:Generated_Source\PSoC4/nRF24_HAL.c ****         // it is 1, return if we wanted to set it to 1
+ 404              		.loc 1 296 0
+ 405 000e 0300     		movs	r3, r0
+ 406 0010 0121     		movs	r1, #1
+ 407 0012 2B41     		asrs	r3, r3, r5
+ 408 0014 0B42     		tst	r3, r1
+ 409 0016 05D1     		bne	.L29
+ 410              	.LVL54:
+ 311:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 411              		.loc 1 311 0
+ 412 0018 A940     		lsls	r1, r1, r5
+ 413 001a 0843     		orrs	r0, r1
+ 414              	.LVL55:
+ 415 001c C1B2     		uxtb	r1, r0
+ 416 001e 2000     		movs	r0, r4
+ 417 0020 FFF7FEFF 		bl	nRF24_write_register
+ 418              	.LVL56:
+ 419              	.L29:
+ 420              	.LBE10:
+ 421              	.LBE9:
+ 338:Generated_Source\PSoC4/nRF24_HAL.c ****         return;
+ 339:Generated_Source\PSoC4/nRF24_HAL.c ****     }
+ 340:Generated_Source\PSoC4/nRF24_HAL.c **** 
+ 341:Generated_Source\PSoC4/nRF24_HAL.c ****     nRF24_write_bit(reg, bit, 1);
+ 342:Generated_Source\PSoC4/nRF24_HAL.c **** }
+ 422              		.loc 1 342 0
+ 423              		@ sp needed
+ 424 0024 70BD     		pop	{r4, r5, r6, pc}
+ 425              		.cfi_endproc
+ 426              	.LFE8:
+ 427              		.size	nRF24_set_bit, .-nRF24_set_bit
+ 428              		.text
+ 429              	.Letext0:
+ 430              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 431              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 432              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 433              		.file 5 "Generated_Source\\PSoC4\\nRF24_DEFS.h"
+ 434              		.file 6 "Generated_Source\\PSoC4\\SPI_SPI_UART.h"
+ 435              		.file 7 "Generated_Source\\PSoC4\\SS.h"
+ 436              		.section	.debug_info,"",%progbits
+ 437              	.Ldebug_info0:
+ 438 0000 AD060000 		.4byte	0x6ad
+ 439 0004 0400     		.2byte	0x4
+ 440 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 441 000a 04       		.byte	0x4
+ 442 000b 01       		.uleb128 0x1
+ 443 000c A3040000 		.4byte	.LASF73
+ 444 0010 0C       		.byte	0xc
+ 445 0011 70030000 		.4byte	.LASF74
+ 446 0015 00000000 		.4byte	.LASF75
+ 447 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 448 001d 00000000 		.4byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 15
+
+
+ 449 0021 00000000 		.4byte	.Ldebug_line0
+ 450 0025 02       		.uleb128 0x2
+ 451 0026 01       		.byte	0x1
+ 452 0027 06       		.byte	0x6
+ 453 0028 1E030000 		.4byte	.LASF0
+ 454 002c 03       		.uleb128 0x3
+ 455 002d 2F020000 		.4byte	.LASF9
+ 456 0031 02       		.byte	0x2
+ 457 0032 1D       		.byte	0x1d
+ 458 0033 37000000 		.4byte	0x37
+ 459 0037 02       		.uleb128 0x2
+ 460 0038 01       		.byte	0x1
+ 461 0039 08       		.byte	0x8
+ 462 003a 52020000 		.4byte	.LASF1
+ 463 003e 02       		.uleb128 0x2
+ 464 003f 02       		.byte	0x2
+ 465 0040 05       		.byte	0x5
+ 466 0041 2B010000 		.4byte	.LASF2
+ 467 0045 02       		.uleb128 0x2
+ 468 0046 02       		.byte	0x2
+ 469 0047 07       		.byte	0x7
+ 470 0048 C3030000 		.4byte	.LASF3
+ 471 004c 02       		.uleb128 0x2
+ 472 004d 04       		.byte	0x4
+ 473 004e 05       		.byte	0x5
+ 474 004f FE010000 		.4byte	.LASF4
+ 475 0053 02       		.uleb128 0x2
+ 476 0054 04       		.byte	0x4
+ 477 0055 07       		.byte	0x7
+ 478 0056 13040000 		.4byte	.LASF5
+ 479 005a 02       		.uleb128 0x2
+ 480 005b 08       		.byte	0x8
+ 481 005c 05       		.byte	0x5
+ 482 005d E7010000 		.4byte	.LASF6
+ 483 0061 02       		.uleb128 0x2
+ 484 0062 08       		.byte	0x8
+ 485 0063 07       		.byte	0x7
+ 486 0064 2A030000 		.4byte	.LASF7
+ 487 0068 04       		.uleb128 0x4
+ 488 0069 04       		.byte	0x4
+ 489 006a 05       		.byte	0x5
+ 490 006b 696E7400 		.ascii	"int\000"
+ 491 006f 02       		.uleb128 0x2
+ 492 0070 04       		.byte	0x4
+ 493 0071 07       		.byte	0x7
+ 494 0072 56030000 		.4byte	.LASF8
+ 495 0076 03       		.uleb128 0x3
+ 496 0077 6B010000 		.4byte	.LASF10
+ 497 007b 03       		.byte	0x3
+ 498 007c 18       		.byte	0x18
+ 499 007d 2C000000 		.4byte	0x2c
+ 500 0081 02       		.uleb128 0x2
+ 501 0082 04       		.byte	0x4
+ 502 0083 04       		.byte	0x4
+ 503 0084 CD010000 		.4byte	.LASF11
+ 504 0088 02       		.uleb128 0x2
+ 505 0089 08       		.byte	0x8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 16
+
+
+ 506 008a 04       		.byte	0x4
+ 507 008b 25040000 		.4byte	.LASF12
+ 508 008f 02       		.uleb128 0x2
+ 509 0090 01       		.byte	0x1
+ 510 0091 08       		.byte	0x8
+ 511 0092 BE030000 		.4byte	.LASF13
+ 512 0096 03       		.uleb128 0x3
+ 513 0097 B1000000 		.4byte	.LASF14
+ 514 009b 04       		.byte	0x4
+ 515 009c D8       		.byte	0xd8
+ 516 009d 6F000000 		.4byte	0x6f
+ 517 00a1 02       		.uleb128 0x2
+ 518 00a2 08       		.byte	0x8
+ 519 00a3 04       		.byte	0x4
+ 520 00a4 79020000 		.4byte	.LASF15
+ 521 00a8 02       		.uleb128 0x2
+ 522 00a9 04       		.byte	0x4
+ 523 00aa 07       		.byte	0x7
+ 524 00ab B8000000 		.4byte	.LASF16
+ 525 00af 05       		.uleb128 0x5
+ 526 00b0 01       		.byte	0x1
+ 527 00b1 37000000 		.4byte	0x37
+ 528 00b5 05       		.byte	0x5
+ 529 00b6 1E       		.byte	0x1e
+ 530 00b7 58010000 		.4byte	0x158
+ 531 00bb 06       		.uleb128 0x6
+ 532 00bc 6B040000 		.4byte	.LASF17
+ 533 00c0 00       		.byte	0
+ 534 00c1 06       		.uleb128 0x6
+ 535 00c2 5D010000 		.4byte	.LASF18
+ 536 00c6 01       		.byte	0x1
+ 537 00c7 06       		.uleb128 0x6
+ 538 00c8 87000000 		.4byte	.LASF19
+ 539 00cc 02       		.byte	0x2
+ 540 00cd 06       		.uleb128 0x6
+ 541 00ce 31050000 		.4byte	.LASF20
+ 542 00d2 03       		.byte	0x3
+ 543 00d3 06       		.uleb128 0x6
+ 544 00d4 7A040000 		.4byte	.LASF21
+ 545 00d8 04       		.byte	0x4
+ 546 00d9 06       		.uleb128 0x6
+ 547 00da 97010000 		.4byte	.LASF22
+ 548 00de 05       		.byte	0x5
+ 549 00df 06       		.uleb128 0x6
+ 550 00e0 66000000 		.4byte	.LASF23
+ 551 00e4 06       		.byte	0x6
+ 552 00e5 06       		.uleb128 0x6
+ 553 00e6 73010000 		.4byte	.LASF24
+ 554 00ea 07       		.byte	0x7
+ 555 00eb 06       		.uleb128 0x6
+ 556 00ec 9E000000 		.4byte	.LASF25
+ 557 00f0 08       		.byte	0x8
+ 558 00f1 06       		.uleb128 0x6
+ 559 00f2 07020000 		.4byte	.LASF26
+ 560 00f6 09       		.byte	0x9
+ 561 00f7 06       		.uleb128 0x6
+ 562 00f8 85020000 		.4byte	.LASF27
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 17
+
+
+ 563 00fc 0A       		.byte	0xa
+ 564 00fd 06       		.uleb128 0x6
+ 565 00fe 98020000 		.4byte	.LASF28
+ 566 0102 0B       		.byte	0xb
+ 567 0103 06       		.uleb128 0x6
+ 568 0104 AB020000 		.4byte	.LASF29
+ 569 0108 0C       		.byte	0xc
+ 570 0109 06       		.uleb128 0x6
+ 571 010a BE020000 		.4byte	.LASF30
+ 572 010e 0D       		.byte	0xd
+ 573 010f 06       		.uleb128 0x6
+ 574 0110 D1020000 		.4byte	.LASF31
+ 575 0114 0E       		.byte	0xe
+ 576 0115 06       		.uleb128 0x6
+ 577 0116 E4020000 		.4byte	.LASF32
+ 578 011a 0F       		.byte	0xf
+ 579 011b 06       		.uleb128 0x6
+ 580 011c 1F020000 		.4byte	.LASF33
+ 581 0120 10       		.byte	0x10
+ 582 0121 06       		.uleb128 0x6
+ 583 0122 6C050000 		.4byte	.LASF34
+ 584 0126 11       		.byte	0x11
+ 585 0127 06       		.uleb128 0x6
+ 586 0128 09010000 		.4byte	.LASF35
+ 587 012c 12       		.byte	0x12
+ 588 012d 06       		.uleb128 0x6
+ 589 012e 1A010000 		.4byte	.LASF36
+ 590 0132 13       		.byte	0x13
+ 591 0133 06       		.uleb128 0x6
+ 592 0134 7D050000 		.4byte	.LASF37
+ 593 0138 14       		.byte	0x14
+ 594 0139 06       		.uleb128 0x6
+ 595 013a 35010000 		.4byte	.LASF38
+ 596 013e 15       		.byte	0x15
+ 597 013f 06       		.uleb128 0x6
+ 598 0140 46010000 		.4byte	.LASF39
+ 599 0144 16       		.byte	0x16
+ 600 0145 06       		.uleb128 0x6
+ 601 0146 F5000000 		.4byte	.LASF40
+ 602 014a 17       		.byte	0x17
+ 603 014b 06       		.uleb128 0x6
+ 604 014c DC030000 		.4byte	.LASF41
+ 605 0150 1C       		.byte	0x1c
+ 606 0151 06       		.uleb128 0x6
+ 607 0152 77000000 		.4byte	.LASF42
+ 608 0156 1D       		.byte	0x1d
+ 609 0157 00       		.byte	0
+ 610 0158 03       		.uleb128 0x3
+ 611 0159 63030000 		.4byte	.LASF43
+ 612 015d 05       		.byte	0x5
+ 613 015e 39       		.byte	0x39
+ 614 015f AF000000 		.4byte	0xaf
+ 615 0163 05       		.uleb128 0x5
+ 616 0164 01       		.byte	0x1
+ 617 0165 37000000 		.4byte	0x37
+ 618 0169 05       		.byte	0x5
+ 619 016a 3C       		.byte	0x3c
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 18
+
+
+ 620 016b B2010000 		.4byte	0x1b2
+ 621 016f 06       		.uleb128 0x6
+ 622 0170 93030000 		.4byte	.LASF44
+ 623 0174 00       		.byte	0
+ 624 0175 06       		.uleb128 0x6
+ 625 0176 A6030000 		.4byte	.LASF45
+ 626 017a 20       		.byte	0x20
+ 627 017b 06       		.uleb128 0x6
+ 628 017c 82010000 		.4byte	.LASF46
+ 629 0180 61       		.byte	0x61
+ 630 0181 06       		.uleb128 0x6
+ 631 0182 8E050000 		.4byte	.LASF47
+ 632 0186 A0       		.byte	0xa0
+ 633 0187 06       		.uleb128 0x6
+ 634 0188 55000000 		.4byte	.LASF48
+ 635 018c E1       		.byte	0xe1
+ 636 018d 06       		.uleb128 0x6
+ 637 018e F7020000 		.4byte	.LASF49
+ 638 0192 E2       		.byte	0xe2
+ 639 0193 06       		.uleb128 0x6
+ 640 0194 57040000 		.4byte	.LASF50
+ 641 0198 E3       		.byte	0xe3
+ 642 0199 06       		.uleb128 0x6
+ 643 019a EF030000 		.4byte	.LASF51
+ 644 019e 60       		.byte	0x60
+ 645 019f 06       		.uleb128 0x6
+ 646 01a0 8D040000 		.4byte	.LASF52
+ 647 01a4 A8       		.byte	0xa8
+ 648 01a5 06       		.uleb128 0x6
+ 649 01a6 51050000 		.4byte	.LASF53
+ 650 01aa B0       		.byte	0xb0
+ 651 01ab 06       		.uleb128 0x6
+ 652 01ac 13020000 		.4byte	.LASF54
+ 653 01b0 FF       		.byte	0xff
+ 654 01b1 00       		.byte	0
+ 655 01b2 07       		.uleb128 0x7
+ 656 01b3 D3010000 		.4byte	.LASF60
+ 657 01b7 01       		.byte	0x1
+ 658 01b8 24       		.byte	0x24
+ 659 01b9 76000000 		.4byte	0x76
+ 660 01bd 00000000 		.4byte	.LFB1
+ 661 01c1 38000000 		.4byte	.LFE1-.LFB1
+ 662 01c5 01       		.uleb128 0x1
+ 663 01c6 9C       		.byte	0x9c
+ 664 01c7 5B020000 		.4byte	0x25b
+ 665 01cb 08       		.uleb128 0x8
+ 666 01cc 72656700 		.ascii	"reg\000"
+ 667 01d0 01       		.byte	0x1
+ 668 01d1 24       		.byte	0x24
+ 669 01d2 5B020000 		.4byte	0x25b
+ 670 01d6 00000000 		.4byte	.LLST0
+ 671 01da 09       		.uleb128 0x9
+ 672 01db EA030000 		.4byte	.LASF55
+ 673 01df 01       		.byte	0x1
+ 674 01e0 26       		.byte	0x26
+ 675 01e1 76000000 		.4byte	0x76
+ 676 01e5 21000000 		.4byte	.LLST1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 19
+
+
+ 677 01e9 0A       		.uleb128 0xa
+ 678 01ea 08000000 		.4byte	.LVL1
+ 679 01ee 5D060000 		.4byte	0x65d
+ 680 01f2 0A       		.uleb128 0xa
+ 681 01f3 0C000000 		.4byte	.LVL2
+ 682 01f7 69060000 		.4byte	0x669
+ 683 01fb 0B       		.uleb128 0xb
+ 684 01fc 12000000 		.4byte	.LVL3
+ 685 0200 75060000 		.4byte	0x675
+ 686 0204 0E020000 		.4byte	0x20e
+ 687 0208 0C       		.uleb128 0xc
+ 688 0209 01       		.uleb128 0x1
+ 689 020a 50       		.byte	0x50
+ 690 020b 01       		.uleb128 0x1
+ 691 020c 30       		.byte	0x30
+ 692 020d 00       		.byte	0
+ 693 020e 0B       		.uleb128 0xb
+ 694 020f 18000000 		.4byte	.LVL4
+ 695 0213 80060000 		.4byte	0x680
+ 696 0217 22020000 		.4byte	0x222
+ 697 021b 0C       		.uleb128 0xc
+ 698 021c 01       		.uleb128 0x1
+ 699 021d 50       		.byte	0x50
+ 700 021e 02       		.uleb128 0x2
+ 701 021f 74       		.byte	0x74
+ 702 0220 00       		.sleb128 0
+ 703 0221 00       		.byte	0
+ 704 0222 0B       		.uleb128 0xb
+ 705 0223 1E000000 		.4byte	.LVL5
+ 706 0227 80060000 		.4byte	0x680
+ 707 022b 36020000 		.4byte	0x236
+ 708 022f 0C       		.uleb128 0xc
+ 709 0230 01       		.uleb128 0x1
+ 710 0231 50       		.byte	0x50
+ 711 0232 02       		.uleb128 0x2
+ 712 0233 08       		.byte	0x8
+ 713 0234 FF       		.byte	0xff
+ 714 0235 00       		.byte	0
+ 715 0236 0A       		.uleb128 0xa
+ 716 0237 22000000 		.4byte	.LVL6
+ 717 023b 8C060000 		.4byte	0x68c
+ 718 023f 0A       		.uleb128 0xa
+ 719 0240 2C000000 		.4byte	.LVL7
+ 720 0244 75060000 		.4byte	0x675
+ 721 0248 0A       		.uleb128 0xa
+ 722 0249 30000000 		.4byte	.LVL8
+ 723 024d 98060000 		.4byte	0x698
+ 724 0251 0A       		.uleb128 0xa
+ 725 0252 34000000 		.4byte	.LVL9
+ 726 0256 98060000 		.4byte	0x698
+ 727 025a 00       		.byte	0
+ 728 025b 0D       		.uleb128 0xd
+ 729 025c 58010000 		.4byte	0x158
+ 730 0260 0E       		.uleb128 0xe
+ 731 0261 39020000 		.4byte	.LASF57
+ 732 0265 01       		.byte	0x1
+ 733 0266 62       		.byte	0x62
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 20
+
+
+ 734 0267 00000000 		.4byte	.LFB2
+ 735 026b 4E000000 		.4byte	.LFE2-.LFB2
+ 736 026f 01       		.uleb128 0x1
+ 737 0270 9C       		.byte	0x9c
+ 738 0271 3E030000 		.4byte	0x33e
+ 739 0275 08       		.uleb128 0x8
+ 740 0276 72656700 		.ascii	"reg\000"
+ 741 027a 01       		.byte	0x1
+ 742 027b 62       		.byte	0x62
+ 743 027c 5B020000 		.4byte	0x25b
+ 744 0280 40000000 		.4byte	.LLST2
+ 745 0284 0F       		.uleb128 0xf
+ 746 0285 EA030000 		.4byte	.LASF55
+ 747 0289 01       		.byte	0x1
+ 748 028a 63       		.byte	0x63
+ 749 028b 3E030000 		.4byte	0x33e
+ 750 028f 61000000 		.4byte	.LLST3
+ 751 0293 0F       		.uleb128 0xf
+ 752 0294 B9030000 		.4byte	.LASF56
+ 753 0298 01       		.byte	0x1
+ 754 0299 63       		.byte	0x63
+ 755 029a 44030000 		.4byte	0x344
+ 756 029e 8D000000 		.4byte	.LLST4
+ 757 02a2 10       		.uleb128 0x10
+ 758 02a3 2A000000 		.4byte	.LBB2
+ 759 02a7 1C000000 		.4byte	.LBE2-.LBB2
+ 760 02ab E3020000 		.4byte	0x2e3
+ 761 02af 11       		.uleb128 0x11
+ 762 02b0 6900     		.ascii	"i\000"
+ 763 02b2 01       		.byte	0x1
+ 764 02b3 83       		.byte	0x83
+ 765 02b4 96000000 		.4byte	0x96
+ 766 02b8 B9000000 		.4byte	.LLST5
+ 767 02bc 0B       		.uleb128 0xb
+ 768 02bd 34000000 		.4byte	.LVL18
+ 769 02c1 80060000 		.4byte	0x680
+ 770 02c5 D0020000 		.4byte	0x2d0
+ 771 02c9 0C       		.uleb128 0xc
+ 772 02ca 01       		.uleb128 0x1
+ 773 02cb 50       		.byte	0x50
+ 774 02cc 02       		.uleb128 0x2
+ 775 02cd 08       		.byte	0x8
+ 776 02ce FF       		.byte	0xff
+ 777 02cf 00       		.byte	0
+ 778 02d0 0A       		.uleb128 0xa
+ 779 02d1 38000000 		.4byte	.LVL19
+ 780 02d5 8C060000 		.4byte	0x68c
+ 781 02d9 0A       		.uleb128 0xa
+ 782 02da 40000000 		.4byte	.LVL20
+ 783 02de 98060000 		.4byte	0x698
+ 784 02e2 00       		.byte	0
+ 785 02e3 0A       		.uleb128 0xa
+ 786 02e4 0C000000 		.4byte	.LVL11
+ 787 02e8 5D060000 		.4byte	0x65d
+ 788 02ec 0A       		.uleb128 0xa
+ 789 02ed 10000000 		.4byte	.LVL12
+ 790 02f1 69060000 		.4byte	0x669
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 21
+
+
+ 791 02f5 0B       		.uleb128 0xb
+ 792 02f6 16000000 		.4byte	.LVL13
+ 793 02fa 75060000 		.4byte	0x675
+ 794 02fe 08030000 		.4byte	0x308
+ 795 0302 0C       		.uleb128 0xc
+ 796 0303 01       		.uleb128 0x1
+ 797 0304 50       		.byte	0x50
+ 798 0305 01       		.uleb128 0x1
+ 799 0306 30       		.byte	0x30
+ 800 0307 00       		.byte	0
+ 801 0308 0B       		.uleb128 0xb
+ 802 0309 1C000000 		.4byte	.LVL14
+ 803 030d 80060000 		.4byte	0x680
+ 804 0311 1C030000 		.4byte	0x31c
+ 805 0315 0C       		.uleb128 0xc
+ 806 0316 01       		.uleb128 0x1
+ 807 0317 50       		.byte	0x50
+ 808 0318 02       		.uleb128 0x2
+ 809 0319 76       		.byte	0x76
+ 810 031a 00       		.sleb128 0
+ 811 031b 00       		.byte	0
+ 812 031c 0A       		.uleb128 0xa
+ 813 031d 20000000 		.4byte	.LVL15
+ 814 0321 8C060000 		.4byte	0x68c
+ 815 0325 0A       		.uleb128 0xa
+ 816 0326 28000000 		.4byte	.LVL16
+ 817 032a 98060000 		.4byte	0x698
+ 818 032e 12       		.uleb128 0x12
+ 819 032f 4C000000 		.4byte	.LVL23
+ 820 0333 75060000 		.4byte	0x675
+ 821 0337 0C       		.uleb128 0xc
+ 822 0338 01       		.uleb128 0x1
+ 823 0339 50       		.byte	0x50
+ 824 033a 01       		.uleb128 0x1
+ 825 033b 31       		.byte	0x31
+ 826 033c 00       		.byte	0
+ 827 033d 00       		.byte	0
+ 828 033e 13       		.uleb128 0x13
+ 829 033f 04       		.byte	0x4
+ 830 0340 76000000 		.4byte	0x76
+ 831 0344 0D       		.uleb128 0xd
+ 832 0345 96000000 		.4byte	0x96
+ 833 0349 0E       		.uleb128 0xe
+ 834 034a 41030000 		.4byte	.LASF58
+ 835 034e 01       		.byte	0x1
+ 836 034f A6       		.byte	0xa6
+ 837 0350 00000000 		.4byte	.LFB3
+ 838 0354 32000000 		.4byte	.LFE3-.LFB3
+ 839 0358 01       		.uleb128 0x1
+ 840 0359 9C       		.byte	0x9c
+ 841 035a DF030000 		.4byte	0x3df
+ 842 035e 08       		.uleb128 0x8
+ 843 035f 72656700 		.ascii	"reg\000"
+ 844 0363 01       		.byte	0x1
+ 845 0364 A6       		.byte	0xa6
+ 846 0365 5B020000 		.4byte	0x25b
+ 847 0369 02010000 		.4byte	.LLST6
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 22
+
+
+ 848 036d 0F       		.uleb128 0xf
+ 849 036e EA030000 		.4byte	.LASF55
+ 850 0372 01       		.byte	0x1
+ 851 0373 A6       		.byte	0xa6
+ 852 0374 DF030000 		.4byte	0x3df
+ 853 0378 23010000 		.4byte	.LLST7
+ 854 037c 0A       		.uleb128 0xa
+ 855 037d 0A000000 		.4byte	.LVL26
+ 856 0381 5D060000 		.4byte	0x65d
+ 857 0385 0A       		.uleb128 0xa
+ 858 0386 0E000000 		.4byte	.LVL27
+ 859 038a 69060000 		.4byte	0x669
+ 860 038e 0B       		.uleb128 0xb
+ 861 038f 14000000 		.4byte	.LVL28
+ 862 0393 75060000 		.4byte	0x675
+ 863 0397 A1030000 		.4byte	0x3a1
+ 864 039b 0C       		.uleb128 0xc
+ 865 039c 01       		.uleb128 0x1
+ 866 039d 50       		.byte	0x50
+ 867 039e 01       		.uleb128 0x1
+ 868 039f 30       		.byte	0x30
+ 869 03a0 00       		.byte	0
+ 870 03a1 0B       		.uleb128 0xb
+ 871 03a2 1C000000 		.4byte	.LVL29
+ 872 03a6 80060000 		.4byte	0x680
+ 873 03aa B8030000 		.4byte	0x3b8
+ 874 03ae 0C       		.uleb128 0xc
+ 875 03af 01       		.uleb128 0x1
+ 876 03b0 50       		.byte	0x50
+ 877 03b1 05       		.uleb128 0x5
+ 878 03b2 74       		.byte	0x74
+ 879 03b3 00       		.sleb128 0
+ 880 03b4 08       		.byte	0x8
+ 881 03b5 20       		.byte	0x20
+ 882 03b6 21       		.byte	0x21
+ 883 03b7 00       		.byte	0
+ 884 03b8 0B       		.uleb128 0xb
+ 885 03b9 22000000 		.4byte	.LVL30
+ 886 03bd 80060000 		.4byte	0x680
+ 887 03c1 CC030000 		.4byte	0x3cc
+ 888 03c5 0C       		.uleb128 0xc
+ 889 03c6 01       		.uleb128 0x1
+ 890 03c7 50       		.byte	0x50
+ 891 03c8 02       		.uleb128 0x2
+ 892 03c9 75       		.byte	0x75
+ 893 03ca 00       		.sleb128 0
+ 894 03cb 00       		.byte	0
+ 895 03cc 0A       		.uleb128 0xa
+ 896 03cd 26000000 		.4byte	.LVL31
+ 897 03d1 8C060000 		.4byte	0x68c
+ 898 03d5 0A       		.uleb128 0xa
+ 899 03d6 30000000 		.4byte	.LVL32
+ 900 03da 75060000 		.4byte	0x675
+ 901 03de 00       		.byte	0
+ 902 03df 0D       		.uleb128 0xd
+ 903 03e0 76000000 		.4byte	0x76
+ 904 03e4 0E       		.uleb128 0xe
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 23
+
+
+ 905 03e5 B3010000 		.4byte	.LASF59
+ 906 03e9 01       		.byte	0x1
+ 907 03ea D4       		.byte	0xd4
+ 908 03eb 00000000 		.4byte	.LFB4
+ 909 03ef 38000000 		.4byte	.LFE4-.LFB4
+ 910 03f3 01       		.uleb128 0x1
+ 911 03f4 9C       		.byte	0x9c
+ 912 03f5 95040000 		.4byte	0x495
+ 913 03f9 08       		.uleb128 0x8
+ 914 03fa 72656700 		.ascii	"reg\000"
+ 915 03fe 01       		.byte	0x1
+ 916 03ff D4       		.byte	0xd4
+ 917 0400 5B020000 		.4byte	0x25b
+ 918 0404 44010000 		.4byte	.LLST8
+ 919 0408 0F       		.uleb128 0xf
+ 920 0409 EA030000 		.4byte	.LASF55
+ 921 040d 01       		.byte	0x1
+ 922 040e D5       		.byte	0xd5
+ 923 040f 95040000 		.4byte	0x495
+ 924 0413 65010000 		.4byte	.LLST9
+ 925 0417 0F       		.uleb128 0xf
+ 926 0418 B9030000 		.4byte	.LASF56
+ 927 041c 01       		.byte	0x1
+ 928 041d D5       		.byte	0xd5
+ 929 041e 44030000 		.4byte	0x344
+ 930 0422 91010000 		.4byte	.LLST10
+ 931 0426 0A       		.uleb128 0xa
+ 932 0427 0C000000 		.4byte	.LVL34
+ 933 042b 5D060000 		.4byte	0x65d
+ 934 042f 0A       		.uleb128 0xa
+ 935 0430 10000000 		.4byte	.LVL35
+ 936 0434 69060000 		.4byte	0x669
+ 937 0438 0B       		.uleb128 0xb
+ 938 0439 16000000 		.4byte	.LVL36
+ 939 043d 75060000 		.4byte	0x675
+ 940 0441 4B040000 		.4byte	0x44b
+ 941 0445 0C       		.uleb128 0xc
+ 942 0446 01       		.uleb128 0x1
+ 943 0447 50       		.byte	0x50
+ 944 0448 01       		.uleb128 0x1
+ 945 0449 30       		.byte	0x30
+ 946 044a 00       		.byte	0
+ 947 044b 0B       		.uleb128 0xb
+ 948 044c 1E000000 		.4byte	.LVL37
+ 949 0450 80060000 		.4byte	0x680
+ 950 0454 62040000 		.4byte	0x462
+ 951 0458 0C       		.uleb128 0xc
+ 952 0459 01       		.uleb128 0x1
+ 953 045a 50       		.byte	0x50
+ 954 045b 05       		.uleb128 0x5
+ 955 045c 74       		.byte	0x74
+ 956 045d 00       		.sleb128 0
+ 957 045e 08       		.byte	0x8
+ 958 045f 20       		.byte	0x20
+ 959 0460 21       		.byte	0x21
+ 960 0461 00       		.byte	0
+ 961 0462 0B       		.uleb128 0xb
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 24
+
+
+ 962 0463 26000000 		.4byte	.LVL38
+ 963 0467 A4060000 		.4byte	0x6a4
+ 964 046b 7C040000 		.4byte	0x47c
+ 965 046f 0C       		.uleb128 0xc
+ 966 0470 01       		.uleb128 0x1
+ 967 0471 50       		.byte	0x50
+ 968 0472 02       		.uleb128 0x2
+ 969 0473 76       		.byte	0x76
+ 970 0474 00       		.sleb128 0
+ 971 0475 0C       		.uleb128 0xc
+ 972 0476 01       		.uleb128 0x1
+ 973 0477 51       		.byte	0x51
+ 974 0478 02       		.uleb128 0x2
+ 975 0479 75       		.byte	0x75
+ 976 047a 00       		.sleb128 0
+ 977 047b 00       		.byte	0
+ 978 047c 0A       		.uleb128 0xa
+ 979 047d 2A000000 		.4byte	.LVL39
+ 980 0481 8C060000 		.4byte	0x68c
+ 981 0485 12       		.uleb128 0x12
+ 982 0486 36000000 		.4byte	.LVL40
+ 983 048a 75060000 		.4byte	0x675
+ 984 048e 0C       		.uleb128 0xc
+ 985 048f 01       		.uleb128 0x1
+ 986 0490 50       		.byte	0x50
+ 987 0491 01       		.uleb128 0x1
+ 988 0492 31       		.byte	0x31
+ 989 0493 00       		.byte	0
+ 990 0494 00       		.byte	0
+ 991 0495 13       		.uleb128 0x13
+ 992 0496 04       		.byte	0x4
+ 993 0497 DF030000 		.4byte	0x3df
+ 994 049b 14       		.uleb128 0x14
+ 995 049c 42050000 		.4byte	.LASF61
+ 996 04a0 01       		.byte	0x1
+ 997 04a1 0C01     		.2byte	0x10c
+ 998 04a3 DF040000 		.4byte	0x4df
+ 999 04a7 00000000 		.4byte	.LFB5
+ 1000 04ab 10000000 		.4byte	.LFE5-.LFB5
+ 1001 04af 01       		.uleb128 0x1
+ 1002 04b0 9C       		.byte	0x9c
+ 1003 04b1 DF040000 		.4byte	0x4df
+ 1004 04b5 15       		.uleb128 0x15
+ 1005 04b6 72656700 		.ascii	"reg\000"
+ 1006 04ba 01       		.byte	0x1
+ 1007 04bb 0C01     		.2byte	0x10c
+ 1008 04bd 5B020000 		.4byte	0x25b
+ 1009 04c1 BD010000 		.4byte	.LLST11
+ 1010 04c5 15       		.uleb128 0x15
+ 1011 04c6 62697400 		.ascii	"bit\000"
+ 1012 04ca 01       		.byte	0x1
+ 1013 04cb 0C01     		.2byte	0x10c
+ 1014 04cd DF030000 		.4byte	0x3df
+ 1015 04d1 DE010000 		.4byte	.LLST12
+ 1016 04d5 0A       		.uleb128 0xa
+ 1017 04d6 08000000 		.4byte	.LVL44
+ 1018 04da B2010000 		.4byte	0x1b2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 25
+
+
+ 1019 04de 00       		.byte	0
+ 1020 04df 02       		.uleb128 0x2
+ 1021 04e0 01       		.byte	0x1
+ 1022 04e1 02       		.byte	0x2
+ 1023 04e2 D6030000 		.4byte	.LASF62
+ 1024 04e6 16       		.uleb128 0x16
+ 1025 04e7 03040000 		.4byte	.LASF76
+ 1026 04eb 01       		.byte	0x1
+ 1027 04ec 2201     		.2byte	0x122
+ 1028 04ee 01       		.byte	0x1
+ 1029 04ef 24050000 		.4byte	0x524
+ 1030 04f3 17       		.uleb128 0x17
+ 1031 04f4 72656700 		.ascii	"reg\000"
+ 1032 04f8 01       		.byte	0x1
+ 1033 04f9 2201     		.2byte	0x122
+ 1034 04fb 5B020000 		.4byte	0x25b
+ 1035 04ff 17       		.uleb128 0x17
+ 1036 0500 62697400 		.ascii	"bit\000"
+ 1037 0504 01       		.byte	0x1
+ 1038 0505 2301     		.2byte	0x123
+ 1039 0507 DF030000 		.4byte	0x3df
+ 1040 050b 18       		.uleb128 0x18
+ 1041 050c 57010000 		.4byte	.LASF63
+ 1042 0510 01       		.byte	0x1
+ 1043 0511 2301     		.2byte	0x123
+ 1044 0513 24050000 		.4byte	0x524
+ 1045 0517 19       		.uleb128 0x19
+ 1046 0518 99000000 		.4byte	.LASF77
+ 1047 051c 01       		.byte	0x1
+ 1048 051d 2501     		.2byte	0x125
+ 1049 051f 76000000 		.4byte	0x76
+ 1050 0523 00       		.byte	0
+ 1051 0524 0D       		.uleb128 0xd
+ 1052 0525 DF040000 		.4byte	0x4df
+ 1053 0529 1A       		.uleb128 0x1a
+ 1054 052a A3050000 		.4byte	.LASF64
+ 1055 052e 01       		.byte	0x1
+ 1056 052f 4001     		.2byte	0x140
+ 1057 0531 00000000 		.4byte	.LFB7
+ 1058 0535 26000000 		.4byte	.LFE7-.LFB7
+ 1059 0539 01       		.uleb128 0x1
+ 1060 053a 9C       		.byte	0x9c
+ 1061 053b C3050000 		.4byte	0x5c3
+ 1062 053f 15       		.uleb128 0x15
+ 1063 0540 72656700 		.ascii	"reg\000"
+ 1064 0544 01       		.byte	0x1
+ 1065 0545 4001     		.2byte	0x140
+ 1066 0547 5B020000 		.4byte	0x25b
+ 1067 054b FF010000 		.4byte	.LLST13
+ 1068 054f 15       		.uleb128 0x15
+ 1069 0550 62697400 		.ascii	"bit\000"
+ 1070 0554 01       		.byte	0x1
+ 1071 0555 4001     		.2byte	0x140
+ 1072 0557 DF030000 		.4byte	0x3df
+ 1073 055b 20020000 		.4byte	.LLST14
+ 1074 055f 1B       		.uleb128 0x1b
+ 1075 0560 E6040000 		.4byte	0x4e6
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 26
+
+
+ 1076 0564 0A000000 		.4byte	.LBB5
+ 1077 0568 1A000000 		.4byte	.LBE5-.LBB5
+ 1078 056c 01       		.byte	0x1
+ 1079 056d 4601     		.2byte	0x146
+ 1080 056f 1C       		.uleb128 0x1c
+ 1081 0570 0B050000 		.4byte	0x50b
+ 1082 0574 41020000 		.4byte	.LLST15
+ 1083 0578 1C       		.uleb128 0x1c
+ 1084 0579 FF040000 		.4byte	0x4ff
+ 1085 057d 55020000 		.4byte	.LLST16
+ 1086 0581 1C       		.uleb128 0x1c
+ 1087 0582 F3040000 		.4byte	0x4f3
+ 1088 0586 68020000 		.4byte	.LLST17
+ 1089 058a 1D       		.uleb128 0x1d
+ 1090 058b 0A000000 		.4byte	.LBB6
+ 1091 058f 1A000000 		.4byte	.LBE6-.LBB6
+ 1092 0593 1E       		.uleb128 0x1e
+ 1093 0594 17050000 		.4byte	0x517
+ 1094 0598 89020000 		.4byte	.LLST18
+ 1095 059c 0B       		.uleb128 0xb
+ 1096 059d 0E000000 		.4byte	.LVL47
+ 1097 05a1 B2010000 		.4byte	0x1b2
+ 1098 05a5 B0050000 		.4byte	0x5b0
+ 1099 05a9 0C       		.uleb128 0xc
+ 1100 05aa 01       		.uleb128 0x1
+ 1101 05ab 50       		.byte	0x50
+ 1102 05ac 02       		.uleb128 0x2
+ 1103 05ad 74       		.byte	0x74
+ 1104 05ae 00       		.sleb128 0
+ 1105 05af 00       		.byte	0
+ 1106 05b0 12       		.uleb128 0x12
+ 1107 05b1 24000000 		.4byte	.LVL50
+ 1108 05b5 49030000 		.4byte	0x349
+ 1109 05b9 0C       		.uleb128 0xc
+ 1110 05ba 01       		.uleb128 0x1
+ 1111 05bb 50       		.byte	0x50
+ 1112 05bc 02       		.uleb128 0x2
+ 1113 05bd 74       		.byte	0x74
+ 1114 05be 00       		.sleb128 0
+ 1115 05bf 00       		.byte	0
+ 1116 05c0 00       		.byte	0
+ 1117 05c1 00       		.byte	0
+ 1118 05c2 00       		.byte	0
+ 1119 05c3 1A       		.uleb128 0x1a
+ 1120 05c4 A5010000 		.4byte	.LASF65
+ 1121 05c8 01       		.byte	0x1
+ 1122 05c9 4F01     		.2byte	0x14f
+ 1123 05cb 00000000 		.4byte	.LFB8
+ 1124 05cf 26000000 		.4byte	.LFE8-.LFB8
+ 1125 05d3 01       		.uleb128 0x1
+ 1126 05d4 9C       		.byte	0x9c
+ 1127 05d5 5D060000 		.4byte	0x65d
+ 1128 05d9 15       		.uleb128 0x15
+ 1129 05da 72656700 		.ascii	"reg\000"
+ 1130 05de 01       		.byte	0x1
+ 1131 05df 4F01     		.2byte	0x14f
+ 1132 05e1 5B020000 		.4byte	0x25b
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 27
+
+
+ 1133 05e5 B7020000 		.4byte	.LLST19
+ 1134 05e9 15       		.uleb128 0x15
+ 1135 05ea 62697400 		.ascii	"bit\000"
+ 1136 05ee 01       		.byte	0x1
+ 1137 05ef 4F01     		.2byte	0x14f
+ 1138 05f1 DF030000 		.4byte	0x3df
+ 1139 05f5 D8020000 		.4byte	.LLST20
+ 1140 05f9 1B       		.uleb128 0x1b
+ 1141 05fa E6040000 		.4byte	0x4e6
+ 1142 05fe 0A000000 		.4byte	.LBB9
+ 1143 0602 1A000000 		.4byte	.LBE9-.LBB9
+ 1144 0606 01       		.byte	0x1
+ 1145 0607 5501     		.2byte	0x155
+ 1146 0609 1C       		.uleb128 0x1c
+ 1147 060a 0B050000 		.4byte	0x50b
+ 1148 060e F9020000 		.4byte	.LLST21
+ 1149 0612 1C       		.uleb128 0x1c
+ 1150 0613 FF040000 		.4byte	0x4ff
+ 1151 0617 0D030000 		.4byte	.LLST22
+ 1152 061b 1C       		.uleb128 0x1c
+ 1153 061c F3040000 		.4byte	0x4f3
+ 1154 0620 20030000 		.4byte	.LLST23
+ 1155 0624 1D       		.uleb128 0x1d
+ 1156 0625 0A000000 		.4byte	.LBB10
+ 1157 0629 1A000000 		.4byte	.LBE10-.LBB10
+ 1158 062d 1E       		.uleb128 0x1e
+ 1159 062e 17050000 		.4byte	0x517
+ 1160 0632 41030000 		.4byte	.LLST24
+ 1161 0636 0B       		.uleb128 0xb
+ 1162 0637 0E000000 		.4byte	.LVL53
+ 1163 063b B2010000 		.4byte	0x1b2
+ 1164 063f 4A060000 		.4byte	0x64a
+ 1165 0643 0C       		.uleb128 0xc
+ 1166 0644 01       		.uleb128 0x1
+ 1167 0645 50       		.byte	0x50
+ 1168 0646 02       		.uleb128 0x2
+ 1169 0647 74       		.byte	0x74
+ 1170 0648 00       		.sleb128 0
+ 1171 0649 00       		.byte	0
+ 1172 064a 12       		.uleb128 0x12
+ 1173 064b 24000000 		.4byte	.LVL56
+ 1174 064f 49030000 		.4byte	0x349
+ 1175 0653 0C       		.uleb128 0xc
+ 1176 0654 01       		.uleb128 0x1
+ 1177 0655 50       		.byte	0x50
+ 1178 0656 02       		.uleb128 0x2
+ 1179 0657 74       		.byte	0x74
+ 1180 0658 00       		.sleb128 0
+ 1181 0659 00       		.byte	0
+ 1182 065a 00       		.byte	0
+ 1183 065b 00       		.byte	0
+ 1184 065c 00       		.byte	0
+ 1185 065d 1F       		.uleb128 0x1f
+ 1186 065e 60020000 		.4byte	.LASF66
+ 1187 0662 60020000 		.4byte	.LASF66
+ 1188 0666 06       		.byte	0x6
+ 1189 0667 3F03     		.2byte	0x33f
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 28
+
+
+ 1190 0669 1F       		.uleb128 0x1f
+ 1191 066a C1000000 		.4byte	.LASF67
+ 1192 066e C1000000 		.4byte	.LASF67
+ 1193 0672 06       		.byte	0x6
+ 1194 0673 4703     		.2byte	0x347
+ 1195 0675 20       		.uleb128 0x20
+ 1196 0676 F5010000 		.4byte	.LASF68
+ 1197 067a F5010000 		.4byte	.LASF68
+ 1198 067e 07       		.byte	0x7
+ 1199 067f 33       		.byte	0x33
+ 1200 0680 1F       		.uleb128 0x1f
+ 1201 0681 2C040000 		.4byte	.LASF69
+ 1202 0685 2C040000 		.4byte	.LASF69
+ 1203 0689 06       		.byte	0x6
+ 1204 068a 4403     		.2byte	0x344
+ 1205 068c 1F       		.uleb128 0x1f
+ 1206 068d DA000000 		.4byte	.LASF70
+ 1207 0691 DA000000 		.4byte	.LASF70
+ 1208 0695 06       		.byte	0x6
+ 1209 0696 3E03     		.2byte	0x33e
+ 1210 0698 1F       		.uleb128 0x1f
+ 1211 0699 08030000 		.4byte	.LASF71
+ 1212 069d 08030000 		.4byte	.LASF71
+ 1213 06a1 06       		.byte	0x6
+ 1214 06a2 3D03     		.2byte	0x33d
+ 1215 06a4 1F       		.uleb128 0x1f
+ 1216 06a5 43040000 		.4byte	.LASF72
+ 1217 06a9 43040000 		.4byte	.LASF72
+ 1218 06ad 06       		.byte	0x6
+ 1219 06ae 4503     		.2byte	0x345
+ 1220 06b0 00       		.byte	0
+ 1221              		.section	.debug_abbrev,"",%progbits
+ 1222              	.Ldebug_abbrev0:
+ 1223 0000 01       		.uleb128 0x1
+ 1224 0001 11       		.uleb128 0x11
+ 1225 0002 01       		.byte	0x1
+ 1226 0003 25       		.uleb128 0x25
+ 1227 0004 0E       		.uleb128 0xe
+ 1228 0005 13       		.uleb128 0x13
+ 1229 0006 0B       		.uleb128 0xb
+ 1230 0007 03       		.uleb128 0x3
+ 1231 0008 0E       		.uleb128 0xe
+ 1232 0009 1B       		.uleb128 0x1b
+ 1233 000a 0E       		.uleb128 0xe
+ 1234 000b 55       		.uleb128 0x55
+ 1235 000c 17       		.uleb128 0x17
+ 1236 000d 11       		.uleb128 0x11
+ 1237 000e 01       		.uleb128 0x1
+ 1238 000f 10       		.uleb128 0x10
+ 1239 0010 17       		.uleb128 0x17
+ 1240 0011 00       		.byte	0
+ 1241 0012 00       		.byte	0
+ 1242 0013 02       		.uleb128 0x2
+ 1243 0014 24       		.uleb128 0x24
+ 1244 0015 00       		.byte	0
+ 1245 0016 0B       		.uleb128 0xb
+ 1246 0017 0B       		.uleb128 0xb
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 29
+
+
+ 1247 0018 3E       		.uleb128 0x3e
+ 1248 0019 0B       		.uleb128 0xb
+ 1249 001a 03       		.uleb128 0x3
+ 1250 001b 0E       		.uleb128 0xe
+ 1251 001c 00       		.byte	0
+ 1252 001d 00       		.byte	0
+ 1253 001e 03       		.uleb128 0x3
+ 1254 001f 16       		.uleb128 0x16
+ 1255 0020 00       		.byte	0
+ 1256 0021 03       		.uleb128 0x3
+ 1257 0022 0E       		.uleb128 0xe
+ 1258 0023 3A       		.uleb128 0x3a
+ 1259 0024 0B       		.uleb128 0xb
+ 1260 0025 3B       		.uleb128 0x3b
+ 1261 0026 0B       		.uleb128 0xb
+ 1262 0027 49       		.uleb128 0x49
+ 1263 0028 13       		.uleb128 0x13
+ 1264 0029 00       		.byte	0
+ 1265 002a 00       		.byte	0
+ 1266 002b 04       		.uleb128 0x4
+ 1267 002c 24       		.uleb128 0x24
+ 1268 002d 00       		.byte	0
+ 1269 002e 0B       		.uleb128 0xb
+ 1270 002f 0B       		.uleb128 0xb
+ 1271 0030 3E       		.uleb128 0x3e
+ 1272 0031 0B       		.uleb128 0xb
+ 1273 0032 03       		.uleb128 0x3
+ 1274 0033 08       		.uleb128 0x8
+ 1275 0034 00       		.byte	0
+ 1276 0035 00       		.byte	0
+ 1277 0036 05       		.uleb128 0x5
+ 1278 0037 04       		.uleb128 0x4
+ 1279 0038 01       		.byte	0x1
+ 1280 0039 0B       		.uleb128 0xb
+ 1281 003a 0B       		.uleb128 0xb
+ 1282 003b 49       		.uleb128 0x49
+ 1283 003c 13       		.uleb128 0x13
+ 1284 003d 3A       		.uleb128 0x3a
+ 1285 003e 0B       		.uleb128 0xb
+ 1286 003f 3B       		.uleb128 0x3b
+ 1287 0040 0B       		.uleb128 0xb
+ 1288 0041 01       		.uleb128 0x1
+ 1289 0042 13       		.uleb128 0x13
+ 1290 0043 00       		.byte	0
+ 1291 0044 00       		.byte	0
+ 1292 0045 06       		.uleb128 0x6
+ 1293 0046 28       		.uleb128 0x28
+ 1294 0047 00       		.byte	0
+ 1295 0048 03       		.uleb128 0x3
+ 1296 0049 0E       		.uleb128 0xe
+ 1297 004a 1C       		.uleb128 0x1c
+ 1298 004b 0B       		.uleb128 0xb
+ 1299 004c 00       		.byte	0
+ 1300 004d 00       		.byte	0
+ 1301 004e 07       		.uleb128 0x7
+ 1302 004f 2E       		.uleb128 0x2e
+ 1303 0050 01       		.byte	0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 30
+
+
+ 1304 0051 3F       		.uleb128 0x3f
+ 1305 0052 19       		.uleb128 0x19
+ 1306 0053 03       		.uleb128 0x3
+ 1307 0054 0E       		.uleb128 0xe
+ 1308 0055 3A       		.uleb128 0x3a
+ 1309 0056 0B       		.uleb128 0xb
+ 1310 0057 3B       		.uleb128 0x3b
+ 1311 0058 0B       		.uleb128 0xb
+ 1312 0059 27       		.uleb128 0x27
+ 1313 005a 19       		.uleb128 0x19
+ 1314 005b 49       		.uleb128 0x49
+ 1315 005c 13       		.uleb128 0x13
+ 1316 005d 11       		.uleb128 0x11
+ 1317 005e 01       		.uleb128 0x1
+ 1318 005f 12       		.uleb128 0x12
+ 1319 0060 06       		.uleb128 0x6
+ 1320 0061 40       		.uleb128 0x40
+ 1321 0062 18       		.uleb128 0x18
+ 1322 0063 9742     		.uleb128 0x2117
+ 1323 0065 19       		.uleb128 0x19
+ 1324 0066 01       		.uleb128 0x1
+ 1325 0067 13       		.uleb128 0x13
+ 1326 0068 00       		.byte	0
+ 1327 0069 00       		.byte	0
+ 1328 006a 08       		.uleb128 0x8
+ 1329 006b 05       		.uleb128 0x5
+ 1330 006c 00       		.byte	0
+ 1331 006d 03       		.uleb128 0x3
+ 1332 006e 08       		.uleb128 0x8
+ 1333 006f 3A       		.uleb128 0x3a
+ 1334 0070 0B       		.uleb128 0xb
+ 1335 0071 3B       		.uleb128 0x3b
+ 1336 0072 0B       		.uleb128 0xb
+ 1337 0073 49       		.uleb128 0x49
+ 1338 0074 13       		.uleb128 0x13
+ 1339 0075 02       		.uleb128 0x2
+ 1340 0076 17       		.uleb128 0x17
+ 1341 0077 00       		.byte	0
+ 1342 0078 00       		.byte	0
+ 1343 0079 09       		.uleb128 0x9
+ 1344 007a 34       		.uleb128 0x34
+ 1345 007b 00       		.byte	0
+ 1346 007c 03       		.uleb128 0x3
+ 1347 007d 0E       		.uleb128 0xe
+ 1348 007e 3A       		.uleb128 0x3a
+ 1349 007f 0B       		.uleb128 0xb
+ 1350 0080 3B       		.uleb128 0x3b
+ 1351 0081 0B       		.uleb128 0xb
+ 1352 0082 49       		.uleb128 0x49
+ 1353 0083 13       		.uleb128 0x13
+ 1354 0084 02       		.uleb128 0x2
+ 1355 0085 17       		.uleb128 0x17
+ 1356 0086 00       		.byte	0
+ 1357 0087 00       		.byte	0
+ 1358 0088 0A       		.uleb128 0xa
+ 1359 0089 898201   		.uleb128 0x4109
+ 1360 008c 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 31
+
+
+ 1361 008d 11       		.uleb128 0x11
+ 1362 008e 01       		.uleb128 0x1
+ 1363 008f 31       		.uleb128 0x31
+ 1364 0090 13       		.uleb128 0x13
+ 1365 0091 00       		.byte	0
+ 1366 0092 00       		.byte	0
+ 1367 0093 0B       		.uleb128 0xb
+ 1368 0094 898201   		.uleb128 0x4109
+ 1369 0097 01       		.byte	0x1
+ 1370 0098 11       		.uleb128 0x11
+ 1371 0099 01       		.uleb128 0x1
+ 1372 009a 31       		.uleb128 0x31
+ 1373 009b 13       		.uleb128 0x13
+ 1374 009c 01       		.uleb128 0x1
+ 1375 009d 13       		.uleb128 0x13
+ 1376 009e 00       		.byte	0
+ 1377 009f 00       		.byte	0
+ 1378 00a0 0C       		.uleb128 0xc
+ 1379 00a1 8A8201   		.uleb128 0x410a
+ 1380 00a4 00       		.byte	0
+ 1381 00a5 02       		.uleb128 0x2
+ 1382 00a6 18       		.uleb128 0x18
+ 1383 00a7 9142     		.uleb128 0x2111
+ 1384 00a9 18       		.uleb128 0x18
+ 1385 00aa 00       		.byte	0
+ 1386 00ab 00       		.byte	0
+ 1387 00ac 0D       		.uleb128 0xd
+ 1388 00ad 26       		.uleb128 0x26
+ 1389 00ae 00       		.byte	0
+ 1390 00af 49       		.uleb128 0x49
+ 1391 00b0 13       		.uleb128 0x13
+ 1392 00b1 00       		.byte	0
+ 1393 00b2 00       		.byte	0
+ 1394 00b3 0E       		.uleb128 0xe
+ 1395 00b4 2E       		.uleb128 0x2e
+ 1396 00b5 01       		.byte	0x1
+ 1397 00b6 3F       		.uleb128 0x3f
+ 1398 00b7 19       		.uleb128 0x19
+ 1399 00b8 03       		.uleb128 0x3
+ 1400 00b9 0E       		.uleb128 0xe
+ 1401 00ba 3A       		.uleb128 0x3a
+ 1402 00bb 0B       		.uleb128 0xb
+ 1403 00bc 3B       		.uleb128 0x3b
+ 1404 00bd 0B       		.uleb128 0xb
+ 1405 00be 27       		.uleb128 0x27
+ 1406 00bf 19       		.uleb128 0x19
+ 1407 00c0 11       		.uleb128 0x11
+ 1408 00c1 01       		.uleb128 0x1
+ 1409 00c2 12       		.uleb128 0x12
+ 1410 00c3 06       		.uleb128 0x6
+ 1411 00c4 40       		.uleb128 0x40
+ 1412 00c5 18       		.uleb128 0x18
+ 1413 00c6 9742     		.uleb128 0x2117
+ 1414 00c8 19       		.uleb128 0x19
+ 1415 00c9 01       		.uleb128 0x1
+ 1416 00ca 13       		.uleb128 0x13
+ 1417 00cb 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 32
+
+
+ 1418 00cc 00       		.byte	0
+ 1419 00cd 0F       		.uleb128 0xf
+ 1420 00ce 05       		.uleb128 0x5
+ 1421 00cf 00       		.byte	0
+ 1422 00d0 03       		.uleb128 0x3
+ 1423 00d1 0E       		.uleb128 0xe
+ 1424 00d2 3A       		.uleb128 0x3a
+ 1425 00d3 0B       		.uleb128 0xb
+ 1426 00d4 3B       		.uleb128 0x3b
+ 1427 00d5 0B       		.uleb128 0xb
+ 1428 00d6 49       		.uleb128 0x49
+ 1429 00d7 13       		.uleb128 0x13
+ 1430 00d8 02       		.uleb128 0x2
+ 1431 00d9 17       		.uleb128 0x17
+ 1432 00da 00       		.byte	0
+ 1433 00db 00       		.byte	0
+ 1434 00dc 10       		.uleb128 0x10
+ 1435 00dd 0B       		.uleb128 0xb
+ 1436 00de 01       		.byte	0x1
+ 1437 00df 11       		.uleb128 0x11
+ 1438 00e0 01       		.uleb128 0x1
+ 1439 00e1 12       		.uleb128 0x12
+ 1440 00e2 06       		.uleb128 0x6
+ 1441 00e3 01       		.uleb128 0x1
+ 1442 00e4 13       		.uleb128 0x13
+ 1443 00e5 00       		.byte	0
+ 1444 00e6 00       		.byte	0
+ 1445 00e7 11       		.uleb128 0x11
+ 1446 00e8 34       		.uleb128 0x34
+ 1447 00e9 00       		.byte	0
+ 1448 00ea 03       		.uleb128 0x3
+ 1449 00eb 08       		.uleb128 0x8
+ 1450 00ec 3A       		.uleb128 0x3a
+ 1451 00ed 0B       		.uleb128 0xb
+ 1452 00ee 3B       		.uleb128 0x3b
+ 1453 00ef 0B       		.uleb128 0xb
+ 1454 00f0 49       		.uleb128 0x49
+ 1455 00f1 13       		.uleb128 0x13
+ 1456 00f2 02       		.uleb128 0x2
+ 1457 00f3 17       		.uleb128 0x17
+ 1458 00f4 00       		.byte	0
+ 1459 00f5 00       		.byte	0
+ 1460 00f6 12       		.uleb128 0x12
+ 1461 00f7 898201   		.uleb128 0x4109
+ 1462 00fa 01       		.byte	0x1
+ 1463 00fb 11       		.uleb128 0x11
+ 1464 00fc 01       		.uleb128 0x1
+ 1465 00fd 31       		.uleb128 0x31
+ 1466 00fe 13       		.uleb128 0x13
+ 1467 00ff 00       		.byte	0
+ 1468 0100 00       		.byte	0
+ 1469 0101 13       		.uleb128 0x13
+ 1470 0102 0F       		.uleb128 0xf
+ 1471 0103 00       		.byte	0
+ 1472 0104 0B       		.uleb128 0xb
+ 1473 0105 0B       		.uleb128 0xb
+ 1474 0106 49       		.uleb128 0x49
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 33
+
+
+ 1475 0107 13       		.uleb128 0x13
+ 1476 0108 00       		.byte	0
+ 1477 0109 00       		.byte	0
+ 1478 010a 14       		.uleb128 0x14
+ 1479 010b 2E       		.uleb128 0x2e
+ 1480 010c 01       		.byte	0x1
+ 1481 010d 3F       		.uleb128 0x3f
+ 1482 010e 19       		.uleb128 0x19
+ 1483 010f 03       		.uleb128 0x3
+ 1484 0110 0E       		.uleb128 0xe
+ 1485 0111 3A       		.uleb128 0x3a
+ 1486 0112 0B       		.uleb128 0xb
+ 1487 0113 3B       		.uleb128 0x3b
+ 1488 0114 05       		.uleb128 0x5
+ 1489 0115 27       		.uleb128 0x27
+ 1490 0116 19       		.uleb128 0x19
+ 1491 0117 49       		.uleb128 0x49
+ 1492 0118 13       		.uleb128 0x13
+ 1493 0119 11       		.uleb128 0x11
+ 1494 011a 01       		.uleb128 0x1
+ 1495 011b 12       		.uleb128 0x12
+ 1496 011c 06       		.uleb128 0x6
+ 1497 011d 40       		.uleb128 0x40
+ 1498 011e 18       		.uleb128 0x18
+ 1499 011f 9742     		.uleb128 0x2117
+ 1500 0121 19       		.uleb128 0x19
+ 1501 0122 01       		.uleb128 0x1
+ 1502 0123 13       		.uleb128 0x13
+ 1503 0124 00       		.byte	0
+ 1504 0125 00       		.byte	0
+ 1505 0126 15       		.uleb128 0x15
+ 1506 0127 05       		.uleb128 0x5
+ 1507 0128 00       		.byte	0
+ 1508 0129 03       		.uleb128 0x3
+ 1509 012a 08       		.uleb128 0x8
+ 1510 012b 3A       		.uleb128 0x3a
+ 1511 012c 0B       		.uleb128 0xb
+ 1512 012d 3B       		.uleb128 0x3b
+ 1513 012e 05       		.uleb128 0x5
+ 1514 012f 49       		.uleb128 0x49
+ 1515 0130 13       		.uleb128 0x13
+ 1516 0131 02       		.uleb128 0x2
+ 1517 0132 17       		.uleb128 0x17
+ 1518 0133 00       		.byte	0
+ 1519 0134 00       		.byte	0
+ 1520 0135 16       		.uleb128 0x16
+ 1521 0136 2E       		.uleb128 0x2e
+ 1522 0137 01       		.byte	0x1
+ 1523 0138 03       		.uleb128 0x3
+ 1524 0139 0E       		.uleb128 0xe
+ 1525 013a 3A       		.uleb128 0x3a
+ 1526 013b 0B       		.uleb128 0xb
+ 1527 013c 3B       		.uleb128 0x3b
+ 1528 013d 05       		.uleb128 0x5
+ 1529 013e 27       		.uleb128 0x27
+ 1530 013f 19       		.uleb128 0x19
+ 1531 0140 20       		.uleb128 0x20
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 34
+
+
+ 1532 0141 0B       		.uleb128 0xb
+ 1533 0142 01       		.uleb128 0x1
+ 1534 0143 13       		.uleb128 0x13
+ 1535 0144 00       		.byte	0
+ 1536 0145 00       		.byte	0
+ 1537 0146 17       		.uleb128 0x17
+ 1538 0147 05       		.uleb128 0x5
+ 1539 0148 00       		.byte	0
+ 1540 0149 03       		.uleb128 0x3
+ 1541 014a 08       		.uleb128 0x8
+ 1542 014b 3A       		.uleb128 0x3a
+ 1543 014c 0B       		.uleb128 0xb
+ 1544 014d 3B       		.uleb128 0x3b
+ 1545 014e 05       		.uleb128 0x5
+ 1546 014f 49       		.uleb128 0x49
+ 1547 0150 13       		.uleb128 0x13
+ 1548 0151 00       		.byte	0
+ 1549 0152 00       		.byte	0
+ 1550 0153 18       		.uleb128 0x18
+ 1551 0154 05       		.uleb128 0x5
+ 1552 0155 00       		.byte	0
+ 1553 0156 03       		.uleb128 0x3
+ 1554 0157 0E       		.uleb128 0xe
+ 1555 0158 3A       		.uleb128 0x3a
+ 1556 0159 0B       		.uleb128 0xb
+ 1557 015a 3B       		.uleb128 0x3b
+ 1558 015b 05       		.uleb128 0x5
+ 1559 015c 49       		.uleb128 0x49
+ 1560 015d 13       		.uleb128 0x13
+ 1561 015e 00       		.byte	0
+ 1562 015f 00       		.byte	0
+ 1563 0160 19       		.uleb128 0x19
+ 1564 0161 34       		.uleb128 0x34
+ 1565 0162 00       		.byte	0
+ 1566 0163 03       		.uleb128 0x3
+ 1567 0164 0E       		.uleb128 0xe
+ 1568 0165 3A       		.uleb128 0x3a
+ 1569 0166 0B       		.uleb128 0xb
+ 1570 0167 3B       		.uleb128 0x3b
+ 1571 0168 05       		.uleb128 0x5
+ 1572 0169 49       		.uleb128 0x49
+ 1573 016a 13       		.uleb128 0x13
+ 1574 016b 00       		.byte	0
+ 1575 016c 00       		.byte	0
+ 1576 016d 1A       		.uleb128 0x1a
+ 1577 016e 2E       		.uleb128 0x2e
+ 1578 016f 01       		.byte	0x1
+ 1579 0170 3F       		.uleb128 0x3f
+ 1580 0171 19       		.uleb128 0x19
+ 1581 0172 03       		.uleb128 0x3
+ 1582 0173 0E       		.uleb128 0xe
+ 1583 0174 3A       		.uleb128 0x3a
+ 1584 0175 0B       		.uleb128 0xb
+ 1585 0176 3B       		.uleb128 0x3b
+ 1586 0177 05       		.uleb128 0x5
+ 1587 0178 27       		.uleb128 0x27
+ 1588 0179 19       		.uleb128 0x19
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 35
+
+
+ 1589 017a 11       		.uleb128 0x11
+ 1590 017b 01       		.uleb128 0x1
+ 1591 017c 12       		.uleb128 0x12
+ 1592 017d 06       		.uleb128 0x6
+ 1593 017e 40       		.uleb128 0x40
+ 1594 017f 18       		.uleb128 0x18
+ 1595 0180 9742     		.uleb128 0x2117
+ 1596 0182 19       		.uleb128 0x19
+ 1597 0183 01       		.uleb128 0x1
+ 1598 0184 13       		.uleb128 0x13
+ 1599 0185 00       		.byte	0
+ 1600 0186 00       		.byte	0
+ 1601 0187 1B       		.uleb128 0x1b
+ 1602 0188 1D       		.uleb128 0x1d
+ 1603 0189 01       		.byte	0x1
+ 1604 018a 31       		.uleb128 0x31
+ 1605 018b 13       		.uleb128 0x13
+ 1606 018c 11       		.uleb128 0x11
+ 1607 018d 01       		.uleb128 0x1
+ 1608 018e 12       		.uleb128 0x12
+ 1609 018f 06       		.uleb128 0x6
+ 1610 0190 58       		.uleb128 0x58
+ 1611 0191 0B       		.uleb128 0xb
+ 1612 0192 59       		.uleb128 0x59
+ 1613 0193 05       		.uleb128 0x5
+ 1614 0194 00       		.byte	0
+ 1615 0195 00       		.byte	0
+ 1616 0196 1C       		.uleb128 0x1c
+ 1617 0197 05       		.uleb128 0x5
+ 1618 0198 00       		.byte	0
+ 1619 0199 31       		.uleb128 0x31
+ 1620 019a 13       		.uleb128 0x13
+ 1621 019b 02       		.uleb128 0x2
+ 1622 019c 17       		.uleb128 0x17
+ 1623 019d 00       		.byte	0
+ 1624 019e 00       		.byte	0
+ 1625 019f 1D       		.uleb128 0x1d
+ 1626 01a0 0B       		.uleb128 0xb
+ 1627 01a1 01       		.byte	0x1
+ 1628 01a2 11       		.uleb128 0x11
+ 1629 01a3 01       		.uleb128 0x1
+ 1630 01a4 12       		.uleb128 0x12
+ 1631 01a5 06       		.uleb128 0x6
+ 1632 01a6 00       		.byte	0
+ 1633 01a7 00       		.byte	0
+ 1634 01a8 1E       		.uleb128 0x1e
+ 1635 01a9 34       		.uleb128 0x34
+ 1636 01aa 00       		.byte	0
+ 1637 01ab 31       		.uleb128 0x31
+ 1638 01ac 13       		.uleb128 0x13
+ 1639 01ad 02       		.uleb128 0x2
+ 1640 01ae 17       		.uleb128 0x17
+ 1641 01af 00       		.byte	0
+ 1642 01b0 00       		.byte	0
+ 1643 01b1 1F       		.uleb128 0x1f
+ 1644 01b2 2E       		.uleb128 0x2e
+ 1645 01b3 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 36
+
+
+ 1646 01b4 3F       		.uleb128 0x3f
+ 1647 01b5 19       		.uleb128 0x19
+ 1648 01b6 3C       		.uleb128 0x3c
+ 1649 01b7 19       		.uleb128 0x19
+ 1650 01b8 6E       		.uleb128 0x6e
+ 1651 01b9 0E       		.uleb128 0xe
+ 1652 01ba 03       		.uleb128 0x3
+ 1653 01bb 0E       		.uleb128 0xe
+ 1654 01bc 3A       		.uleb128 0x3a
+ 1655 01bd 0B       		.uleb128 0xb
+ 1656 01be 3B       		.uleb128 0x3b
+ 1657 01bf 05       		.uleb128 0x5
+ 1658 01c0 00       		.byte	0
+ 1659 01c1 00       		.byte	0
+ 1660 01c2 20       		.uleb128 0x20
+ 1661 01c3 2E       		.uleb128 0x2e
+ 1662 01c4 00       		.byte	0
+ 1663 01c5 3F       		.uleb128 0x3f
+ 1664 01c6 19       		.uleb128 0x19
+ 1665 01c7 3C       		.uleb128 0x3c
+ 1666 01c8 19       		.uleb128 0x19
+ 1667 01c9 6E       		.uleb128 0x6e
+ 1668 01ca 0E       		.uleb128 0xe
+ 1669 01cb 03       		.uleb128 0x3
+ 1670 01cc 0E       		.uleb128 0xe
+ 1671 01cd 3A       		.uleb128 0x3a
+ 1672 01ce 0B       		.uleb128 0xb
+ 1673 01cf 3B       		.uleb128 0x3b
+ 1674 01d0 0B       		.uleb128 0xb
+ 1675 01d1 00       		.byte	0
+ 1676 01d2 00       		.byte	0
+ 1677 01d3 00       		.byte	0
+ 1678              		.section	.debug_loc,"",%progbits
+ 1679              	.Ldebug_loc0:
+ 1680              	.LLST0:
+ 1681 0000 00000000 		.4byte	.LVL0
+ 1682 0004 07000000 		.4byte	.LVL1-1
+ 1683 0008 0100     		.2byte	0x1
+ 1684 000a 50       		.byte	0x50
+ 1685 000b 07000000 		.4byte	.LVL1-1
+ 1686 000f 38000000 		.4byte	.LFE1
+ 1687 0013 0400     		.2byte	0x4
+ 1688 0015 F3       		.byte	0xf3
+ 1689 0016 01       		.uleb128 0x1
+ 1690 0017 50       		.byte	0x50
+ 1691 0018 9F       		.byte	0x9f
+ 1692 0019 00000000 		.4byte	0
+ 1693 001d 00000000 		.4byte	0
+ 1694              	.LLST1:
+ 1695 0021 00000000 		.4byte	.LVL0
+ 1696 0025 34000000 		.4byte	.LVL9
+ 1697 0029 0200     		.2byte	0x2
+ 1698 002b 30       		.byte	0x30
+ 1699 002c 9F       		.byte	0x9f
+ 1700 002d 34000000 		.4byte	.LVL9
+ 1701 0031 38000000 		.4byte	.LFE1
+ 1702 0035 0100     		.2byte	0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 37
+
+
+ 1703 0037 50       		.byte	0x50
+ 1704 0038 00000000 		.4byte	0
+ 1705 003c 00000000 		.4byte	0
+ 1706              	.LLST2:
+ 1707 0040 00000000 		.4byte	.LVL10
+ 1708 0044 0B000000 		.4byte	.LVL11-1
+ 1709 0048 0100     		.2byte	0x1
+ 1710 004a 50       		.byte	0x50
+ 1711 004b 0B000000 		.4byte	.LVL11-1
+ 1712 004f 4E000000 		.4byte	.LFE2
+ 1713 0053 0400     		.2byte	0x4
+ 1714 0055 F3       		.byte	0xf3
+ 1715 0056 01       		.uleb128 0x1
+ 1716 0057 50       		.byte	0x50
+ 1717 0058 9F       		.byte	0x9f
+ 1718 0059 00000000 		.4byte	0
+ 1719 005d 00000000 		.4byte	0
+ 1720              	.LLST3:
+ 1721 0061 00000000 		.4byte	.LVL10
+ 1722 0065 0B000000 		.4byte	.LVL11-1
+ 1723 0069 0100     		.2byte	0x1
+ 1724 006b 51       		.byte	0x51
+ 1725 006c 0B000000 		.4byte	.LVL11-1
+ 1726 0070 2A000000 		.4byte	.LVL17
+ 1727 0074 0100     		.2byte	0x1
+ 1728 0076 54       		.byte	0x54
+ 1729 0077 2A000000 		.4byte	.LVL17
+ 1730 007b 4E000000 		.4byte	.LFE2
+ 1731 007f 0400     		.2byte	0x4
+ 1732 0081 F3       		.byte	0xf3
+ 1733 0082 01       		.uleb128 0x1
+ 1734 0083 51       		.byte	0x51
+ 1735 0084 9F       		.byte	0x9f
+ 1736 0085 00000000 		.4byte	0
+ 1737 0089 00000000 		.4byte	0
+ 1738              	.LLST4:
+ 1739 008d 00000000 		.4byte	.LVL10
+ 1740 0091 0B000000 		.4byte	.LVL11-1
+ 1741 0095 0100     		.2byte	0x1
+ 1742 0097 52       		.byte	0x52
+ 1743 0098 0B000000 		.4byte	.LVL11-1
+ 1744 009c 2A000000 		.4byte	.LVL17
+ 1745 00a0 0100     		.2byte	0x1
+ 1746 00a2 55       		.byte	0x55
+ 1747 00a3 2A000000 		.4byte	.LVL17
+ 1748 00a7 4E000000 		.4byte	.LFE2
+ 1749 00ab 0400     		.2byte	0x4
+ 1750 00ad F3       		.byte	0xf3
+ 1751 00ae 01       		.uleb128 0x1
+ 1752 00af 52       		.byte	0x52
+ 1753 00b0 9F       		.byte	0x9f
+ 1754 00b1 00000000 		.4byte	0
+ 1755 00b5 00000000 		.4byte	0
+ 1756              	.LLST5:
+ 1757 00b9 28000000 		.4byte	.LVL16
+ 1758 00bd 2A000000 		.4byte	.LVL17
+ 1759 00c1 0200     		.2byte	0x2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 38
+
+
+ 1760 00c3 30       		.byte	0x30
+ 1761 00c4 9F       		.byte	0x9f
+ 1762 00c5 2A000000 		.4byte	.LVL17
+ 1763 00c9 42000000 		.4byte	.LVL21
+ 1764 00cd 0700     		.2byte	0x7
+ 1765 00cf 74       		.byte	0x74
+ 1766 00d0 00       		.sleb128 0
+ 1767 00d1 F3       		.byte	0xf3
+ 1768 00d2 01       		.uleb128 0x1
+ 1769 00d3 51       		.byte	0x51
+ 1770 00d4 1C       		.byte	0x1c
+ 1771 00d5 9F       		.byte	0x9f
+ 1772 00d6 42000000 		.4byte	.LVL21
+ 1773 00da 44000000 		.4byte	.LVL22
+ 1774 00de 0900     		.2byte	0x9
+ 1775 00e0 74       		.byte	0x74
+ 1776 00e1 00       		.sleb128 0
+ 1777 00e2 F3       		.byte	0xf3
+ 1778 00e3 01       		.uleb128 0x1
+ 1779 00e4 51       		.byte	0x51
+ 1780 00e5 1C       		.byte	0x1c
+ 1781 00e6 23       		.byte	0x23
+ 1782 00e7 01       		.uleb128 0x1
+ 1783 00e8 9F       		.byte	0x9f
+ 1784 00e9 44000000 		.4byte	.LVL22
+ 1785 00ed 4C000000 		.4byte	.LVL24
+ 1786 00f1 0700     		.2byte	0x7
+ 1787 00f3 74       		.byte	0x74
+ 1788 00f4 00       		.sleb128 0
+ 1789 00f5 F3       		.byte	0xf3
+ 1790 00f6 01       		.uleb128 0x1
+ 1791 00f7 51       		.byte	0x51
+ 1792 00f8 1C       		.byte	0x1c
+ 1793 00f9 9F       		.byte	0x9f
+ 1794 00fa 00000000 		.4byte	0
+ 1795 00fe 00000000 		.4byte	0
+ 1796              	.LLST6:
+ 1797 0102 00000000 		.4byte	.LVL25
+ 1798 0106 09000000 		.4byte	.LVL26-1
+ 1799 010a 0100     		.2byte	0x1
+ 1800 010c 50       		.byte	0x50
+ 1801 010d 09000000 		.4byte	.LVL26-1
+ 1802 0111 32000000 		.4byte	.LFE3
+ 1803 0115 0400     		.2byte	0x4
+ 1804 0117 F3       		.byte	0xf3
+ 1805 0118 01       		.uleb128 0x1
+ 1806 0119 50       		.byte	0x50
+ 1807 011a 9F       		.byte	0x9f
+ 1808 011b 00000000 		.4byte	0
+ 1809 011f 00000000 		.4byte	0
+ 1810              	.LLST7:
+ 1811 0123 00000000 		.4byte	.LVL25
+ 1812 0127 09000000 		.4byte	.LVL26-1
+ 1813 012b 0100     		.2byte	0x1
+ 1814 012d 51       		.byte	0x51
+ 1815 012e 09000000 		.4byte	.LVL26-1
+ 1816 0132 32000000 		.4byte	.LFE3
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 39
+
+
+ 1817 0136 0400     		.2byte	0x4
+ 1818 0138 F3       		.byte	0xf3
+ 1819 0139 01       		.uleb128 0x1
+ 1820 013a 51       		.byte	0x51
+ 1821 013b 9F       		.byte	0x9f
+ 1822 013c 00000000 		.4byte	0
+ 1823 0140 00000000 		.4byte	0
+ 1824              	.LLST8:
+ 1825 0144 00000000 		.4byte	.LVL33
+ 1826 0148 0B000000 		.4byte	.LVL34-1
+ 1827 014c 0100     		.2byte	0x1
+ 1828 014e 50       		.byte	0x50
+ 1829 014f 0B000000 		.4byte	.LVL34-1
+ 1830 0153 38000000 		.4byte	.LFE4
+ 1831 0157 0400     		.2byte	0x4
+ 1832 0159 F3       		.byte	0xf3
+ 1833 015a 01       		.uleb128 0x1
+ 1834 015b 50       		.byte	0x50
+ 1835 015c 9F       		.byte	0x9f
+ 1836 015d 00000000 		.4byte	0
+ 1837 0161 00000000 		.4byte	0
+ 1838              	.LLST9:
+ 1839 0165 00000000 		.4byte	.LVL33
+ 1840 0169 0B000000 		.4byte	.LVL34-1
+ 1841 016d 0100     		.2byte	0x1
+ 1842 016f 51       		.byte	0x51
+ 1843 0170 0B000000 		.4byte	.LVL34-1
+ 1844 0174 36000000 		.4byte	.LVL42
+ 1845 0178 0100     		.2byte	0x1
+ 1846 017a 56       		.byte	0x56
+ 1847 017b 36000000 		.4byte	.LVL42
+ 1848 017f 38000000 		.4byte	.LFE4
+ 1849 0183 0400     		.2byte	0x4
+ 1850 0185 F3       		.byte	0xf3
+ 1851 0186 01       		.uleb128 0x1
+ 1852 0187 51       		.byte	0x51
+ 1853 0188 9F       		.byte	0x9f
+ 1854 0189 00000000 		.4byte	0
+ 1855 018d 00000000 		.4byte	0
+ 1856              	.LLST10:
+ 1857 0191 00000000 		.4byte	.LVL33
+ 1858 0195 0B000000 		.4byte	.LVL34-1
+ 1859 0199 0100     		.2byte	0x1
+ 1860 019b 52       		.byte	0x52
+ 1861 019c 0B000000 		.4byte	.LVL34-1
+ 1862 01a0 36000000 		.4byte	.LVL41
+ 1863 01a4 0100     		.2byte	0x1
+ 1864 01a6 55       		.byte	0x55
+ 1865 01a7 36000000 		.4byte	.LVL41
+ 1866 01ab 38000000 		.4byte	.LFE4
+ 1867 01af 0400     		.2byte	0x4
+ 1868 01b1 F3       		.byte	0xf3
+ 1869 01b2 01       		.uleb128 0x1
+ 1870 01b3 52       		.byte	0x52
+ 1871 01b4 9F       		.byte	0x9f
+ 1872 01b5 00000000 		.4byte	0
+ 1873 01b9 00000000 		.4byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 40
+
+
+ 1874              	.LLST11:
+ 1875 01bd 00000000 		.4byte	.LVL43
+ 1876 01c1 07000000 		.4byte	.LVL44-1
+ 1877 01c5 0100     		.2byte	0x1
+ 1878 01c7 50       		.byte	0x50
+ 1879 01c8 07000000 		.4byte	.LVL44-1
+ 1880 01cc 10000000 		.4byte	.LFE5
+ 1881 01d0 0400     		.2byte	0x4
+ 1882 01d2 F3       		.byte	0xf3
+ 1883 01d3 01       		.uleb128 0x1
+ 1884 01d4 50       		.byte	0x50
+ 1885 01d5 9F       		.byte	0x9f
+ 1886 01d6 00000000 		.4byte	0
+ 1887 01da 00000000 		.4byte	0
+ 1888              	.LLST12:
+ 1889 01de 00000000 		.4byte	.LVL43
+ 1890 01e2 07000000 		.4byte	.LVL44-1
+ 1891 01e6 0100     		.2byte	0x1
+ 1892 01e8 51       		.byte	0x51
+ 1893 01e9 07000000 		.4byte	.LVL44-1
+ 1894 01ed 10000000 		.4byte	.LFE5
+ 1895 01f1 0400     		.2byte	0x4
+ 1896 01f3 F3       		.byte	0xf3
+ 1897 01f4 01       		.uleb128 0x1
+ 1898 01f5 51       		.byte	0x51
+ 1899 01f6 9F       		.byte	0x9f
+ 1900 01f7 00000000 		.4byte	0
+ 1901 01fb 00000000 		.4byte	0
+ 1902              	.LLST13:
+ 1903 01ff 00000000 		.4byte	.LVL45
+ 1904 0203 0D000000 		.4byte	.LVL47-1
+ 1905 0207 0100     		.2byte	0x1
+ 1906 0209 50       		.byte	0x50
+ 1907 020a 0D000000 		.4byte	.LVL47-1
+ 1908 020e 26000000 		.4byte	.LFE7
+ 1909 0212 0400     		.2byte	0x4
+ 1910 0214 F3       		.byte	0xf3
+ 1911 0215 01       		.uleb128 0x1
+ 1912 0216 50       		.byte	0x50
+ 1913 0217 9F       		.byte	0x9f
+ 1914 0218 00000000 		.4byte	0
+ 1915 021c 00000000 		.4byte	0
+ 1916              	.LLST14:
+ 1917 0220 00000000 		.4byte	.LVL45
+ 1918 0224 0D000000 		.4byte	.LVL47-1
+ 1919 0228 0100     		.2byte	0x1
+ 1920 022a 51       		.byte	0x51
+ 1921 022b 0D000000 		.4byte	.LVL47-1
+ 1922 022f 26000000 		.4byte	.LFE7
+ 1923 0233 0400     		.2byte	0x4
+ 1924 0235 F3       		.byte	0xf3
+ 1925 0236 01       		.uleb128 0x1
+ 1926 0237 51       		.byte	0x51
+ 1927 0238 9F       		.byte	0x9f
+ 1928 0239 00000000 		.4byte	0
+ 1929 023d 00000000 		.4byte	0
+ 1930              	.LLST15:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 41
+
+
+ 1931 0241 0A000000 		.4byte	.LVL46
+ 1932 0245 24000000 		.4byte	.LVL50
+ 1933 0249 0200     		.2byte	0x2
+ 1934 024b 30       		.byte	0x30
+ 1935 024c 9F       		.byte	0x9f
+ 1936 024d 00000000 		.4byte	0
+ 1937 0251 00000000 		.4byte	0
+ 1938              	.LLST16:
+ 1939 0255 0A000000 		.4byte	.LVL46
+ 1940 0259 24000000 		.4byte	.LVL50
+ 1941 025d 0100     		.2byte	0x1
+ 1942 025f 55       		.byte	0x55
+ 1943 0260 00000000 		.4byte	0
+ 1944 0264 00000000 		.4byte	0
+ 1945              	.LLST17:
+ 1946 0268 0A000000 		.4byte	.LVL46
+ 1947 026c 0D000000 		.4byte	.LVL47-1
+ 1948 0270 0100     		.2byte	0x1
+ 1949 0272 50       		.byte	0x50
+ 1950 0273 0D000000 		.4byte	.LVL47-1
+ 1951 0277 24000000 		.4byte	.LVL50
+ 1952 027b 0400     		.2byte	0x4
+ 1953 027d F3       		.byte	0xf3
+ 1954 027e 01       		.uleb128 0x1
+ 1955 027f 50       		.byte	0x50
+ 1956 0280 9F       		.byte	0x9f
+ 1957 0281 00000000 		.4byte	0
+ 1958 0285 00000000 		.4byte	0
+ 1959              	.LLST18:
+ 1960 0289 0E000000 		.4byte	.LVL47
+ 1961 028d 18000000 		.4byte	.LVL48
+ 1962 0291 0100     		.2byte	0x1
+ 1963 0293 50       		.byte	0x50
+ 1964 0294 18000000 		.4byte	.LVL48
+ 1965 0298 1C000000 		.4byte	.LVL49
+ 1966 029c 1100     		.2byte	0x11
+ 1967 029e 09       		.byte	0x9
+ 1968 029f FE       		.byte	0xfe
+ 1969 02a0 75       		.byte	0x75
+ 1970 02a1 00       		.sleb128 0
+ 1971 02a2 14       		.byte	0x14
+ 1972 02a3 14       		.byte	0x14
+ 1973 02a4 24       		.byte	0x24
+ 1974 02a5 17       		.byte	0x17
+ 1975 02a6 1F       		.byte	0x1f
+ 1976 02a7 23       		.byte	0x23
+ 1977 02a8 20       		.uleb128 0x20
+ 1978 02a9 25       		.byte	0x25
+ 1979 02aa 21       		.byte	0x21
+ 1980 02ab 70       		.byte	0x70
+ 1981 02ac 00       		.sleb128 0
+ 1982 02ad 1A       		.byte	0x1a
+ 1983 02ae 9F       		.byte	0x9f
+ 1984 02af 00000000 		.4byte	0
+ 1985 02b3 00000000 		.4byte	0
+ 1986              	.LLST19:
+ 1987 02b7 00000000 		.4byte	.LVL51
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 42
+
+
+ 1988 02bb 0D000000 		.4byte	.LVL53-1
+ 1989 02bf 0100     		.2byte	0x1
+ 1990 02c1 50       		.byte	0x50
+ 1991 02c2 0D000000 		.4byte	.LVL53-1
+ 1992 02c6 26000000 		.4byte	.LFE8
+ 1993 02ca 0400     		.2byte	0x4
+ 1994 02cc F3       		.byte	0xf3
+ 1995 02cd 01       		.uleb128 0x1
+ 1996 02ce 50       		.byte	0x50
+ 1997 02cf 9F       		.byte	0x9f
+ 1998 02d0 00000000 		.4byte	0
+ 1999 02d4 00000000 		.4byte	0
+ 2000              	.LLST20:
+ 2001 02d8 00000000 		.4byte	.LVL51
+ 2002 02dc 0D000000 		.4byte	.LVL53-1
+ 2003 02e0 0100     		.2byte	0x1
+ 2004 02e2 51       		.byte	0x51
+ 2005 02e3 0D000000 		.4byte	.LVL53-1
+ 2006 02e7 26000000 		.4byte	.LFE8
+ 2007 02eb 0400     		.2byte	0x4
+ 2008 02ed F3       		.byte	0xf3
+ 2009 02ee 01       		.uleb128 0x1
+ 2010 02ef 51       		.byte	0x51
+ 2011 02f0 9F       		.byte	0x9f
+ 2012 02f1 00000000 		.4byte	0
+ 2013 02f5 00000000 		.4byte	0
+ 2014              	.LLST21:
+ 2015 02f9 0A000000 		.4byte	.LVL52
+ 2016 02fd 24000000 		.4byte	.LVL56
+ 2017 0301 0200     		.2byte	0x2
+ 2018 0303 31       		.byte	0x31
+ 2019 0304 9F       		.byte	0x9f
+ 2020 0305 00000000 		.4byte	0
+ 2021 0309 00000000 		.4byte	0
+ 2022              	.LLST22:
+ 2023 030d 0A000000 		.4byte	.LVL52
+ 2024 0311 24000000 		.4byte	.LVL56
+ 2025 0315 0100     		.2byte	0x1
+ 2026 0317 55       		.byte	0x55
+ 2027 0318 00000000 		.4byte	0
+ 2028 031c 00000000 		.4byte	0
+ 2029              	.LLST23:
+ 2030 0320 0A000000 		.4byte	.LVL52
+ 2031 0324 0D000000 		.4byte	.LVL53-1
+ 2032 0328 0100     		.2byte	0x1
+ 2033 032a 50       		.byte	0x50
+ 2034 032b 0D000000 		.4byte	.LVL53-1
+ 2035 032f 24000000 		.4byte	.LVL56
+ 2036 0333 0400     		.2byte	0x4
+ 2037 0335 F3       		.byte	0xf3
+ 2038 0336 01       		.uleb128 0x1
+ 2039 0337 50       		.byte	0x50
+ 2040 0338 9F       		.byte	0x9f
+ 2041 0339 00000000 		.4byte	0
+ 2042 033d 00000000 		.4byte	0
+ 2043              	.LLST24:
+ 2044 0341 0E000000 		.4byte	.LVL53
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 43
+
+
+ 2045 0345 18000000 		.4byte	.LVL54
+ 2046 0349 0100     		.2byte	0x1
+ 2047 034b 50       		.byte	0x50
+ 2048 034c 18000000 		.4byte	.LVL54
+ 2049 0350 1C000000 		.4byte	.LVL55
+ 2050 0354 0800     		.2byte	0x8
+ 2051 0356 31       		.byte	0x31
+ 2052 0357 75       		.byte	0x75
+ 2053 0358 00       		.sleb128 0
+ 2054 0359 24       		.byte	0x24
+ 2055 035a 70       		.byte	0x70
+ 2056 035b 00       		.sleb128 0
+ 2057 035c 21       		.byte	0x21
+ 2058 035d 9F       		.byte	0x9f
+ 2059 035e 00000000 		.4byte	0
+ 2060 0362 00000000 		.4byte	0
+ 2061              		.section	.debug_aranges,"",%progbits
+ 2062 0000 4C000000 		.4byte	0x4c
+ 2063 0004 0200     		.2byte	0x2
+ 2064 0006 00000000 		.4byte	.Ldebug_info0
+ 2065 000a 04       		.byte	0x4
+ 2066 000b 00       		.byte	0
+ 2067 000c 0000     		.2byte	0
+ 2068 000e 0000     		.2byte	0
+ 2069 0010 00000000 		.4byte	.LFB1
+ 2070 0014 38000000 		.4byte	.LFE1-.LFB1
+ 2071 0018 00000000 		.4byte	.LFB2
+ 2072 001c 4E000000 		.4byte	.LFE2-.LFB2
+ 2073 0020 00000000 		.4byte	.LFB3
+ 2074 0024 32000000 		.4byte	.LFE3-.LFB3
+ 2075 0028 00000000 		.4byte	.LFB4
+ 2076 002c 38000000 		.4byte	.LFE4-.LFB4
+ 2077 0030 00000000 		.4byte	.LFB5
+ 2078 0034 10000000 		.4byte	.LFE5-.LFB5
+ 2079 0038 00000000 		.4byte	.LFB7
+ 2080 003c 26000000 		.4byte	.LFE7-.LFB7
+ 2081 0040 00000000 		.4byte	.LFB8
+ 2082 0044 26000000 		.4byte	.LFE8-.LFB8
+ 2083 0048 00000000 		.4byte	0
+ 2084 004c 00000000 		.4byte	0
+ 2085              		.section	.debug_ranges,"",%progbits
+ 2086              	.Ldebug_ranges0:
+ 2087 0000 00000000 		.4byte	.LFB1
+ 2088 0004 38000000 		.4byte	.LFE1
+ 2089 0008 00000000 		.4byte	.LFB2
+ 2090 000c 4E000000 		.4byte	.LFE2
+ 2091 0010 00000000 		.4byte	.LFB3
+ 2092 0014 32000000 		.4byte	.LFE3
+ 2093 0018 00000000 		.4byte	.LFB4
+ 2094 001c 38000000 		.4byte	.LFE4
+ 2095 0020 00000000 		.4byte	.LFB5
+ 2096 0024 10000000 		.4byte	.LFE5
+ 2097 0028 00000000 		.4byte	.LFB7
+ 2098 002c 26000000 		.4byte	.LFE7
+ 2099 0030 00000000 		.4byte	.LFB8
+ 2100 0034 26000000 		.4byte	.LFE8
+ 2101 0038 00000000 		.4byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 44
+
+
+ 2102 003c 00000000 		.4byte	0
+ 2103              		.section	.debug_line,"",%progbits
+ 2104              	.Ldebug_line0:
+ 2105 0000 CC020000 		.section	.debug_str,"MS",%progbits,1
+ 2105      0200E201 
+ 2105      00000201 
+ 2105      FB0E0D00 
+ 2105      01010101 
+ 2106              	.LASF75:
+ 2107 0000 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 2107      73657273 
+ 2107      5C416664 
+ 2107      68616C41 
+ 2107      74696666 
+ 2108 002f 55415254 		.ascii	"UART_over_nFR24\\UART_over_nFR24.cydsn\000"
+ 2108      5F6F7665 
+ 2108      725F6E46 
+ 2108      5232345C 
+ 2108      55415254 
+ 2109              	.LASF48:
+ 2110 0055 4E52465F 		.ascii	"NRF_CMD_FLUSH_TX\000"
+ 2110      434D445F 
+ 2110      464C5553 
+ 2110      485F5458 
+ 2110      00
+ 2111              	.LASF23:
+ 2112 0066 4E52465F 		.ascii	"NRF_REG_RF_SETUP\000"
+ 2112      5245475F 
+ 2112      52465F53 
+ 2112      45545550 
+ 2112      00
+ 2113              	.LASF42:
+ 2114 0077 4E52465F 		.ascii	"NRF_REG_FEATURE\000"
+ 2114      5245475F 
+ 2114      46454154 
+ 2114      55524500 
+ 2115              	.LASF19:
+ 2116 0087 4E52465F 		.ascii	"NRF_REG_EN_RXADDR\000"
+ 2116      5245475F 
+ 2116      454E5F52 
+ 2116      58414444 
+ 2116      5200
+ 2117              	.LASF77:
+ 2118 0099 74656D70 		.ascii	"temp\000"
+ 2118      00
+ 2119              	.LASF25:
+ 2120 009e 4E52465F 		.ascii	"NRF_REG_OBSERVE_TX\000"
+ 2120      5245475F 
+ 2120      4F425345 
+ 2120      5256455F 
+ 2120      545800
+ 2121              	.LASF14:
+ 2122 00b1 73697A65 		.ascii	"size_t\000"
+ 2122      5F7400
+ 2123              	.LASF16:
+ 2124 00b8 73697A65 		.ascii	"sizetype\000"
+ 2124      74797065 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 45
+
+
+ 2124      00
+ 2125              	.LASF67:
+ 2126 00c1 5350495F 		.ascii	"SPI_SpiUartClearTxBuffer\000"
+ 2126      53706955 
+ 2126      61727443 
+ 2126      6C656172 
+ 2126      54784275 
+ 2127              	.LASF70:
+ 2128 00da 5350495F 		.ascii	"SPI_SpiUartGetRxBufferSize\000"
+ 2128      53706955 
+ 2128      61727447 
+ 2128      65745278 
+ 2128      42756666 
+ 2129              	.LASF40:
+ 2130 00f5 4E52465F 		.ascii	"NRF_REG_FIFO_STATUS\000"
+ 2130      5245475F 
+ 2130      4649464F 
+ 2130      5F535441 
+ 2130      54555300 
+ 2131              	.LASF35:
+ 2132 0109 4E52465F 		.ascii	"NRF_REG_RX_PW_P1\000"
+ 2132      5245475F 
+ 2132      52585F50 
+ 2132      575F5031 
+ 2132      00
+ 2133              	.LASF36:
+ 2134 011a 4E52465F 		.ascii	"NRF_REG_RX_PW_P2\000"
+ 2134      5245475F 
+ 2134      52585F50 
+ 2134      575F5032 
+ 2134      00
+ 2135              	.LASF2:
+ 2136 012b 73686F72 		.ascii	"short int\000"
+ 2136      7420696E 
+ 2136      7400
+ 2137              	.LASF38:
+ 2138 0135 4E52465F 		.ascii	"NRF_REG_RX_PW_P4\000"
+ 2138      5245475F 
+ 2138      52585F50 
+ 2138      575F5034 
+ 2138      00
+ 2139              	.LASF39:
+ 2140 0146 4E52465F 		.ascii	"NRF_REG_RX_PW_P5\000"
+ 2140      5245475F 
+ 2140      52585F50 
+ 2140      575F5035 
+ 2140      00
+ 2141              	.LASF63:
+ 2142 0157 76616C75 		.ascii	"value\000"
+ 2142      6500
+ 2143              	.LASF18:
+ 2144 015d 4E52465F 		.ascii	"NRF_REG_EN_AA\000"
+ 2144      5245475F 
+ 2144      454E5F41 
+ 2144      4100
+ 2145              	.LASF10:
+ 2146 016b 75696E74 		.ascii	"uint8_t\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 46
+
+
+ 2146      385F7400 
+ 2147              	.LASF24:
+ 2148 0173 4E52465F 		.ascii	"NRF_REG_STATUS\000"
+ 2148      5245475F 
+ 2148      53544154 
+ 2148      555300
+ 2149              	.LASF46:
+ 2150 0182 4E52465F 		.ascii	"NRF_CMD_R_RX_PAYLOAD\000"
+ 2150      434D445F 
+ 2150      525F5258 
+ 2150      5F504159 
+ 2150      4C4F4144 
+ 2151              	.LASF22:
+ 2152 0197 4E52465F 		.ascii	"NRF_REG_RF_CH\000"
+ 2152      5245475F 
+ 2152      52465F43 
+ 2152      4800
+ 2153              	.LASF65:
+ 2154 01a5 6E524632 		.ascii	"nRF24_set_bit\000"
+ 2154      345F7365 
+ 2154      745F6269 
+ 2154      7400
+ 2155              	.LASF59:
+ 2156 01b3 6E524632 		.ascii	"nRF24_write_long_register\000"
+ 2156      345F7772 
+ 2156      6974655F 
+ 2156      6C6F6E67 
+ 2156      5F726567 
+ 2157              	.LASF11:
+ 2158 01cd 666C6F61 		.ascii	"float\000"
+ 2158      7400
+ 2159              	.LASF60:
+ 2160 01d3 6E524632 		.ascii	"nRF24_read_register\000"
+ 2160      345F7265 
+ 2160      61645F72 
+ 2160      65676973 
+ 2160      74657200 
+ 2161              	.LASF6:
+ 2162 01e7 6C6F6E67 		.ascii	"long long int\000"
+ 2162      206C6F6E 
+ 2162      6720696E 
+ 2162      7400
+ 2163              	.LASF68:
+ 2164 01f5 53535F57 		.ascii	"SS_Write\000"
+ 2164      72697465 
+ 2164      00
+ 2165              	.LASF4:
+ 2166 01fe 6C6F6E67 		.ascii	"long int\000"
+ 2166      20696E74 
+ 2166      00
+ 2167              	.LASF26:
+ 2168 0207 4E52465F 		.ascii	"NRF_REG_RPD\000"
+ 2168      5245475F 
+ 2168      52504400 
+ 2169              	.LASF54:
+ 2170 0213 4E52465F 		.ascii	"NRF_CMD_NOP\000"
+ 2170      434D445F 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 47
+
+
+ 2170      4E4F5000 
+ 2171              	.LASF33:
+ 2172 021f 4E52465F 		.ascii	"NRF_REG_TX_ADDR\000"
+ 2172      5245475F 
+ 2172      54585F41 
+ 2172      44445200 
+ 2173              	.LASF9:
+ 2174 022f 5F5F7569 		.ascii	"__uint8_t\000"
+ 2174      6E74385F 
+ 2174      7400
+ 2175              	.LASF57:
+ 2176 0239 6E524632 		.ascii	"nRF24_read_long_register\000"
+ 2176      345F7265 
+ 2176      61645F6C 
+ 2176      6F6E675F 
+ 2176      72656769 
+ 2177              	.LASF1:
+ 2178 0252 756E7369 		.ascii	"unsigned char\000"
+ 2178      676E6564 
+ 2178      20636861 
+ 2178      7200
+ 2179              	.LASF66:
+ 2180 0260 5350495F 		.ascii	"SPI_SpiUartClearRxBuffer\000"
+ 2180      53706955 
+ 2180      61727443 
+ 2180      6C656172 
+ 2180      52784275 
+ 2181              	.LASF15:
+ 2182 0279 6C6F6E67 		.ascii	"long double\000"
+ 2182      20646F75 
+ 2182      626C6500 
+ 2183              	.LASF27:
+ 2184 0285 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P0\000"
+ 2184      5245475F 
+ 2184      52585F41 
+ 2184      4444525F 
+ 2184      503000
+ 2185              	.LASF28:
+ 2186 0298 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P1\000"
+ 2186      5245475F 
+ 2186      52585F41 
+ 2186      4444525F 
+ 2186      503100
+ 2187              	.LASF29:
+ 2188 02ab 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P2\000"
+ 2188      5245475F 
+ 2188      52585F41 
+ 2188      4444525F 
+ 2188      503200
+ 2189              	.LASF30:
+ 2190 02be 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P3\000"
+ 2190      5245475F 
+ 2190      52585F41 
+ 2190      4444525F 
+ 2190      503300
+ 2191              	.LASF31:
+ 2192 02d1 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P4\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 48
+
+
+ 2192      5245475F 
+ 2192      52585F41 
+ 2192      4444525F 
+ 2192      503400
+ 2193              	.LASF32:
+ 2194 02e4 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P5\000"
+ 2194      5245475F 
+ 2194      52585F41 
+ 2194      4444525F 
+ 2194      503500
+ 2195              	.LASF49:
+ 2196 02f7 4E52465F 		.ascii	"NRF_CMD_FLUSH_RX\000"
+ 2196      434D445F 
+ 2196      464C5553 
+ 2196      485F5258 
+ 2196      00
+ 2197              	.LASF71:
+ 2198 0308 5350495F 		.ascii	"SPI_SpiUartReadRxData\000"
+ 2198      53706955 
+ 2198      61727452 
+ 2198      65616452 
+ 2198      78446174 
+ 2199              	.LASF0:
+ 2200 031e 7369676E 		.ascii	"signed char\000"
+ 2200      65642063 
+ 2200      68617200 
+ 2201              	.LASF7:
+ 2202 032a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2202      206C6F6E 
+ 2202      6720756E 
+ 2202      7369676E 
+ 2202      65642069 
+ 2203              	.LASF58:
+ 2204 0341 6E524632 		.ascii	"nRF24_write_register\000"
+ 2204      345F7772 
+ 2204      6974655F 
+ 2204      72656769 
+ 2204      73746572 
+ 2205              	.LASF8:
+ 2206 0356 756E7369 		.ascii	"unsigned int\000"
+ 2206      676E6564 
+ 2206      20696E74 
+ 2206      00
+ 2207              	.LASF43:
+ 2208 0363 6E72665F 		.ascii	"nrf_register\000"
+ 2208      72656769 
+ 2208      73746572 
+ 2208      00
+ 2209              	.LASF74:
+ 2210 0370 47656E65 		.ascii	"Generated_Source\\PSoC4\\nRF24_HAL.c\000"
+ 2210      72617465 
+ 2210      645F536F 
+ 2210      75726365 
+ 2210      5C50536F 
+ 2211              	.LASF44:
+ 2212 0393 4E52465F 		.ascii	"NRF_CMD_R_REGISTER\000"
+ 2212      434D445F 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 49
+
+
+ 2212      525F5245 
+ 2212      47495354 
+ 2212      455200
+ 2213              	.LASF45:
+ 2214 03a6 4E52465F 		.ascii	"NRF_CMD_W_REGISTER\000"
+ 2214      434D445F 
+ 2214      575F5245 
+ 2214      47495354 
+ 2214      455200
+ 2215              	.LASF56:
+ 2216 03b9 73697A65 		.ascii	"size\000"
+ 2216      00
+ 2217              	.LASF13:
+ 2218 03be 63686172 		.ascii	"char\000"
+ 2218      00
+ 2219              	.LASF3:
+ 2220 03c3 73686F72 		.ascii	"short unsigned int\000"
+ 2220      7420756E 
+ 2220      7369676E 
+ 2220      65642069 
+ 2220      6E7400
+ 2221              	.LASF62:
+ 2222 03d6 5F426F6F 		.ascii	"_Bool\000"
+ 2222      6C00
+ 2223              	.LASF41:
+ 2224 03dc 4E52465F 		.ascii	"NRF_REG_DYNPD\000"
+ 2224      5245475F 
+ 2224      44594E50 
+ 2224      4400
+ 2225              	.LASF55:
+ 2226 03ea 64617461 		.ascii	"data\000"
+ 2226      00
+ 2227              	.LASF51:
+ 2228 03ef 4E52465F 		.ascii	"NRF_CMD_R_RX_PL_WID\000"
+ 2228      434D445F 
+ 2228      525F5258 
+ 2228      5F504C5F 
+ 2228      57494400 
+ 2229              	.LASF76:
+ 2230 0403 6E524632 		.ascii	"nRF24_write_bit\000"
+ 2230      345F7772 
+ 2230      6974655F 
+ 2230      62697400 
+ 2231              	.LASF5:
+ 2232 0413 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2232      20756E73 
+ 2232      69676E65 
+ 2232      6420696E 
+ 2232      7400
+ 2233              	.LASF12:
+ 2234 0425 646F7562 		.ascii	"double\000"
+ 2234      6C6500
+ 2235              	.LASF69:
+ 2236 042c 5350495F 		.ascii	"SPI_SpiUartWriteTxData\000"
+ 2236      53706955 
+ 2236      61727457 
+ 2236      72697465 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 50
+
+
+ 2236      54784461 
+ 2237              	.LASF72:
+ 2238 0443 5350495F 		.ascii	"SPI_SpiUartPutArray\000"
+ 2238      53706955 
+ 2238      61727450 
+ 2238      75744172 
+ 2238      72617900 
+ 2239              	.LASF50:
+ 2240 0457 4E52465F 		.ascii	"NRF_CMD_REUSE_TX_PL\000"
+ 2240      434D445F 
+ 2240      52455553 
+ 2240      455F5458 
+ 2240      5F504C00 
+ 2241              	.LASF17:
+ 2242 046b 4E52465F 		.ascii	"NRF_REG_CONFIG\000"
+ 2242      5245475F 
+ 2242      434F4E46 
+ 2242      494700
+ 2243              	.LASF21:
+ 2244 047a 4E52465F 		.ascii	"NRF_REG_SETUP_RETR\000"
+ 2244      5245475F 
+ 2244      53455455 
+ 2244      505F5245 
+ 2244      545200
+ 2245              	.LASF52:
+ 2246 048d 4E52465F 		.ascii	"NRF_CMD_W_ACK_PAYLOAD\000"
+ 2246      434D445F 
+ 2246      575F4143 
+ 2246      4B5F5041 
+ 2246      594C4F41 
+ 2247              	.LASF73:
+ 2248 04a3 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2248      43313120 
+ 2248      352E342E 
+ 2248      31203230 
+ 2248      31363036 
+ 2249 04d6 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2249      20726576 
+ 2249      6973696F 
+ 2249      6E203233 
+ 2249      37373135 
+ 2250 0509 73202D66 		.ascii	"s -ffunction-sections -ffat-lto-objects\000"
+ 2250      66756E63 
+ 2250      74696F6E 
+ 2250      2D736563 
+ 2250      74696F6E 
+ 2251              	.LASF20:
+ 2252 0531 4E52465F 		.ascii	"NRF_REG_SETUP_AW\000"
+ 2252      5245475F 
+ 2252      53455455 
+ 2252      505F4157 
+ 2252      00
+ 2253              	.LASF61:
+ 2254 0542 6E524632 		.ascii	"nRF24_read_bit\000"
+ 2254      345F7265 
+ 2254      61645F62 
+ 2254      697400
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccuN2ray.s 			page 51
+
+
+ 2255              	.LASF53:
+ 2256 0551 4E52465F 		.ascii	"NRF_CMD_W_TX_PAYLOAD_NOACK\000"
+ 2256      434D445F 
+ 2256      575F5458 
+ 2256      5F504159 
+ 2256      4C4F4144 
+ 2257              	.LASF34:
+ 2258 056c 4E52465F 		.ascii	"NRF_REG_RX_PW_P0\000"
+ 2258      5245475F 
+ 2258      52585F50 
+ 2258      575F5030 
+ 2258      00
+ 2259              	.LASF37:
+ 2260 057d 4E52465F 		.ascii	"NRF_REG_RX_PW_P3\000"
+ 2260      5245475F 
+ 2260      52585F50 
+ 2260      575F5033 
+ 2260      00
+ 2261              	.LASF47:
+ 2262 058e 4E52465F 		.ascii	"NRF_CMD_W_TX_PAYLOAD\000"
+ 2262      434D445F 
+ 2262      575F5458 
+ 2262      5F504159 
+ 2262      4C4F4144 
+ 2263              	.LASF64:
+ 2264 05a3 6E524632 		.ascii	"nRF24_clear_bit\000"
+ 2264      345F636C 
+ 2264      6561725F 
+ 2264      62697400 
+ 2265              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

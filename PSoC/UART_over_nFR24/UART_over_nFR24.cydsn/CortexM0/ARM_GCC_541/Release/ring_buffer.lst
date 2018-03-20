@@ -1,0 +1,3203 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"ring_buffer.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.circular_buf_reset,"ax",%progbits
+  20              		.align	1
+  21              		.global	circular_buf_reset
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	circular_buf_reset, %function
+  25              	circular_buf_reset:
+  26              	.LFB34:
+  27              		.file 1 "ring_buffer.c"
+   1:ring_buffer.c **** /*
+   2:ring_buffer.c ****  * ring_buffer.c
+   3:ring_buffer.c ****  *
+   4:ring_buffer.c ****  *  Created on: 16 Mar 2018
+   5:ring_buffer.c ****  *      Author: AfdhalAtiffTan
+   6:ring_buffer.c ****  * 
+   7:ring_buffer.c ****  * Circular buffer implementation was taken from: https://github.com/embeddedartistry/embedded-reso
+   8:ring_buffer.c ****  * Lightly modified to accept uint16_t
+   9:ring_buffer.c ****  */
+  10:ring_buffer.c **** 
+  11:ring_buffer.c **** #include "ring_buffer.h"
+  12:ring_buffer.c **** 
+  13:ring_buffer.c **** #define BUF_SIZE 256 //set the buffer size
+  14:ring_buffer.c **** 
+  15:ring_buffer.c **** //<embeddedartistry> 
+  16:ring_buffer.c **** /* https://embeddedartistry.com/blog/2017/4/6/circular-buffers-in-cc */
+  17:ring_buffer.c **** 
+  18:ring_buffer.c **** typedef struct {
+  19:ring_buffer.c **** 	uint16_t *  buffer;
+  20:ring_buffer.c **** 	size_t      head;
+  21:ring_buffer.c **** 	size_t      tail;
+  22:ring_buffer.c **** 	size_t      size; //of the buffer
+  23:ring_buffer.c **** }   circular_buf_t;
+  24:ring_buffer.c **** 
+  25:ring_buffer.c **** /**
+  26:ring_buffer.c **** * Important Usage Note: This library reserves one spare byte for queue-full detection
+  27:ring_buffer.c **** * Otherwise, corner cases and detecting difference between full/empty is hard.
+  28:ring_buffer.c **** * You are not seeing an accidental off-by-one.
+  29:ring_buffer.c **** */
+  30:ring_buffer.c **** 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 2
+
+
+  31:ring_buffer.c **** int circular_buf_reset(circular_buf_t * cbuf);
+  32:ring_buffer.c **** int circular_buf_put(circular_buf_t * cbuf, uint16_t data);
+  33:ring_buffer.c **** //TODO: int circular_buf_put_range(circular_buf_t cbuf, uint8_t * data, size_t len);
+  34:ring_buffer.c **** int circular_buf_get(circular_buf_t * cbuf, uint16_t * data);
+  35:ring_buffer.c **** //TODO: int circular_buf_get_range(circular_buf_t cbuf, uint8_t *data, size_t len);
+  36:ring_buffer.c **** bool circular_buf_empty(circular_buf_t cbuf);
+  37:ring_buffer.c **** bool circular_buf_full(circular_buf_t cbuf);
+  38:ring_buffer.c **** 
+  39:ring_buffer.c **** int circular_buf_reset(circular_buf_t * cbuf)
+  40:ring_buffer.c **** {
+  28              		.loc 1 40 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  41:ring_buffer.c ****     int r = -1;
+  42:ring_buffer.c **** 
+  43:ring_buffer.c ****     if(cbuf)
+  34              		.loc 1 43 0
+  35 0000 0028     		cmp	r0, #0
+  36 0002 04D0     		beq	.L3
+  44:ring_buffer.c ****     {
+  45:ring_buffer.c ****         cbuf->head = 0;
+  37              		.loc 1 45 0
+  38 0004 0023     		movs	r3, #0
+  39 0006 4360     		str	r3, [r0, #4]
+  46:ring_buffer.c ****         cbuf->tail = 0;
+  40              		.loc 1 46 0
+  41 0008 8360     		str	r3, [r0, #8]
+  42              	.LVL1:
+  47:ring_buffer.c ****         r = 0;
+  43              		.loc 1 47 0
+  44 000a 1800     		movs	r0, r3
+  45              	.LVL2:
+  46 000c 01E0     		b	.L2
+  47              	.LVL3:
+  48              	.L3:
+  41:ring_buffer.c **** 
+  49              		.loc 1 41 0
+  50 000e 0120     		movs	r0, #1
+  51              	.LVL4:
+  52 0010 4042     		rsbs	r0, r0, #0
+  53              	.LVL5:
+  54              	.L2:
+  48:ring_buffer.c ****     }
+  49:ring_buffer.c **** 
+  50:ring_buffer.c ****     return r;
+  51:ring_buffer.c **** }
+  55              		.loc 1 51 0
+  56              		@ sp needed
+  57 0012 7047     		bx	lr
+  58              		.cfi_endproc
+  59              	.LFE34:
+  60              		.size	circular_buf_reset, .-circular_buf_reset
+  61              		.global	__aeabi_uidivmod
+  62              		.section	.text.circular_buf_put,"ax",%progbits
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 3
+
+
+  63              		.align	1
+  64              		.global	circular_buf_put
+  65              		.code	16
+  66              		.thumb_func
+  67              		.type	circular_buf_put, %function
+  68              	circular_buf_put:
+  69              	.LFB35:
+  52:ring_buffer.c **** 
+  53:ring_buffer.c **** int circular_buf_put(circular_buf_t * cbuf, uint16_t data)
+  54:ring_buffer.c **** {
+  70              		.loc 1 54 0
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              	.LVL6:
+  75 0000 70B5     		push	{r4, r5, r6, lr}
+  76              		.cfi_def_cfa_offset 16
+  77              		.cfi_offset 4, -16
+  78              		.cfi_offset 5, -12
+  79              		.cfi_offset 6, -8
+  80              		.cfi_offset 14, -4
+  81              		.loc 1 54 0
+  82 0002 041E     		subs	r4, r0, #0
+  55:ring_buffer.c ****     int r = -1;
+  56:ring_buffer.c **** 
+  57:ring_buffer.c ****     if(cbuf)
+  83              		.loc 1 57 0
+  84 0004 13D0     		beq	.L7
+  58:ring_buffer.c ****     {
+  59:ring_buffer.c ****         cbuf->buffer[cbuf->head] = data;
+  85              		.loc 1 59 0
+  86 0006 4068     		ldr	r0, [r0, #4]
+  87              	.LVL7:
+  88 0008 2268     		ldr	r2, [r4]
+  60:ring_buffer.c ****         cbuf->head = (cbuf->head + 1) % cbuf->size;
+  89              		.loc 1 60 0
+  90 000a E668     		ldr	r6, [r4, #12]
+  59:ring_buffer.c ****         cbuf->head = (cbuf->head + 1) % cbuf->size;
+  91              		.loc 1 59 0
+  92 000c 4300     		lsls	r3, r0, #1
+  93 000e 9952     		strh	r1, [r3, r2]
+  94              		.loc 1 60 0
+  95 0010 0130     		adds	r0, r0, #1
+  96 0012 3100     		movs	r1, r6
+  97              	.LVL8:
+  98 0014 FFF7FEFF 		bl	__aeabi_uidivmod
+  99              	.LVL9:
+  61:ring_buffer.c **** 
+  62:ring_buffer.c ****         if(cbuf->head == cbuf->tail)
+ 100              		.loc 1 62 0
+ 101 0018 A368     		ldr	r3, [r4, #8]
+  60:ring_buffer.c **** 
+ 102              		.loc 1 60 0
+ 103 001a 6160     		str	r1, [r4, #4]
+  63:ring_buffer.c ****         {
+  64:ring_buffer.c ****             cbuf->tail = (cbuf->tail + 1) % cbuf->size;
+  65:ring_buffer.c ****         }
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 4
+
+
+  66:ring_buffer.c **** 
+  67:ring_buffer.c ****         r = 0;
+ 104              		.loc 1 67 0
+ 105 001c 0025     		movs	r5, #0
+  62:ring_buffer.c ****         {
+ 106              		.loc 1 62 0
+ 107 001e 9942     		cmp	r1, r3
+ 108 0020 07D1     		bne	.L6
+  64:ring_buffer.c ****         }
+ 109              		.loc 1 64 0
+ 110 0022 481C     		adds	r0, r1, #1
+ 111 0024 3100     		movs	r1, r6
+ 112 0026 FFF7FEFF 		bl	__aeabi_uidivmod
+ 113              	.LVL10:
+ 114 002a A160     		str	r1, [r4, #8]
+ 115 002c 01E0     		b	.L6
+ 116              	.LVL11:
+ 117              	.L7:
+  55:ring_buffer.c **** 
+ 118              		.loc 1 55 0
+ 119 002e 0125     		movs	r5, #1
+ 120 0030 6D42     		rsbs	r5, r5, #0
+ 121              	.LVL12:
+ 122              	.L6:
+  68:ring_buffer.c ****     }
+  69:ring_buffer.c **** 
+  70:ring_buffer.c ****     return r;
+  71:ring_buffer.c **** }
+ 123              		.loc 1 71 0
+ 124 0032 2800     		movs	r0, r5
+ 125              		@ sp needed
+ 126              	.LVL13:
+ 127              	.LVL14:
+ 128 0034 70BD     		pop	{r4, r5, r6, pc}
+ 129              		.cfi_endproc
+ 130              	.LFE35:
+ 131              		.size	circular_buf_put, .-circular_buf_put
+ 132              		.section	.text.circular_buf_get,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	circular_buf_get
+ 135              		.code	16
+ 136              		.thumb_func
+ 137              		.type	circular_buf_get, %function
+ 138              	circular_buf_get:
+ 139              	.LFB36:
+  72:ring_buffer.c **** 
+  73:ring_buffer.c **** int circular_buf_get(circular_buf_t * cbuf, uint16_t * data)
+  74:ring_buffer.c **** {
+ 140              		.loc 1 74 0
+ 141              		.cfi_startproc
+ 142              		@ args = 0, pretend = 0, frame = 0
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144              	.LVL15:
+ 145 0000 10B5     		push	{r4, lr}
+ 146              		.cfi_def_cfa_offset 8
+ 147              		.cfi_offset 4, -8
+ 148              		.cfi_offset 14, -4
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 5
+
+
+ 149              		.loc 1 74 0
+ 150 0002 041E     		subs	r4, r0, #0
+  75:ring_buffer.c ****     int r = -1;
+  76:ring_buffer.c **** 
+  77:ring_buffer.c ****     if(cbuf && data && !circular_buf_empty(*cbuf))
+ 151              		.loc 1 77 0
+ 152 0004 10D0     		beq	.L13
+ 153              		.loc 1 77 0 is_stmt 0 discriminator 1
+ 154 0006 0029     		cmp	r1, #0
+ 155 0008 0ED0     		beq	.L13
+ 156              	.LVL16:
+ 157 000a 8068     		ldr	r0, [r0, #8]
+ 158              	.LVL17:
+ 159              		.loc 1 77 0 discriminator 2
+ 160 000c 6368     		ldr	r3, [r4, #4]
+ 161 000e 9842     		cmp	r0, r3
+ 162 0010 0AD0     		beq	.L13
+  78:ring_buffer.c ****     {
+  79:ring_buffer.c ****         *data = cbuf->buffer[cbuf->tail];
+ 163              		.loc 1 79 0 is_stmt 1
+ 164 0012 2268     		ldr	r2, [r4]
+ 165 0014 4300     		lsls	r3, r0, #1
+ 166 0016 9B5A     		ldrh	r3, [r3, r2]
+  80:ring_buffer.c ****         cbuf->tail = (cbuf->tail + 1) % cbuf->size;
+ 167              		.loc 1 80 0
+ 168 0018 0130     		adds	r0, r0, #1
+ 169              	.LVL18:
+  79:ring_buffer.c ****         cbuf->tail = (cbuf->tail + 1) % cbuf->size;
+ 170              		.loc 1 79 0
+ 171 001a 0B80     		strh	r3, [r1]
+ 172              	.LVL19:
+ 173              		.loc 1 80 0
+ 174 001c E168     		ldr	r1, [r4, #12]
+ 175              	.LVL20:
+ 176 001e FFF7FEFF 		bl	__aeabi_uidivmod
+ 177              	.LVL21:
+  81:ring_buffer.c **** 
+  82:ring_buffer.c ****         r = 0;
+ 178              		.loc 1 82 0
+ 179 0022 0020     		movs	r0, #0
+  80:ring_buffer.c **** 
+ 180              		.loc 1 80 0
+ 181 0024 A160     		str	r1, [r4, #8]
+ 182              	.LVL22:
+ 183 0026 01E0     		b	.L10
+ 184              	.LVL23:
+ 185              	.L13:
+  75:ring_buffer.c **** 
+ 186              		.loc 1 75 0
+ 187 0028 0120     		movs	r0, #1
+ 188 002a 4042     		rsbs	r0, r0, #0
+ 189              	.LVL24:
+ 190              	.L10:
+  83:ring_buffer.c ****     }
+  84:ring_buffer.c **** 
+  85:ring_buffer.c ****     return r;
+  86:ring_buffer.c **** }
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 6
+
+
+ 191              		.loc 1 86 0
+ 192              		@ sp needed
+ 193              	.LVL25:
+ 194 002c 10BD     		pop	{r4, pc}
+ 195              		.cfi_endproc
+ 196              	.LFE36:
+ 197              		.size	circular_buf_get, .-circular_buf_get
+ 198              		.section	.text.circular_buf_empty,"ax",%progbits
+ 199              		.align	1
+ 200              		.global	circular_buf_empty
+ 201              		.code	16
+ 202              		.thumb_func
+ 203              		.type	circular_buf_empty, %function
+ 204              	circular_buf_empty:
+ 205              	.LFB37:
+  87:ring_buffer.c **** 
+  88:ring_buffer.c **** bool circular_buf_empty(circular_buf_t cbuf)
+  89:ring_buffer.c **** {
+ 206              		.loc 1 89 0
+ 207              		.cfi_startproc
+ 208              		@ args = 0, pretend = 0, frame = 16
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+ 210              		@ link register save eliminated.
+  90:ring_buffer.c **** 	// We define empty as head == tail
+  91:ring_buffer.c ****     return (cbuf.head == cbuf.tail);
+ 211              		.loc 1 91 0
+ 212 0000 881A     		subs	r0, r1, r2
+ 213 0002 4142     		rsbs	r1, r0, #0
+ 214 0004 4841     		adcs	r0, r0, r1
+  89:ring_buffer.c **** 	// We define empty as head == tail
+ 215              		.loc 1 89 0
+ 216 0006 84B0     		sub	sp, sp, #16
+ 217              		.cfi_def_cfa_offset 16
+ 218              		.loc 1 91 0
+ 219 0008 C0B2     		uxtb	r0, r0
+  92:ring_buffer.c **** }
+ 220              		.loc 1 92 0
+ 221 000a 04B0     		add	sp, sp, #16
+ 222              		@ sp needed
+ 223 000c 7047     		bx	lr
+ 224              		.cfi_endproc
+ 225              	.LFE37:
+ 226              		.size	circular_buf_empty, .-circular_buf_empty
+ 227              		.section	.text.circular_buf_full,"ax",%progbits
+ 228              		.align	1
+ 229              		.global	circular_buf_full
+ 230              		.code	16
+ 231              		.thumb_func
+ 232              		.type	circular_buf_full, %function
+ 233              	circular_buf_full:
+ 234              	.LFB38:
+  93:ring_buffer.c **** 
+  94:ring_buffer.c **** bool circular_buf_full(circular_buf_t cbuf)
+  95:ring_buffer.c **** {
+ 235              		.loc 1 95 0
+ 236              		.cfi_startproc
+ 237              		@ args = 0, pretend = 0, frame = 16
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 7
+
+
+ 238              		@ frame_needed = 0, uses_anonymous_args = 0
+ 239 0000 1FB5     		push	{r0, r1, r2, r3, r4, lr}
+ 240              		.cfi_def_cfa_offset 24
+ 241              		.cfi_offset 0, -24
+ 242              		.cfi_offset 1, -20
+ 243              		.cfi_offset 2, -16
+ 244              		.cfi_offset 3, -12
+ 245              		.cfi_offset 4, -8
+ 246              		.cfi_offset 14, -4
+  96:ring_buffer.c **** 	// We determine "full" case by head being one position behind the tail
+  97:ring_buffer.c **** 	// Note that this means we are wasting one space in the buffer!
+  98:ring_buffer.c **** 	// Instead, you could have an "empty" flag and determine buffer full that way
+  99:ring_buffer.c ****     return ((cbuf.head + 1) % cbuf.size) == cbuf.tail;
+ 247              		.loc 1 99 0
+ 248 0002 481C     		adds	r0, r1, #1
+ 249 0004 1900     		movs	r1, r3
+  95:ring_buffer.c **** 	// We determine "full" case by head being one position behind the tail
+ 250              		.loc 1 95 0
+ 251 0006 1400     		movs	r4, r2
+ 252              		.loc 1 99 0
+ 253 0008 FFF7FEFF 		bl	__aeabi_uidivmod
+ 254              	.LVL26:
+ 255 000c 081B     		subs	r0, r1, r4
+ 256 000e 4142     		rsbs	r1, r0, #0
+ 257 0010 4841     		adcs	r0, r0, r1
+ 258 0012 C0B2     		uxtb	r0, r0
+ 100:ring_buffer.c **** }
+ 259              		.loc 1 100 0
+ 260 0014 04B0     		add	sp, sp, #16
+ 261              		@ sp needed
+ 262 0016 10BD     		pop	{r4, pc}
+ 263              		.cfi_endproc
+ 264              	.LFE38:
+ 265              		.size	circular_buf_full, .-circular_buf_full
+ 266              		.section	.text.circular_buf_available,"ax",%progbits
+ 267              		.align	1
+ 268              		.global	circular_buf_available
+ 269              		.code	16
+ 270              		.thumb_func
+ 271              		.type	circular_buf_available, %function
+ 272              	circular_buf_available:
+ 273              	.LFB39:
+ 101:ring_buffer.c **** 
+ 102:ring_buffer.c **** uint16_t circular_buf_available(circular_buf_t cbuf)
+ 103:ring_buffer.c **** {
+ 274              		.loc 1 103 0
+ 275              		.cfi_startproc
+ 276              		@ args = 0, pretend = 0, frame = 16
+ 277              		@ frame_needed = 0, uses_anonymous_args = 0
+ 278              		@ link register save eliminated.
+ 279              	.LVL27:
+ 280 0000 84B0     		sub	sp, sp, #16
+ 281              		.cfi_def_cfa_offset 16
+ 104:ring_buffer.c ****     uint16_t free;
+ 105:ring_buffer.c ****     
+ 106:ring_buffer.c ****     if(cbuf.head >= cbuf.tail)
+ 282              		.loc 1 106 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 8
+
+
+ 283 0002 9142     		cmp	r1, r2
+ 284 0004 01D3     		bcc	.L17
+ 107:ring_buffer.c ****         free = cbuf.size - (cbuf.head - cbuf.tail);
+ 285              		.loc 1 107 0
+ 286 0006 9A18     		adds	r2, r3, r2
+ 287              	.LVL28:
+ 288 0008 00E0     		b	.L19
+ 289              	.LVL29:
+ 290              	.L17:
+ 108:ring_buffer.c ****     else
+ 109:ring_buffer.c ****         free = cbuf.tail - cbuf.head - 1;
+ 291              		.loc 1 109 0
+ 292 000a 013A     		subs	r2, r2, #1
+ 293              	.LVL30:
+ 294              	.L19:
+ 295 000c 521A     		subs	r2, r2, r1
+ 296 000e 92B2     		uxth	r2, r2
+ 297              	.LVL31:
+ 110:ring_buffer.c ****     
+ 111:ring_buffer.c ****     return  (cbuf.size - free);
+ 298              		.loc 1 111 0
+ 299 0010 9A1A     		subs	r2, r3, r2
+ 300              	.LVL32:
+ 301 0012 90B2     		uxth	r0, r2
+ 112:ring_buffer.c **** }
+ 302              		.loc 1 112 0
+ 303 0014 04B0     		add	sp, sp, #16
+ 304              		@ sp needed
+ 305 0016 7047     		bx	lr
+ 306              		.cfi_endproc
+ 307              	.LFE39:
+ 308              		.size	circular_buf_available, .-circular_buf_available
+ 309              		.section	.text.ring_buffer_init,"ax",%progbits
+ 310              		.align	1
+ 311              		.global	ring_buffer_init
+ 312              		.code	16
+ 313              		.thumb_func
+ 314              		.type	ring_buffer_init, %function
+ 315              	ring_buffer_init:
+ 316              	.LFB40:
+ 113:ring_buffer.c **** 
+ 114:ring_buffer.c **** //</embeddedartistry>
+ 115:ring_buffer.c **** 
+ 116:ring_buffer.c **** 
+ 117:ring_buffer.c **** //<Adapters>
+ 118:ring_buffer.c **** circular_buf_t cbuf; //global 
+ 119:ring_buffer.c **** 
+ 120:ring_buffer.c **** void ring_buffer_init()
+ 121:ring_buffer.c **** {    
+ 317              		.loc 1 121 0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 0
+ 320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 122:ring_buffer.c **** 	cbuf.size = BUF_SIZE;
+ 321              		.loc 1 122 0
+ 322 0000 8023     		movs	r3, #128
+ 121:ring_buffer.c **** 	cbuf.size = BUF_SIZE;
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 9
+
+
+ 323              		.loc 1 121 0
+ 324 0002 10B5     		push	{r4, lr}
+ 325              		.cfi_def_cfa_offset 8
+ 326              		.cfi_offset 4, -8
+ 327              		.cfi_offset 14, -4
+ 328              		.loc 1 122 0
+ 329 0004 054C     		ldr	r4, .L21
+ 330 0006 5B00     		lsls	r3, r3, #1
+ 123:ring_buffer.c ****     circular_buf_reset(&cbuf); //set head/tail to 0
+ 124:ring_buffer.c ****     cbuf.buffer = (uint16_t*) malloc(cbuf.size * sizeof(uint16_t));
+ 331              		.loc 1 124 0
+ 332 0008 8020     		movs	r0, #128
+ 122:ring_buffer.c ****     circular_buf_reset(&cbuf); //set head/tail to 0
+ 333              		.loc 1 122 0
+ 334 000a E360     		str	r3, [r4, #12]
+ 335              	.LVL33:
+ 336              	.LBB12:
+ 337              	.LBB13:
+  45:ring_buffer.c ****         cbuf->tail = 0;
+ 338              		.loc 1 45 0
+ 339 000c 0023     		movs	r3, #0
+ 340              	.LBE13:
+ 341              	.LBE12:
+ 342              		.loc 1 124 0
+ 343 000e 8000     		lsls	r0, r0, #2
+ 344              	.LBB15:
+ 345              	.LBB14:
+  45:ring_buffer.c ****         cbuf->tail = 0;
+ 346              		.loc 1 45 0
+ 347 0010 6360     		str	r3, [r4, #4]
+  46:ring_buffer.c ****         r = 0;
+ 348              		.loc 1 46 0
+ 349 0012 A360     		str	r3, [r4, #8]
+ 350              	.LVL34:
+ 351              	.LBE14:
+ 352              	.LBE15:
+ 353              		.loc 1 124 0
+ 354 0014 FFF7FEFF 		bl	malloc
+ 355              	.LVL35:
+ 125:ring_buffer.c **** }
+ 356              		.loc 1 125 0
+ 357              		@ sp needed
+ 124:ring_buffer.c **** }
+ 358              		.loc 1 124 0
+ 359 0018 2060     		str	r0, [r4]
+ 360              		.loc 1 125 0
+ 361 001a 10BD     		pop	{r4, pc}
+ 362              	.L22:
+ 363              		.align	2
+ 364              	.L21:
+ 365 001c 00000000 		.word	cbuf
+ 366              		.cfi_endproc
+ 367              	.LFE40:
+ 368              		.size	ring_buffer_init, .-ring_buffer_init
+ 369              		.section	.text.ring_buffer_push,"ax",%progbits
+ 370              		.align	1
+ 371              		.global	ring_buffer_push
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 10
+
+
+ 372              		.code	16
+ 373              		.thumb_func
+ 374              		.type	ring_buffer_push, %function
+ 375              	ring_buffer_push:
+ 376              	.LFB41:
+ 126:ring_buffer.c **** 
+ 127:ring_buffer.c **** void ring_buffer_push(uint16_t i)
+ 128:ring_buffer.c **** {
+ 377              		.loc 1 128 0
+ 378              		.cfi_startproc
+ 379              		@ args = 0, pretend = 0, frame = 0
+ 380              		@ frame_needed = 0, uses_anonymous_args = 0
+ 381              	.LVL36:
+ 382 0000 10B5     		push	{r4, lr}
+ 383              		.cfi_def_cfa_offset 8
+ 384              		.cfi_offset 4, -8
+ 385              		.cfi_offset 14, -4
+ 386              		.loc 1 128 0
+ 387 0002 0100     		movs	r1, r0
+ 129:ring_buffer.c ****     circular_buf_put(&cbuf, i);
+ 388              		.loc 1 129 0
+ 389 0004 0148     		ldr	r0, .L24
+ 390              	.LVL37:
+ 391 0006 FFF7FEFF 		bl	circular_buf_put
+ 392              	.LVL38:
+ 130:ring_buffer.c **** }
+ 393              		.loc 1 130 0
+ 394              		@ sp needed
+ 395 000a 10BD     		pop	{r4, pc}
+ 396              	.L25:
+ 397              		.align	2
+ 398              	.L24:
+ 399 000c 00000000 		.word	cbuf
+ 400              		.cfi_endproc
+ 401              	.LFE41:
+ 402              		.size	ring_buffer_push, .-ring_buffer_push
+ 403              		.section	.text.ring_buffer_pop,"ax",%progbits
+ 404              		.align	1
+ 405              		.global	ring_buffer_pop
+ 406              		.code	16
+ 407              		.thumb_func
+ 408              		.type	ring_buffer_pop, %function
+ 409              	ring_buffer_pop:
+ 410              	.LFB42:
+ 131:ring_buffer.c **** 
+ 132:ring_buffer.c **** uint16_t ring_buffer_pop()
+ 133:ring_buffer.c **** {
+ 411              		.loc 1 133 0
+ 412              		.cfi_startproc
+ 413              		@ args = 0, pretend = 0, frame = 8
+ 414              		@ frame_needed = 0, uses_anonymous_args = 0
+ 415 0000 13B5     		push	{r0, r1, r4, lr}
+ 416              		.cfi_def_cfa_offset 16
+ 417              		.cfi_offset 0, -16
+ 418              		.cfi_offset 1, -12
+ 419              		.cfi_offset 4, -8
+ 420              		.cfi_offset 14, -4
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 11
+
+
+ 134:ring_buffer.c ****     uint16_t data;
+ 135:ring_buffer.c **** 	circular_buf_get(&cbuf, &data);
+ 421              		.loc 1 135 0
+ 422 0002 6B46     		mov	r3, sp
+ 423 0004 9C1D     		adds	r4, r3, #6
+ 424 0006 2100     		movs	r1, r4
+ 425 0008 0248     		ldr	r0, .L27
+ 426 000a FFF7FEFF 		bl	circular_buf_get
+ 427              	.LVL39:
+ 136:ring_buffer.c ****     return data;
+ 137:ring_buffer.c **** }
+ 428              		.loc 1 137 0
+ 429              		@ sp needed
+ 136:ring_buffer.c ****     return data;
+ 430              		.loc 1 136 0
+ 431 000e 2088     		ldrh	r0, [r4]
+ 432              		.loc 1 137 0
+ 433 0010 16BD     		pop	{r1, r2, r4, pc}
+ 434              	.L28:
+ 435 0012 C046     		.align	2
+ 436              	.L27:
+ 437 0014 00000000 		.word	cbuf
+ 438              		.cfi_endproc
+ 439              	.LFE42:
+ 440              		.size	ring_buffer_pop, .-ring_buffer_pop
+ 441              		.section	.text.ring_buffer_isEmpty,"ax",%progbits
+ 442              		.align	1
+ 443              		.global	ring_buffer_isEmpty
+ 444              		.code	16
+ 445              		.thumb_func
+ 446              		.type	ring_buffer_isEmpty, %function
+ 447              	ring_buffer_isEmpty:
+ 448              	.LFB43:
+ 138:ring_buffer.c **** 
+ 139:ring_buffer.c **** bool ring_buffer_isEmpty()
+ 140:ring_buffer.c **** {
+ 449              		.loc 1 140 0
+ 450              		.cfi_startproc
+ 451              		@ args = 0, pretend = 0, frame = 0
+ 452              		@ frame_needed = 0, uses_anonymous_args = 0
+ 453              		@ link register save eliminated.
+ 454              	.LVL40:
+ 455 0000 034A     		ldr	r2, .L30
+ 141:ring_buffer.c ****     return circular_buf_empty(cbuf);
+ 142:ring_buffer.c **** }
+ 456              		.loc 1 142 0
+ 457              		@ sp needed
+ 141:ring_buffer.c ****     return circular_buf_empty(cbuf);
+ 458              		.loc 1 141 0
+ 459 0002 5368     		ldr	r3, [r2, #4]
+ 460 0004 9068     		ldr	r0, [r2, #8]
+ 461 0006 181A     		subs	r0, r3, r0
+ 462 0008 4342     		rsbs	r3, r0, #0
+ 463 000a 5841     		adcs	r0, r0, r3
+ 464 000c C0B2     		uxtb	r0, r0
+ 465              		.loc 1 142 0
+ 466 000e 7047     		bx	lr
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 12
+
+
+ 467              	.L31:
+ 468              		.align	2
+ 469              	.L30:
+ 470 0010 00000000 		.word	cbuf
+ 471              		.cfi_endproc
+ 472              	.LFE43:
+ 473              		.size	ring_buffer_isEmpty, .-ring_buffer_isEmpty
+ 474              		.section	.text.ring_buffer_isFull,"ax",%progbits
+ 475              		.align	1
+ 476              		.global	ring_buffer_isFull
+ 477              		.code	16
+ 478              		.thumb_func
+ 479              		.type	ring_buffer_isFull, %function
+ 480              	ring_buffer_isFull:
+ 481              	.LFB44:
+ 143:ring_buffer.c **** 
+ 144:ring_buffer.c **** bool ring_buffer_isFull()
+ 145:ring_buffer.c **** {
+ 482              		.loc 1 145 0
+ 483              		.cfi_startproc
+ 484              		@ args = 0, pretend = 0, frame = 0
+ 485              		@ frame_needed = 0, uses_anonymous_args = 0
+ 486              	.LVL41:
+ 487 0000 10B5     		push	{r4, lr}
+ 488              		.cfi_def_cfa_offset 8
+ 489              		.cfi_offset 4, -8
+ 490              		.cfi_offset 14, -4
+ 491 0002 064C     		ldr	r4, .L33
+ 146:ring_buffer.c ****     return circular_buf_full(cbuf);
+ 147:ring_buffer.c **** }
+ 492              		.loc 1 147 0
+ 493              		@ sp needed
+ 146:ring_buffer.c ****     return circular_buf_full(cbuf);
+ 494              		.loc 1 146 0
+ 495 0004 6368     		ldr	r3, [r4, #4]
+ 496 0006 E168     		ldr	r1, [r4, #12]
+ 497 0008 581C     		adds	r0, r3, #1
+ 498 000a FFF7FEFF 		bl	__aeabi_uidivmod
+ 499              	.LVL42:
+ 500 000e A068     		ldr	r0, [r4, #8]
+ 501 0010 081A     		subs	r0, r1, r0
+ 502 0012 4342     		rsbs	r3, r0, #0
+ 503 0014 4341     		adcs	r3, r3, r0
+ 504 0016 D8B2     		uxtb	r0, r3
+ 505              		.loc 1 147 0
+ 506 0018 10BD     		pop	{r4, pc}
+ 507              	.L34:
+ 508 001a C046     		.align	2
+ 509              	.L33:
+ 510 001c 00000000 		.word	cbuf
+ 511              		.cfi_endproc
+ 512              	.LFE44:
+ 513              		.size	ring_buffer_isFull, .-ring_buffer_isFull
+ 514              		.section	.text.ring_buffer_available,"ax",%progbits
+ 515              		.align	1
+ 516              		.global	ring_buffer_available
+ 517              		.code	16
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 13
+
+
+ 518              		.thumb_func
+ 519              		.type	ring_buffer_available, %function
+ 520              	ring_buffer_available:
+ 521              	.LFB45:
+ 148:ring_buffer.c **** 
+ 149:ring_buffer.c **** uint16_t ring_buffer_available()
+ 150:ring_buffer.c **** {
+ 522              		.loc 1 150 0
+ 523              		.cfi_startproc
+ 524              		@ args = 0, pretend = 0, frame = 0
+ 525              		@ frame_needed = 0, uses_anonymous_args = 0
+ 526 0000 10B5     		push	{r4, lr}
+ 527              		.cfi_def_cfa_offset 8
+ 528              		.cfi_offset 4, -8
+ 529              		.cfi_offset 14, -4
+ 151:ring_buffer.c ****     return circular_buf_available(cbuf);
+ 530              		.loc 1 151 0
+ 531 0002 044B     		ldr	r3, .L36
+ 152:ring_buffer.c **** }
+ 532              		.loc 1 152 0
+ 533              		@ sp needed
+ 151:ring_buffer.c ****     return circular_buf_available(cbuf);
+ 534              		.loc 1 151 0
+ 535 0004 1868     		ldr	r0, [r3]
+ 536 0006 5968     		ldr	r1, [r3, #4]
+ 537 0008 9A68     		ldr	r2, [r3, #8]
+ 538 000a DB68     		ldr	r3, [r3, #12]
+ 539 000c FFF7FEFF 		bl	circular_buf_available
+ 540              	.LVL43:
+ 541              		.loc 1 152 0
+ 542 0010 10BD     		pop	{r4, pc}
+ 543              	.L37:
+ 544 0012 C046     		.align	2
+ 545              	.L36:
+ 546 0014 00000000 		.word	cbuf
+ 547              		.cfi_endproc
+ 548              	.LFE45:
+ 549              		.size	ring_buffer_available, .-ring_buffer_available
+ 550              		.section	.text.ring_buffer_flush,"ax",%progbits
+ 551              		.align	1
+ 552              		.global	ring_buffer_flush
+ 553              		.code	16
+ 554              		.thumb_func
+ 555              		.type	ring_buffer_flush, %function
+ 556              	ring_buffer_flush:
+ 557              	.LFB46:
+ 153:ring_buffer.c **** 
+ 154:ring_buffer.c **** void ring_buffer_flush()
+ 155:ring_buffer.c **** {
+ 558              		.loc 1 155 0
+ 559              		.cfi_startproc
+ 560              		@ args = 0, pretend = 0, frame = 0
+ 561              		@ frame_needed = 0, uses_anonymous_args = 0
+ 562              		@ link register save eliminated.
+ 563              	.LVL44:
+ 564              	.LBB16:
+ 565              	.LBB17:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 14
+
+
+  45:ring_buffer.c ****         cbuf->tail = 0;
+ 566              		.loc 1 45 0
+ 567 0000 0022     		movs	r2, #0
+ 568 0002 024B     		ldr	r3, .L39
+ 569              	.LBE17:
+ 570              	.LBE16:
+ 156:ring_buffer.c ****     circular_buf_reset(&cbuf);
+ 157:ring_buffer.c **** }
+ 571              		.loc 1 157 0
+ 572              		@ sp needed
+ 573              	.LBB19:
+ 574              	.LBB18:
+  45:ring_buffer.c ****         cbuf->tail = 0;
+ 575              		.loc 1 45 0
+ 576 0004 5A60     		str	r2, [r3, #4]
+  46:ring_buffer.c ****         r = 0;
+ 577              		.loc 1 46 0
+ 578 0006 9A60     		str	r2, [r3, #8]
+ 579              	.LVL45:
+ 580              	.LBE18:
+ 581              	.LBE19:
+ 582              		.loc 1 157 0
+ 583 0008 7047     		bx	lr
+ 584              	.L40:
+ 585 000a C046     		.align	2
+ 586              	.L39:
+ 587 000c 00000000 		.word	cbuf
+ 588              		.cfi_endproc
+ 589              	.LFE46:
+ 590              		.size	ring_buffer_flush, .-ring_buffer_flush
+ 591              		.comm	cbuf,16,4
+ 592              		.text
+ 593              	.Letext0:
+ 594              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 595              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 596              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 597              		.file 5 "Generated_Source\\PSoC4/nRF24_DEFS.h"
+ 598              		.file 6 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 599              		.section	.debug_info,"",%progbits
+ 600              	.Ldebug_info0:
+ 601 0000 CA050000 		.4byte	0x5ca
+ 602 0004 0400     		.2byte	0x4
+ 603 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 604 000a 04       		.byte	0x4
+ 605 000b 01       		.uleb128 0x1
+ 606 000c E4060000 		.4byte	.LASF100
+ 607 0010 0C       		.byte	0xc
+ 608 0011 B0010000 		.4byte	.LASF101
+ 609 0015 4F000000 		.4byte	.LASF102
+ 610 0019 30000000 		.4byte	.Ldebug_ranges0+0x30
+ 611 001d 00000000 		.4byte	0
+ 612 0021 00000000 		.4byte	.Ldebug_line0
+ 613 0025 02       		.uleb128 0x2
+ 614 0026 01       		.byte	0x1
+ 615 0027 06       		.byte	0x6
+ 616 0028 1F010000 		.4byte	.LASF0
+ 617 002c 02       		.uleb128 0x2
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 15
+
+
+ 618 002d 01       		.byte	0x1
+ 619 002e 08       		.byte	0x8
+ 620 002f C1030000 		.4byte	.LASF1
+ 621 0033 02       		.uleb128 0x2
+ 622 0034 02       		.byte	0x2
+ 623 0035 05       		.byte	0x5
+ 624 0036 E0010000 		.4byte	.LASF2
+ 625 003a 03       		.uleb128 0x3
+ 626 003b A5010000 		.4byte	.LASF9
+ 627 003f 02       		.byte	0x2
+ 628 0040 2B       		.byte	0x2b
+ 629 0041 45000000 		.4byte	0x45
+ 630 0045 02       		.uleb128 0x2
+ 631 0046 02       		.byte	0x2
+ 632 0047 07       		.byte	0x7
+ 633 0048 C5050000 		.4byte	.LASF3
+ 634 004c 02       		.uleb128 0x2
+ 635 004d 04       		.byte	0x4
+ 636 004e 05       		.byte	0x5
+ 637 004f 0B030000 		.4byte	.LASF4
+ 638 0053 02       		.uleb128 0x2
+ 639 0054 04       		.byte	0x4
+ 640 0055 07       		.byte	0x7
+ 641 0056 37060000 		.4byte	.LASF5
+ 642 005a 02       		.uleb128 0x2
+ 643 005b 08       		.byte	0x8
+ 644 005c 05       		.byte	0x5
+ 645 005d E4020000 		.4byte	.LASF6
+ 646 0061 02       		.uleb128 0x2
+ 647 0062 08       		.byte	0x8
+ 648 0063 07       		.byte	0x7
+ 649 0064 C1040000 		.4byte	.LASF7
+ 650 0068 04       		.uleb128 0x4
+ 651 0069 04       		.byte	0x4
+ 652 006a 05       		.byte	0x5
+ 653 006b 696E7400 		.ascii	"int\000"
+ 654 006f 02       		.uleb128 0x2
+ 655 0070 04       		.byte	0x4
+ 656 0071 07       		.byte	0x7
+ 657 0072 FE040000 		.4byte	.LASF8
+ 658 0076 03       		.uleb128 0x3
+ 659 0077 0B050000 		.4byte	.LASF10
+ 660 007b 03       		.byte	0x3
+ 661 007c 24       		.byte	0x24
+ 662 007d 3A000000 		.4byte	0x3a
+ 663 0081 02       		.uleb128 0x2
+ 664 0082 04       		.byte	0x4
+ 665 0083 04       		.byte	0x4
+ 666 0084 DE020000 		.4byte	.LASF11
+ 667 0088 02       		.uleb128 0x2
+ 668 0089 08       		.byte	0x8
+ 669 008a 04       		.byte	0x4
+ 670 008b 49060000 		.4byte	.LASF12
+ 671 008f 02       		.uleb128 0x2
+ 672 0090 01       		.byte	0x1
+ 673 0091 08       		.byte	0x8
+ 674 0092 C0050000 		.4byte	.LASF13
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 16
+
+
+ 675 0096 03       		.uleb128 0x3
+ 676 0097 50010000 		.4byte	.LASF14
+ 677 009b 04       		.byte	0x4
+ 678 009c D8       		.byte	0xd8
+ 679 009d 6F000000 		.4byte	0x6f
+ 680 00a1 02       		.uleb128 0x2
+ 681 00a2 08       		.byte	0x8
+ 682 00a3 04       		.byte	0x4
+ 683 00a4 01040000 		.4byte	.LASF15
+ 684 00a8 02       		.uleb128 0x2
+ 685 00a9 04       		.byte	0x4
+ 686 00aa 07       		.byte	0x7
+ 687 00ab 5E010000 		.4byte	.LASF16
+ 688 00af 05       		.uleb128 0x5
+ 689 00b0 01       		.byte	0x1
+ 690 00b1 2C000000 		.4byte	0x2c
+ 691 00b5 05       		.byte	0x5
+ 692 00b6 1E       		.byte	0x1e
+ 693 00b7 58010000 		.4byte	0x158
+ 694 00bb 06       		.uleb128 0x6
+ 695 00bc 98060000 		.4byte	.LASF17
+ 696 00c0 00       		.byte	0
+ 697 00c1 06       		.uleb128 0x6
+ 698 00c2 16020000 		.4byte	.LASF18
+ 699 00c6 01       		.byte	0x1
+ 700 00c7 06       		.uleb128 0x6
+ 701 00c8 2B010000 		.4byte	.LASF19
+ 702 00cc 02       		.byte	0x2
+ 703 00cd 06       		.uleb128 0x6
+ 704 00ce 72070000 		.4byte	.LASF20
+ 705 00d2 03       		.byte	0x3
+ 706 00d3 06       		.uleb128 0x6
+ 707 00d4 D1060000 		.4byte	.LASF21
+ 708 00d8 04       		.byte	0x4
+ 709 00d9 06       		.uleb128 0x6
+ 710 00da A7060000 		.4byte	.LASF22
+ 711 00de 05       		.byte	0x5
+ 712 00df 06       		.uleb128 0x6
+ 713 00e0 E3000000 		.4byte	.LASF23
+ 714 00e4 06       		.byte	0x6
+ 715 00e5 06       		.uleb128 0x6
+ 716 00e6 24020000 		.4byte	.LASF24
+ 717 00ea 07       		.byte	0x7
+ 718 00eb 06       		.uleb128 0x6
+ 719 00ec 3D010000 		.4byte	.LASF25
+ 720 00f0 08       		.byte	0x8
+ 721 00f1 06       		.uleb128 0x6
+ 722 00f2 25030000 		.4byte	.LASF26
+ 723 00f6 09       		.byte	0x9
+ 724 00f7 06       		.uleb128 0x6
+ 725 00f8 12040000 		.4byte	.LASF27
+ 726 00fc 0A       		.byte	0xa
+ 727 00fd 06       		.uleb128 0x6
+ 728 00fe 25040000 		.4byte	.LASF28
+ 729 0102 0B       		.byte	0xb
+ 730 0103 06       		.uleb128 0x6
+ 731 0104 38040000 		.4byte	.LASF29
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 17
+
+
+ 732 0108 0C       		.byte	0xc
+ 733 0109 06       		.uleb128 0x6
+ 734 010a 50060000 		.4byte	.LASF30
+ 735 010e 0D       		.byte	0xd
+ 736 010f 06       		.uleb128 0x6
+ 737 0110 5F040000 		.4byte	.LASF31
+ 738 0114 0E       		.byte	0xe
+ 739 0115 06       		.uleb128 0x6
+ 740 0116 72040000 		.4byte	.LASF32
+ 741 011a 0F       		.byte	0xf
+ 742 011b 06       		.uleb128 0x6
+ 743 011c 66030000 		.4byte	.LASF33
+ 744 0120 10       		.byte	0x10
+ 745 0121 06       		.uleb128 0x6
+ 746 0122 B9070000 		.4byte	.LASF34
+ 747 0126 11       		.byte	0x11
+ 748 0127 06       		.uleb128 0x6
+ 749 0128 BE010000 		.4byte	.LASF35
+ 750 012c 12       		.byte	0x12
+ 751 012d 06       		.uleb128 0x6
+ 752 012e CF010000 		.4byte	.LASF36
+ 753 0132 13       		.byte	0x13
+ 754 0133 06       		.uleb128 0x6
+ 755 0134 CA070000 		.4byte	.LASF37
+ 756 0138 14       		.byte	0x14
+ 757 0139 06       		.uleb128 0x6
+ 758 013a EA010000 		.4byte	.LASF38
+ 759 013e 15       		.byte	0x15
+ 760 013f 06       		.uleb128 0x6
+ 761 0140 DB070000 		.4byte	.LASF39
+ 762 0144 16       		.byte	0x16
+ 763 0145 06       		.uleb128 0x6
+ 764 0146 23060000 		.4byte	.LASF40
+ 765 014a 17       		.byte	0x17
+ 766 014b 06       		.uleb128 0x6
+ 767 014c DE050000 		.4byte	.LASF41
+ 768 0150 1C       		.byte	0x1c
+ 769 0151 06       		.uleb128 0x6
+ 770 0152 B1040000 		.4byte	.LASF42
+ 771 0156 1D       		.byte	0x1d
+ 772 0157 00       		.byte	0
+ 773 0158 05       		.uleb128 0x5
+ 774 0159 01       		.byte	0x1
+ 775 015a 2C000000 		.4byte	0x2c
+ 776 015e 05       		.byte	0x5
+ 777 015f 75       		.byte	0x75
+ 778 0160 8F010000 		.4byte	0x18f
+ 779 0164 06       		.uleb128 0x6
+ 780 0165 A9050000 		.4byte	.LASF43
+ 781 0169 00       		.byte	0
+ 782 016a 06       		.uleb128 0x6
+ 783 016b FB010000 		.4byte	.LASF44
+ 784 016f 01       		.byte	0x1
+ 785 0170 06       		.uleb128 0x6
+ 786 0171 0F060000 		.4byte	.LASF45
+ 787 0175 02       		.byte	0x2
+ 788 0176 06       		.uleb128 0x6
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 18
+
+
+ 789 0177 09010000 		.4byte	.LASF46
+ 790 017b 03       		.byte	0x3
+ 791 017c 06       		.uleb128 0x6
+ 792 017d 31050000 		.4byte	.LASF47
+ 793 0181 04       		.byte	0x4
+ 794 0182 06       		.uleb128 0x6
+ 795 0183 8B010000 		.4byte	.LASF48
+ 796 0187 05       		.byte	0x5
+ 797 0188 06       		.uleb128 0x6
+ 798 0189 4C030000 		.4byte	.LASF49
+ 799 018d 06       		.byte	0x6
+ 800 018e 00       		.byte	0
+ 801 018f 05       		.uleb128 0x5
+ 802 0190 01       		.byte	0x1
+ 803 0191 2C000000 		.4byte	0x2c
+ 804 0195 05       		.byte	0x5
+ 805 0196 91       		.byte	0x91
+ 806 0197 C0010000 		.4byte	0x1c0
+ 807 019b 06       		.uleb128 0x6
+ 808 019c 33020000 		.4byte	.LASF50
+ 809 01a0 00       		.byte	0
+ 810 01a1 06       		.uleb128 0x6
+ 811 01a2 49020000 		.4byte	.LASF51
+ 812 01a6 01       		.byte	0x1
+ 813 01a7 06       		.uleb128 0x6
+ 814 01a8 B2020000 		.4byte	.LASF52
+ 815 01ac 02       		.byte	0x2
+ 816 01ad 06       		.uleb128 0x6
+ 817 01ae C8020000 		.4byte	.LASF53
+ 818 01b2 03       		.byte	0x3
+ 819 01b3 06       		.uleb128 0x6
+ 820 01b4 81020000 		.4byte	.LASF54
+ 821 01b8 04       		.byte	0x4
+ 822 01b9 06       		.uleb128 0x6
+ 823 01ba 97020000 		.4byte	.LASF55
+ 824 01be 05       		.byte	0x5
+ 825 01bf 00       		.byte	0
+ 826 01c0 05       		.uleb128 0x5
+ 827 01c1 01       		.byte	0x1
+ 828 01c2 2C000000 		.4byte	0x2c
+ 829 01c6 05       		.byte	0x5
+ 830 01c7 AA       		.byte	0xaa
+ 831 01c8 F1010000 		.4byte	0x1f1
+ 832 01cc 06       		.uleb128 0x6
+ 833 01cd 76030000 		.4byte	.LASF56
+ 834 01d1 00       		.byte	0
+ 835 01d2 06       		.uleb128 0x6
+ 836 01d3 8F030000 		.4byte	.LASF57
+ 837 01d7 01       		.byte	0x1
+ 838 01d8 06       		.uleb128 0x6
+ 839 01d9 A8030000 		.4byte	.LASF58
+ 840 01dd 02       		.byte	0x2
+ 841 01de 06       		.uleb128 0x6
+ 842 01df F2020000 		.4byte	.LASF59
+ 843 01e3 03       		.byte	0x3
+ 844 01e4 06       		.uleb128 0x6
+ 845 01e5 CF030000 		.4byte	.LASF60
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 19
+
+
+ 846 01e9 04       		.byte	0x4
+ 847 01ea 06       		.uleb128 0x6
+ 848 01eb E8030000 		.4byte	.LASF61
+ 849 01ef 05       		.byte	0x5
+ 850 01f0 00       		.byte	0
+ 851 01f1 05       		.uleb128 0x5
+ 852 01f2 01       		.byte	0x1
+ 853 01f3 2C000000 		.4byte	0x2c
+ 854 01f7 05       		.byte	0x5
+ 855 01f8 D1       		.byte	0xd1
+ 856 01f9 0A020000 		.4byte	0x20a
+ 857 01fd 06       		.uleb128 0x6
+ 858 01fe 4C050000 		.4byte	.LASF62
+ 859 0202 00       		.byte	0
+ 860 0203 06       		.uleb128 0x6
+ 861 0204 63050000 		.4byte	.LASF63
+ 862 0208 04       		.byte	0x4
+ 863 0209 00       		.byte	0
+ 864 020a 07       		.uleb128 0x7
+ 865 020b 01       		.byte	0x1
+ 866 020c 2C000000 		.4byte	0x2c
+ 867 0210 05       		.byte	0x5
+ 868 0211 4A01     		.2byte	0x14a
+ 869 0213 36020000 		.4byte	0x236
+ 870 0217 06       		.uleb128 0x6
+ 871 0218 7B060000 		.4byte	.LASF64
+ 872 021c 00       		.byte	0
+ 873 021d 06       		.uleb128 0x6
+ 874 021e B5060000 		.4byte	.LASF65
+ 875 0222 01       		.byte	0x1
+ 876 0223 06       		.uleb128 0x6
+ 877 0224 00000000 		.4byte	.LASF66
+ 878 0228 04       		.byte	0x4
+ 879 0229 06       		.uleb128 0x6
+ 880 022a 33000000 		.4byte	.LASF67
+ 881 022e 05       		.byte	0x5
+ 882 022f 06       		.uleb128 0x6
+ 883 0230 14050000 		.4byte	.LASF68
+ 884 0234 06       		.byte	0x6
+ 885 0235 00       		.byte	0
+ 886 0236 07       		.uleb128 0x7
+ 887 0237 01       		.byte	0x1
+ 888 0238 2C000000 		.4byte	0x2c
+ 889 023c 05       		.byte	0x5
+ 890 023d 5B01     		.2byte	0x15b
+ 891 023f 68020000 		.4byte	0x268
+ 892 0243 06       		.uleb128 0x6
+ 893 0244 9C040000 		.4byte	.LASF69
+ 894 0248 00       		.byte	0
+ 895 0249 06       		.uleb128 0x6
+ 896 024a A4000000 		.4byte	.LASF70
+ 897 024e 01       		.byte	0x1
+ 898 024f 06       		.uleb128 0x6
+ 899 0250 B9000000 		.4byte	.LASF71
+ 900 0254 02       		.byte	0x2
+ 901 0255 06       		.uleb128 0x6
+ 902 0256 CE000000 		.4byte	.LASF72
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 20
+
+
+ 903 025a 03       		.byte	0x3
+ 904 025b 06       		.uleb128 0x6
+ 905 025c E9040000 		.4byte	.LASF73
+ 906 0260 04       		.byte	0x4
+ 907 0261 06       		.uleb128 0x6
+ 908 0262 F4000000 		.4byte	.LASF74
+ 909 0266 05       		.byte	0x5
+ 910 0267 00       		.byte	0
+ 911 0268 07       		.uleb128 0x7
+ 912 0269 01       		.byte	0x1
+ 913 026a 2C000000 		.4byte	0x2c
+ 914 026e 05       		.byte	0x5
+ 915 026f 7401     		.2byte	0x174
+ 916 0271 88020000 		.4byte	0x288
+ 917 0275 06       		.uleb128 0x6
+ 918 0276 7F050000 		.4byte	.LASF75
+ 919 027a 00       		.byte	0
+ 920 027b 06       		.uleb128 0x6
+ 921 027c 31030000 		.4byte	.LASF76
+ 922 0280 01       		.byte	0x1
+ 923 0281 06       		.uleb128 0x6
+ 924 0282 85040000 		.4byte	.LASF77
+ 925 0286 02       		.byte	0x2
+ 926 0287 00       		.byte	0
+ 927 0288 08       		.uleb128 0x8
+ 928 0289 10       		.byte	0x10
+ 929 028a 01       		.byte	0x1
+ 930 028b 12       		.byte	0x12
+ 931 028c C1020000 		.4byte	0x2c1
+ 932 0290 09       		.uleb128 0x9
+ 933 0291 08060000 		.4byte	.LASF78
+ 934 0295 01       		.byte	0x1
+ 935 0296 13       		.byte	0x13
+ 936 0297 C1020000 		.4byte	0x2c1
+ 937 029b 00       		.byte	0
+ 938 029c 09       		.uleb128 0x9
+ 939 029d 11020000 		.4byte	.LASF79
+ 940 02a1 01       		.byte	0x1
+ 941 02a2 14       		.byte	0x14
+ 942 02a3 96000000 		.4byte	0x96
+ 943 02a7 04       		.byte	0x4
+ 944 02a8 09       		.uleb128 0x9
+ 945 02a9 0D040000 		.4byte	.LASF80
+ 946 02ad 01       		.byte	0x1
+ 947 02ae 15       		.byte	0x15
+ 948 02af 96000000 		.4byte	0x96
+ 949 02b3 08       		.byte	0x8
+ 950 02b4 09       		.uleb128 0x9
+ 951 02b5 76060000 		.4byte	.LASF81
+ 952 02b9 01       		.byte	0x1
+ 953 02ba 16       		.byte	0x16
+ 954 02bb 96000000 		.4byte	0x96
+ 955 02bf 0C       		.byte	0xc
+ 956 02c0 00       		.byte	0
+ 957 02c1 0A       		.uleb128 0xa
+ 958 02c2 04       		.byte	0x4
+ 959 02c3 76000000 		.4byte	0x76
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 21
+
+
+ 960 02c7 03       		.uleb128 0x3
+ 961 02c8 9A050000 		.4byte	.LASF82
+ 962 02cc 01       		.byte	0x1
+ 963 02cd 17       		.byte	0x17
+ 964 02ce 88020000 		.4byte	0x288
+ 965 02d2 0B       		.uleb128 0xb
+ 966 02d3 63060000 		.4byte	.LASF84
+ 967 02d7 01       		.byte	0x1
+ 968 02d8 58       		.byte	0x58
+ 969 02d9 EE020000 		.4byte	0x2ee
+ 970 02dd 01       		.byte	0x1
+ 971 02de EE020000 		.4byte	0x2ee
+ 972 02e2 0C       		.uleb128 0xc
+ 973 02e3 7A050000 		.4byte	.LASF86
+ 974 02e7 01       		.byte	0x1
+ 975 02e8 58       		.byte	0x58
+ 976 02e9 C7020000 		.4byte	0x2c7
+ 977 02ed 00       		.byte	0
+ 978 02ee 02       		.uleb128 0x2
+ 979 02ef 01       		.byte	0x1
+ 980 02f0 02       		.byte	0x2
+ 981 02f1 D8050000 		.4byte	.LASF83
+ 982 02f5 0B       		.uleb128 0xb
+ 983 02f6 83070000 		.4byte	.LASF85
+ 984 02fa 01       		.byte	0x1
+ 985 02fb 27       		.byte	0x27
+ 986 02fc 68000000 		.4byte	0x68
+ 987 0300 01       		.byte	0x1
+ 988 0301 1A030000 		.4byte	0x31a
+ 989 0305 0C       		.uleb128 0xc
+ 990 0306 7A050000 		.4byte	.LASF86
+ 991 030a 01       		.byte	0x1
+ 992 030b 27       		.byte	0x27
+ 993 030c 1A030000 		.4byte	0x31a
+ 994 0310 0D       		.uleb128 0xd
+ 995 0311 7200     		.ascii	"r\000"
+ 996 0313 01       		.byte	0x1
+ 997 0314 29       		.byte	0x29
+ 998 0315 68000000 		.4byte	0x68
+ 999 0319 00       		.byte	0
+ 1000 031a 0A       		.uleb128 0xa
+ 1001 031b 04       		.byte	0x4
+ 1002 031c C7020000 		.4byte	0x2c7
+ 1003 0320 0B       		.uleb128 0xb
+ 1004 0321 6F020000 		.4byte	.LASF87
+ 1005 0325 01       		.byte	0x1
+ 1006 0326 5E       		.byte	0x5e
+ 1007 0327 EE020000 		.4byte	0x2ee
+ 1008 032b 01       		.byte	0x1
+ 1009 032c 3C030000 		.4byte	0x33c
+ 1010 0330 0C       		.uleb128 0xc
+ 1011 0331 7A050000 		.4byte	.LASF86
+ 1012 0335 01       		.byte	0x1
+ 1013 0336 5E       		.byte	0x5e
+ 1014 0337 C7020000 		.4byte	0x2c7
+ 1015 033b 00       		.byte	0
+ 1016 033c 0E       		.uleb128 0xe
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 22
+
+
+ 1017 033d F5020000 		.4byte	0x2f5
+ 1018 0341 00000000 		.4byte	.LFB34
+ 1019 0345 14000000 		.4byte	.LFE34-.LFB34
+ 1020 0349 01       		.uleb128 0x1
+ 1021 034a 9C       		.byte	0x9c
+ 1022 034b 62030000 		.4byte	0x362
+ 1023 034f 0F       		.uleb128 0xf
+ 1024 0350 05030000 		.4byte	0x305
+ 1025 0354 00000000 		.4byte	.LLST0
+ 1026 0358 10       		.uleb128 0x10
+ 1027 0359 10030000 		.4byte	0x310
+ 1028 035d 3A000000 		.4byte	.LLST1
+ 1029 0361 00       		.byte	0
+ 1030 0362 11       		.uleb128 0x11
+ 1031 0363 14030000 		.4byte	.LASF89
+ 1032 0367 01       		.byte	0x1
+ 1033 0368 35       		.byte	0x35
+ 1034 0369 68000000 		.4byte	0x68
+ 1035 036d 00000000 		.4byte	.LFB35
+ 1036 0371 36000000 		.4byte	.LFE35-.LFB35
+ 1037 0375 01       		.uleb128 0x1
+ 1038 0376 9C       		.byte	0x9c
+ 1039 0377 A7030000 		.4byte	0x3a7
+ 1040 037b 12       		.uleb128 0x12
+ 1041 037c 7A050000 		.4byte	.LASF86
+ 1042 0380 01       		.byte	0x1
+ 1043 0381 35       		.byte	0x35
+ 1044 0382 1A030000 		.4byte	0x31a
+ 1045 0386 73000000 		.4byte	.LLST2
+ 1046 038a 12       		.uleb128 0x12
+ 1047 038b EC050000 		.4byte	.LASF88
+ 1048 038f 01       		.byte	0x1
+ 1049 0390 35       		.byte	0x35
+ 1050 0391 76000000 		.4byte	0x76
+ 1051 0395 B5000000 		.4byte	.LLST3
+ 1052 0399 13       		.uleb128 0x13
+ 1053 039a 7200     		.ascii	"r\000"
+ 1054 039c 01       		.byte	0x1
+ 1055 039d 37       		.byte	0x37
+ 1056 039e 68000000 		.4byte	0x68
+ 1057 03a2 FE000000 		.4byte	.LLST4
+ 1058 03a6 00       		.byte	0
+ 1059 03a7 11       		.uleb128 0x11
+ 1060 03a8 7A010000 		.4byte	.LASF90
+ 1061 03ac 01       		.byte	0x1
+ 1062 03ad 49       		.byte	0x49
+ 1063 03ae 68000000 		.4byte	0x68
+ 1064 03b2 00000000 		.4byte	.LFB36
+ 1065 03b6 2E000000 		.4byte	.LFE36-.LFB36
+ 1066 03ba 01       		.uleb128 0x1
+ 1067 03bb 9C       		.byte	0x9c
+ 1068 03bc EC030000 		.4byte	0x3ec
+ 1069 03c0 12       		.uleb128 0x12
+ 1070 03c1 7A050000 		.4byte	.LASF86
+ 1071 03c5 01       		.byte	0x1
+ 1072 03c6 49       		.byte	0x49
+ 1073 03c7 1A030000 		.4byte	0x31a
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 23
+
+
+ 1074 03cb 29010000 		.4byte	.LLST5
+ 1075 03cf 12       		.uleb128 0x12
+ 1076 03d0 EC050000 		.4byte	.LASF88
+ 1077 03d4 01       		.byte	0x1
+ 1078 03d5 49       		.byte	0x49
+ 1079 03d6 C1020000 		.4byte	0x2c1
+ 1080 03da 55010000 		.4byte	.LLST6
+ 1081 03de 13       		.uleb128 0x13
+ 1082 03df 7200     		.ascii	"r\000"
+ 1083 03e1 01       		.byte	0x1
+ 1084 03e2 4B       		.byte	0x4b
+ 1085 03e3 68000000 		.4byte	0x68
+ 1086 03e7 8F010000 		.4byte	.LLST7
+ 1087 03eb 00       		.byte	0
+ 1088 03ec 0E       		.uleb128 0xe
+ 1089 03ed D2020000 		.4byte	0x2d2
+ 1090 03f1 00000000 		.4byte	.LFB37
+ 1091 03f5 0E000000 		.4byte	.LFE37-.LFB37
+ 1092 03f9 01       		.uleb128 0x1
+ 1093 03fa 9C       		.byte	0x9c
+ 1094 03fb 08040000 		.4byte	0x408
+ 1095 03ff 14       		.uleb128 0x14
+ 1096 0400 E2020000 		.4byte	0x2e2
+ 1097 0404 02       		.uleb128 0x2
+ 1098 0405 91       		.byte	0x91
+ 1099 0406 70       		.sleb128 -16
+ 1100 0407 00       		.byte	0
+ 1101 0408 15       		.uleb128 0x15
+ 1102 0409 20030000 		.4byte	0x320
+ 1103 040d 00000000 		.4byte	.LFB38
+ 1104 0411 18000000 		.4byte	.LFE38-.LFB38
+ 1105 0415 01       		.uleb128 0x1
+ 1106 0416 9C       		.byte	0x9c
+ 1107 0417 24040000 		.4byte	0x424
+ 1108 041b 14       		.uleb128 0x14
+ 1109 041c 30030000 		.4byte	0x330
+ 1110 0420 02       		.uleb128 0x2
+ 1111 0421 91       		.byte	0x91
+ 1112 0422 68       		.sleb128 -24
+ 1113 0423 00       		.byte	0
+ 1114 0424 16       		.uleb128 0x16
+ 1115 0425 F1050000 		.4byte	.LASF91
+ 1116 0429 01       		.byte	0x1
+ 1117 042a 66       		.byte	0x66
+ 1118 042b 76000000 		.4byte	0x76
+ 1119 042f 00000000 		.4byte	.LFB39
+ 1120 0433 18000000 		.4byte	.LFE39-.LFB39
+ 1121 0437 01       		.uleb128 0x1
+ 1122 0438 9C       		.byte	0x9c
+ 1123 0439 5C040000 		.4byte	0x45c
+ 1124 043d 12       		.uleb128 0x12
+ 1125 043e 7A050000 		.4byte	.LASF86
+ 1126 0442 01       		.byte	0x1
+ 1127 0443 66       		.byte	0x66
+ 1128 0444 C7020000 		.4byte	0x2c7
+ 1129 0448 C8010000 		.4byte	.LLST8
+ 1130 044c 17       		.uleb128 0x17
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 24
+
+
+ 1131 044d AD020000 		.4byte	.LASF92
+ 1132 0451 01       		.byte	0x1
+ 1133 0452 68       		.byte	0x68
+ 1134 0453 76000000 		.4byte	0x76
+ 1135 0457 22020000 		.4byte	.LLST9
+ 1136 045b 00       		.byte	0
+ 1137 045c 18       		.uleb128 0x18
+ 1138 045d 96070000 		.4byte	.LASF98
+ 1139 0461 01       		.byte	0x1
+ 1140 0462 78       		.byte	0x78
+ 1141 0463 00000000 		.4byte	.LFB40
+ 1142 0467 20000000 		.4byte	.LFE40-.LFB40
+ 1143 046b 01       		.uleb128 0x1
+ 1144 046c 9C       		.byte	0x9c
+ 1145 046d AF040000 		.4byte	0x4af
+ 1146 0471 19       		.uleb128 0x19
+ 1147 0472 F5020000 		.4byte	0x2f5
+ 1148 0476 0C000000 		.4byte	.LBB12
+ 1149 047a 00000000 		.4byte	.Ldebug_ranges0+0
+ 1150 047e 01       		.byte	0x1
+ 1151 047f 7B       		.byte	0x7b
+ 1152 0480 9D040000 		.4byte	0x49d
+ 1153 0484 0F       		.uleb128 0xf
+ 1154 0485 05030000 		.4byte	0x305
+ 1155 0489 35020000 		.4byte	.LLST10
+ 1156 048d 1A       		.uleb128 0x1a
+ 1157 048e 00000000 		.4byte	.Ldebug_ranges0+0
+ 1158 0492 10       		.uleb128 0x10
+ 1159 0493 10030000 		.4byte	0x310
+ 1160 0497 4D020000 		.4byte	.LLST11
+ 1161 049b 00       		.byte	0
+ 1162 049c 00       		.byte	0
+ 1163 049d 1B       		.uleb128 0x1b
+ 1164 049e 18000000 		.4byte	.LVL35
+ 1165 04a2 C2050000 		.4byte	0x5c2
+ 1166 04a6 1C       		.uleb128 0x1c
+ 1167 04a7 01       		.uleb128 0x1
+ 1168 04a8 50       		.byte	0x50
+ 1169 04a9 03       		.uleb128 0x3
+ 1170 04aa 0A       		.byte	0xa
+ 1171 04ab 0002     		.2byte	0x200
+ 1172 04ad 00       		.byte	0
+ 1173 04ae 00       		.byte	0
+ 1174 04af 1D       		.uleb128 0x1d
+ 1175 04b0 D8040000 		.4byte	.LASF93
+ 1176 04b4 01       		.byte	0x1
+ 1177 04b5 7F       		.byte	0x7f
+ 1178 04b6 00000000 		.4byte	.LFB41
+ 1179 04ba 10000000 		.4byte	.LFE41-.LFB41
+ 1180 04be 01       		.uleb128 0x1
+ 1181 04bf 9C       		.byte	0x9c
+ 1182 04c0 E5040000 		.4byte	0x4e5
+ 1183 04c4 1E       		.uleb128 0x1e
+ 1184 04c5 6900     		.ascii	"i\000"
+ 1185 04c7 01       		.byte	0x1
+ 1186 04c8 7F       		.byte	0x7f
+ 1187 04c9 76000000 		.4byte	0x76
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 25
+
+
+ 1188 04cd 62020000 		.4byte	.LLST12
+ 1189 04d1 1B       		.uleb128 0x1b
+ 1190 04d2 0A000000 		.4byte	.LVL38
+ 1191 04d6 62030000 		.4byte	0x362
+ 1192 04da 1C       		.uleb128 0x1c
+ 1193 04db 01       		.uleb128 0x1
+ 1194 04dc 50       		.byte	0x50
+ 1195 04dd 05       		.uleb128 0x5
+ 1196 04de 03       		.byte	0x3
+ 1197 04df 00000000 		.4byte	cbuf
+ 1198 04e3 00       		.byte	0
+ 1199 04e4 00       		.byte	0
+ 1200 04e5 1F       		.uleb128 0x1f
+ 1201 04e6 5F020000 		.4byte	.LASF94
+ 1202 04ea 01       		.byte	0x1
+ 1203 04eb 84       		.byte	0x84
+ 1204 04ec 76000000 		.4byte	0x76
+ 1205 04f0 00000000 		.4byte	.LFB42
+ 1206 04f4 18000000 		.4byte	.LFE42-.LFB42
+ 1207 04f8 01       		.uleb128 0x1
+ 1208 04f9 9C       		.byte	0x9c
+ 1209 04fa 26050000 		.4byte	0x526
+ 1210 04fe 20       		.uleb128 0x20
+ 1211 04ff EC050000 		.4byte	.LASF88
+ 1212 0503 01       		.byte	0x1
+ 1213 0504 86       		.byte	0x86
+ 1214 0505 76000000 		.4byte	0x76
+ 1215 0509 02       		.uleb128 0x2
+ 1216 050a 91       		.byte	0x91
+ 1217 050b 76       		.sleb128 -10
+ 1218 050c 1B       		.uleb128 0x1b
+ 1219 050d 0E000000 		.4byte	.LVL39
+ 1220 0511 A7030000 		.4byte	0x3a7
+ 1221 0515 1C       		.uleb128 0x1c
+ 1222 0516 01       		.uleb128 0x1
+ 1223 0517 50       		.byte	0x50
+ 1224 0518 05       		.uleb128 0x5
+ 1225 0519 03       		.byte	0x3
+ 1226 051a 00000000 		.4byte	cbuf
+ 1227 051e 1C       		.uleb128 0x1c
+ 1228 051f 01       		.uleb128 0x1
+ 1229 0520 51       		.byte	0x51
+ 1230 0521 02       		.uleb128 0x2
+ 1231 0522 74       		.byte	0x74
+ 1232 0523 00       		.sleb128 0
+ 1233 0524 00       		.byte	0
+ 1234 0525 00       		.byte	0
+ 1235 0526 21       		.uleb128 0x21
+ 1236 0527 4B040000 		.4byte	.LASF95
+ 1237 052b 01       		.byte	0x1
+ 1238 052c 8B       		.byte	0x8b
+ 1239 052d EE020000 		.4byte	0x2ee
+ 1240 0531 00000000 		.4byte	.LFB43
+ 1241 0535 14000000 		.4byte	.LFE43-.LFB43
+ 1242 0539 01       		.uleb128 0x1
+ 1243 053a 9C       		.byte	0x9c
+ 1244 053b 22       		.uleb128 0x22
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 26
+
+
+ 1245 053c 67010000 		.4byte	.LASF96
+ 1246 0540 01       		.byte	0x1
+ 1247 0541 90       		.byte	0x90
+ 1248 0542 EE020000 		.4byte	0x2ee
+ 1249 0546 00000000 		.4byte	.LFB44
+ 1250 054a 20000000 		.4byte	.LFE44-.LFB44
+ 1251 054e 01       		.uleb128 0x1
+ 1252 054f 9C       		.byte	0x9c
+ 1253 0550 1F       		.uleb128 0x1f
+ 1254 0551 1D000000 		.4byte	.LASF97
+ 1255 0555 01       		.byte	0x1
+ 1256 0556 95       		.byte	0x95
+ 1257 0557 76000000 		.4byte	0x76
+ 1258 055b 00000000 		.4byte	.LFB45
+ 1259 055f 18000000 		.4byte	.LFE45-.LFB45
+ 1260 0563 01       		.uleb128 0x1
+ 1261 0564 9C       		.byte	0x9c
+ 1262 0565 73050000 		.4byte	0x573
+ 1263 0569 23       		.uleb128 0x23
+ 1264 056a 10000000 		.4byte	.LVL43
+ 1265 056e 24040000 		.4byte	0x424
+ 1266 0572 00       		.byte	0
+ 1267 0573 18       		.uleb128 0x18
+ 1268 0574 A7070000 		.4byte	.LASF99
+ 1269 0578 01       		.byte	0x1
+ 1270 0579 9A       		.byte	0x9a
+ 1271 057a 00000000 		.4byte	.LFB46
+ 1272 057e 10000000 		.4byte	.LFE46-.LFB46
+ 1273 0582 01       		.uleb128 0x1
+ 1274 0583 9C       		.byte	0x9c
+ 1275 0584 B1050000 		.4byte	0x5b1
+ 1276 0588 24       		.uleb128 0x24
+ 1277 0589 F5020000 		.4byte	0x2f5
+ 1278 058d 00000000 		.4byte	.LBB16
+ 1279 0591 18000000 		.4byte	.Ldebug_ranges0+0x18
+ 1280 0595 01       		.byte	0x1
+ 1281 0596 9C       		.byte	0x9c
+ 1282 0597 0F       		.uleb128 0xf
+ 1283 0598 05030000 		.4byte	0x305
+ 1284 059c 83020000 		.4byte	.LLST13
+ 1285 05a0 1A       		.uleb128 0x1a
+ 1286 05a1 18000000 		.4byte	.Ldebug_ranges0+0x18
+ 1287 05a5 10       		.uleb128 0x10
+ 1288 05a6 10030000 		.4byte	0x310
+ 1289 05aa 9B020000 		.4byte	.LLST14
+ 1290 05ae 00       		.byte	0
+ 1291 05af 00       		.byte	0
+ 1292 05b0 00       		.byte	0
+ 1293 05b1 25       		.uleb128 0x25
+ 1294 05b2 7A050000 		.4byte	.LASF86
+ 1295 05b6 01       		.byte	0x1
+ 1296 05b7 76       		.byte	0x76
+ 1297 05b8 C7020000 		.4byte	0x2c7
+ 1298 05bc 05       		.uleb128 0x5
+ 1299 05bd 03       		.byte	0x3
+ 1300 05be 00000000 		.4byte	cbuf
+ 1301 05c2 26       		.uleb128 0x26
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 27
+
+
+ 1302 05c3 57010000 		.4byte	.LASF103
+ 1303 05c7 57010000 		.4byte	.LASF103
+ 1304 05cb 06       		.byte	0x6
+ 1305 05cc 64       		.byte	0x64
+ 1306 05cd 00       		.byte	0
+ 1307              		.section	.debug_abbrev,"",%progbits
+ 1308              	.Ldebug_abbrev0:
+ 1309 0000 01       		.uleb128 0x1
+ 1310 0001 11       		.uleb128 0x11
+ 1311 0002 01       		.byte	0x1
+ 1312 0003 25       		.uleb128 0x25
+ 1313 0004 0E       		.uleb128 0xe
+ 1314 0005 13       		.uleb128 0x13
+ 1315 0006 0B       		.uleb128 0xb
+ 1316 0007 03       		.uleb128 0x3
+ 1317 0008 0E       		.uleb128 0xe
+ 1318 0009 1B       		.uleb128 0x1b
+ 1319 000a 0E       		.uleb128 0xe
+ 1320 000b 55       		.uleb128 0x55
+ 1321 000c 17       		.uleb128 0x17
+ 1322 000d 11       		.uleb128 0x11
+ 1323 000e 01       		.uleb128 0x1
+ 1324 000f 10       		.uleb128 0x10
+ 1325 0010 17       		.uleb128 0x17
+ 1326 0011 00       		.byte	0
+ 1327 0012 00       		.byte	0
+ 1328 0013 02       		.uleb128 0x2
+ 1329 0014 24       		.uleb128 0x24
+ 1330 0015 00       		.byte	0
+ 1331 0016 0B       		.uleb128 0xb
+ 1332 0017 0B       		.uleb128 0xb
+ 1333 0018 3E       		.uleb128 0x3e
+ 1334 0019 0B       		.uleb128 0xb
+ 1335 001a 03       		.uleb128 0x3
+ 1336 001b 0E       		.uleb128 0xe
+ 1337 001c 00       		.byte	0
+ 1338 001d 00       		.byte	0
+ 1339 001e 03       		.uleb128 0x3
+ 1340 001f 16       		.uleb128 0x16
+ 1341 0020 00       		.byte	0
+ 1342 0021 03       		.uleb128 0x3
+ 1343 0022 0E       		.uleb128 0xe
+ 1344 0023 3A       		.uleb128 0x3a
+ 1345 0024 0B       		.uleb128 0xb
+ 1346 0025 3B       		.uleb128 0x3b
+ 1347 0026 0B       		.uleb128 0xb
+ 1348 0027 49       		.uleb128 0x49
+ 1349 0028 13       		.uleb128 0x13
+ 1350 0029 00       		.byte	0
+ 1351 002a 00       		.byte	0
+ 1352 002b 04       		.uleb128 0x4
+ 1353 002c 24       		.uleb128 0x24
+ 1354 002d 00       		.byte	0
+ 1355 002e 0B       		.uleb128 0xb
+ 1356 002f 0B       		.uleb128 0xb
+ 1357 0030 3E       		.uleb128 0x3e
+ 1358 0031 0B       		.uleb128 0xb
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 28
+
+
+ 1359 0032 03       		.uleb128 0x3
+ 1360 0033 08       		.uleb128 0x8
+ 1361 0034 00       		.byte	0
+ 1362 0035 00       		.byte	0
+ 1363 0036 05       		.uleb128 0x5
+ 1364 0037 04       		.uleb128 0x4
+ 1365 0038 01       		.byte	0x1
+ 1366 0039 0B       		.uleb128 0xb
+ 1367 003a 0B       		.uleb128 0xb
+ 1368 003b 49       		.uleb128 0x49
+ 1369 003c 13       		.uleb128 0x13
+ 1370 003d 3A       		.uleb128 0x3a
+ 1371 003e 0B       		.uleb128 0xb
+ 1372 003f 3B       		.uleb128 0x3b
+ 1373 0040 0B       		.uleb128 0xb
+ 1374 0041 01       		.uleb128 0x1
+ 1375 0042 13       		.uleb128 0x13
+ 1376 0043 00       		.byte	0
+ 1377 0044 00       		.byte	0
+ 1378 0045 06       		.uleb128 0x6
+ 1379 0046 28       		.uleb128 0x28
+ 1380 0047 00       		.byte	0
+ 1381 0048 03       		.uleb128 0x3
+ 1382 0049 0E       		.uleb128 0xe
+ 1383 004a 1C       		.uleb128 0x1c
+ 1384 004b 0B       		.uleb128 0xb
+ 1385 004c 00       		.byte	0
+ 1386 004d 00       		.byte	0
+ 1387 004e 07       		.uleb128 0x7
+ 1388 004f 04       		.uleb128 0x4
+ 1389 0050 01       		.byte	0x1
+ 1390 0051 0B       		.uleb128 0xb
+ 1391 0052 0B       		.uleb128 0xb
+ 1392 0053 49       		.uleb128 0x49
+ 1393 0054 13       		.uleb128 0x13
+ 1394 0055 3A       		.uleb128 0x3a
+ 1395 0056 0B       		.uleb128 0xb
+ 1396 0057 3B       		.uleb128 0x3b
+ 1397 0058 05       		.uleb128 0x5
+ 1398 0059 01       		.uleb128 0x1
+ 1399 005a 13       		.uleb128 0x13
+ 1400 005b 00       		.byte	0
+ 1401 005c 00       		.byte	0
+ 1402 005d 08       		.uleb128 0x8
+ 1403 005e 13       		.uleb128 0x13
+ 1404 005f 01       		.byte	0x1
+ 1405 0060 0B       		.uleb128 0xb
+ 1406 0061 0B       		.uleb128 0xb
+ 1407 0062 3A       		.uleb128 0x3a
+ 1408 0063 0B       		.uleb128 0xb
+ 1409 0064 3B       		.uleb128 0x3b
+ 1410 0065 0B       		.uleb128 0xb
+ 1411 0066 01       		.uleb128 0x1
+ 1412 0067 13       		.uleb128 0x13
+ 1413 0068 00       		.byte	0
+ 1414 0069 00       		.byte	0
+ 1415 006a 09       		.uleb128 0x9
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 29
+
+
+ 1416 006b 0D       		.uleb128 0xd
+ 1417 006c 00       		.byte	0
+ 1418 006d 03       		.uleb128 0x3
+ 1419 006e 0E       		.uleb128 0xe
+ 1420 006f 3A       		.uleb128 0x3a
+ 1421 0070 0B       		.uleb128 0xb
+ 1422 0071 3B       		.uleb128 0x3b
+ 1423 0072 0B       		.uleb128 0xb
+ 1424 0073 49       		.uleb128 0x49
+ 1425 0074 13       		.uleb128 0x13
+ 1426 0075 38       		.uleb128 0x38
+ 1427 0076 0B       		.uleb128 0xb
+ 1428 0077 00       		.byte	0
+ 1429 0078 00       		.byte	0
+ 1430 0079 0A       		.uleb128 0xa
+ 1431 007a 0F       		.uleb128 0xf
+ 1432 007b 00       		.byte	0
+ 1433 007c 0B       		.uleb128 0xb
+ 1434 007d 0B       		.uleb128 0xb
+ 1435 007e 49       		.uleb128 0x49
+ 1436 007f 13       		.uleb128 0x13
+ 1437 0080 00       		.byte	0
+ 1438 0081 00       		.byte	0
+ 1439 0082 0B       		.uleb128 0xb
+ 1440 0083 2E       		.uleb128 0x2e
+ 1441 0084 01       		.byte	0x1
+ 1442 0085 3F       		.uleb128 0x3f
+ 1443 0086 19       		.uleb128 0x19
+ 1444 0087 03       		.uleb128 0x3
+ 1445 0088 0E       		.uleb128 0xe
+ 1446 0089 3A       		.uleb128 0x3a
+ 1447 008a 0B       		.uleb128 0xb
+ 1448 008b 3B       		.uleb128 0x3b
+ 1449 008c 0B       		.uleb128 0xb
+ 1450 008d 27       		.uleb128 0x27
+ 1451 008e 19       		.uleb128 0x19
+ 1452 008f 49       		.uleb128 0x49
+ 1453 0090 13       		.uleb128 0x13
+ 1454 0091 20       		.uleb128 0x20
+ 1455 0092 0B       		.uleb128 0xb
+ 1456 0093 01       		.uleb128 0x1
+ 1457 0094 13       		.uleb128 0x13
+ 1458 0095 00       		.byte	0
+ 1459 0096 00       		.byte	0
+ 1460 0097 0C       		.uleb128 0xc
+ 1461 0098 05       		.uleb128 0x5
+ 1462 0099 00       		.byte	0
+ 1463 009a 03       		.uleb128 0x3
+ 1464 009b 0E       		.uleb128 0xe
+ 1465 009c 3A       		.uleb128 0x3a
+ 1466 009d 0B       		.uleb128 0xb
+ 1467 009e 3B       		.uleb128 0x3b
+ 1468 009f 0B       		.uleb128 0xb
+ 1469 00a0 49       		.uleb128 0x49
+ 1470 00a1 13       		.uleb128 0x13
+ 1471 00a2 00       		.byte	0
+ 1472 00a3 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 30
+
+
+ 1473 00a4 0D       		.uleb128 0xd
+ 1474 00a5 34       		.uleb128 0x34
+ 1475 00a6 00       		.byte	0
+ 1476 00a7 03       		.uleb128 0x3
+ 1477 00a8 08       		.uleb128 0x8
+ 1478 00a9 3A       		.uleb128 0x3a
+ 1479 00aa 0B       		.uleb128 0xb
+ 1480 00ab 3B       		.uleb128 0x3b
+ 1481 00ac 0B       		.uleb128 0xb
+ 1482 00ad 49       		.uleb128 0x49
+ 1483 00ae 13       		.uleb128 0x13
+ 1484 00af 00       		.byte	0
+ 1485 00b0 00       		.byte	0
+ 1486 00b1 0E       		.uleb128 0xe
+ 1487 00b2 2E       		.uleb128 0x2e
+ 1488 00b3 01       		.byte	0x1
+ 1489 00b4 31       		.uleb128 0x31
+ 1490 00b5 13       		.uleb128 0x13
+ 1491 00b6 11       		.uleb128 0x11
+ 1492 00b7 01       		.uleb128 0x1
+ 1493 00b8 12       		.uleb128 0x12
+ 1494 00b9 06       		.uleb128 0x6
+ 1495 00ba 40       		.uleb128 0x40
+ 1496 00bb 18       		.uleb128 0x18
+ 1497 00bc 9742     		.uleb128 0x2117
+ 1498 00be 19       		.uleb128 0x19
+ 1499 00bf 01       		.uleb128 0x1
+ 1500 00c0 13       		.uleb128 0x13
+ 1501 00c1 00       		.byte	0
+ 1502 00c2 00       		.byte	0
+ 1503 00c3 0F       		.uleb128 0xf
+ 1504 00c4 05       		.uleb128 0x5
+ 1505 00c5 00       		.byte	0
+ 1506 00c6 31       		.uleb128 0x31
+ 1507 00c7 13       		.uleb128 0x13
+ 1508 00c8 02       		.uleb128 0x2
+ 1509 00c9 17       		.uleb128 0x17
+ 1510 00ca 00       		.byte	0
+ 1511 00cb 00       		.byte	0
+ 1512 00cc 10       		.uleb128 0x10
+ 1513 00cd 34       		.uleb128 0x34
+ 1514 00ce 00       		.byte	0
+ 1515 00cf 31       		.uleb128 0x31
+ 1516 00d0 13       		.uleb128 0x13
+ 1517 00d1 02       		.uleb128 0x2
+ 1518 00d2 17       		.uleb128 0x17
+ 1519 00d3 00       		.byte	0
+ 1520 00d4 00       		.byte	0
+ 1521 00d5 11       		.uleb128 0x11
+ 1522 00d6 2E       		.uleb128 0x2e
+ 1523 00d7 01       		.byte	0x1
+ 1524 00d8 3F       		.uleb128 0x3f
+ 1525 00d9 19       		.uleb128 0x19
+ 1526 00da 03       		.uleb128 0x3
+ 1527 00db 0E       		.uleb128 0xe
+ 1528 00dc 3A       		.uleb128 0x3a
+ 1529 00dd 0B       		.uleb128 0xb
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 31
+
+
+ 1530 00de 3B       		.uleb128 0x3b
+ 1531 00df 0B       		.uleb128 0xb
+ 1532 00e0 27       		.uleb128 0x27
+ 1533 00e1 19       		.uleb128 0x19
+ 1534 00e2 49       		.uleb128 0x49
+ 1535 00e3 13       		.uleb128 0x13
+ 1536 00e4 11       		.uleb128 0x11
+ 1537 00e5 01       		.uleb128 0x1
+ 1538 00e6 12       		.uleb128 0x12
+ 1539 00e7 06       		.uleb128 0x6
+ 1540 00e8 40       		.uleb128 0x40
+ 1541 00e9 18       		.uleb128 0x18
+ 1542 00ea 9642     		.uleb128 0x2116
+ 1543 00ec 19       		.uleb128 0x19
+ 1544 00ed 01       		.uleb128 0x1
+ 1545 00ee 13       		.uleb128 0x13
+ 1546 00ef 00       		.byte	0
+ 1547 00f0 00       		.byte	0
+ 1548 00f1 12       		.uleb128 0x12
+ 1549 00f2 05       		.uleb128 0x5
+ 1550 00f3 00       		.byte	0
+ 1551 00f4 03       		.uleb128 0x3
+ 1552 00f5 0E       		.uleb128 0xe
+ 1553 00f6 3A       		.uleb128 0x3a
+ 1554 00f7 0B       		.uleb128 0xb
+ 1555 00f8 3B       		.uleb128 0x3b
+ 1556 00f9 0B       		.uleb128 0xb
+ 1557 00fa 49       		.uleb128 0x49
+ 1558 00fb 13       		.uleb128 0x13
+ 1559 00fc 02       		.uleb128 0x2
+ 1560 00fd 17       		.uleb128 0x17
+ 1561 00fe 00       		.byte	0
+ 1562 00ff 00       		.byte	0
+ 1563 0100 13       		.uleb128 0x13
+ 1564 0101 34       		.uleb128 0x34
+ 1565 0102 00       		.byte	0
+ 1566 0103 03       		.uleb128 0x3
+ 1567 0104 08       		.uleb128 0x8
+ 1568 0105 3A       		.uleb128 0x3a
+ 1569 0106 0B       		.uleb128 0xb
+ 1570 0107 3B       		.uleb128 0x3b
+ 1571 0108 0B       		.uleb128 0xb
+ 1572 0109 49       		.uleb128 0x49
+ 1573 010a 13       		.uleb128 0x13
+ 1574 010b 02       		.uleb128 0x2
+ 1575 010c 17       		.uleb128 0x17
+ 1576 010d 00       		.byte	0
+ 1577 010e 00       		.byte	0
+ 1578 010f 14       		.uleb128 0x14
+ 1579 0110 05       		.uleb128 0x5
+ 1580 0111 00       		.byte	0
+ 1581 0112 31       		.uleb128 0x31
+ 1582 0113 13       		.uleb128 0x13
+ 1583 0114 02       		.uleb128 0x2
+ 1584 0115 18       		.uleb128 0x18
+ 1585 0116 00       		.byte	0
+ 1586 0117 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 32
+
+
+ 1587 0118 15       		.uleb128 0x15
+ 1588 0119 2E       		.uleb128 0x2e
+ 1589 011a 01       		.byte	0x1
+ 1590 011b 31       		.uleb128 0x31
+ 1591 011c 13       		.uleb128 0x13
+ 1592 011d 11       		.uleb128 0x11
+ 1593 011e 01       		.uleb128 0x1
+ 1594 011f 12       		.uleb128 0x12
+ 1595 0120 06       		.uleb128 0x6
+ 1596 0121 40       		.uleb128 0x40
+ 1597 0122 18       		.uleb128 0x18
+ 1598 0123 9642     		.uleb128 0x2116
+ 1599 0125 19       		.uleb128 0x19
+ 1600 0126 01       		.uleb128 0x1
+ 1601 0127 13       		.uleb128 0x13
+ 1602 0128 00       		.byte	0
+ 1603 0129 00       		.byte	0
+ 1604 012a 16       		.uleb128 0x16
+ 1605 012b 2E       		.uleb128 0x2e
+ 1606 012c 01       		.byte	0x1
+ 1607 012d 3F       		.uleb128 0x3f
+ 1608 012e 19       		.uleb128 0x19
+ 1609 012f 03       		.uleb128 0x3
+ 1610 0130 0E       		.uleb128 0xe
+ 1611 0131 3A       		.uleb128 0x3a
+ 1612 0132 0B       		.uleb128 0xb
+ 1613 0133 3B       		.uleb128 0x3b
+ 1614 0134 0B       		.uleb128 0xb
+ 1615 0135 27       		.uleb128 0x27
+ 1616 0136 19       		.uleb128 0x19
+ 1617 0137 49       		.uleb128 0x49
+ 1618 0138 13       		.uleb128 0x13
+ 1619 0139 11       		.uleb128 0x11
+ 1620 013a 01       		.uleb128 0x1
+ 1621 013b 12       		.uleb128 0x12
+ 1622 013c 06       		.uleb128 0x6
+ 1623 013d 40       		.uleb128 0x40
+ 1624 013e 18       		.uleb128 0x18
+ 1625 013f 9742     		.uleb128 0x2117
+ 1626 0141 19       		.uleb128 0x19
+ 1627 0142 01       		.uleb128 0x1
+ 1628 0143 13       		.uleb128 0x13
+ 1629 0144 00       		.byte	0
+ 1630 0145 00       		.byte	0
+ 1631 0146 17       		.uleb128 0x17
+ 1632 0147 34       		.uleb128 0x34
+ 1633 0148 00       		.byte	0
+ 1634 0149 03       		.uleb128 0x3
+ 1635 014a 0E       		.uleb128 0xe
+ 1636 014b 3A       		.uleb128 0x3a
+ 1637 014c 0B       		.uleb128 0xb
+ 1638 014d 3B       		.uleb128 0x3b
+ 1639 014e 0B       		.uleb128 0xb
+ 1640 014f 49       		.uleb128 0x49
+ 1641 0150 13       		.uleb128 0x13
+ 1642 0151 02       		.uleb128 0x2
+ 1643 0152 17       		.uleb128 0x17
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 33
+
+
+ 1644 0153 00       		.byte	0
+ 1645 0154 00       		.byte	0
+ 1646 0155 18       		.uleb128 0x18
+ 1647 0156 2E       		.uleb128 0x2e
+ 1648 0157 01       		.byte	0x1
+ 1649 0158 3F       		.uleb128 0x3f
+ 1650 0159 19       		.uleb128 0x19
+ 1651 015a 03       		.uleb128 0x3
+ 1652 015b 0E       		.uleb128 0xe
+ 1653 015c 3A       		.uleb128 0x3a
+ 1654 015d 0B       		.uleb128 0xb
+ 1655 015e 3B       		.uleb128 0x3b
+ 1656 015f 0B       		.uleb128 0xb
+ 1657 0160 11       		.uleb128 0x11
+ 1658 0161 01       		.uleb128 0x1
+ 1659 0162 12       		.uleb128 0x12
+ 1660 0163 06       		.uleb128 0x6
+ 1661 0164 40       		.uleb128 0x40
+ 1662 0165 18       		.uleb128 0x18
+ 1663 0166 9742     		.uleb128 0x2117
+ 1664 0168 19       		.uleb128 0x19
+ 1665 0169 01       		.uleb128 0x1
+ 1666 016a 13       		.uleb128 0x13
+ 1667 016b 00       		.byte	0
+ 1668 016c 00       		.byte	0
+ 1669 016d 19       		.uleb128 0x19
+ 1670 016e 1D       		.uleb128 0x1d
+ 1671 016f 01       		.byte	0x1
+ 1672 0170 31       		.uleb128 0x31
+ 1673 0171 13       		.uleb128 0x13
+ 1674 0172 52       		.uleb128 0x52
+ 1675 0173 01       		.uleb128 0x1
+ 1676 0174 55       		.uleb128 0x55
+ 1677 0175 17       		.uleb128 0x17
+ 1678 0176 58       		.uleb128 0x58
+ 1679 0177 0B       		.uleb128 0xb
+ 1680 0178 59       		.uleb128 0x59
+ 1681 0179 0B       		.uleb128 0xb
+ 1682 017a 01       		.uleb128 0x1
+ 1683 017b 13       		.uleb128 0x13
+ 1684 017c 00       		.byte	0
+ 1685 017d 00       		.byte	0
+ 1686 017e 1A       		.uleb128 0x1a
+ 1687 017f 0B       		.uleb128 0xb
+ 1688 0180 01       		.byte	0x1
+ 1689 0181 55       		.uleb128 0x55
+ 1690 0182 17       		.uleb128 0x17
+ 1691 0183 00       		.byte	0
+ 1692 0184 00       		.byte	0
+ 1693 0185 1B       		.uleb128 0x1b
+ 1694 0186 898201   		.uleb128 0x4109
+ 1695 0189 01       		.byte	0x1
+ 1696 018a 11       		.uleb128 0x11
+ 1697 018b 01       		.uleb128 0x1
+ 1698 018c 31       		.uleb128 0x31
+ 1699 018d 13       		.uleb128 0x13
+ 1700 018e 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 34
+
+
+ 1701 018f 00       		.byte	0
+ 1702 0190 1C       		.uleb128 0x1c
+ 1703 0191 8A8201   		.uleb128 0x410a
+ 1704 0194 00       		.byte	0
+ 1705 0195 02       		.uleb128 0x2
+ 1706 0196 18       		.uleb128 0x18
+ 1707 0197 9142     		.uleb128 0x2111
+ 1708 0199 18       		.uleb128 0x18
+ 1709 019a 00       		.byte	0
+ 1710 019b 00       		.byte	0
+ 1711 019c 1D       		.uleb128 0x1d
+ 1712 019d 2E       		.uleb128 0x2e
+ 1713 019e 01       		.byte	0x1
+ 1714 019f 3F       		.uleb128 0x3f
+ 1715 01a0 19       		.uleb128 0x19
+ 1716 01a1 03       		.uleb128 0x3
+ 1717 01a2 0E       		.uleb128 0xe
+ 1718 01a3 3A       		.uleb128 0x3a
+ 1719 01a4 0B       		.uleb128 0xb
+ 1720 01a5 3B       		.uleb128 0x3b
+ 1721 01a6 0B       		.uleb128 0xb
+ 1722 01a7 27       		.uleb128 0x27
+ 1723 01a8 19       		.uleb128 0x19
+ 1724 01a9 11       		.uleb128 0x11
+ 1725 01aa 01       		.uleb128 0x1
+ 1726 01ab 12       		.uleb128 0x12
+ 1727 01ac 06       		.uleb128 0x6
+ 1728 01ad 40       		.uleb128 0x40
+ 1729 01ae 18       		.uleb128 0x18
+ 1730 01af 9742     		.uleb128 0x2117
+ 1731 01b1 19       		.uleb128 0x19
+ 1732 01b2 01       		.uleb128 0x1
+ 1733 01b3 13       		.uleb128 0x13
+ 1734 01b4 00       		.byte	0
+ 1735 01b5 00       		.byte	0
+ 1736 01b6 1E       		.uleb128 0x1e
+ 1737 01b7 05       		.uleb128 0x5
+ 1738 01b8 00       		.byte	0
+ 1739 01b9 03       		.uleb128 0x3
+ 1740 01ba 08       		.uleb128 0x8
+ 1741 01bb 3A       		.uleb128 0x3a
+ 1742 01bc 0B       		.uleb128 0xb
+ 1743 01bd 3B       		.uleb128 0x3b
+ 1744 01be 0B       		.uleb128 0xb
+ 1745 01bf 49       		.uleb128 0x49
+ 1746 01c0 13       		.uleb128 0x13
+ 1747 01c1 02       		.uleb128 0x2
+ 1748 01c2 17       		.uleb128 0x17
+ 1749 01c3 00       		.byte	0
+ 1750 01c4 00       		.byte	0
+ 1751 01c5 1F       		.uleb128 0x1f
+ 1752 01c6 2E       		.uleb128 0x2e
+ 1753 01c7 01       		.byte	0x1
+ 1754 01c8 3F       		.uleb128 0x3f
+ 1755 01c9 19       		.uleb128 0x19
+ 1756 01ca 03       		.uleb128 0x3
+ 1757 01cb 0E       		.uleb128 0xe
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 35
+
+
+ 1758 01cc 3A       		.uleb128 0x3a
+ 1759 01cd 0B       		.uleb128 0xb
+ 1760 01ce 3B       		.uleb128 0x3b
+ 1761 01cf 0B       		.uleb128 0xb
+ 1762 01d0 49       		.uleb128 0x49
+ 1763 01d1 13       		.uleb128 0x13
+ 1764 01d2 11       		.uleb128 0x11
+ 1765 01d3 01       		.uleb128 0x1
+ 1766 01d4 12       		.uleb128 0x12
+ 1767 01d5 06       		.uleb128 0x6
+ 1768 01d6 40       		.uleb128 0x40
+ 1769 01d7 18       		.uleb128 0x18
+ 1770 01d8 9742     		.uleb128 0x2117
+ 1771 01da 19       		.uleb128 0x19
+ 1772 01db 01       		.uleb128 0x1
+ 1773 01dc 13       		.uleb128 0x13
+ 1774 01dd 00       		.byte	0
+ 1775 01de 00       		.byte	0
+ 1776 01df 20       		.uleb128 0x20
+ 1777 01e0 34       		.uleb128 0x34
+ 1778 01e1 00       		.byte	0
+ 1779 01e2 03       		.uleb128 0x3
+ 1780 01e3 0E       		.uleb128 0xe
+ 1781 01e4 3A       		.uleb128 0x3a
+ 1782 01e5 0B       		.uleb128 0xb
+ 1783 01e6 3B       		.uleb128 0x3b
+ 1784 01e7 0B       		.uleb128 0xb
+ 1785 01e8 49       		.uleb128 0x49
+ 1786 01e9 13       		.uleb128 0x13
+ 1787 01ea 02       		.uleb128 0x2
+ 1788 01eb 18       		.uleb128 0x18
+ 1789 01ec 00       		.byte	0
+ 1790 01ed 00       		.byte	0
+ 1791 01ee 21       		.uleb128 0x21
+ 1792 01ef 2E       		.uleb128 0x2e
+ 1793 01f0 00       		.byte	0
+ 1794 01f1 3F       		.uleb128 0x3f
+ 1795 01f2 19       		.uleb128 0x19
+ 1796 01f3 03       		.uleb128 0x3
+ 1797 01f4 0E       		.uleb128 0xe
+ 1798 01f5 3A       		.uleb128 0x3a
+ 1799 01f6 0B       		.uleb128 0xb
+ 1800 01f7 3B       		.uleb128 0x3b
+ 1801 01f8 0B       		.uleb128 0xb
+ 1802 01f9 49       		.uleb128 0x49
+ 1803 01fa 13       		.uleb128 0x13
+ 1804 01fb 11       		.uleb128 0x11
+ 1805 01fc 01       		.uleb128 0x1
+ 1806 01fd 12       		.uleb128 0x12
+ 1807 01fe 06       		.uleb128 0x6
+ 1808 01ff 40       		.uleb128 0x40
+ 1809 0200 18       		.uleb128 0x18
+ 1810 0201 9742     		.uleb128 0x2117
+ 1811 0203 19       		.uleb128 0x19
+ 1812 0204 00       		.byte	0
+ 1813 0205 00       		.byte	0
+ 1814 0206 22       		.uleb128 0x22
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 36
+
+
+ 1815 0207 2E       		.uleb128 0x2e
+ 1816 0208 00       		.byte	0
+ 1817 0209 3F       		.uleb128 0x3f
+ 1818 020a 19       		.uleb128 0x19
+ 1819 020b 03       		.uleb128 0x3
+ 1820 020c 0E       		.uleb128 0xe
+ 1821 020d 3A       		.uleb128 0x3a
+ 1822 020e 0B       		.uleb128 0xb
+ 1823 020f 3B       		.uleb128 0x3b
+ 1824 0210 0B       		.uleb128 0xb
+ 1825 0211 49       		.uleb128 0x49
+ 1826 0212 13       		.uleb128 0x13
+ 1827 0213 11       		.uleb128 0x11
+ 1828 0214 01       		.uleb128 0x1
+ 1829 0215 12       		.uleb128 0x12
+ 1830 0216 06       		.uleb128 0x6
+ 1831 0217 40       		.uleb128 0x40
+ 1832 0218 18       		.uleb128 0x18
+ 1833 0219 9642     		.uleb128 0x2116
+ 1834 021b 19       		.uleb128 0x19
+ 1835 021c 00       		.byte	0
+ 1836 021d 00       		.byte	0
+ 1837 021e 23       		.uleb128 0x23
+ 1838 021f 898201   		.uleb128 0x4109
+ 1839 0222 00       		.byte	0
+ 1840 0223 11       		.uleb128 0x11
+ 1841 0224 01       		.uleb128 0x1
+ 1842 0225 31       		.uleb128 0x31
+ 1843 0226 13       		.uleb128 0x13
+ 1844 0227 00       		.byte	0
+ 1845 0228 00       		.byte	0
+ 1846 0229 24       		.uleb128 0x24
+ 1847 022a 1D       		.uleb128 0x1d
+ 1848 022b 01       		.byte	0x1
+ 1849 022c 31       		.uleb128 0x31
+ 1850 022d 13       		.uleb128 0x13
+ 1851 022e 52       		.uleb128 0x52
+ 1852 022f 01       		.uleb128 0x1
+ 1853 0230 55       		.uleb128 0x55
+ 1854 0231 17       		.uleb128 0x17
+ 1855 0232 58       		.uleb128 0x58
+ 1856 0233 0B       		.uleb128 0xb
+ 1857 0234 59       		.uleb128 0x59
+ 1858 0235 0B       		.uleb128 0xb
+ 1859 0236 00       		.byte	0
+ 1860 0237 00       		.byte	0
+ 1861 0238 25       		.uleb128 0x25
+ 1862 0239 34       		.uleb128 0x34
+ 1863 023a 00       		.byte	0
+ 1864 023b 03       		.uleb128 0x3
+ 1865 023c 0E       		.uleb128 0xe
+ 1866 023d 3A       		.uleb128 0x3a
+ 1867 023e 0B       		.uleb128 0xb
+ 1868 023f 3B       		.uleb128 0x3b
+ 1869 0240 0B       		.uleb128 0xb
+ 1870 0241 49       		.uleb128 0x49
+ 1871 0242 13       		.uleb128 0x13
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 37
+
+
+ 1872 0243 3F       		.uleb128 0x3f
+ 1873 0244 19       		.uleb128 0x19
+ 1874 0245 02       		.uleb128 0x2
+ 1875 0246 18       		.uleb128 0x18
+ 1876 0247 00       		.byte	0
+ 1877 0248 00       		.byte	0
+ 1878 0249 26       		.uleb128 0x26
+ 1879 024a 2E       		.uleb128 0x2e
+ 1880 024b 00       		.byte	0
+ 1881 024c 3F       		.uleb128 0x3f
+ 1882 024d 19       		.uleb128 0x19
+ 1883 024e 3C       		.uleb128 0x3c
+ 1884 024f 19       		.uleb128 0x19
+ 1885 0250 6E       		.uleb128 0x6e
+ 1886 0251 0E       		.uleb128 0xe
+ 1887 0252 03       		.uleb128 0x3
+ 1888 0253 0E       		.uleb128 0xe
+ 1889 0254 3A       		.uleb128 0x3a
+ 1890 0255 0B       		.uleb128 0xb
+ 1891 0256 3B       		.uleb128 0x3b
+ 1892 0257 0B       		.uleb128 0xb
+ 1893 0258 00       		.byte	0
+ 1894 0259 00       		.byte	0
+ 1895 025a 00       		.byte	0
+ 1896              		.section	.debug_loc,"",%progbits
+ 1897              	.Ldebug_loc0:
+ 1898              	.LLST0:
+ 1899 0000 00000000 		.4byte	.LVL0
+ 1900 0004 0C000000 		.4byte	.LVL2
+ 1901 0008 0100     		.2byte	0x1
+ 1902 000a 50       		.byte	0x50
+ 1903 000b 0C000000 		.4byte	.LVL2
+ 1904 000f 0E000000 		.4byte	.LVL3
+ 1905 0013 0400     		.2byte	0x4
+ 1906 0015 F3       		.byte	0xf3
+ 1907 0016 01       		.uleb128 0x1
+ 1908 0017 50       		.byte	0x50
+ 1909 0018 9F       		.byte	0x9f
+ 1910 0019 0E000000 		.4byte	.LVL3
+ 1911 001d 10000000 		.4byte	.LVL4
+ 1912 0021 0100     		.2byte	0x1
+ 1913 0023 50       		.byte	0x50
+ 1914 0024 10000000 		.4byte	.LVL4
+ 1915 0028 14000000 		.4byte	.LFE34
+ 1916 002c 0400     		.2byte	0x4
+ 1917 002e F3       		.byte	0xf3
+ 1918 002f 01       		.uleb128 0x1
+ 1919 0030 50       		.byte	0x50
+ 1920 0031 9F       		.byte	0x9f
+ 1921 0032 00000000 		.4byte	0
+ 1922 0036 00000000 		.4byte	0
+ 1923              	.LLST1:
+ 1924 003a 00000000 		.4byte	.LVL0
+ 1925 003e 0A000000 		.4byte	.LVL1
+ 1926 0042 0300     		.2byte	0x3
+ 1927 0044 09       		.byte	0x9
+ 1928 0045 FF       		.byte	0xff
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 38
+
+
+ 1929 0046 9F       		.byte	0x9f
+ 1930 0047 0A000000 		.4byte	.LVL1
+ 1931 004b 0E000000 		.4byte	.LVL3
+ 1932 004f 0200     		.2byte	0x2
+ 1933 0051 30       		.byte	0x30
+ 1934 0052 9F       		.byte	0x9f
+ 1935 0053 0E000000 		.4byte	.LVL3
+ 1936 0057 12000000 		.4byte	.LVL5
+ 1937 005b 0300     		.2byte	0x3
+ 1938 005d 09       		.byte	0x9
+ 1939 005e FF       		.byte	0xff
+ 1940 005f 9F       		.byte	0x9f
+ 1941 0060 12000000 		.4byte	.LVL5
+ 1942 0064 14000000 		.4byte	.LFE34
+ 1943 0068 0100     		.2byte	0x1
+ 1944 006a 50       		.byte	0x50
+ 1945 006b 00000000 		.4byte	0
+ 1946 006f 00000000 		.4byte	0
+ 1947              	.LLST2:
+ 1948 0073 00000000 		.4byte	.LVL6
+ 1949 0077 08000000 		.4byte	.LVL7
+ 1950 007b 0100     		.2byte	0x1
+ 1951 007d 50       		.byte	0x50
+ 1952 007e 08000000 		.4byte	.LVL7
+ 1953 0082 2E000000 		.4byte	.LVL11
+ 1954 0086 0100     		.2byte	0x1
+ 1955 0088 54       		.byte	0x54
+ 1956 0089 2E000000 		.4byte	.LVL11
+ 1957 008d 32000000 		.4byte	.LVL12
+ 1958 0091 0100     		.2byte	0x1
+ 1959 0093 50       		.byte	0x50
+ 1960 0094 32000000 		.4byte	.LVL12
+ 1961 0098 34000000 		.4byte	.LVL13
+ 1962 009c 0100     		.2byte	0x1
+ 1963 009e 54       		.byte	0x54
+ 1964 009f 34000000 		.4byte	.LVL13
+ 1965 00a3 36000000 		.4byte	.LFE35
+ 1966 00a7 0400     		.2byte	0x4
+ 1967 00a9 F3       		.byte	0xf3
+ 1968 00aa 01       		.uleb128 0x1
+ 1969 00ab 50       		.byte	0x50
+ 1970 00ac 9F       		.byte	0x9f
+ 1971 00ad 00000000 		.4byte	0
+ 1972 00b1 00000000 		.4byte	0
+ 1973              	.LLST3:
+ 1974 00b5 00000000 		.4byte	.LVL6
+ 1975 00b9 14000000 		.4byte	.LVL8
+ 1976 00bd 0100     		.2byte	0x1
+ 1977 00bf 51       		.byte	0x51
+ 1978 00c0 14000000 		.4byte	.LVL8
+ 1979 00c4 17000000 		.4byte	.LVL9-1
+ 1980 00c8 0500     		.2byte	0x5
+ 1981 00ca 73       		.byte	0x73
+ 1982 00cb 00       		.sleb128 0
+ 1983 00cc 72       		.byte	0x72
+ 1984 00cd 00       		.sleb128 0
+ 1985 00ce 22       		.byte	0x22
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 39
+
+
+ 1986 00cf 17000000 		.4byte	.LVL9-1
+ 1987 00d3 2E000000 		.4byte	.LVL11
+ 1988 00d7 0400     		.2byte	0x4
+ 1989 00d9 F3       		.byte	0xf3
+ 1990 00da 01       		.uleb128 0x1
+ 1991 00db 51       		.byte	0x51
+ 1992 00dc 9F       		.byte	0x9f
+ 1993 00dd 2E000000 		.4byte	.LVL11
+ 1994 00e1 32000000 		.4byte	.LVL12
+ 1995 00e5 0100     		.2byte	0x1
+ 1996 00e7 51       		.byte	0x51
+ 1997 00e8 32000000 		.4byte	.LVL12
+ 1998 00ec 36000000 		.4byte	.LFE35
+ 1999 00f0 0400     		.2byte	0x4
+ 2000 00f2 F3       		.byte	0xf3
+ 2001 00f3 01       		.uleb128 0x1
+ 2002 00f4 51       		.byte	0x51
+ 2003 00f5 9F       		.byte	0x9f
+ 2004 00f6 00000000 		.4byte	0
+ 2005 00fa 00000000 		.4byte	0
+ 2006              	.LLST4:
+ 2007 00fe 00000000 		.4byte	.LVL6
+ 2008 0102 32000000 		.4byte	.LVL12
+ 2009 0106 0300     		.2byte	0x3
+ 2010 0108 09       		.byte	0x9
+ 2011 0109 FF       		.byte	0xff
+ 2012 010a 9F       		.byte	0x9f
+ 2013 010b 32000000 		.4byte	.LVL12
+ 2014 010f 34000000 		.4byte	.LVL14
+ 2015 0113 0100     		.2byte	0x1
+ 2016 0115 55       		.byte	0x55
+ 2017 0116 34000000 		.4byte	.LVL14
+ 2018 011a 36000000 		.4byte	.LFE35
+ 2019 011e 0100     		.2byte	0x1
+ 2020 0120 50       		.byte	0x50
+ 2021 0121 00000000 		.4byte	0
+ 2022 0125 00000000 		.4byte	0
+ 2023              	.LLST5:
+ 2024 0129 00000000 		.4byte	.LVL15
+ 2025 012d 0C000000 		.4byte	.LVL17
+ 2026 0131 0100     		.2byte	0x1
+ 2027 0133 50       		.byte	0x50
+ 2028 0134 0C000000 		.4byte	.LVL17
+ 2029 0138 2C000000 		.4byte	.LVL25
+ 2030 013c 0100     		.2byte	0x1
+ 2031 013e 54       		.byte	0x54
+ 2032 013f 2C000000 		.4byte	.LVL25
+ 2033 0143 2E000000 		.4byte	.LFE36
+ 2034 0147 0400     		.2byte	0x4
+ 2035 0149 F3       		.byte	0xf3
+ 2036 014a 01       		.uleb128 0x1
+ 2037 014b 50       		.byte	0x50
+ 2038 014c 9F       		.byte	0x9f
+ 2039 014d 00000000 		.4byte	0
+ 2040 0151 00000000 		.4byte	0
+ 2041              	.LLST6:
+ 2042 0155 00000000 		.4byte	.LVL15
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 40
+
+
+ 2043 0159 1E000000 		.4byte	.LVL20
+ 2044 015d 0100     		.2byte	0x1
+ 2045 015f 51       		.byte	0x51
+ 2046 0160 1E000000 		.4byte	.LVL20
+ 2047 0164 28000000 		.4byte	.LVL23
+ 2048 0168 0400     		.2byte	0x4
+ 2049 016a F3       		.byte	0xf3
+ 2050 016b 01       		.uleb128 0x1
+ 2051 016c 51       		.byte	0x51
+ 2052 016d 9F       		.byte	0x9f
+ 2053 016e 28000000 		.4byte	.LVL23
+ 2054 0172 2C000000 		.4byte	.LVL24
+ 2055 0176 0100     		.2byte	0x1
+ 2056 0178 51       		.byte	0x51
+ 2057 0179 2C000000 		.4byte	.LVL24
+ 2058 017d 2E000000 		.4byte	.LFE36
+ 2059 0181 0400     		.2byte	0x4
+ 2060 0183 F3       		.byte	0xf3
+ 2061 0184 01       		.uleb128 0x1
+ 2062 0185 51       		.byte	0x51
+ 2063 0186 9F       		.byte	0x9f
+ 2064 0187 00000000 		.4byte	0
+ 2065 018b 00000000 		.4byte	0
+ 2066              	.LLST7:
+ 2067 018f 00000000 		.4byte	.LVL15
+ 2068 0193 26000000 		.4byte	.LVL22
+ 2069 0197 0300     		.2byte	0x3
+ 2070 0199 09       		.byte	0x9
+ 2071 019a FF       		.byte	0xff
+ 2072 019b 9F       		.byte	0x9f
+ 2073 019c 26000000 		.4byte	.LVL22
+ 2074 01a0 28000000 		.4byte	.LVL23
+ 2075 01a4 0200     		.2byte	0x2
+ 2076 01a6 30       		.byte	0x30
+ 2077 01a7 9F       		.byte	0x9f
+ 2078 01a8 28000000 		.4byte	.LVL23
+ 2079 01ac 2C000000 		.4byte	.LVL24
+ 2080 01b0 0300     		.2byte	0x3
+ 2081 01b2 09       		.byte	0x9
+ 2082 01b3 FF       		.byte	0xff
+ 2083 01b4 9F       		.byte	0x9f
+ 2084 01b5 2C000000 		.4byte	.LVL24
+ 2085 01b9 2E000000 		.4byte	.LFE36
+ 2086 01bd 0100     		.2byte	0x1
+ 2087 01bf 50       		.byte	0x50
+ 2088 01c0 00000000 		.4byte	0
+ 2089 01c4 00000000 		.4byte	0
+ 2090              	.LLST8:
+ 2091 01c8 00000000 		.4byte	.LVL27
+ 2092 01cc 08000000 		.4byte	.LVL28
+ 2093 01d0 0B00     		.2byte	0xb
+ 2094 01d2 93       		.byte	0x93
+ 2095 01d3 04       		.uleb128 0x4
+ 2096 01d4 51       		.byte	0x51
+ 2097 01d5 93       		.byte	0x93
+ 2098 01d6 04       		.uleb128 0x4
+ 2099 01d7 52       		.byte	0x52
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 41
+
+
+ 2100 01d8 93       		.byte	0x93
+ 2101 01d9 04       		.uleb128 0x4
+ 2102 01da 53       		.byte	0x53
+ 2103 01db 93       		.byte	0x93
+ 2104 01dc 04       		.uleb128 0x4
+ 2105 01dd 08000000 		.4byte	.LVL28
+ 2106 01e1 0A000000 		.4byte	.LVL29
+ 2107 01e5 0A00     		.2byte	0xa
+ 2108 01e7 93       		.byte	0x93
+ 2109 01e8 04       		.uleb128 0x4
+ 2110 01e9 51       		.byte	0x51
+ 2111 01ea 93       		.byte	0x93
+ 2112 01eb 04       		.uleb128 0x4
+ 2113 01ec 93       		.byte	0x93
+ 2114 01ed 04       		.uleb128 0x4
+ 2115 01ee 53       		.byte	0x53
+ 2116 01ef 93       		.byte	0x93
+ 2117 01f0 04       		.uleb128 0x4
+ 2118 01f1 0A000000 		.4byte	.LVL29
+ 2119 01f5 0C000000 		.4byte	.LVL30
+ 2120 01f9 0B00     		.2byte	0xb
+ 2121 01fb 93       		.byte	0x93
+ 2122 01fc 04       		.uleb128 0x4
+ 2123 01fd 51       		.byte	0x51
+ 2124 01fe 93       		.byte	0x93
+ 2125 01ff 04       		.uleb128 0x4
+ 2126 0200 52       		.byte	0x52
+ 2127 0201 93       		.byte	0x93
+ 2128 0202 04       		.uleb128 0x4
+ 2129 0203 53       		.byte	0x53
+ 2130 0204 93       		.byte	0x93
+ 2131 0205 04       		.uleb128 0x4
+ 2132 0206 0C000000 		.4byte	.LVL30
+ 2133 020a 18000000 		.4byte	.LFE39
+ 2134 020e 0A00     		.2byte	0xa
+ 2135 0210 93       		.byte	0x93
+ 2136 0211 04       		.uleb128 0x4
+ 2137 0212 51       		.byte	0x51
+ 2138 0213 93       		.byte	0x93
+ 2139 0214 04       		.uleb128 0x4
+ 2140 0215 93       		.byte	0x93
+ 2141 0216 04       		.uleb128 0x4
+ 2142 0217 53       		.byte	0x53
+ 2143 0218 93       		.byte	0x93
+ 2144 0219 04       		.uleb128 0x4
+ 2145 021a 00000000 		.4byte	0
+ 2146 021e 00000000 		.4byte	0
+ 2147              	.LLST9:
+ 2148 0222 10000000 		.4byte	.LVL31
+ 2149 0226 12000000 		.4byte	.LVL32
+ 2150 022a 0100     		.2byte	0x1
+ 2151 022c 52       		.byte	0x52
+ 2152 022d 00000000 		.4byte	0
+ 2153 0231 00000000 		.4byte	0
+ 2154              	.LLST10:
+ 2155 0235 0C000000 		.4byte	.LVL33
+ 2156 0239 14000000 		.4byte	.LVL34
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 42
+
+
+ 2157 023d 0600     		.2byte	0x6
+ 2158 023f 03       		.byte	0x3
+ 2159 0240 00000000 		.4byte	cbuf
+ 2160 0244 9F       		.byte	0x9f
+ 2161 0245 00000000 		.4byte	0
+ 2162 0249 00000000 		.4byte	0
+ 2163              	.LLST11:
+ 2164 024d 0C000000 		.4byte	.LVL33
+ 2165 0251 14000000 		.4byte	.LVL34
+ 2166 0255 0300     		.2byte	0x3
+ 2167 0257 09       		.byte	0x9
+ 2168 0258 FF       		.byte	0xff
+ 2169 0259 9F       		.byte	0x9f
+ 2170 025a 00000000 		.4byte	0
+ 2171 025e 00000000 		.4byte	0
+ 2172              	.LLST12:
+ 2173 0262 00000000 		.4byte	.LVL36
+ 2174 0266 06000000 		.4byte	.LVL37
+ 2175 026a 0100     		.2byte	0x1
+ 2176 026c 50       		.byte	0x50
+ 2177 026d 06000000 		.4byte	.LVL37
+ 2178 0271 10000000 		.4byte	.LFE41
+ 2179 0275 0400     		.2byte	0x4
+ 2180 0277 F3       		.byte	0xf3
+ 2181 0278 01       		.uleb128 0x1
+ 2182 0279 50       		.byte	0x50
+ 2183 027a 9F       		.byte	0x9f
+ 2184 027b 00000000 		.4byte	0
+ 2185 027f 00000000 		.4byte	0
+ 2186              	.LLST13:
+ 2187 0283 00000000 		.4byte	.LVL44
+ 2188 0287 08000000 		.4byte	.LVL45
+ 2189 028b 0600     		.2byte	0x6
+ 2190 028d 03       		.byte	0x3
+ 2191 028e 00000000 		.4byte	cbuf
+ 2192 0292 9F       		.byte	0x9f
+ 2193 0293 00000000 		.4byte	0
+ 2194 0297 00000000 		.4byte	0
+ 2195              	.LLST14:
+ 2196 029b 00000000 		.4byte	.LVL44
+ 2197 029f 08000000 		.4byte	.LVL45
+ 2198 02a3 0300     		.2byte	0x3
+ 2199 02a5 09       		.byte	0x9
+ 2200 02a6 FF       		.byte	0xff
+ 2201 02a7 9F       		.byte	0x9f
+ 2202 02a8 00000000 		.4byte	0
+ 2203 02ac 00000000 		.4byte	0
+ 2204              		.section	.debug_aranges,"",%progbits
+ 2205 0000 7C000000 		.4byte	0x7c
+ 2206 0004 0200     		.2byte	0x2
+ 2207 0006 00000000 		.4byte	.Ldebug_info0
+ 2208 000a 04       		.byte	0x4
+ 2209 000b 00       		.byte	0
+ 2210 000c 0000     		.2byte	0
+ 2211 000e 0000     		.2byte	0
+ 2212 0010 00000000 		.4byte	.LFB34
+ 2213 0014 14000000 		.4byte	.LFE34-.LFB34
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 43
+
+
+ 2214 0018 00000000 		.4byte	.LFB35
+ 2215 001c 36000000 		.4byte	.LFE35-.LFB35
+ 2216 0020 00000000 		.4byte	.LFB36
+ 2217 0024 2E000000 		.4byte	.LFE36-.LFB36
+ 2218 0028 00000000 		.4byte	.LFB37
+ 2219 002c 0E000000 		.4byte	.LFE37-.LFB37
+ 2220 0030 00000000 		.4byte	.LFB38
+ 2221 0034 18000000 		.4byte	.LFE38-.LFB38
+ 2222 0038 00000000 		.4byte	.LFB39
+ 2223 003c 18000000 		.4byte	.LFE39-.LFB39
+ 2224 0040 00000000 		.4byte	.LFB40
+ 2225 0044 20000000 		.4byte	.LFE40-.LFB40
+ 2226 0048 00000000 		.4byte	.LFB41
+ 2227 004c 10000000 		.4byte	.LFE41-.LFB41
+ 2228 0050 00000000 		.4byte	.LFB42
+ 2229 0054 18000000 		.4byte	.LFE42-.LFB42
+ 2230 0058 00000000 		.4byte	.LFB43
+ 2231 005c 14000000 		.4byte	.LFE43-.LFB43
+ 2232 0060 00000000 		.4byte	.LFB44
+ 2233 0064 20000000 		.4byte	.LFE44-.LFB44
+ 2234 0068 00000000 		.4byte	.LFB45
+ 2235 006c 18000000 		.4byte	.LFE45-.LFB45
+ 2236 0070 00000000 		.4byte	.LFB46
+ 2237 0074 10000000 		.4byte	.LFE46-.LFB46
+ 2238 0078 00000000 		.4byte	0
+ 2239 007c 00000000 		.4byte	0
+ 2240              		.section	.debug_ranges,"",%progbits
+ 2241              	.Ldebug_ranges0:
+ 2242 0000 0C000000 		.4byte	.LBB12
+ 2243 0004 0E000000 		.4byte	.LBE12
+ 2244 0008 10000000 		.4byte	.LBB15
+ 2245 000c 14000000 		.4byte	.LBE15
+ 2246 0010 00000000 		.4byte	0
+ 2247 0014 00000000 		.4byte	0
+ 2248 0018 00000000 		.4byte	.LBB16
+ 2249 001c 04000000 		.4byte	.LBE16
+ 2250 0020 04000000 		.4byte	.LBB19
+ 2251 0024 08000000 		.4byte	.LBE19
+ 2252 0028 00000000 		.4byte	0
+ 2253 002c 00000000 		.4byte	0
+ 2254 0030 00000000 		.4byte	.LFB34
+ 2255 0034 14000000 		.4byte	.LFE34
+ 2256 0038 00000000 		.4byte	.LFB35
+ 2257 003c 36000000 		.4byte	.LFE35
+ 2258 0040 00000000 		.4byte	.LFB36
+ 2259 0044 2E000000 		.4byte	.LFE36
+ 2260 0048 00000000 		.4byte	.LFB37
+ 2261 004c 0E000000 		.4byte	.LFE37
+ 2262 0050 00000000 		.4byte	.LFB38
+ 2263 0054 18000000 		.4byte	.LFE38
+ 2264 0058 00000000 		.4byte	.LFB39
+ 2265 005c 18000000 		.4byte	.LFE39
+ 2266 0060 00000000 		.4byte	.LFB40
+ 2267 0064 20000000 		.4byte	.LFE40
+ 2268 0068 00000000 		.4byte	.LFB41
+ 2269 006c 10000000 		.4byte	.LFE41
+ 2270 0070 00000000 		.4byte	.LFB42
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 44
+
+
+ 2271 0074 18000000 		.4byte	.LFE42
+ 2272 0078 00000000 		.4byte	.LFB43
+ 2273 007c 14000000 		.4byte	.LFE43
+ 2274 0080 00000000 		.4byte	.LFB44
+ 2275 0084 20000000 		.4byte	.LFE44
+ 2276 0088 00000000 		.4byte	.LFB45
+ 2277 008c 18000000 		.4byte	.LFE45
+ 2278 0090 00000000 		.4byte	.LFB46
+ 2279 0094 10000000 		.4byte	.LFE46
+ 2280 0098 00000000 		.4byte	0
+ 2281 009c 00000000 		.4byte	0
+ 2282              		.section	.debug_line,"",%progbits
+ 2283              	.Ldebug_line0:
+ 2284 0000 8D030000 		.section	.debug_str,"MS",%progbits,1
+ 2284      02003E02 
+ 2284      00000201 
+ 2284      FB0E0D00 
+ 2284      01010101 
+ 2285              	.LASF66:
+ 2286 0000 4E52465F 		.ascii	"NRF_FIFO_STATUS_BIT_TX_EMPTY\000"
+ 2286      4649464F 
+ 2286      5F535441 
+ 2286      5455535F 
+ 2286      4249545F 
+ 2287              	.LASF97:
+ 2288 001d 72696E67 		.ascii	"ring_buffer_available\000"
+ 2288      5F627566 
+ 2288      6665725F 
+ 2288      61766169 
+ 2288      6C61626C 
+ 2289              	.LASF67:
+ 2290 0033 4E52465F 		.ascii	"NRF_FIFO_STATUS_BIT_TX_FULL\000"
+ 2290      4649464F 
+ 2290      5F535441 
+ 2290      5455535F 
+ 2290      4249545F 
+ 2291              	.LASF102:
+ 2292 004f 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 2292      73657273 
+ 2292      5C416664 
+ 2292      68616C41 
+ 2292      74696666 
+ 2293 007e 55415254 		.ascii	"UART_over_nFR24\\UART_over_nFR24.cydsn\000"
+ 2293      5F6F7665 
+ 2293      725F6E46 
+ 2293      5232345C 
+ 2293      55415254 
+ 2294              	.LASF70:
+ 2295 00a4 4E52465F 		.ascii	"NRF_DYNPD_BIT_DPL_P1\000"
+ 2295      44594E50 
+ 2295      445F4249 
+ 2295      545F4450 
+ 2295      4C5F5031 
+ 2296              	.LASF71:
+ 2297 00b9 4E52465F 		.ascii	"NRF_DYNPD_BIT_DPL_P2\000"
+ 2297      44594E50 
+ 2297      445F4249 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 45
+
+
+ 2297      545F4450 
+ 2297      4C5F5032 
+ 2298              	.LASF72:
+ 2299 00ce 4E52465F 		.ascii	"NRF_DYNPD_BIT_DPL_P3\000"
+ 2299      44594E50 
+ 2299      445F4249 
+ 2299      545F4450 
+ 2299      4C5F5033 
+ 2300              	.LASF23:
+ 2301 00e3 4E52465F 		.ascii	"NRF_REG_RF_SETUP\000"
+ 2301      5245475F 
+ 2301      52465F53 
+ 2301      45545550 
+ 2301      00
+ 2302              	.LASF74:
+ 2303 00f4 4E52465F 		.ascii	"NRF_DYNPD_BIT_DPL_P5\000"
+ 2303      44594E50 
+ 2303      445F4249 
+ 2303      545F4450 
+ 2303      4C5F5035 
+ 2304              	.LASF46:
+ 2305 0109 4E52465F 		.ascii	"NRF_CONFIG_BIT_EN_CRC\000"
+ 2305      434F4E46 
+ 2305      49475F42 
+ 2305      49545F45 
+ 2305      4E5F4352 
+ 2306              	.LASF0:
+ 2307 011f 7369676E 		.ascii	"signed char\000"
+ 2307      65642063 
+ 2307      68617200 
+ 2308              	.LASF19:
+ 2309 012b 4E52465F 		.ascii	"NRF_REG_EN_RXADDR\000"
+ 2309      5245475F 
+ 2309      454E5F52 
+ 2309      58414444 
+ 2309      5200
+ 2310              	.LASF25:
+ 2311 013d 4E52465F 		.ascii	"NRF_REG_OBSERVE_TX\000"
+ 2311      5245475F 
+ 2311      4F425345 
+ 2311      5256455F 
+ 2311      545800
+ 2312              	.LASF14:
+ 2313 0150 73697A65 		.ascii	"size_t\000"
+ 2313      5F7400
+ 2314              	.LASF103:
+ 2315 0157 6D616C6C 		.ascii	"malloc\000"
+ 2315      6F6300
+ 2316              	.LASF16:
+ 2317 015e 73697A65 		.ascii	"sizetype\000"
+ 2317      74797065 
+ 2317      00
+ 2318              	.LASF96:
+ 2319 0167 72696E67 		.ascii	"ring_buffer_isFull\000"
+ 2319      5F627566 
+ 2319      6665725F 
+ 2319      69734675 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 46
+
+
+ 2319      6C6C00
+ 2320              	.LASF90:
+ 2321 017a 63697263 		.ascii	"circular_buf_get\000"
+ 2321      756C6172 
+ 2321      5F627566 
+ 2321      5F676574 
+ 2321      00
+ 2322              	.LASF48:
+ 2323 018b 4E52465F 		.ascii	"NRF_CONFIG_BIT_MASK_TX_DS\000"
+ 2323      434F4E46 
+ 2323      49475F42 
+ 2323      49545F4D 
+ 2323      41534B5F 
+ 2324              	.LASF9:
+ 2325 01a5 5F5F7569 		.ascii	"__uint16_t\000"
+ 2325      6E743136 
+ 2325      5F7400
+ 2326              	.LASF101:
+ 2327 01b0 72696E67 		.ascii	"ring_buffer.c\000"
+ 2327      5F627566 
+ 2327      6665722E 
+ 2327      6300
+ 2328              	.LASF35:
+ 2329 01be 4E52465F 		.ascii	"NRF_REG_RX_PW_P1\000"
+ 2329      5245475F 
+ 2329      52585F50 
+ 2329      575F5031 
+ 2329      00
+ 2330              	.LASF36:
+ 2331 01cf 4E52465F 		.ascii	"NRF_REG_RX_PW_P2\000"
+ 2331      5245475F 
+ 2331      52585F50 
+ 2331      575F5032 
+ 2331      00
+ 2332              	.LASF2:
+ 2333 01e0 73686F72 		.ascii	"short int\000"
+ 2333      7420696E 
+ 2333      7400
+ 2334              	.LASF38:
+ 2335 01ea 4E52465F 		.ascii	"NRF_REG_RX_PW_P4\000"
+ 2335      5245475F 
+ 2335      52585F50 
+ 2335      575F5034 
+ 2335      00
+ 2336              	.LASF44:
+ 2337 01fb 4E52465F 		.ascii	"NRF_CONFIG_BIT_PWR_UP\000"
+ 2337      434F4E46 
+ 2337      49475F42 
+ 2337      49545F50 
+ 2337      57525F55 
+ 2338              	.LASF79:
+ 2339 0211 68656164 		.ascii	"head\000"
+ 2339      00
+ 2340              	.LASF18:
+ 2341 0216 4E52465F 		.ascii	"NRF_REG_EN_AA\000"
+ 2341      5245475F 
+ 2341      454E5F41 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 47
+
+
+ 2341      4100
+ 2342              	.LASF24:
+ 2343 0224 4E52465F 		.ascii	"NRF_REG_STATUS\000"
+ 2343      5245475F 
+ 2343      53544154 
+ 2343      555300
+ 2344              	.LASF50:
+ 2345 0233 4E52465F 		.ascii	"NRF_EN_AA_BIT_ENAA_P0\000"
+ 2345      454E5F41 
+ 2345      415F4249 
+ 2345      545F454E 
+ 2345      41415F50 
+ 2346              	.LASF51:
+ 2347 0249 4E52465F 		.ascii	"NRF_EN_AA_BIT_ENAA_P1\000"
+ 2347      454E5F41 
+ 2347      415F4249 
+ 2347      545F454E 
+ 2347      41415F50 
+ 2348              	.LASF94:
+ 2349 025f 72696E67 		.ascii	"ring_buffer_pop\000"
+ 2349      5F627566 
+ 2349      6665725F 
+ 2349      706F7000 
+ 2350              	.LASF87:
+ 2351 026f 63697263 		.ascii	"circular_buf_full\000"
+ 2351      756C6172 
+ 2351      5F627566 
+ 2351      5F66756C 
+ 2351      6C00
+ 2352              	.LASF54:
+ 2353 0281 4E52465F 		.ascii	"NRF_EN_AA_BIT_ENAA_P4\000"
+ 2353      454E5F41 
+ 2353      415F4249 
+ 2353      545F454E 
+ 2353      41415F50 
+ 2354              	.LASF55:
+ 2355 0297 4E52465F 		.ascii	"NRF_EN_AA_BIT_ENAA_P5\000"
+ 2355      454E5F41 
+ 2355      415F4249 
+ 2355      545F454E 
+ 2355      41415F50 
+ 2356              	.LASF92:
+ 2357 02ad 66726565 		.ascii	"free\000"
+ 2357      00
+ 2358              	.LASF52:
+ 2359 02b2 4E52465F 		.ascii	"NRF_EN_AA_BIT_ENAA_P2\000"
+ 2359      454E5F41 
+ 2359      415F4249 
+ 2359      545F454E 
+ 2359      41415F50 
+ 2360              	.LASF53:
+ 2361 02c8 4E52465F 		.ascii	"NRF_EN_AA_BIT_ENAA_P3\000"
+ 2361      454E5F41 
+ 2361      415F4249 
+ 2361      545F454E 
+ 2361      41415F50 
+ 2362              	.LASF11:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 48
+
+
+ 2363 02de 666C6F61 		.ascii	"float\000"
+ 2363      7400
+ 2364              	.LASF6:
+ 2365 02e4 6C6F6E67 		.ascii	"long long int\000"
+ 2365      206C6F6E 
+ 2365      6720696E 
+ 2365      7400
+ 2366              	.LASF59:
+ 2367 02f2 4E52465F 		.ascii	"NRF_EN_RXADDR_BIT_ERX_P3\000"
+ 2367      454E5F52 
+ 2367      58414444 
+ 2367      525F4249 
+ 2367      545F4552 
+ 2368              	.LASF4:
+ 2369 030b 6C6F6E67 		.ascii	"long int\000"
+ 2369      20696E74 
+ 2369      00
+ 2370              	.LASF89:
+ 2371 0314 63697263 		.ascii	"circular_buf_put\000"
+ 2371      756C6172 
+ 2371      5F627566 
+ 2371      5F707574 
+ 2371      00
+ 2372              	.LASF26:
+ 2373 0325 4E52465F 		.ascii	"NRF_REG_RPD\000"
+ 2373      5245475F 
+ 2373      52504400 
+ 2374              	.LASF76:
+ 2375 0331 4E52465F 		.ascii	"NRF_FEATURE_BIT_EN_ACK_PAY\000"
+ 2375      46454154 
+ 2375      5552455F 
+ 2375      4249545F 
+ 2375      454E5F41 
+ 2376              	.LASF49:
+ 2377 034c 4E52465F 		.ascii	"NRF_CONFIG_BIT_MASK_RX_DR\000"
+ 2377      434F4E46 
+ 2377      49475F42 
+ 2377      49545F4D 
+ 2377      41534B5F 
+ 2378              	.LASF33:
+ 2379 0366 4E52465F 		.ascii	"NRF_REG_TX_ADDR\000"
+ 2379      5245475F 
+ 2379      54585F41 
+ 2379      44445200 
+ 2380              	.LASF56:
+ 2381 0376 4E52465F 		.ascii	"NRF_EN_RXADDR_BIT_ERX_P0\000"
+ 2381      454E5F52 
+ 2381      58414444 
+ 2381      525F4249 
+ 2381      545F4552 
+ 2382              	.LASF57:
+ 2383 038f 4E52465F 		.ascii	"NRF_EN_RXADDR_BIT_ERX_P1\000"
+ 2383      454E5F52 
+ 2383      58414444 
+ 2383      525F4249 
+ 2383      545F4552 
+ 2384              	.LASF58:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 49
+
+
+ 2385 03a8 4E52465F 		.ascii	"NRF_EN_RXADDR_BIT_ERX_P2\000"
+ 2385      454E5F52 
+ 2385      58414444 
+ 2385      525F4249 
+ 2385      545F4552 
+ 2386              	.LASF1:
+ 2387 03c1 756E7369 		.ascii	"unsigned char\000"
+ 2387      676E6564 
+ 2387      20636861 
+ 2387      7200
+ 2388              	.LASF60:
+ 2389 03cf 4E52465F 		.ascii	"NRF_EN_RXADDR_BIT_ERX_P4\000"
+ 2389      454E5F52 
+ 2389      58414444 
+ 2389      525F4249 
+ 2389      545F4552 
+ 2390              	.LASF61:
+ 2391 03e8 4E52465F 		.ascii	"NRF_EN_RXADDR_BIT_ERX_P5\000"
+ 2391      454E5F52 
+ 2391      58414444 
+ 2391      525F4249 
+ 2391      545F4552 
+ 2392              	.LASF15:
+ 2393 0401 6C6F6E67 		.ascii	"long double\000"
+ 2393      20646F75 
+ 2393      626C6500 
+ 2394              	.LASF80:
+ 2395 040d 7461696C 		.ascii	"tail\000"
+ 2395      00
+ 2396              	.LASF27:
+ 2397 0412 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P0\000"
+ 2397      5245475F 
+ 2397      52585F41 
+ 2397      4444525F 
+ 2397      503000
+ 2398              	.LASF28:
+ 2399 0425 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P1\000"
+ 2399      5245475F 
+ 2399      52585F41 
+ 2399      4444525F 
+ 2399      503100
+ 2400              	.LASF29:
+ 2401 0438 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P2\000"
+ 2401      5245475F 
+ 2401      52585F41 
+ 2401      4444525F 
+ 2401      503200
+ 2402              	.LASF95:
+ 2403 044b 72696E67 		.ascii	"ring_buffer_isEmpty\000"
+ 2403      5F627566 
+ 2403      6665725F 
+ 2403      6973456D 
+ 2403      70747900 
+ 2404              	.LASF31:
+ 2405 045f 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P4\000"
+ 2405      5245475F 
+ 2405      52585F41 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 50
+
+
+ 2405      4444525F 
+ 2405      503400
+ 2406              	.LASF32:
+ 2407 0472 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P5\000"
+ 2407      5245475F 
+ 2407      52585F41 
+ 2407      4444525F 
+ 2407      503500
+ 2408              	.LASF77:
+ 2409 0485 4E52465F 		.ascii	"NRF_FEATURE_BIT_EN_DPL\000"
+ 2409      46454154 
+ 2409      5552455F 
+ 2409      4249545F 
+ 2409      454E5F44 
+ 2410              	.LASF69:
+ 2411 049c 4E52465F 		.ascii	"NRF_DYNPD_BIT_DPL_P0\000"
+ 2411      44594E50 
+ 2411      445F4249 
+ 2411      545F4450 
+ 2411      4C5F5030 
+ 2412              	.LASF42:
+ 2413 04b1 4E52465F 		.ascii	"NRF_REG_FEATURE\000"
+ 2413      5245475F 
+ 2413      46454154 
+ 2413      55524500 
+ 2414              	.LASF7:
+ 2415 04c1 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2415      206C6F6E 
+ 2415      6720756E 
+ 2415      7369676E 
+ 2415      65642069 
+ 2416              	.LASF93:
+ 2417 04d8 72696E67 		.ascii	"ring_buffer_push\000"
+ 2417      5F627566 
+ 2417      6665725F 
+ 2417      70757368 
+ 2417      00
+ 2418              	.LASF73:
+ 2419 04e9 4E52465F 		.ascii	"NRF_DYNPD_BIT_DPL_P4\000"
+ 2419      44594E50 
+ 2419      445F4249 
+ 2419      545F4450 
+ 2419      4C5F5034 
+ 2420              	.LASF8:
+ 2421 04fe 756E7369 		.ascii	"unsigned int\000"
+ 2421      676E6564 
+ 2421      20696E74 
+ 2421      00
+ 2422              	.LASF10:
+ 2423 050b 75696E74 		.ascii	"uint16_t\000"
+ 2423      31365F74 
+ 2423      00
+ 2424              	.LASF68:
+ 2425 0514 4E52465F 		.ascii	"NRF_FIFO_STATUS_BIT_TX_REUSE\000"
+ 2425      4649464F 
+ 2425      5F535441 
+ 2425      5455535F 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 51
+
+
+ 2425      4249545F 
+ 2426              	.LASF47:
+ 2427 0531 4E52465F 		.ascii	"NRF_CONFIG_BIT_MASK_MAX_RT\000"
+ 2427      434F4E46 
+ 2427      49475F42 
+ 2427      49545F4D 
+ 2427      41534B5F 
+ 2428              	.LASF62:
+ 2429 054c 4E52465F 		.ascii	"NRF_SETUP_RETR_BIT_ARC\000"
+ 2429      53455455 
+ 2429      505F5245 
+ 2429      54525F42 
+ 2429      49545F41 
+ 2430              	.LASF63:
+ 2431 0563 4E52465F 		.ascii	"NRF_SETUP_RETR_BIT_ARD\000"
+ 2431      53455455 
+ 2431      505F5245 
+ 2431      54525F42 
+ 2431      49545F41 
+ 2432              	.LASF86:
+ 2433 057a 63627566 		.ascii	"cbuf\000"
+ 2433      00
+ 2434              	.LASF75:
+ 2435 057f 4E52465F 		.ascii	"NRF_FEATURE_BIT_EN_DYN_ACK\000"
+ 2435      46454154 
+ 2435      5552455F 
+ 2435      4249545F 
+ 2435      454E5F44 
+ 2436              	.LASF82:
+ 2437 059a 63697263 		.ascii	"circular_buf_t\000"
+ 2437      756C6172 
+ 2437      5F627566 
+ 2437      5F7400
+ 2438              	.LASF43:
+ 2439 05a9 4E52465F 		.ascii	"NRF_CONFIG_BIT_PRIM_RX\000"
+ 2439      434F4E46 
+ 2439      49475F42 
+ 2439      49545F50 
+ 2439      52494D5F 
+ 2440              	.LASF13:
+ 2441 05c0 63686172 		.ascii	"char\000"
+ 2441      00
+ 2442              	.LASF3:
+ 2443 05c5 73686F72 		.ascii	"short unsigned int\000"
+ 2443      7420756E 
+ 2443      7369676E 
+ 2443      65642069 
+ 2443      6E7400
+ 2444              	.LASF83:
+ 2445 05d8 5F426F6F 		.ascii	"_Bool\000"
+ 2445      6C00
+ 2446              	.LASF41:
+ 2447 05de 4E52465F 		.ascii	"NRF_REG_DYNPD\000"
+ 2447      5245475F 
+ 2447      44594E50 
+ 2447      4400
+ 2448              	.LASF88:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 52
+
+
+ 2449 05ec 64617461 		.ascii	"data\000"
+ 2449      00
+ 2450              	.LASF91:
+ 2451 05f1 63697263 		.ascii	"circular_buf_available\000"
+ 2451      756C6172 
+ 2451      5F627566 
+ 2451      5F617661 
+ 2451      696C6162 
+ 2452              	.LASF78:
+ 2453 0608 62756666 		.ascii	"buffer\000"
+ 2453      657200
+ 2454              	.LASF45:
+ 2455 060f 4E52465F 		.ascii	"NRF_CONFIG_BIT_CRCO\000"
+ 2455      434F4E46 
+ 2455      49475F42 
+ 2455      49545F43 
+ 2455      52434F00 
+ 2456              	.LASF40:
+ 2457 0623 4E52465F 		.ascii	"NRF_REG_FIFO_STATUS\000"
+ 2457      5245475F 
+ 2457      4649464F 
+ 2457      5F535441 
+ 2457      54555300 
+ 2458              	.LASF5:
+ 2459 0637 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2459      20756E73 
+ 2459      69676E65 
+ 2459      6420696E 
+ 2459      7400
+ 2460              	.LASF12:
+ 2461 0649 646F7562 		.ascii	"double\000"
+ 2461      6C6500
+ 2462              	.LASF30:
+ 2463 0650 4E52465F 		.ascii	"NRF_REG_RX_ADDR_P3\000"
+ 2463      5245475F 
+ 2463      52585F41 
+ 2463      4444525F 
+ 2463      503300
+ 2464              	.LASF84:
+ 2465 0663 63697263 		.ascii	"circular_buf_empty\000"
+ 2465      756C6172 
+ 2465      5F627566 
+ 2465      5F656D70 
+ 2465      747900
+ 2466              	.LASF81:
+ 2467 0676 73697A65 		.ascii	"size\000"
+ 2467      00
+ 2468              	.LASF64:
+ 2469 067b 4E52465F 		.ascii	"NRF_FIFO_STATUS_BIT_RX_EMPTY\000"
+ 2469      4649464F 
+ 2469      5F535441 
+ 2469      5455535F 
+ 2469      4249545F 
+ 2470              	.LASF17:
+ 2471 0698 4E52465F 		.ascii	"NRF_REG_CONFIG\000"
+ 2471      5245475F 
+ 2471      434F4E46 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 53
+
+
+ 2471      494700
+ 2472              	.LASF22:
+ 2473 06a7 4E52465F 		.ascii	"NRF_REG_RF_CH\000"
+ 2473      5245475F 
+ 2473      52465F43 
+ 2473      4800
+ 2474              	.LASF65:
+ 2475 06b5 4E52465F 		.ascii	"NRF_FIFO_STATUS_BIT_RX_FULL\000"
+ 2475      4649464F 
+ 2475      5F535441 
+ 2475      5455535F 
+ 2475      4249545F 
+ 2476              	.LASF21:
+ 2477 06d1 4E52465F 		.ascii	"NRF_REG_SETUP_RETR\000"
+ 2477      5245475F 
+ 2477      53455455 
+ 2477      505F5245 
+ 2477      545200
+ 2478              	.LASF100:
+ 2479 06e4 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2479      43313120 
+ 2479      352E342E 
+ 2479      31203230 
+ 2479      31363036 
+ 2480 0717 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2480      20726576 
+ 2480      6973696F 
+ 2480      6E203233 
+ 2480      37373135 
+ 2481 074a 73202D66 		.ascii	"s -ffunction-sections -ffat-lto-objects\000"
+ 2481      66756E63 
+ 2481      74696F6E 
+ 2481      2D736563 
+ 2481      74696F6E 
+ 2482              	.LASF20:
+ 2483 0772 4E52465F 		.ascii	"NRF_REG_SETUP_AW\000"
+ 2483      5245475F 
+ 2483      53455455 
+ 2483      505F4157 
+ 2483      00
+ 2484              	.LASF85:
+ 2485 0783 63697263 		.ascii	"circular_buf_reset\000"
+ 2485      756C6172 
+ 2485      5F627566 
+ 2485      5F726573 
+ 2485      657400
+ 2486              	.LASF98:
+ 2487 0796 72696E67 		.ascii	"ring_buffer_init\000"
+ 2487      5F627566 
+ 2487      6665725F 
+ 2487      696E6974 
+ 2487      00
+ 2488              	.LASF99:
+ 2489 07a7 72696E67 		.ascii	"ring_buffer_flush\000"
+ 2489      5F627566 
+ 2489      6665725F 
+ 2489      666C7573 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\ccFRx9SZ.s 			page 54
+
+
+ 2489      6800
+ 2490              	.LASF34:
+ 2491 07b9 4E52465F 		.ascii	"NRF_REG_RX_PW_P0\000"
+ 2491      5245475F 
+ 2491      52585F50 
+ 2491      575F5030 
+ 2491      00
+ 2492              	.LASF37:
+ 2493 07ca 4E52465F 		.ascii	"NRF_REG_RX_PW_P3\000"
+ 2493      5245475F 
+ 2493      52585F50 
+ 2493      575F5033 
+ 2493      00
+ 2494              	.LASF39:
+ 2495 07db 4E52465F 		.ascii	"NRF_REG_RX_PW_P5\000"
+ 2495      5245475F 
+ 2495      52585F50 
+ 2495      575F5035 
+ 2495      00
+ 2496              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

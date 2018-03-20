@@ -1,0 +1,2909 @@
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"nRF24_COMMANDS.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.nRF24_send_command,"ax",%progbits
+  20              		.align	1
+  21              		.global	nRF24_send_command
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	nRF24_send_command, %function
+  25              	nRF24_send_command:
+  26              	.LFB1:
+  27              		.file 1 "Generated_Source\\PSoC4\\nRF24_COMMANDS.c"
+   1:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /****************************************************************************
+   2:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * This file is part of the nRF24 Custom Component for PSoC Devices.
+   3:Generated_Source\PSoC4/nRF24_COMMANDS.c **** *
+   4:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * Copyright (C) 2017 Carlos Diaz <carlos.santiago.diaz@gmail.com>
+   5:Generated_Source\PSoC4/nRF24_COMMANDS.c **** *
+   6:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * Permission to use, copy, modify, and/or distribute this software for any
+   7:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * purpose with or without fee is hereby granted, provided that the above
+   8:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * copyright notice and this permission notice appear in all copies.
+   9:Generated_Source\PSoC4/nRF24_COMMANDS.c **** *
+  10:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  11:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  12:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  13:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  14:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  15:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  16:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  17:Generated_Source\PSoC4/nRF24_COMMANDS.c **** ****************************************************************************/
+  18:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  19:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+  20:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * @file nRF24_COMMANDS.c
+  21:Generated_Source\PSoC4/nRF24_COMMANDS.c **** *
+  22:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * @brief The nRF24 radio is controlled via commands, this file implement all
+  23:Generated_Source\PSoC4/nRF24_COMMANDS.c **** * the available commands.
+  24:Generated_Source\PSoC4/nRF24_COMMANDS.c **** */
+  25:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  26:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #include "nRF24_CONFIG.h"
+  27:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #include "nRF24_COMMANDS.h"
+  28:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #include "nRF24_DEFS.h"
+  29:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  30:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 2
+
+
+  31:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Send the specified command to the nRF24 radio.
+  32:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+  33:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const nrf_cmd cmd: Command to send to the nRF24 radio.
+  34:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+  35:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_send_command(const nrf_cmd cmd)
+  36:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+  28              		.loc 1 36 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 10B5     		push	{r4, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  37              		.loc 1 36 0
+  38 0002 0400     		movs	r4, r0
+  37:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if defined (_PSOC6)
+  38:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+  39:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+  40:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  41:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+  42:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  43:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_WriteArrayBlocking(SPI_HW, (void *) &cmd, 1);
+  44:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  45:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (Cy_SCB_IsTxComplete(SPI_HW) == false) {
+  46:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+  47:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     CyDelayUs(1);
+  48:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  49:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+  50:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #elif defined (_PSOC4_SCB)
+  51:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearRxBuffer();
+  39              		.loc 1 51 0
+  40 0004 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+  41              	.LVL1:
+  52:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearTxBuffer();
+  42              		.loc 1 52 0
+  43 0008 FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+  44              	.LVL2:
+  53:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  54:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+  45              		.loc 1 54 0
+  46 000c 0020     		movs	r0, #0
+  47 000e FFF7FEFF 		bl	SS_Write
+  48              	.LVL3:
+  55:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(cmd);
+  49              		.loc 1 55 0
+  50 0012 2000     		movs	r0, r4
+  51 0014 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+  52              	.LVL4:
+  53              	.L2:
+  56:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  57:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (SPI_SpiUartGetRxBufferSize() != 1) {
+  54              		.loc 1 57 0 discriminator 1
+  55 0018 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+  56              	.LVL5:
+  57 001c 0128     		cmp	r0, #1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 3
+
+
+  58 001e FBD1     		bne	.L2
+  58:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+  59:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+  59              		.loc 1 59 0
+  60 0020 FFF7FEFF 		bl	SS_Write
+  61              	.LVL6:
+  60:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else // _PSOC_UDB
+  61:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ClearFIFO();
+  62:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  63:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+  64:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(cmd);
+  65:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  66:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+  67:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+  68:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+  69:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+  70:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+  62              		.loc 1 70 0
+  63              		@ sp needed
+  64 0024 10BD     		pop	{r4, pc}
+  65              		.cfi_endproc
+  66              	.LFE1:
+  67              		.size	nRF24_send_command, .-nRF24_send_command
+  68              		.section	.text.nRF24_reuse_tx_payload_cmd,"ax",%progbits
+  69              		.align	1
+  70              		.global	nRF24_reuse_tx_payload_cmd
+  71              		.code	16
+  72              		.thumb_func
+  73              		.type	nRF24_reuse_tx_payload_cmd, %function
+  74              	nRF24_reuse_tx_payload_cmd:
+  75              	.LFB2:
+  71:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  72:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+  73:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @brief Reuse last transmitted payload.
+  74:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+  75:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Used for a PTX device.
+  76:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Reuse last transmitted payload. TX payload reuse is active until
+  77:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * W_TX_PAYLOAD or FLUSH_TX is executed, TX payload reuse must not be
+  78:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * activated or deactivated during package transmission.
+  79:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+  80:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_reuse_tx_payload_cmd(void)
+  81:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+  76              		.loc 1 81 0
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 0
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80 0000 10B5     		push	{r4, lr}
+  81              		.cfi_def_cfa_offset 8
+  82              		.cfi_offset 4, -8
+  83              		.cfi_offset 14, -4
+  82:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     nRF24_send_command(NRF_CMD_REUSE_TX_PL);
+  84              		.loc 1 82 0
+  85 0002 E320     		movs	r0, #227
+  86 0004 FFF7FEFF 		bl	nRF24_send_command
+  87              	.LVL7:
+  83:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+  88              		.loc 1 83 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 4
+
+
+  89              		@ sp needed
+  90 0008 10BD     		pop	{r4, pc}
+  91              		.cfi_endproc
+  92              	.LFE2:
+  93              		.size	nRF24_reuse_tx_payload_cmd, .-nRF24_reuse_tx_payload_cmd
+  94              		.section	.text.nRF24_flush_rx_cmd,"ax",%progbits
+  95              		.align	1
+  96              		.global	nRF24_flush_rx_cmd
+  97              		.code	16
+  98              		.thumb_func
+  99              		.type	nRF24_flush_rx_cmd, %function
+ 100              	nRF24_flush_rx_cmd:
+ 101              	.LFB3:
+  84:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  85:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+  86:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @brief Flush RX FIFO.
+  87:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+  88:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Used in RX mode.
+  89:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Flush RX FIFO. Should be not executed during transmission of acknowledge,
+  90:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * that is, acknowledge package will not be completed.
+  91:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+  92:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_flush_rx_cmd(void)
+  93:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 102              		.loc 1 93 0
+ 103              		.cfi_startproc
+ 104              		@ args = 0, pretend = 0, frame = 0
+ 105              		@ frame_needed = 0, uses_anonymous_args = 0
+ 106 0000 10B5     		push	{r4, lr}
+ 107              		.cfi_def_cfa_offset 8
+ 108              		.cfi_offset 4, -8
+ 109              		.cfi_offset 14, -4
+  94:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     nRF24_send_command(NRF_CMD_FLUSH_RX);
+ 110              		.loc 1 94 0
+ 111 0002 E220     		movs	r0, #226
+ 112 0004 FFF7FEFF 		bl	nRF24_send_command
+ 113              	.LVL8:
+  95:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 114              		.loc 1 95 0
+ 115              		@ sp needed
+ 116 0008 10BD     		pop	{r4, pc}
+ 117              		.cfi_endproc
+ 118              	.LFE3:
+ 119              		.size	nRF24_flush_rx_cmd, .-nRF24_flush_rx_cmd
+ 120              		.section	.text.nRF24_flush_tx_cmd,"ax",%progbits
+ 121              		.align	1
+ 122              		.global	nRF24_flush_tx_cmd
+ 123              		.code	16
+ 124              		.thumb_func
+ 125              		.type	nRF24_flush_tx_cmd, %function
+ 126              	nRF24_flush_tx_cmd:
+ 127              	.LFB4:
+  96:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+  97:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+  98:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Used in TX mode.
+  99:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Flush TX FIFO.
+ 100:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+ 101:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_flush_tx_cmd(void)
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 5
+
+
+ 102:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 128              		.loc 1 102 0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132 0000 10B5     		push	{r4, lr}
+ 133              		.cfi_def_cfa_offset 8
+ 134              		.cfi_offset 4, -8
+ 135              		.cfi_offset 14, -4
+ 103:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     nRF24_send_command(NRF_CMD_FLUSH_TX);
+ 136              		.loc 1 103 0
+ 137 0002 E120     		movs	r0, #225
+ 138 0004 FFF7FEFF 		bl	nRF24_send_command
+ 139              	.LVL9:
+ 104:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 140              		.loc 1 104 0
+ 141              		@ sp needed
+ 142 0008 10BD     		pop	{r4, pc}
+ 143              		.cfi_endproc
+ 144              	.LFE4:
+ 145              		.size	nRF24_flush_tx_cmd, .-nRF24_flush_tx_cmd
+ 146              		.section	.text.nRF24_read_rx_payload_cmd,"ax",%progbits
+ 147              		.align	1
+ 148              		.global	nRF24_read_rx_payload_cmd
+ 149              		.code	16
+ 150              		.thumb_func
+ 151              		.type	nRF24_read_rx_payload_cmd, %function
+ 152              	nRF24_read_rx_payload_cmd:
+ 153              	.LFB5:
+ 105:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 106:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+ 107:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Used in RX mode.
+ 108:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Read RX payload: 1 - 32 bytes. A read operation always starts at byte 0.
+ 109:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Payload is deleted from FIFO after it is read.
+ 110:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+ 111:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param uint8_t* data: Data to be read.
+ 112:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const size_t size: Bytes of data to be read (max 32).
+ 113:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+ 114:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_read_rx_payload_cmd(uint8_t* data, const size_t size)
+ 115:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 154              		.loc 1 115 0
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158              	.LVL10:
+ 159 0000 70B5     		push	{r4, r5, r6, lr}
+ 160              		.cfi_def_cfa_offset 16
+ 161              		.cfi_offset 4, -16
+ 162              		.cfi_offset 5, -12
+ 163              		.cfi_offset 6, -8
+ 164              		.cfi_offset 14, -4
+ 165              		.loc 1 115 0
+ 166 0002 0400     		movs	r4, r0
+ 167 0004 0D00     		movs	r5, r1
+ 116:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if defined (_PSOC6)
+ 117:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 118:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 6
+
+
+ 119:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 120:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 121:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 122:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_R_RX_PAYLOAD);
+ 123:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (Cy_SCB_GetNumInRxFifo(SPI_HW) != 0) {
+ 124:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 125:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 126:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     (void)Cy_SCB_ReadRxFifo(SPI_HW);
+ 127:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 128:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     for (size_t i = 0; i < size; i++) {
+ 129:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         Cy_SCB_Write(SPI_HW, NRF_CMD_NOP);
+ 130:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         while (Cy_SCB_GetNumInRxFifo(SPI_HW) != 0) {
+ 131:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         }
+ 132:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         data[i] = Cy_SCB_ReadRxFifo(SPI_HW);
+ 133:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 134:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 135:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #elif defined (_PSOC4_SCB)
+ 136:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearRxBuffer();
+ 168              		.loc 1 136 0
+ 169 0006 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 170              	.LVL11:
+ 137:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearTxBuffer();
+ 171              		.loc 1 137 0
+ 172 000a FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 173              	.LVL12:
+ 138:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 139:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 174              		.loc 1 139 0
+ 175 000e 0020     		movs	r0, #0
+ 176 0010 FFF7FEFF 		bl	SS_Write
+ 177              	.LVL13:
+ 140:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(NRF_CMD_R_RX_PAYLOAD);
+ 178              		.loc 1 140 0
+ 179 0014 6120     		movs	r0, #97
+ 180 0016 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 181              	.LVL14:
+ 182              	.L9:
+ 141:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (SPI_SpiUartGetRxBufferSize() == 0){
+ 183              		.loc 1 141 0 discriminator 1
+ 184 001a FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 185              	.LVL15:
+ 186 001e 0028     		cmp	r0, #0
+ 187 0020 FBD0     		beq	.L9
+ 142:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 143:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     // Read the status register, just to clear the rx fifo
+ 144:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartReadRxData();
+ 188              		.loc 1 144 0
+ 189 0022 FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 190              	.LVL16:
+ 191 0026 6519     		adds	r5, r4, r5
+ 192              	.LVL17:
+ 193              	.L10:
+ 194              	.LBB2:
+ 145:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 146:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     for (size_t i = 0; i < size; i++) {
+ 195              		.loc 1 146 0 discriminator 1
+ 196 0028 AC42     		cmp	r4, r5
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 7
+
+
+ 197 002a 0BD0     		beq	.L17
+ 147:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         SPI_SpiUartWriteTxData(NRF_CMD_NOP);
+ 198              		.loc 1 147 0
+ 199 002c FF20     		movs	r0, #255
+ 200 002e FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 201              	.LVL18:
+ 202              	.L11:
+ 148:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         while (SPI_SpiUartGetRxBufferSize() == 0){
+ 203              		.loc 1 148 0 discriminator 1
+ 204 0032 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 205              	.LVL19:
+ 206 0036 0028     		cmp	r0, #0
+ 207 0038 FBD0     		beq	.L11
+ 149:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         }
+ 150:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         data[i] = SPI_SpiUartReadRxData();
+ 208              		.loc 1 150 0 discriminator 2
+ 209 003a FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 210              	.LVL20:
+ 211 003e 2070     		strb	r0, [r4]
+ 212              	.LVL21:
+ 213 0040 0134     		adds	r4, r4, #1
+ 214              	.LVL22:
+ 215 0042 F1E7     		b	.L10
+ 216              	.L17:
+ 217              	.LBE2:
+ 151:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 152:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 218              		.loc 1 152 0
+ 219 0044 0120     		movs	r0, #1
+ 220 0046 FFF7FEFF 		bl	SS_Write
+ 221              	.LVL23:
+ 153:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else // _PSOC_UDB
+ 154:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ClearFIFO();
+ 155:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 156:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 157:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(NRF_CMD_R_RX_PAYLOAD);
+ 158:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 159:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     // Wait for the byte to be sent
+ 160:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+ 161:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 162:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 163:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     // Read the status register, just to clear the rx fifo
+ 164:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ReadRxData();
+ 165:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 166:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     for (size_t i = 0; i < size; i++) {
+ 167:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         SPI_WriteTxData(NRF_CMD_NOP);
+ 168:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+ 169:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         }
+ 170:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         data[i] = SPI_ReadRxData();
+ 171:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 172:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 173:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+ 174:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 222              		.loc 1 174 0
+ 223              		@ sp needed
+ 224              	.LVL24:
+ 225 004a 70BD     		pop	{r4, r5, r6, pc}
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 8
+
+
+ 226              		.cfi_endproc
+ 227              	.LFE5:
+ 228              		.size	nRF24_read_rx_payload_cmd, .-nRF24_read_rx_payload_cmd
+ 229              		.section	.text.nRF24_write_tx_payload_cmd,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	nRF24_write_tx_payload_cmd
+ 232              		.code	16
+ 233              		.thumb_func
+ 234              		.type	nRF24_write_tx_payload_cmd, %function
+ 235              	nRF24_write_tx_payload_cmd:
+ 236              	.LFB6:
+ 175:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 176:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+ 177:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Write TX payload: 1 - 32 bytes.
+ 178:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * A write operation always starts at byte 0 used in TX payload.
+ 179:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+ 180:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const uint8_t* data: Data to be sent.
+ 181:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const size_t size: Bytes of data to be sent (max 32).
+ 182:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+ 183:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_write_tx_payload_cmd(const uint8_t* data, const size_t size)
+ 184:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 237              		.loc 1 184 0
+ 238              		.cfi_startproc
+ 239              		@ args = 0, pretend = 0, frame = 0
+ 240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 241              	.LVL25:
+ 242 0000 70B5     		push	{r4, r5, r6, lr}
+ 243              		.cfi_def_cfa_offset 16
+ 244              		.cfi_offset 4, -16
+ 245              		.cfi_offset 5, -12
+ 246              		.cfi_offset 6, -8
+ 247              		.cfi_offset 14, -4
+ 248              		.loc 1 184 0
+ 249 0002 0C00     		movs	r4, r1
+ 250 0004 0500     		movs	r5, r0
+ 185:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if defined (_PSOC6)
+ 186:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 187:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 188:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 189:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 190:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 191:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_W_TX_PAYLOAD);
+ 192:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_WriteArrayBlocking(SPI_HW, (void *) data, size);
+ 193:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 194:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (Cy_SCB_IsTxComplete(SPI_HW) == false) {
+ 195:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 196:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     CyDelayUs(1);
+ 197:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 198:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 199:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #elif defined (_PSOC4_SCB)
+ 200:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearRxBuffer();
+ 251              		.loc 1 200 0
+ 252 0006 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 253              	.LVL26:
+ 201:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearTxBuffer();
+ 254              		.loc 1 201 0
+ 255 000a FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 9
+
+
+ 256              	.LVL27:
+ 202:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 203:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 257              		.loc 1 203 0
+ 258 000e 0020     		movs	r0, #0
+ 259 0010 FFF7FEFF 		bl	SS_Write
+ 260              	.LVL28:
+ 204:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(NRF_CMD_W_TX_PAYLOAD);
+ 261              		.loc 1 204 0
+ 262 0014 A020     		movs	r0, #160
+ 263 0016 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 264              	.LVL29:
+ 205:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartPutArray(data, size);
+ 265              		.loc 1 205 0
+ 266 001a 2100     		movs	r1, r4
+ 267 001c 2800     		movs	r0, r5
+ 268 001e FFF7FEFF 		bl	SPI_SpiUartPutArray
+ 269              	.LVL30:
+ 270              	.L19:
+ 206:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 207:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (SPI_SpiUartGetRxBufferSize() != (1 + size)) {
+ 271              		.loc 1 207 0 discriminator 1
+ 272 0022 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 273              	.LVL31:
+ 274 0026 631C     		adds	r3, r4, #1
+ 275 0028 9842     		cmp	r0, r3
+ 276 002a FAD1     		bne	.L19
+ 208:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 209:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 277              		.loc 1 209 0
+ 278 002c 0120     		movs	r0, #1
+ 279 002e FFF7FEFF 		bl	SS_Write
+ 280              	.LVL32:
+ 210:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else // _PSOC_UDB
+ 211:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ClearFIFO();
+ 212:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 213:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 214:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(NRF_CMD_W_TX_PAYLOAD);
+ 215:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     for (size_t i = 0; i < size; i++) {
+ 216:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         SPI_WriteTxData(data[i]);
+ 217:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+ 218:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         }
+ 219:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 220:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 221:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_SPI_IDLE)) {
+ 222:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 223:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 224:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+ 225:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 281              		.loc 1 225 0
+ 282              		@ sp needed
+ 283              	.LVL33:
+ 284              	.LVL34:
+ 285 0032 70BD     		pop	{r4, r5, r6, pc}
+ 286              		.cfi_endproc
+ 287              	.LFE6:
+ 288              		.size	nRF24_write_tx_payload_cmd, .-nRF24_write_tx_payload_cmd
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 10
+
+
+ 289              		.section	.text.nRF24_read_payload_width_cmd,"ax",%progbits
+ 290              		.align	1
+ 291              		.global	nRF24_read_payload_width_cmd
+ 292              		.code	16
+ 293              		.thumb_func
+ 294              		.type	nRF24_read_payload_width_cmd, %function
+ 295              	nRF24_read_payload_width_cmd:
+ 296              	.LFB7:
+ 226:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 227:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+ 228:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Read RX payload width for the top R_RX_PAYLOAD in the RX FIFO.
+ 229:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Note: Flush RX FIFO if the read value is larger than 32 bytes.
+ 230:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+ 231:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @return uint8_t: width of the payload on the top of the RX FIFO.
+ 232:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+ 233:Generated_Source\PSoC4/nRF24_COMMANDS.c **** uint8_t nRF24_read_payload_width_cmd(void)
+ 234:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 297              		.loc 1 234 0
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301              	.LVL35:
+ 302 0000 10B5     		push	{r4, lr}
+ 303              		.cfi_def_cfa_offset 8
+ 304              		.cfi_offset 4, -8
+ 305              		.cfi_offset 14, -4
+ 235:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     uint8_t width = 0;
+ 236:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if defined (_PSOC6)
+ 237:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 238:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 239:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 240:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 241:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if 0
+ 242:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_R_RX_PL_WID);
+ 243:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_NOP);
+ 244:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else
+ 245:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_WriteArrayBlocking(SPI_HW,
+ 246:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         (void *)(uint8_t []){NRF_CMD_R_RX_PL_WID, NRF_CMD_NOP}, 2);
+ 247:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+ 248:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (Cy_SCB_GetNumInRxFifo(SPI_HW) != 2) {
+ 249:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 250:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 251:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 252:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     (void)Cy_SCB_ReadRxFifo(SPI_HW);
+ 253:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     width = Cy_SCB_ReadRxFifo(SPI_HW);
+ 254:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #elif defined (_PSOC4_SCB)
+ 255:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearRxBuffer();
+ 306              		.loc 1 255 0
+ 307 0002 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 308              	.LVL36:
+ 256:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearTxBuffer();
+ 309              		.loc 1 256 0
+ 310 0006 FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 311              	.LVL37:
+ 257:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 258:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 312              		.loc 1 258 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 11
+
+
+ 313 000a 0020     		movs	r0, #0
+ 314 000c FFF7FEFF 		bl	SS_Write
+ 315              	.LVL38:
+ 259:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(NRF_CMD_R_RX_PL_WID);
+ 316              		.loc 1 259 0
+ 317 0010 6020     		movs	r0, #96
+ 318 0012 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 319              	.LVL39:
+ 260:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(NRF_CMD_NOP);
+ 320              		.loc 1 260 0
+ 321 0016 FF20     		movs	r0, #255
+ 322 0018 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 323              	.LVL40:
+ 324              	.L22:
+ 261:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 262:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (SPI_SpiUartGetRxBufferSize() != 2) {
+ 325              		.loc 1 262 0 discriminator 1
+ 326 001c FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 327              	.LVL41:
+ 328 0020 0228     		cmp	r0, #2
+ 329 0022 FBD1     		bne	.L22
+ 263:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 264:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 330              		.loc 1 264 0
+ 331 0024 0138     		subs	r0, r0, #1
+ 332 0026 FFF7FEFF 		bl	SS_Write
+ 333              	.LVL42:
+ 265:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 266:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     // This is the STATUS Register
+ 267:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     (void)SPI_SpiUartReadRxData();
+ 334              		.loc 1 267 0
+ 335 002a FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 336              	.LVL43:
+ 268:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     // This is the data we want
+ 269:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     width = SPI_SpiUartReadRxData();
+ 337              		.loc 1 269 0
+ 338 002e FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 339              	.LVL44:
+ 340 0032 C4B2     		uxtb	r4, r0
+ 341              	.LVL45:
+ 270:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else // _PSOC_UDB
+ 271:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ClearFIFO();
+ 272:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 273:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 274:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(NRF_CMD_R_RX_PL_WID);
+ 275:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(NRF_CMD_NOP);
+ 276:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 277:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+ 278:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 279:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 280:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 281:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     (void)SPI_ReadRxData();
+ 282:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     width = SPI_ReadRxData();
+ 283:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+ 284:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 285:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     // If width is greater than 32 then is garbage, we must flush the RX FIFO
+ 286:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     if (32 < width) {
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 12
+
+
+ 342              		.loc 1 286 0
+ 343 0034 202C     		cmp	r4, #32
+ 344 0036 01D9     		bls	.L23
+ 287:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         nRF24_flush_rx_cmd();
+ 345              		.loc 1 287 0
+ 346 0038 FFF7FEFF 		bl	nRF24_flush_rx_cmd
+ 347              	.LVL46:
+ 348              	.L23:
+ 288:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 289:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 290:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     return width;
+ 291:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 349              		.loc 1 291 0
+ 350 003c 2000     		movs	r0, r4
+ 351              		@ sp needed
+ 352              	.LVL47:
+ 353 003e 10BD     		pop	{r4, pc}
+ 354              		.cfi_endproc
+ 355              	.LFE7:
+ 356              		.size	nRF24_read_payload_width_cmd, .-nRF24_read_payload_width_cmd
+ 357              		.section	.text.nRF24_write_ack_payload_cmd,"ax",%progbits
+ 358              		.align	1
+ 359              		.global	nRF24_write_ack_payload_cmd
+ 360              		.code	16
+ 361              		.thumb_func
+ 362              		.type	nRF24_write_ack_payload_cmd, %function
+ 363              	nRF24_write_ack_payload_cmd:
+ 364              	.LFB8:
+ 292:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 293:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+ 294:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @brief Write Payload to be transmitted together with ACK packet.
+ 295:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+ 296:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Used in RX mode.
+ 297:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Write Payload to be transmitted together with ACK packet on PIPE PPP
+ 298:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * (PPP valid in the range from 000 to 101). Maximum three ACK packet
+ 299:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * payloads can be pending. Payloads with same PPP are handled using
+ 300:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * first in - first out principle.
+ 301:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Write payload: 1 - 32 bytes.
+ 302:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * A write operation always starts at byte 0.
+ 303:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+ 304:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const nrf_pipe pipe: Pipe to use.
+ 305:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const uint8_t* data: Data to be sent.
+ 306:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const size_t size: Bytes of data to be sent (max 32)
+ 307:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+ 308:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_write_ack_payload_cmd(const nrf_pipe pipe, const uint8_t* data,
+ 309:Generated_Source\PSoC4/nRF24_COMMANDS.c ****                                         const size_t size)
+ 310:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 365              		.loc 1 310 0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 0
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369              	.LVL48:
+ 370 0000 70B5     		push	{r4, r5, r6, lr}
+ 371              		.cfi_def_cfa_offset 16
+ 372              		.cfi_offset 4, -16
+ 373              		.cfi_offset 5, -12
+ 374              		.cfi_offset 6, -8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 13
+
+
+ 375              		.cfi_offset 14, -4
+ 376              		.loc 1 310 0
+ 377 0002 0D00     		movs	r5, r1
+ 378 0004 1400     		movs	r4, r2
+ 379 0006 0600     		movs	r6, r0
+ 311:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if defined (_PSOC6)
+ 312:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 313:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 314:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 315:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 316:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 317:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_W_ACK_PAYLOAD | pipe);
+ 318:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_WriteArrayBlocking(SPI_HW, (void *) data, size);
+ 319:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 320:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (Cy_SCB_GetNumInRxFifo(SPI_HW) != (1 + size)) {
+ 321:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 322:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 323:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #elif defined (_PSOC4_SCB)
+ 324:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearRxBuffer();
+ 380              		.loc 1 324 0
+ 381 0008 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 382              	.LVL49:
+ 325:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearTxBuffer();
+ 383              		.loc 1 325 0
+ 384 000c FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 385              	.LVL50:
+ 326:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 327:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 386              		.loc 1 327 0
+ 387 0010 0020     		movs	r0, #0
+ 388 0012 FFF7FEFF 		bl	SS_Write
+ 389              	.LVL51:
+ 328:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 329:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(NRF_CMD_W_ACK_PAYLOAD | pipe);
+ 390              		.loc 1 329 0
+ 391 0016 A820     		movs	r0, #168
+ 392 0018 3043     		orrs	r0, r6
+ 393 001a FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 394              	.LVL52:
+ 330:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartPutArray(data, size);
+ 395              		.loc 1 330 0
+ 396 001e 2100     		movs	r1, r4
+ 397 0020 2800     		movs	r0, r5
+ 398 0022 FFF7FEFF 		bl	SPI_SpiUartPutArray
+ 399              	.LVL53:
+ 400              	.L26:
+ 331:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 332:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (SPI_SpiUartGetRxBufferSize() != (1 + size)) {
+ 401              		.loc 1 332 0 discriminator 1
+ 402 0026 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 403              	.LVL54:
+ 404 002a 631C     		adds	r3, r4, #1
+ 405 002c 9842     		cmp	r0, r3
+ 406 002e FAD1     		bne	.L26
+ 333:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 334:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 407              		.loc 1 334 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 14
+
+
+ 408 0030 0120     		movs	r0, #1
+ 409 0032 FFF7FEFF 		bl	SS_Write
+ 410              	.LVL55:
+ 335:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else // _PSOC_UDB
+ 336:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ClearFIFO();
+ 337:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 338:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 339:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 340:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(NRF_CMD_W_ACK_PAYLOAD | pipe);
+ 341:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     for (size_t i = 0; i < size; i++) {
+ 342:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         SPI_WriteTxData(data[i]);
+ 343:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)){
+ 344:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         }
+ 345:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 346:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 347:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_SPI_IDLE)) {
+ 348:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 349:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 350:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+ 351:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 411              		.loc 1 351 0
+ 412              		@ sp needed
+ 413              	.LVL56:
+ 414              	.LVL57:
+ 415 0036 70BD     		pop	{r4, r5, r6, pc}
+ 416              		.cfi_endproc
+ 417              	.LFE8:
+ 418              		.size	nRF24_write_ack_payload_cmd, .-nRF24_write_ack_payload_cmd
+ 419              		.section	.text.nRF24_no_ack_payload_cmd,"ax",%progbits
+ 420              		.align	1
+ 421              		.global	nRF24_no_ack_payload_cmd
+ 422              		.code	16
+ 423              		.thumb_func
+ 424              		.type	nRF24_no_ack_payload_cmd, %function
+ 425              	nRF24_no_ack_payload_cmd:
+ 426              	.LFB9:
+ 352:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 353:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+ 354:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Used in TX mode.
+ 355:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * Disable AUTOACK on this packet.
+ 356:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+ 357:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const uint8_t* data: Data to be sent.
+ 358:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @param const size_t size: Bytes of data to be sent (max 32).
+ 359:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+ 360:Generated_Source\PSoC4/nRF24_COMMANDS.c **** void nRF24_no_ack_payload_cmd(const uint8_t* data, const size_t size)
+ 361:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 427              		.loc 1 361 0
+ 428              		.cfi_startproc
+ 429              		@ args = 0, pretend = 0, frame = 0
+ 430              		@ frame_needed = 0, uses_anonymous_args = 0
+ 431              	.LVL58:
+ 432 0000 70B5     		push	{r4, r5, r6, lr}
+ 433              		.cfi_def_cfa_offset 16
+ 434              		.cfi_offset 4, -16
+ 435              		.cfi_offset 5, -12
+ 436              		.cfi_offset 6, -8
+ 437              		.cfi_offset 14, -4
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 15
+
+
+ 438              		.loc 1 361 0
+ 439 0002 0C00     		movs	r4, r1
+ 440 0004 0500     		movs	r5, r0
+ 362:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if defined (_PSOC6)
+ 363:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 364:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 365:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 366:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 367:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 368:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_W_TX_PAYLOAD_NOACK);
+ 369:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_WriteArrayBlocking(SPI_HW, (void *) data, size);
+ 370:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 371:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (Cy_SCB_GetNumInRxFifo(SPI_HW) != (1 + size)) {
+ 372:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 373:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 374:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #elif defined (_PSOC4_SCB)
+ 375:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearRxBuffer();
+ 441              		.loc 1 375 0
+ 442 0006 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 443              	.LVL59:
+ 376:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearTxBuffer();
+ 444              		.loc 1 376 0
+ 445 000a FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 446              	.LVL60:
+ 377:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 378:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 447              		.loc 1 378 0
+ 448 000e 0020     		movs	r0, #0
+ 449 0010 FFF7FEFF 		bl	SS_Write
+ 450              	.LVL61:
+ 379:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 380:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(NRF_CMD_W_TX_PAYLOAD_NOACK);
+ 451              		.loc 1 380 0
+ 452 0014 B020     		movs	r0, #176
+ 453 0016 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 454              	.LVL62:
+ 381:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartPutArray(data, size);
+ 455              		.loc 1 381 0
+ 456 001a 2100     		movs	r1, r4
+ 457 001c 2800     		movs	r0, r5
+ 458 001e FFF7FEFF 		bl	SPI_SpiUartPutArray
+ 459              	.LVL63:
+ 460              	.L29:
+ 382:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 383:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (SPI_SpiUartGetRxBufferSize() != (1 + size)) {
+ 461              		.loc 1 383 0 discriminator 1
+ 462 0022 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 463              	.LVL64:
+ 464 0026 631C     		adds	r3, r4, #1
+ 465 0028 9842     		cmp	r0, r3
+ 466 002a FAD1     		bne	.L29
+ 384:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 385:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 467              		.loc 1 385 0
+ 468 002c 0120     		movs	r0, #1
+ 469 002e FFF7FEFF 		bl	SS_Write
+ 470              	.LVL65:
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 16
+
+
+ 386:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else // _PSOC_UDB
+ 387:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ClearFIFO();
+ 388:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 389:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 390:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 391:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(NRF_CMD_W_TX_PAYLOAD_NOACK);
+ 392:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     for (size_t i = 0; i < size; i++) {
+ 393:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         SPI_WriteTxData(data[i]);
+ 394:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)){
+ 395:Generated_Source\PSoC4/nRF24_COMMANDS.c ****         }
+ 396:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 397:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 398:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_SPI_IDLE)) {
+ 399:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 400:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 401:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+ 402:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 471              		.loc 1 402 0
+ 472              		@ sp needed
+ 473              	.LVL66:
+ 474              	.LVL67:
+ 475 0032 70BD     		pop	{r4, r5, r6, pc}
+ 476              		.cfi_endproc
+ 477              	.LFE9:
+ 478              		.size	nRF24_no_ack_payload_cmd, .-nRF24_no_ack_payload_cmd
+ 479              		.section	.text.nRF24_nop_cmd,"ax",%progbits
+ 480              		.align	1
+ 481              		.global	nRF24_nop_cmd
+ 482              		.code	16
+ 483              		.thumb_func
+ 484              		.type	nRF24_nop_cmd, %function
+ 485              	nRF24_nop_cmd:
+ 486              	.LFB10:
+ 403:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 404:Generated_Source\PSoC4/nRF24_COMMANDS.c **** /**
+ 405:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * NOP (No OPeration) Command. Might be used to read the STATUS register.
+ 406:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  *
+ 407:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  * @return uint8_t: STATUS register.
+ 408:Generated_Source\PSoC4/nRF24_COMMANDS.c ****  */
+ 409:Generated_Source\PSoC4/nRF24_COMMANDS.c **** uint8_t nRF24_nop_cmd(void)
+ 410:Generated_Source\PSoC4/nRF24_COMMANDS.c **** {
+ 487              		.loc 1 410 0
+ 488              		.cfi_startproc
+ 489              		@ args = 0, pretend = 0, frame = 0
+ 490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 491              	.LVL68:
+ 492 0000 10B5     		push	{r4, lr}
+ 493              		.cfi_def_cfa_offset 8
+ 494              		.cfi_offset 4, -8
+ 495              		.cfi_offset 14, -4
+ 411:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     uint8_t status = 0;
+ 412:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #if defined (_PSOC6)
+ 413:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearRxFifo(SPI_HW);
+ 414:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_ClearTxFifo(SPI_HW);
+ 415:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 416:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Clr(SS_PORT, SS_NUM);
+ 417:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 17
+
+
+ 418:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_SCB_Write(SPI_HW, NRF_CMD_NOP);
+ 419:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 420:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (Cy_SCB_GetNumInRxFifo(SPI_HW) != 1) {
+ 421:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 422:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     Cy_GPIO_Set(SS_PORT, SS_NUM);
+ 423:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 424:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     status = Cy_SCB_ReadRxFifo(SPI_HW);
+ 425:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #elif defined (_PSOC4_SCB)
+ 426:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearRxBuffer();
+ 496              		.loc 1 426 0
+ 497 0002 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 498              	.LVL69:
+ 427:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartClearTxBuffer();
+ 499              		.loc 1 427 0
+ 500 0006 FFF7FEFF 		bl	SPI_SpiUartClearTxBuffer
+ 501              	.LVL70:
+ 428:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 429:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 502              		.loc 1 429 0
+ 503 000a 0020     		movs	r0, #0
+ 504 000c FFF7FEFF 		bl	SS_Write
+ 505              	.LVL71:
+ 430:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_SpiUartWriteTxData(NRF_CMD_NOP);
+ 506              		.loc 1 430 0
+ 507 0010 FF20     		movs	r0, #255
+ 508 0012 FFF7FEFF 		bl	SPI_SpiUartWriteTxData
+ 509              	.LVL72:
+ 510              	.L32:
+ 431:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 432:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (SPI_SpiUartGetRxBufferSize() != 1) {
+ 511              		.loc 1 432 0 discriminator 1
+ 512 0016 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 513              	.LVL73:
+ 514 001a 0128     		cmp	r0, #1
+ 515 001c FBD1     		bne	.L32
+ 433:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 434:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 516              		.loc 1 434 0
+ 517 001e FFF7FEFF 		bl	SS_Write
+ 518              	.LVL74:
+ 435:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 436:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     status = SPI_SpiUartReadRxData();
+ 519              		.loc 1 436 0
+ 520 0022 FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 521              	.LVL75:
+ 437:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #else // _PSOC_UDB
+ 438:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_ClearFIFO();
+ 439:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 440:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(0);
+ 441:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SPI_WriteTxData(NRF_CMD_NOP);
+ 442:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 443:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     while (!(SPI_ReadTxStatus() & SPI_STS_BYTE_COMPLETE)) {
+ 444:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     }
+ 445:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     SS_Write(1);
+ 446:Generated_Source\PSoC4/nRF24_COMMANDS.c **** 
+ 447:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     status = SPI_ReadRxData();
+ 448:Generated_Source\PSoC4/nRF24_COMMANDS.c **** #endif
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 18
+
+
+ 449:Generated_Source\PSoC4/nRF24_COMMANDS.c ****     return status;
+ 450:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 522              		.loc 1 450 0
+ 523              		@ sp needed
+ 449:Generated_Source\PSoC4/nRF24_COMMANDS.c **** }
+ 524              		.loc 1 449 0
+ 525 0026 C0B2     		uxtb	r0, r0
+ 526              		.loc 1 450 0
+ 527 0028 10BD     		pop	{r4, pc}
+ 528              		.cfi_endproc
+ 529              	.LFE10:
+ 530              		.size	nRF24_nop_cmd, .-nRF24_nop_cmd
+ 531              		.text
+ 532              	.Letext0:
+ 533              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 534              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 535              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 536              		.file 5 "Generated_Source\\PSoC4\\nRF24_DEFS.h"
+ 537              		.file 6 "Generated_Source\\PSoC4\\SPI_SPI_UART.h"
+ 538              		.file 7 "Generated_Source\\PSoC4\\SS.h"
+ 539              		.section	.debug_info,"",%progbits
+ 540              	.Ldebug_info0:
+ 541 0000 7E060000 		.4byte	0x67e
+ 542 0004 0400     		.2byte	0x4
+ 543 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 544 000a 04       		.byte	0x4
+ 545 000b 01       		.uleb128 0x1
+ 546 000c D1030000 		.4byte	.LASF58
+ 547 0010 0C       		.byte	0xc
+ 548 0011 12030000 		.4byte	.LASF59
+ 549 0015 15000000 		.4byte	.LASF60
+ 550 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 551 001d 00000000 		.4byte	0
+ 552 0021 00000000 		.4byte	.Ldebug_line0
+ 553 0025 02       		.uleb128 0x2
+ 554 0026 01       		.byte	0x1
+ 555 0027 06       		.byte	0x6
+ 556 0028 68020000 		.4byte	.LASF0
+ 557 002c 03       		.uleb128 0x3
+ 558 002d F6010000 		.4byte	.LASF9
+ 559 0031 02       		.byte	0x2
+ 560 0032 1D       		.byte	0x1d
+ 561 0033 37000000 		.4byte	0x37
+ 562 0037 02       		.uleb128 0x2
+ 563 0038 01       		.byte	0x1
+ 564 0039 08       		.byte	0x8
+ 565 003a 36020000 		.4byte	.LASF1
+ 566 003e 02       		.uleb128 0x2
+ 567 003f 02       		.byte	0x2
+ 568 0040 05       		.byte	0x5
+ 569 0041 23010000 		.4byte	.LASF2
+ 570 0045 02       		.uleb128 0x2
+ 571 0046 02       		.byte	0x2
+ 572 0047 07       		.byte	0x7
+ 573 0048 3F030000 		.4byte	.LASF3
+ 574 004c 02       		.uleb128 0x2
+ 575 004d 04       		.byte	0x4
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 19
+
+
+ 576 004e 05       		.byte	0x5
+ 577 004f E1010000 		.4byte	.LASF4
+ 578 0053 02       		.uleb128 0x2
+ 579 0054 04       		.byte	0x4
+ 580 0055 07       		.byte	0x7
+ 581 0056 52030000 		.4byte	.LASF5
+ 582 005a 02       		.uleb128 0x2
+ 583 005b 08       		.byte	0x8
+ 584 005c 05       		.byte	0x5
+ 585 005d AE010000 		.4byte	.LASF6
+ 586 0061 02       		.uleb128 0x2
+ 587 0062 08       		.byte	0x8
+ 588 0063 07       		.byte	0x7
+ 589 0064 74020000 		.4byte	.LASF7
+ 590 0068 04       		.uleb128 0x4
+ 591 0069 04       		.byte	0x4
+ 592 006a 05       		.byte	0x5
+ 593 006b 696E7400 		.ascii	"int\000"
+ 594 006f 02       		.uleb128 0x2
+ 595 0070 04       		.byte	0x4
+ 596 0071 07       		.byte	0x7
+ 597 0072 8B020000 		.4byte	.LASF8
+ 598 0076 03       		.uleb128 0x3
+ 599 0077 2D010000 		.4byte	.LASF10
+ 600 007b 03       		.byte	0x3
+ 601 007c 18       		.byte	0x18
+ 602 007d 2C000000 		.4byte	0x2c
+ 603 0081 02       		.uleb128 0x2
+ 604 0082 04       		.byte	0x4
+ 605 0083 04       		.byte	0x4
+ 606 0084 A8010000 		.4byte	.LASF11
+ 607 0088 02       		.uleb128 0x2
+ 608 0089 08       		.byte	0x8
+ 609 008a 04       		.byte	0x4
+ 610 008b 64030000 		.4byte	.LASF12
+ 611 008f 02       		.uleb128 0x2
+ 612 0090 01       		.byte	0x1
+ 613 0091 08       		.byte	0x8
+ 614 0092 F0020000 		.4byte	.LASF13
+ 615 0096 03       		.uleb128 0x3
+ 616 0097 C3000000 		.4byte	.LASF14
+ 617 009b 04       		.byte	0x4
+ 618 009c D8       		.byte	0xd8
+ 619 009d 6F000000 		.4byte	0x6f
+ 620 00a1 02       		.uleb128 0x2
+ 621 00a2 08       		.byte	0x8
+ 622 00a3 04       		.byte	0x4
+ 623 00a4 19020000 		.4byte	.LASF15
+ 624 00a8 02       		.uleb128 0x2
+ 625 00a9 04       		.byte	0x4
+ 626 00aa 07       		.byte	0x7
+ 627 00ab CA000000 		.4byte	.LASF16
+ 628 00af 05       		.uleb128 0x5
+ 629 00b0 01       		.byte	0x1
+ 630 00b1 37000000 		.4byte	0x37
+ 631 00b5 05       		.byte	0x5
+ 632 00b6 3C       		.byte	0x3c
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 20
+
+
+ 633 00b7 FE000000 		.4byte	0xfe
+ 634 00bb 06       		.uleb128 0x6
+ 635 00bc 98020000 		.4byte	.LASF17
+ 636 00c0 00       		.byte	0
+ 637 00c1 06       		.uleb128 0x6
+ 638 00c2 BE020000 		.4byte	.LASF18
+ 639 00c6 20       		.byte	0x20
+ 640 00c7 06       		.uleb128 0x6
+ 641 00c8 00000000 		.4byte	.LASF19
+ 642 00cc 61       		.byte	0x61
+ 643 00cd 06       		.uleb128 0x6
+ 644 00ce 7A040000 		.4byte	.LASF20
+ 645 00d2 A0       		.byte	0xa0
+ 646 00d3 06       		.uleb128 0x6
+ 647 00d4 6A000000 		.4byte	.LASF21
+ 648 00d8 E1       		.byte	0xe1
+ 649 00d9 06       		.uleb128 0x6
+ 650 00da 25020000 		.4byte	.LASF22
+ 651 00de E2       		.byte	0xe2
+ 652 00df 06       		.uleb128 0x6
+ 653 00e0 96030000 		.4byte	.LASF23
+ 654 00e4 E3       		.byte	0xe3
+ 655 00e5 06       		.uleb128 0x6
+ 656 00e6 AF000000 		.4byte	.LASF24
+ 657 00ea 60       		.byte	0x60
+ 658 00eb 06       		.uleb128 0x6
+ 659 00ec 8C010000 		.4byte	.LASF25
+ 660 00f0 A8       		.byte	0xa8
+ 661 00f1 06       		.uleb128 0x6
+ 662 00f2 5F040000 		.4byte	.LASF26
+ 663 00f6 B0       		.byte	0xb0
+ 664 00f7 06       		.uleb128 0x6
+ 665 00f8 EA010000 		.4byte	.LASF27
+ 666 00fc FF       		.byte	0xff
+ 667 00fd 00       		.byte	0
+ 668 00fe 03       		.uleb128 0x3
+ 669 00ff C9030000 		.4byte	.LASF28
+ 670 0103 05       		.byte	0x5
+ 671 0104 48       		.byte	0x48
+ 672 0105 AF000000 		.4byte	0xaf
+ 673 0109 05       		.uleb128 0x5
+ 674 010a 01       		.byte	0x1
+ 675 010b 37000000 		.4byte	0x37
+ 676 010f 05       		.byte	0x5
+ 677 0110 4B       		.byte	0x4b
+ 678 0111 3A010000 		.4byte	0x13a
+ 679 0115 06       		.uleb128 0x6
+ 680 0116 35010000 		.4byte	.LASF29
+ 681 011a 00       		.byte	0
+ 682 011b 06       		.uleb128 0x6
+ 683 011c 3F010000 		.4byte	.LASF30
+ 684 0120 01       		.byte	0x1
+ 685 0121 06       		.uleb128 0x6
+ 686 0122 49010000 		.4byte	.LASF31
+ 687 0126 02       		.byte	0x2
+ 688 0127 06       		.uleb128 0x6
+ 689 0128 53010000 		.4byte	.LASF32
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 21
+
+
+ 690 012c 03       		.byte	0x3
+ 691 012d 06       		.uleb128 0x6
+ 692 012e 5D010000 		.4byte	.LASF33
+ 693 0132 04       		.byte	0x4
+ 694 0133 06       		.uleb128 0x6
+ 695 0134 67010000 		.4byte	.LASF34
+ 696 0138 05       		.byte	0x5
+ 697 0139 00       		.byte	0
+ 698 013a 03       		.uleb128 0x3
+ 699 013b D3000000 		.4byte	.LASF35
+ 700 013f 05       		.byte	0x5
+ 701 0140 52       		.byte	0x52
+ 702 0141 09010000 		.4byte	0x109
+ 703 0145 07       		.uleb128 0x7
+ 704 0146 F5000000 		.4byte	.LASF36
+ 705 014a 01       		.byte	0x1
+ 706 014b 23       		.byte	0x23
+ 707 014c 00000000 		.4byte	.LFB1
+ 708 0150 26000000 		.4byte	.LFE1-.LFB1
+ 709 0154 01       		.uleb128 0x1
+ 710 0155 9C       		.byte	0x9c
+ 711 0156 B5010000 		.4byte	0x1b5
+ 712 015a 08       		.uleb128 0x8
+ 713 015b 636D6400 		.ascii	"cmd\000"
+ 714 015f 01       		.byte	0x1
+ 715 0160 23       		.byte	0x23
+ 716 0161 B5010000 		.4byte	0x1b5
+ 717 0165 00000000 		.4byte	.LLST0
+ 718 0169 09       		.uleb128 0x9
+ 719 016a 08000000 		.4byte	.LVL1
+ 720 016e 2E060000 		.4byte	0x62e
+ 721 0172 09       		.uleb128 0x9
+ 722 0173 0C000000 		.4byte	.LVL2
+ 723 0177 3A060000 		.4byte	0x63a
+ 724 017b 0A       		.uleb128 0xa
+ 725 017c 12000000 		.4byte	.LVL3
+ 726 0180 46060000 		.4byte	0x646
+ 727 0184 8E010000 		.4byte	0x18e
+ 728 0188 0B       		.uleb128 0xb
+ 729 0189 01       		.uleb128 0x1
+ 730 018a 50       		.byte	0x50
+ 731 018b 01       		.uleb128 0x1
+ 732 018c 30       		.byte	0x30
+ 733 018d 00       		.byte	0
+ 734 018e 0A       		.uleb128 0xa
+ 735 018f 18000000 		.4byte	.LVL4
+ 736 0193 51060000 		.4byte	0x651
+ 737 0197 A2010000 		.4byte	0x1a2
+ 738 019b 0B       		.uleb128 0xb
+ 739 019c 01       		.uleb128 0x1
+ 740 019d 50       		.byte	0x50
+ 741 019e 02       		.uleb128 0x2
+ 742 019f 74       		.byte	0x74
+ 743 01a0 00       		.sleb128 0
+ 744 01a1 00       		.byte	0
+ 745 01a2 09       		.uleb128 0x9
+ 746 01a3 1C000000 		.4byte	.LVL5
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 22
+
+
+ 747 01a7 5D060000 		.4byte	0x65d
+ 748 01ab 09       		.uleb128 0x9
+ 749 01ac 24000000 		.4byte	.LVL6
+ 750 01b0 46060000 		.4byte	0x646
+ 751 01b4 00       		.byte	0
+ 752 01b5 0C       		.uleb128 0xc
+ 753 01b6 FE000000 		.4byte	0xfe
+ 754 01ba 07       		.uleb128 0x7
+ 755 01bb 7B000000 		.4byte	.LASF37
+ 756 01bf 01       		.byte	0x1
+ 757 01c0 50       		.byte	0x50
+ 758 01c1 00000000 		.4byte	.LFB2
+ 759 01c5 0A000000 		.4byte	.LFE2-.LFB2
+ 760 01c9 01       		.uleb128 0x1
+ 761 01ca 9C       		.byte	0x9c
+ 762 01cb E0010000 		.4byte	0x1e0
+ 763 01cf 0D       		.uleb128 0xd
+ 764 01d0 08000000 		.4byte	.LVL7
+ 765 01d4 45010000 		.4byte	0x145
+ 766 01d8 0B       		.uleb128 0xb
+ 767 01d9 01       		.uleb128 0x1
+ 768 01da 50       		.byte	0x50
+ 769 01db 02       		.uleb128 0x2
+ 770 01dc 09       		.byte	0x9
+ 771 01dd E3       		.byte	0xe3
+ 772 01de 00       		.byte	0
+ 773 01df 00       		.byte	0
+ 774 01e0 07       		.uleb128 0x7
+ 775 01e1 DD020000 		.4byte	.LASF38
+ 776 01e5 01       		.byte	0x1
+ 777 01e6 5C       		.byte	0x5c
+ 778 01e7 00000000 		.4byte	.LFB3
+ 779 01eb 0A000000 		.4byte	.LFE3-.LFB3
+ 780 01ef 01       		.uleb128 0x1
+ 781 01f0 9C       		.byte	0x9c
+ 782 01f1 06020000 		.4byte	0x206
+ 783 01f5 0D       		.uleb128 0xd
+ 784 01f6 08000000 		.4byte	.LVL8
+ 785 01fa 45010000 		.4byte	0x145
+ 786 01fe 0B       		.uleb128 0xb
+ 787 01ff 01       		.uleb128 0x1
+ 788 0200 50       		.byte	0x50
+ 789 0201 02       		.uleb128 0x2
+ 790 0202 09       		.byte	0x9
+ 791 0203 E2       		.byte	0xe2
+ 792 0204 00       		.byte	0
+ 793 0205 00       		.byte	0
+ 794 0206 07       		.uleb128 0x7
+ 795 0207 AB020000 		.4byte	.LASF39
+ 796 020b 01       		.byte	0x1
+ 797 020c 65       		.byte	0x65
+ 798 020d 00000000 		.4byte	.LFB4
+ 799 0211 0A000000 		.4byte	.LFE4-.LFB4
+ 800 0215 01       		.uleb128 0x1
+ 801 0216 9C       		.byte	0x9c
+ 802 0217 2C020000 		.4byte	0x22c
+ 803 021b 0D       		.uleb128 0xd
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 23
+
+
+ 804 021c 08000000 		.4byte	.LVL9
+ 805 0220 45010000 		.4byte	0x145
+ 806 0224 0B       		.uleb128 0xb
+ 807 0225 01       		.uleb128 0x1
+ 808 0226 50       		.byte	0x50
+ 809 0227 02       		.uleb128 0x2
+ 810 0228 09       		.byte	0x9
+ 811 0229 E1       		.byte	0xe1
+ 812 022a 00       		.byte	0
+ 813 022b 00       		.byte	0
+ 814 022c 07       		.uleb128 0x7
+ 815 022d AA030000 		.4byte	.LASF40
+ 816 0231 01       		.byte	0x1
+ 817 0232 72       		.byte	0x72
+ 818 0233 00000000 		.4byte	.LFB5
+ 819 0237 4C000000 		.4byte	.LFE5-.LFB5
+ 820 023b 01       		.uleb128 0x1
+ 821 023c 9C       		.byte	0x9c
+ 822 023d FB020000 		.4byte	0x2fb
+ 823 0241 0E       		.uleb128 0xe
+ 824 0242 3A030000 		.4byte	.LASF41
+ 825 0246 01       		.byte	0x1
+ 826 0247 72       		.byte	0x72
+ 827 0248 FB020000 		.4byte	0x2fb
+ 828 024c 21000000 		.4byte	.LLST1
+ 829 0250 0E       		.uleb128 0xe
+ 830 0251 D8020000 		.4byte	.LASF42
+ 831 0255 01       		.byte	0x1
+ 832 0256 72       		.byte	0x72
+ 833 0257 01030000 		.4byte	0x301
+ 834 025b 4D000000 		.4byte	.LLST2
+ 835 025f 0F       		.uleb128 0xf
+ 836 0260 28000000 		.4byte	.LBB2
+ 837 0264 1C000000 		.4byte	.LBE2-.LBB2
+ 838 0268 A0020000 		.4byte	0x2a0
+ 839 026c 10       		.uleb128 0x10
+ 840 026d 6900     		.ascii	"i\000"
+ 841 026f 01       		.byte	0x1
+ 842 0270 92       		.byte	0x92
+ 843 0271 96000000 		.4byte	0x96
+ 844 0275 79000000 		.4byte	.LLST3
+ 845 0279 0A       		.uleb128 0xa
+ 846 027a 32000000 		.4byte	.LVL18
+ 847 027e 51060000 		.4byte	0x651
+ 848 0282 8D020000 		.4byte	0x28d
+ 849 0286 0B       		.uleb128 0xb
+ 850 0287 01       		.uleb128 0x1
+ 851 0288 50       		.byte	0x50
+ 852 0289 02       		.uleb128 0x2
+ 853 028a 08       		.byte	0x8
+ 854 028b FF       		.byte	0xff
+ 855 028c 00       		.byte	0
+ 856 028d 09       		.uleb128 0x9
+ 857 028e 36000000 		.4byte	.LVL19
+ 858 0292 5D060000 		.4byte	0x65d
+ 859 0296 09       		.uleb128 0x9
+ 860 0297 3E000000 		.4byte	.LVL20
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 24
+
+
+ 861 029b 69060000 		.4byte	0x669
+ 862 029f 00       		.byte	0
+ 863 02a0 09       		.uleb128 0x9
+ 864 02a1 0A000000 		.4byte	.LVL11
+ 865 02a5 2E060000 		.4byte	0x62e
+ 866 02a9 09       		.uleb128 0x9
+ 867 02aa 0E000000 		.4byte	.LVL12
+ 868 02ae 3A060000 		.4byte	0x63a
+ 869 02b2 0A       		.uleb128 0xa
+ 870 02b3 14000000 		.4byte	.LVL13
+ 871 02b7 46060000 		.4byte	0x646
+ 872 02bb C5020000 		.4byte	0x2c5
+ 873 02bf 0B       		.uleb128 0xb
+ 874 02c0 01       		.uleb128 0x1
+ 875 02c1 50       		.byte	0x50
+ 876 02c2 01       		.uleb128 0x1
+ 877 02c3 30       		.byte	0x30
+ 878 02c4 00       		.byte	0
+ 879 02c5 0A       		.uleb128 0xa
+ 880 02c6 1A000000 		.4byte	.LVL14
+ 881 02ca 51060000 		.4byte	0x651
+ 882 02ce D9020000 		.4byte	0x2d9
+ 883 02d2 0B       		.uleb128 0xb
+ 884 02d3 01       		.uleb128 0x1
+ 885 02d4 50       		.byte	0x50
+ 886 02d5 02       		.uleb128 0x2
+ 887 02d6 08       		.byte	0x8
+ 888 02d7 61       		.byte	0x61
+ 889 02d8 00       		.byte	0
+ 890 02d9 09       		.uleb128 0x9
+ 891 02da 1E000000 		.4byte	.LVL15
+ 892 02de 5D060000 		.4byte	0x65d
+ 893 02e2 09       		.uleb128 0x9
+ 894 02e3 26000000 		.4byte	.LVL16
+ 895 02e7 69060000 		.4byte	0x669
+ 896 02eb 0D       		.uleb128 0xd
+ 897 02ec 4A000000 		.4byte	.LVL23
+ 898 02f0 46060000 		.4byte	0x646
+ 899 02f4 0B       		.uleb128 0xb
+ 900 02f5 01       		.uleb128 0x1
+ 901 02f6 50       		.byte	0x50
+ 902 02f7 01       		.uleb128 0x1
+ 903 02f8 31       		.byte	0x31
+ 904 02f9 00       		.byte	0
+ 905 02fa 00       		.byte	0
+ 906 02fb 11       		.uleb128 0x11
+ 907 02fc 04       		.byte	0x4
+ 908 02fd 76000000 		.4byte	0x76
+ 909 0301 0C       		.uleb128 0xc
+ 910 0302 96000000 		.4byte	0x96
+ 911 0306 07       		.uleb128 0x7
+ 912 0307 71010000 		.4byte	.LASF43
+ 913 030b 01       		.byte	0x1
+ 914 030c B7       		.byte	0xb7
+ 915 030d 00000000 		.4byte	.LFB6
+ 916 0311 34000000 		.4byte	.LFE6-.LFB6
+ 917 0315 01       		.uleb128 0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 25
+
+
+ 918 0316 9C       		.byte	0x9c
+ 919 0317 A5030000 		.4byte	0x3a5
+ 920 031b 0E       		.uleb128 0xe
+ 921 031c 3A030000 		.4byte	.LASF41
+ 922 0320 01       		.byte	0x1
+ 923 0321 B7       		.byte	0xb7
+ 924 0322 A5030000 		.4byte	0x3a5
+ 925 0326 C2000000 		.4byte	.LLST4
+ 926 032a 0E       		.uleb128 0xe
+ 927 032b D8020000 		.4byte	.LASF42
+ 928 032f 01       		.byte	0x1
+ 929 0330 B7       		.byte	0xb7
+ 930 0331 01030000 		.4byte	0x301
+ 931 0335 EE000000 		.4byte	.LLST5
+ 932 0339 09       		.uleb128 0x9
+ 933 033a 0A000000 		.4byte	.LVL26
+ 934 033e 2E060000 		.4byte	0x62e
+ 935 0342 09       		.uleb128 0x9
+ 936 0343 0E000000 		.4byte	.LVL27
+ 937 0347 3A060000 		.4byte	0x63a
+ 938 034b 0A       		.uleb128 0xa
+ 939 034c 14000000 		.4byte	.LVL28
+ 940 0350 46060000 		.4byte	0x646
+ 941 0354 5E030000 		.4byte	0x35e
+ 942 0358 0B       		.uleb128 0xb
+ 943 0359 01       		.uleb128 0x1
+ 944 035a 50       		.byte	0x50
+ 945 035b 01       		.uleb128 0x1
+ 946 035c 30       		.byte	0x30
+ 947 035d 00       		.byte	0
+ 948 035e 0A       		.uleb128 0xa
+ 949 035f 1A000000 		.4byte	.LVL29
+ 950 0363 51060000 		.4byte	0x651
+ 951 0367 72030000 		.4byte	0x372
+ 952 036b 0B       		.uleb128 0xb
+ 953 036c 01       		.uleb128 0x1
+ 954 036d 50       		.byte	0x50
+ 955 036e 02       		.uleb128 0x2
+ 956 036f 08       		.byte	0x8
+ 957 0370 A0       		.byte	0xa0
+ 958 0371 00       		.byte	0
+ 959 0372 0A       		.uleb128 0xa
+ 960 0373 22000000 		.4byte	.LVL30
+ 961 0377 75060000 		.4byte	0x675
+ 962 037b 8C030000 		.4byte	0x38c
+ 963 037f 0B       		.uleb128 0xb
+ 964 0380 01       		.uleb128 0x1
+ 965 0381 50       		.byte	0x50
+ 966 0382 02       		.uleb128 0x2
+ 967 0383 75       		.byte	0x75
+ 968 0384 00       		.sleb128 0
+ 969 0385 0B       		.uleb128 0xb
+ 970 0386 01       		.uleb128 0x1
+ 971 0387 51       		.byte	0x51
+ 972 0388 02       		.uleb128 0x2
+ 973 0389 74       		.byte	0x74
+ 974 038a 00       		.sleb128 0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 26
+
+
+ 975 038b 00       		.byte	0
+ 976 038c 09       		.uleb128 0x9
+ 977 038d 26000000 		.4byte	.LVL31
+ 978 0391 5D060000 		.4byte	0x65d
+ 979 0395 0D       		.uleb128 0xd
+ 980 0396 32000000 		.4byte	.LVL32
+ 981 039a 46060000 		.4byte	0x646
+ 982 039e 0B       		.uleb128 0xb
+ 983 039f 01       		.uleb128 0x1
+ 984 03a0 50       		.byte	0x50
+ 985 03a1 01       		.uleb128 0x1
+ 986 03a2 31       		.byte	0x31
+ 987 03a3 00       		.byte	0
+ 988 03a4 00       		.byte	0
+ 989 03a5 11       		.uleb128 0x11
+ 990 03a6 04       		.byte	0x4
+ 991 03a7 AB030000 		.4byte	0x3ab
+ 992 03ab 0C       		.uleb128 0xc
+ 993 03ac 76000000 		.4byte	0x76
+ 994 03b0 12       		.uleb128 0x12
+ 995 03b1 F5020000 		.4byte	.LASF48
+ 996 03b5 01       		.byte	0x1
+ 997 03b6 E9       		.byte	0xe9
+ 998 03b7 76000000 		.4byte	0x76
+ 999 03bb 00000000 		.4byte	.LFB7
+ 1000 03bf 40000000 		.4byte	.LFE7-.LFB7
+ 1001 03c3 01       		.uleb128 0x1
+ 1002 03c4 9C       		.byte	0x9c
+ 1003 03c5 53040000 		.4byte	0x453
+ 1004 03c9 13       		.uleb128 0x13
+ 1005 03ca A2010000 		.4byte	.LASF44
+ 1006 03ce 01       		.byte	0x1
+ 1007 03cf EB       		.byte	0xeb
+ 1008 03d0 76000000 		.4byte	0x76
+ 1009 03d4 1A010000 		.4byte	.LLST6
+ 1010 03d8 09       		.uleb128 0x9
+ 1011 03d9 06000000 		.4byte	.LVL36
+ 1012 03dd 2E060000 		.4byte	0x62e
+ 1013 03e1 09       		.uleb128 0x9
+ 1014 03e2 0A000000 		.4byte	.LVL37
+ 1015 03e6 3A060000 		.4byte	0x63a
+ 1016 03ea 0A       		.uleb128 0xa
+ 1017 03eb 10000000 		.4byte	.LVL38
+ 1018 03ef 46060000 		.4byte	0x646
+ 1019 03f3 FD030000 		.4byte	0x3fd
+ 1020 03f7 0B       		.uleb128 0xb
+ 1021 03f8 01       		.uleb128 0x1
+ 1022 03f9 50       		.byte	0x50
+ 1023 03fa 01       		.uleb128 0x1
+ 1024 03fb 30       		.byte	0x30
+ 1025 03fc 00       		.byte	0
+ 1026 03fd 0A       		.uleb128 0xa
+ 1027 03fe 16000000 		.4byte	.LVL39
+ 1028 0402 51060000 		.4byte	0x651
+ 1029 0406 11040000 		.4byte	0x411
+ 1030 040a 0B       		.uleb128 0xb
+ 1031 040b 01       		.uleb128 0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 27
+
+
+ 1032 040c 50       		.byte	0x50
+ 1033 040d 02       		.uleb128 0x2
+ 1034 040e 08       		.byte	0x8
+ 1035 040f 60       		.byte	0x60
+ 1036 0410 00       		.byte	0
+ 1037 0411 0A       		.uleb128 0xa
+ 1038 0412 1C000000 		.4byte	.LVL40
+ 1039 0416 51060000 		.4byte	0x651
+ 1040 041a 25040000 		.4byte	0x425
+ 1041 041e 0B       		.uleb128 0xb
+ 1042 041f 01       		.uleb128 0x1
+ 1043 0420 50       		.byte	0x50
+ 1044 0421 02       		.uleb128 0x2
+ 1045 0422 08       		.byte	0x8
+ 1046 0423 FF       		.byte	0xff
+ 1047 0424 00       		.byte	0
+ 1048 0425 09       		.uleb128 0x9
+ 1049 0426 20000000 		.4byte	.LVL41
+ 1050 042a 5D060000 		.4byte	0x65d
+ 1051 042e 09       		.uleb128 0x9
+ 1052 042f 2A000000 		.4byte	.LVL42
+ 1053 0433 46060000 		.4byte	0x646
+ 1054 0437 09       		.uleb128 0x9
+ 1055 0438 2E000000 		.4byte	.LVL43
+ 1056 043c 69060000 		.4byte	0x669
+ 1057 0440 09       		.uleb128 0x9
+ 1058 0441 32000000 		.4byte	.LVL44
+ 1059 0445 69060000 		.4byte	0x669
+ 1060 0449 09       		.uleb128 0x9
+ 1061 044a 3C000000 		.4byte	.LVL46
+ 1062 044e E0010000 		.4byte	0x1e0
+ 1063 0452 00       		.byte	0
+ 1064 0453 14       		.uleb128 0x14
+ 1065 0454 BC010000 		.4byte	.LASF45
+ 1066 0458 01       		.byte	0x1
+ 1067 0459 3401     		.2byte	0x134
+ 1068 045b 00000000 		.4byte	.LFB8
+ 1069 045f 38000000 		.4byte	.LFE8-.LFB8
+ 1070 0463 01       		.uleb128 0x1
+ 1071 0464 9C       		.byte	0x9c
+ 1072 0465 08050000 		.4byte	0x508
+ 1073 0469 15       		.uleb128 0x15
+ 1074 046a C4030000 		.4byte	.LASF46
+ 1075 046e 01       		.byte	0x1
+ 1076 046f 3401     		.2byte	0x134
+ 1077 0471 08050000 		.4byte	0x508
+ 1078 0475 44010000 		.4byte	.LLST7
+ 1079 0479 15       		.uleb128 0x15
+ 1080 047a 3A030000 		.4byte	.LASF41
+ 1081 047e 01       		.byte	0x1
+ 1082 047f 3401     		.2byte	0x134
+ 1083 0481 A5030000 		.4byte	0x3a5
+ 1084 0485 65010000 		.4byte	.LLST8
+ 1085 0489 15       		.uleb128 0x15
+ 1086 048a D8020000 		.4byte	.LASF42
+ 1087 048e 01       		.byte	0x1
+ 1088 048f 3501     		.2byte	0x135
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 28
+
+
+ 1089 0491 01030000 		.4byte	0x301
+ 1090 0495 91010000 		.4byte	.LLST9
+ 1091 0499 09       		.uleb128 0x9
+ 1092 049a 0C000000 		.4byte	.LVL49
+ 1093 049e 2E060000 		.4byte	0x62e
+ 1094 04a2 09       		.uleb128 0x9
+ 1095 04a3 10000000 		.4byte	.LVL50
+ 1096 04a7 3A060000 		.4byte	0x63a
+ 1097 04ab 0A       		.uleb128 0xa
+ 1098 04ac 16000000 		.4byte	.LVL51
+ 1099 04b0 46060000 		.4byte	0x646
+ 1100 04b4 BE040000 		.4byte	0x4be
+ 1101 04b8 0B       		.uleb128 0xb
+ 1102 04b9 01       		.uleb128 0x1
+ 1103 04ba 50       		.byte	0x50
+ 1104 04bb 01       		.uleb128 0x1
+ 1105 04bc 30       		.byte	0x30
+ 1106 04bd 00       		.byte	0
+ 1107 04be 0A       		.uleb128 0xa
+ 1108 04bf 1E000000 		.4byte	.LVL52
+ 1109 04c3 51060000 		.4byte	0x651
+ 1110 04c7 D5040000 		.4byte	0x4d5
+ 1111 04cb 0B       		.uleb128 0xb
+ 1112 04cc 01       		.uleb128 0x1
+ 1113 04cd 50       		.byte	0x50
+ 1114 04ce 05       		.uleb128 0x5
+ 1115 04cf 76       		.byte	0x76
+ 1116 04d0 00       		.sleb128 0
+ 1117 04d1 08       		.byte	0x8
+ 1118 04d2 A8       		.byte	0xa8
+ 1119 04d3 21       		.byte	0x21
+ 1120 04d4 00       		.byte	0
+ 1121 04d5 0A       		.uleb128 0xa
+ 1122 04d6 26000000 		.4byte	.LVL53
+ 1123 04da 75060000 		.4byte	0x675
+ 1124 04de EF040000 		.4byte	0x4ef
+ 1125 04e2 0B       		.uleb128 0xb
+ 1126 04e3 01       		.uleb128 0x1
+ 1127 04e4 50       		.byte	0x50
+ 1128 04e5 02       		.uleb128 0x2
+ 1129 04e6 75       		.byte	0x75
+ 1130 04e7 00       		.sleb128 0
+ 1131 04e8 0B       		.uleb128 0xb
+ 1132 04e9 01       		.uleb128 0x1
+ 1133 04ea 51       		.byte	0x51
+ 1134 04eb 02       		.uleb128 0x2
+ 1135 04ec 74       		.byte	0x74
+ 1136 04ed 00       		.sleb128 0
+ 1137 04ee 00       		.byte	0
+ 1138 04ef 09       		.uleb128 0x9
+ 1139 04f0 2A000000 		.4byte	.LVL54
+ 1140 04f4 5D060000 		.4byte	0x65d
+ 1141 04f8 0D       		.uleb128 0xd
+ 1142 04f9 36000000 		.4byte	.LVL55
+ 1143 04fd 46060000 		.4byte	0x646
+ 1144 0501 0B       		.uleb128 0xb
+ 1145 0502 01       		.uleb128 0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 29
+
+
+ 1146 0503 50       		.byte	0x50
+ 1147 0504 01       		.uleb128 0x1
+ 1148 0505 31       		.byte	0x31
+ 1149 0506 00       		.byte	0
+ 1150 0507 00       		.byte	0
+ 1151 0508 0C       		.uleb128 0xc
+ 1152 0509 3A010000 		.4byte	0x13a
+ 1153 050d 14       		.uleb128 0x14
+ 1154 050e 96000000 		.4byte	.LASF47
+ 1155 0512 01       		.byte	0x1
+ 1156 0513 6801     		.2byte	0x168
+ 1157 0515 00000000 		.4byte	.LFB9
+ 1158 0519 34000000 		.4byte	.LFE9-.LFB9
+ 1159 051d 01       		.uleb128 0x1
+ 1160 051e 9C       		.byte	0x9c
+ 1161 051f AF050000 		.4byte	0x5af
+ 1162 0523 15       		.uleb128 0x15
+ 1163 0524 3A030000 		.4byte	.LASF41
+ 1164 0528 01       		.byte	0x1
+ 1165 0529 6801     		.2byte	0x168
+ 1166 052b A5030000 		.4byte	0x3a5
+ 1167 052f BD010000 		.4byte	.LLST10
+ 1168 0533 15       		.uleb128 0x15
+ 1169 0534 D8020000 		.4byte	.LASF42
+ 1170 0538 01       		.byte	0x1
+ 1171 0539 6801     		.2byte	0x168
+ 1172 053b 01030000 		.4byte	0x301
+ 1173 053f E9010000 		.4byte	.LLST11
+ 1174 0543 09       		.uleb128 0x9
+ 1175 0544 0A000000 		.4byte	.LVL59
+ 1176 0548 2E060000 		.4byte	0x62e
+ 1177 054c 09       		.uleb128 0x9
+ 1178 054d 0E000000 		.4byte	.LVL60
+ 1179 0551 3A060000 		.4byte	0x63a
+ 1180 0555 0A       		.uleb128 0xa
+ 1181 0556 14000000 		.4byte	.LVL61
+ 1182 055a 46060000 		.4byte	0x646
+ 1183 055e 68050000 		.4byte	0x568
+ 1184 0562 0B       		.uleb128 0xb
+ 1185 0563 01       		.uleb128 0x1
+ 1186 0564 50       		.byte	0x50
+ 1187 0565 01       		.uleb128 0x1
+ 1188 0566 30       		.byte	0x30
+ 1189 0567 00       		.byte	0
+ 1190 0568 0A       		.uleb128 0xa
+ 1191 0569 1A000000 		.4byte	.LVL62
+ 1192 056d 51060000 		.4byte	0x651
+ 1193 0571 7C050000 		.4byte	0x57c
+ 1194 0575 0B       		.uleb128 0xb
+ 1195 0576 01       		.uleb128 0x1
+ 1196 0577 50       		.byte	0x50
+ 1197 0578 02       		.uleb128 0x2
+ 1198 0579 08       		.byte	0x8
+ 1199 057a B0       		.byte	0xb0
+ 1200 057b 00       		.byte	0
+ 1201 057c 0A       		.uleb128 0xa
+ 1202 057d 22000000 		.4byte	.LVL63
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 30
+
+
+ 1203 0581 75060000 		.4byte	0x675
+ 1204 0585 96050000 		.4byte	0x596
+ 1205 0589 0B       		.uleb128 0xb
+ 1206 058a 01       		.uleb128 0x1
+ 1207 058b 50       		.byte	0x50
+ 1208 058c 02       		.uleb128 0x2
+ 1209 058d 75       		.byte	0x75
+ 1210 058e 00       		.sleb128 0
+ 1211 058f 0B       		.uleb128 0xb
+ 1212 0590 01       		.uleb128 0x1
+ 1213 0591 51       		.byte	0x51
+ 1214 0592 02       		.uleb128 0x2
+ 1215 0593 74       		.byte	0x74
+ 1216 0594 00       		.sleb128 0
+ 1217 0595 00       		.byte	0
+ 1218 0596 09       		.uleb128 0x9
+ 1219 0597 26000000 		.4byte	.LVL64
+ 1220 059b 5D060000 		.4byte	0x65d
+ 1221 059f 0D       		.uleb128 0xd
+ 1222 05a0 32000000 		.4byte	.LVL65
+ 1223 05a4 46060000 		.4byte	0x646
+ 1224 05a8 0B       		.uleb128 0xb
+ 1225 05a9 01       		.uleb128 0x1
+ 1226 05aa 50       		.byte	0x50
+ 1227 05ab 01       		.uleb128 0x1
+ 1228 05ac 31       		.byte	0x31
+ 1229 05ad 00       		.byte	0
+ 1230 05ae 00       		.byte	0
+ 1231 05af 16       		.uleb128 0x16
+ 1232 05b0 44020000 		.4byte	.LASF49
+ 1233 05b4 01       		.byte	0x1
+ 1234 05b5 9901     		.2byte	0x199
+ 1235 05b7 76000000 		.4byte	0x76
+ 1236 05bb 00000000 		.4byte	.LFB10
+ 1237 05bf 2A000000 		.4byte	.LFE10-.LFB10
+ 1238 05c3 01       		.uleb128 0x1
+ 1239 05c4 9C       		.byte	0x9c
+ 1240 05c5 2E060000 		.4byte	0x62e
+ 1241 05c9 17       		.uleb128 0x17
+ 1242 05ca D1020000 		.4byte	.LASF50
+ 1243 05ce 01       		.byte	0x1
+ 1244 05cf 9B01     		.2byte	0x19b
+ 1245 05d1 76000000 		.4byte	0x76
+ 1246 05d5 15020000 		.4byte	.LLST12
+ 1247 05d9 09       		.uleb128 0x9
+ 1248 05da 06000000 		.4byte	.LVL69
+ 1249 05de 2E060000 		.4byte	0x62e
+ 1250 05e2 09       		.uleb128 0x9
+ 1251 05e3 0A000000 		.4byte	.LVL70
+ 1252 05e7 3A060000 		.4byte	0x63a
+ 1253 05eb 0A       		.uleb128 0xa
+ 1254 05ec 10000000 		.4byte	.LVL71
+ 1255 05f0 46060000 		.4byte	0x646
+ 1256 05f4 FE050000 		.4byte	0x5fe
+ 1257 05f8 0B       		.uleb128 0xb
+ 1258 05f9 01       		.uleb128 0x1
+ 1259 05fa 50       		.byte	0x50
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 31
+
+
+ 1260 05fb 01       		.uleb128 0x1
+ 1261 05fc 30       		.byte	0x30
+ 1262 05fd 00       		.byte	0
+ 1263 05fe 0A       		.uleb128 0xa
+ 1264 05ff 16000000 		.4byte	.LVL72
+ 1265 0603 51060000 		.4byte	0x651
+ 1266 0607 12060000 		.4byte	0x612
+ 1267 060b 0B       		.uleb128 0xb
+ 1268 060c 01       		.uleb128 0x1
+ 1269 060d 50       		.byte	0x50
+ 1270 060e 02       		.uleb128 0x2
+ 1271 060f 08       		.byte	0x8
+ 1272 0610 FF       		.byte	0xff
+ 1273 0611 00       		.byte	0
+ 1274 0612 09       		.uleb128 0x9
+ 1275 0613 1A000000 		.4byte	.LVL73
+ 1276 0617 5D060000 		.4byte	0x65d
+ 1277 061b 09       		.uleb128 0x9
+ 1278 061c 22000000 		.4byte	.LVL74
+ 1279 0620 46060000 		.4byte	0x646
+ 1280 0624 09       		.uleb128 0x9
+ 1281 0625 26000000 		.4byte	.LVL75
+ 1282 0629 69060000 		.4byte	0x669
+ 1283 062d 00       		.byte	0
+ 1284 062e 18       		.uleb128 0x18
+ 1285 062f 00020000 		.4byte	.LASF51
+ 1286 0633 00020000 		.4byte	.LASF51
+ 1287 0637 06       		.byte	0x6
+ 1288 0638 3F03     		.2byte	0x33f
+ 1289 063a 18       		.uleb128 0x18
+ 1290 063b DC000000 		.4byte	.LASF52
+ 1291 063f DC000000 		.4byte	.LASF52
+ 1292 0643 06       		.byte	0x6
+ 1293 0644 4703     		.2byte	0x347
+ 1294 0646 19       		.uleb128 0x19
+ 1295 0647 D8010000 		.4byte	.LASF53
+ 1296 064b D8010000 		.4byte	.LASF53
+ 1297 064f 07       		.byte	0x7
+ 1298 0650 33       		.byte	0x33
+ 1299 0651 18       		.uleb128 0x18
+ 1300 0652 6B030000 		.4byte	.LASF54
+ 1301 0656 6B030000 		.4byte	.LASF54
+ 1302 065a 06       		.byte	0x6
+ 1303 065b 4403     		.2byte	0x344
+ 1304 065d 18       		.uleb128 0x18
+ 1305 065e 08010000 		.4byte	.LASF55
+ 1306 0662 08010000 		.4byte	.LASF55
+ 1307 0666 06       		.byte	0x6
+ 1308 0667 3E03     		.2byte	0x33e
+ 1309 0669 18       		.uleb128 0x18
+ 1310 066a 52020000 		.4byte	.LASF56
+ 1311 066e 52020000 		.4byte	.LASF56
+ 1312 0672 06       		.byte	0x6
+ 1313 0673 3D03     		.2byte	0x33d
+ 1314 0675 18       		.uleb128 0x18
+ 1315 0676 82030000 		.4byte	.LASF57
+ 1316 067a 82030000 		.4byte	.LASF57
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 32
+
+
+ 1317 067e 06       		.byte	0x6
+ 1318 067f 4503     		.2byte	0x345
+ 1319 0681 00       		.byte	0
+ 1320              		.section	.debug_abbrev,"",%progbits
+ 1321              	.Ldebug_abbrev0:
+ 1322 0000 01       		.uleb128 0x1
+ 1323 0001 11       		.uleb128 0x11
+ 1324 0002 01       		.byte	0x1
+ 1325 0003 25       		.uleb128 0x25
+ 1326 0004 0E       		.uleb128 0xe
+ 1327 0005 13       		.uleb128 0x13
+ 1328 0006 0B       		.uleb128 0xb
+ 1329 0007 03       		.uleb128 0x3
+ 1330 0008 0E       		.uleb128 0xe
+ 1331 0009 1B       		.uleb128 0x1b
+ 1332 000a 0E       		.uleb128 0xe
+ 1333 000b 55       		.uleb128 0x55
+ 1334 000c 17       		.uleb128 0x17
+ 1335 000d 11       		.uleb128 0x11
+ 1336 000e 01       		.uleb128 0x1
+ 1337 000f 10       		.uleb128 0x10
+ 1338 0010 17       		.uleb128 0x17
+ 1339 0011 00       		.byte	0
+ 1340 0012 00       		.byte	0
+ 1341 0013 02       		.uleb128 0x2
+ 1342 0014 24       		.uleb128 0x24
+ 1343 0015 00       		.byte	0
+ 1344 0016 0B       		.uleb128 0xb
+ 1345 0017 0B       		.uleb128 0xb
+ 1346 0018 3E       		.uleb128 0x3e
+ 1347 0019 0B       		.uleb128 0xb
+ 1348 001a 03       		.uleb128 0x3
+ 1349 001b 0E       		.uleb128 0xe
+ 1350 001c 00       		.byte	0
+ 1351 001d 00       		.byte	0
+ 1352 001e 03       		.uleb128 0x3
+ 1353 001f 16       		.uleb128 0x16
+ 1354 0020 00       		.byte	0
+ 1355 0021 03       		.uleb128 0x3
+ 1356 0022 0E       		.uleb128 0xe
+ 1357 0023 3A       		.uleb128 0x3a
+ 1358 0024 0B       		.uleb128 0xb
+ 1359 0025 3B       		.uleb128 0x3b
+ 1360 0026 0B       		.uleb128 0xb
+ 1361 0027 49       		.uleb128 0x49
+ 1362 0028 13       		.uleb128 0x13
+ 1363 0029 00       		.byte	0
+ 1364 002a 00       		.byte	0
+ 1365 002b 04       		.uleb128 0x4
+ 1366 002c 24       		.uleb128 0x24
+ 1367 002d 00       		.byte	0
+ 1368 002e 0B       		.uleb128 0xb
+ 1369 002f 0B       		.uleb128 0xb
+ 1370 0030 3E       		.uleb128 0x3e
+ 1371 0031 0B       		.uleb128 0xb
+ 1372 0032 03       		.uleb128 0x3
+ 1373 0033 08       		.uleb128 0x8
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 33
+
+
+ 1374 0034 00       		.byte	0
+ 1375 0035 00       		.byte	0
+ 1376 0036 05       		.uleb128 0x5
+ 1377 0037 04       		.uleb128 0x4
+ 1378 0038 01       		.byte	0x1
+ 1379 0039 0B       		.uleb128 0xb
+ 1380 003a 0B       		.uleb128 0xb
+ 1381 003b 49       		.uleb128 0x49
+ 1382 003c 13       		.uleb128 0x13
+ 1383 003d 3A       		.uleb128 0x3a
+ 1384 003e 0B       		.uleb128 0xb
+ 1385 003f 3B       		.uleb128 0x3b
+ 1386 0040 0B       		.uleb128 0xb
+ 1387 0041 01       		.uleb128 0x1
+ 1388 0042 13       		.uleb128 0x13
+ 1389 0043 00       		.byte	0
+ 1390 0044 00       		.byte	0
+ 1391 0045 06       		.uleb128 0x6
+ 1392 0046 28       		.uleb128 0x28
+ 1393 0047 00       		.byte	0
+ 1394 0048 03       		.uleb128 0x3
+ 1395 0049 0E       		.uleb128 0xe
+ 1396 004a 1C       		.uleb128 0x1c
+ 1397 004b 0B       		.uleb128 0xb
+ 1398 004c 00       		.byte	0
+ 1399 004d 00       		.byte	0
+ 1400 004e 07       		.uleb128 0x7
+ 1401 004f 2E       		.uleb128 0x2e
+ 1402 0050 01       		.byte	0x1
+ 1403 0051 3F       		.uleb128 0x3f
+ 1404 0052 19       		.uleb128 0x19
+ 1405 0053 03       		.uleb128 0x3
+ 1406 0054 0E       		.uleb128 0xe
+ 1407 0055 3A       		.uleb128 0x3a
+ 1408 0056 0B       		.uleb128 0xb
+ 1409 0057 3B       		.uleb128 0x3b
+ 1410 0058 0B       		.uleb128 0xb
+ 1411 0059 27       		.uleb128 0x27
+ 1412 005a 19       		.uleb128 0x19
+ 1413 005b 11       		.uleb128 0x11
+ 1414 005c 01       		.uleb128 0x1
+ 1415 005d 12       		.uleb128 0x12
+ 1416 005e 06       		.uleb128 0x6
+ 1417 005f 40       		.uleb128 0x40
+ 1418 0060 18       		.uleb128 0x18
+ 1419 0061 9742     		.uleb128 0x2117
+ 1420 0063 19       		.uleb128 0x19
+ 1421 0064 01       		.uleb128 0x1
+ 1422 0065 13       		.uleb128 0x13
+ 1423 0066 00       		.byte	0
+ 1424 0067 00       		.byte	0
+ 1425 0068 08       		.uleb128 0x8
+ 1426 0069 05       		.uleb128 0x5
+ 1427 006a 00       		.byte	0
+ 1428 006b 03       		.uleb128 0x3
+ 1429 006c 08       		.uleb128 0x8
+ 1430 006d 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 34
+
+
+ 1431 006e 0B       		.uleb128 0xb
+ 1432 006f 3B       		.uleb128 0x3b
+ 1433 0070 0B       		.uleb128 0xb
+ 1434 0071 49       		.uleb128 0x49
+ 1435 0072 13       		.uleb128 0x13
+ 1436 0073 02       		.uleb128 0x2
+ 1437 0074 17       		.uleb128 0x17
+ 1438 0075 00       		.byte	0
+ 1439 0076 00       		.byte	0
+ 1440 0077 09       		.uleb128 0x9
+ 1441 0078 898201   		.uleb128 0x4109
+ 1442 007b 00       		.byte	0
+ 1443 007c 11       		.uleb128 0x11
+ 1444 007d 01       		.uleb128 0x1
+ 1445 007e 31       		.uleb128 0x31
+ 1446 007f 13       		.uleb128 0x13
+ 1447 0080 00       		.byte	0
+ 1448 0081 00       		.byte	0
+ 1449 0082 0A       		.uleb128 0xa
+ 1450 0083 898201   		.uleb128 0x4109
+ 1451 0086 01       		.byte	0x1
+ 1452 0087 11       		.uleb128 0x11
+ 1453 0088 01       		.uleb128 0x1
+ 1454 0089 31       		.uleb128 0x31
+ 1455 008a 13       		.uleb128 0x13
+ 1456 008b 01       		.uleb128 0x1
+ 1457 008c 13       		.uleb128 0x13
+ 1458 008d 00       		.byte	0
+ 1459 008e 00       		.byte	0
+ 1460 008f 0B       		.uleb128 0xb
+ 1461 0090 8A8201   		.uleb128 0x410a
+ 1462 0093 00       		.byte	0
+ 1463 0094 02       		.uleb128 0x2
+ 1464 0095 18       		.uleb128 0x18
+ 1465 0096 9142     		.uleb128 0x2111
+ 1466 0098 18       		.uleb128 0x18
+ 1467 0099 00       		.byte	0
+ 1468 009a 00       		.byte	0
+ 1469 009b 0C       		.uleb128 0xc
+ 1470 009c 26       		.uleb128 0x26
+ 1471 009d 00       		.byte	0
+ 1472 009e 49       		.uleb128 0x49
+ 1473 009f 13       		.uleb128 0x13
+ 1474 00a0 00       		.byte	0
+ 1475 00a1 00       		.byte	0
+ 1476 00a2 0D       		.uleb128 0xd
+ 1477 00a3 898201   		.uleb128 0x4109
+ 1478 00a6 01       		.byte	0x1
+ 1479 00a7 11       		.uleb128 0x11
+ 1480 00a8 01       		.uleb128 0x1
+ 1481 00a9 31       		.uleb128 0x31
+ 1482 00aa 13       		.uleb128 0x13
+ 1483 00ab 00       		.byte	0
+ 1484 00ac 00       		.byte	0
+ 1485 00ad 0E       		.uleb128 0xe
+ 1486 00ae 05       		.uleb128 0x5
+ 1487 00af 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 35
+
+
+ 1488 00b0 03       		.uleb128 0x3
+ 1489 00b1 0E       		.uleb128 0xe
+ 1490 00b2 3A       		.uleb128 0x3a
+ 1491 00b3 0B       		.uleb128 0xb
+ 1492 00b4 3B       		.uleb128 0x3b
+ 1493 00b5 0B       		.uleb128 0xb
+ 1494 00b6 49       		.uleb128 0x49
+ 1495 00b7 13       		.uleb128 0x13
+ 1496 00b8 02       		.uleb128 0x2
+ 1497 00b9 17       		.uleb128 0x17
+ 1498 00ba 00       		.byte	0
+ 1499 00bb 00       		.byte	0
+ 1500 00bc 0F       		.uleb128 0xf
+ 1501 00bd 0B       		.uleb128 0xb
+ 1502 00be 01       		.byte	0x1
+ 1503 00bf 11       		.uleb128 0x11
+ 1504 00c0 01       		.uleb128 0x1
+ 1505 00c1 12       		.uleb128 0x12
+ 1506 00c2 06       		.uleb128 0x6
+ 1507 00c3 01       		.uleb128 0x1
+ 1508 00c4 13       		.uleb128 0x13
+ 1509 00c5 00       		.byte	0
+ 1510 00c6 00       		.byte	0
+ 1511 00c7 10       		.uleb128 0x10
+ 1512 00c8 34       		.uleb128 0x34
+ 1513 00c9 00       		.byte	0
+ 1514 00ca 03       		.uleb128 0x3
+ 1515 00cb 08       		.uleb128 0x8
+ 1516 00cc 3A       		.uleb128 0x3a
+ 1517 00cd 0B       		.uleb128 0xb
+ 1518 00ce 3B       		.uleb128 0x3b
+ 1519 00cf 0B       		.uleb128 0xb
+ 1520 00d0 49       		.uleb128 0x49
+ 1521 00d1 13       		.uleb128 0x13
+ 1522 00d2 02       		.uleb128 0x2
+ 1523 00d3 17       		.uleb128 0x17
+ 1524 00d4 00       		.byte	0
+ 1525 00d5 00       		.byte	0
+ 1526 00d6 11       		.uleb128 0x11
+ 1527 00d7 0F       		.uleb128 0xf
+ 1528 00d8 00       		.byte	0
+ 1529 00d9 0B       		.uleb128 0xb
+ 1530 00da 0B       		.uleb128 0xb
+ 1531 00db 49       		.uleb128 0x49
+ 1532 00dc 13       		.uleb128 0x13
+ 1533 00dd 00       		.byte	0
+ 1534 00de 00       		.byte	0
+ 1535 00df 12       		.uleb128 0x12
+ 1536 00e0 2E       		.uleb128 0x2e
+ 1537 00e1 01       		.byte	0x1
+ 1538 00e2 3F       		.uleb128 0x3f
+ 1539 00e3 19       		.uleb128 0x19
+ 1540 00e4 03       		.uleb128 0x3
+ 1541 00e5 0E       		.uleb128 0xe
+ 1542 00e6 3A       		.uleb128 0x3a
+ 1543 00e7 0B       		.uleb128 0xb
+ 1544 00e8 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 36
+
+
+ 1545 00e9 0B       		.uleb128 0xb
+ 1546 00ea 27       		.uleb128 0x27
+ 1547 00eb 19       		.uleb128 0x19
+ 1548 00ec 49       		.uleb128 0x49
+ 1549 00ed 13       		.uleb128 0x13
+ 1550 00ee 11       		.uleb128 0x11
+ 1551 00ef 01       		.uleb128 0x1
+ 1552 00f0 12       		.uleb128 0x12
+ 1553 00f1 06       		.uleb128 0x6
+ 1554 00f2 40       		.uleb128 0x40
+ 1555 00f3 18       		.uleb128 0x18
+ 1556 00f4 9742     		.uleb128 0x2117
+ 1557 00f6 19       		.uleb128 0x19
+ 1558 00f7 01       		.uleb128 0x1
+ 1559 00f8 13       		.uleb128 0x13
+ 1560 00f9 00       		.byte	0
+ 1561 00fa 00       		.byte	0
+ 1562 00fb 13       		.uleb128 0x13
+ 1563 00fc 34       		.uleb128 0x34
+ 1564 00fd 00       		.byte	0
+ 1565 00fe 03       		.uleb128 0x3
+ 1566 00ff 0E       		.uleb128 0xe
+ 1567 0100 3A       		.uleb128 0x3a
+ 1568 0101 0B       		.uleb128 0xb
+ 1569 0102 3B       		.uleb128 0x3b
+ 1570 0103 0B       		.uleb128 0xb
+ 1571 0104 49       		.uleb128 0x49
+ 1572 0105 13       		.uleb128 0x13
+ 1573 0106 02       		.uleb128 0x2
+ 1574 0107 17       		.uleb128 0x17
+ 1575 0108 00       		.byte	0
+ 1576 0109 00       		.byte	0
+ 1577 010a 14       		.uleb128 0x14
+ 1578 010b 2E       		.uleb128 0x2e
+ 1579 010c 01       		.byte	0x1
+ 1580 010d 3F       		.uleb128 0x3f
+ 1581 010e 19       		.uleb128 0x19
+ 1582 010f 03       		.uleb128 0x3
+ 1583 0110 0E       		.uleb128 0xe
+ 1584 0111 3A       		.uleb128 0x3a
+ 1585 0112 0B       		.uleb128 0xb
+ 1586 0113 3B       		.uleb128 0x3b
+ 1587 0114 05       		.uleb128 0x5
+ 1588 0115 27       		.uleb128 0x27
+ 1589 0116 19       		.uleb128 0x19
+ 1590 0117 11       		.uleb128 0x11
+ 1591 0118 01       		.uleb128 0x1
+ 1592 0119 12       		.uleb128 0x12
+ 1593 011a 06       		.uleb128 0x6
+ 1594 011b 40       		.uleb128 0x40
+ 1595 011c 18       		.uleb128 0x18
+ 1596 011d 9742     		.uleb128 0x2117
+ 1597 011f 19       		.uleb128 0x19
+ 1598 0120 01       		.uleb128 0x1
+ 1599 0121 13       		.uleb128 0x13
+ 1600 0122 00       		.byte	0
+ 1601 0123 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 37
+
+
+ 1602 0124 15       		.uleb128 0x15
+ 1603 0125 05       		.uleb128 0x5
+ 1604 0126 00       		.byte	0
+ 1605 0127 03       		.uleb128 0x3
+ 1606 0128 0E       		.uleb128 0xe
+ 1607 0129 3A       		.uleb128 0x3a
+ 1608 012a 0B       		.uleb128 0xb
+ 1609 012b 3B       		.uleb128 0x3b
+ 1610 012c 05       		.uleb128 0x5
+ 1611 012d 49       		.uleb128 0x49
+ 1612 012e 13       		.uleb128 0x13
+ 1613 012f 02       		.uleb128 0x2
+ 1614 0130 17       		.uleb128 0x17
+ 1615 0131 00       		.byte	0
+ 1616 0132 00       		.byte	0
+ 1617 0133 16       		.uleb128 0x16
+ 1618 0134 2E       		.uleb128 0x2e
+ 1619 0135 01       		.byte	0x1
+ 1620 0136 3F       		.uleb128 0x3f
+ 1621 0137 19       		.uleb128 0x19
+ 1622 0138 03       		.uleb128 0x3
+ 1623 0139 0E       		.uleb128 0xe
+ 1624 013a 3A       		.uleb128 0x3a
+ 1625 013b 0B       		.uleb128 0xb
+ 1626 013c 3B       		.uleb128 0x3b
+ 1627 013d 05       		.uleb128 0x5
+ 1628 013e 27       		.uleb128 0x27
+ 1629 013f 19       		.uleb128 0x19
+ 1630 0140 49       		.uleb128 0x49
+ 1631 0141 13       		.uleb128 0x13
+ 1632 0142 11       		.uleb128 0x11
+ 1633 0143 01       		.uleb128 0x1
+ 1634 0144 12       		.uleb128 0x12
+ 1635 0145 06       		.uleb128 0x6
+ 1636 0146 40       		.uleb128 0x40
+ 1637 0147 18       		.uleb128 0x18
+ 1638 0148 9742     		.uleb128 0x2117
+ 1639 014a 19       		.uleb128 0x19
+ 1640 014b 01       		.uleb128 0x1
+ 1641 014c 13       		.uleb128 0x13
+ 1642 014d 00       		.byte	0
+ 1643 014e 00       		.byte	0
+ 1644 014f 17       		.uleb128 0x17
+ 1645 0150 34       		.uleb128 0x34
+ 1646 0151 00       		.byte	0
+ 1647 0152 03       		.uleb128 0x3
+ 1648 0153 0E       		.uleb128 0xe
+ 1649 0154 3A       		.uleb128 0x3a
+ 1650 0155 0B       		.uleb128 0xb
+ 1651 0156 3B       		.uleb128 0x3b
+ 1652 0157 05       		.uleb128 0x5
+ 1653 0158 49       		.uleb128 0x49
+ 1654 0159 13       		.uleb128 0x13
+ 1655 015a 02       		.uleb128 0x2
+ 1656 015b 17       		.uleb128 0x17
+ 1657 015c 00       		.byte	0
+ 1658 015d 00       		.byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 38
+
+
+ 1659 015e 18       		.uleb128 0x18
+ 1660 015f 2E       		.uleb128 0x2e
+ 1661 0160 00       		.byte	0
+ 1662 0161 3F       		.uleb128 0x3f
+ 1663 0162 19       		.uleb128 0x19
+ 1664 0163 3C       		.uleb128 0x3c
+ 1665 0164 19       		.uleb128 0x19
+ 1666 0165 6E       		.uleb128 0x6e
+ 1667 0166 0E       		.uleb128 0xe
+ 1668 0167 03       		.uleb128 0x3
+ 1669 0168 0E       		.uleb128 0xe
+ 1670 0169 3A       		.uleb128 0x3a
+ 1671 016a 0B       		.uleb128 0xb
+ 1672 016b 3B       		.uleb128 0x3b
+ 1673 016c 05       		.uleb128 0x5
+ 1674 016d 00       		.byte	0
+ 1675 016e 00       		.byte	0
+ 1676 016f 19       		.uleb128 0x19
+ 1677 0170 2E       		.uleb128 0x2e
+ 1678 0171 00       		.byte	0
+ 1679 0172 3F       		.uleb128 0x3f
+ 1680 0173 19       		.uleb128 0x19
+ 1681 0174 3C       		.uleb128 0x3c
+ 1682 0175 19       		.uleb128 0x19
+ 1683 0176 6E       		.uleb128 0x6e
+ 1684 0177 0E       		.uleb128 0xe
+ 1685 0178 03       		.uleb128 0x3
+ 1686 0179 0E       		.uleb128 0xe
+ 1687 017a 3A       		.uleb128 0x3a
+ 1688 017b 0B       		.uleb128 0xb
+ 1689 017c 3B       		.uleb128 0x3b
+ 1690 017d 0B       		.uleb128 0xb
+ 1691 017e 00       		.byte	0
+ 1692 017f 00       		.byte	0
+ 1693 0180 00       		.byte	0
+ 1694              		.section	.debug_loc,"",%progbits
+ 1695              	.Ldebug_loc0:
+ 1696              	.LLST0:
+ 1697 0000 00000000 		.4byte	.LVL0
+ 1698 0004 07000000 		.4byte	.LVL1-1
+ 1699 0008 0100     		.2byte	0x1
+ 1700 000a 50       		.byte	0x50
+ 1701 000b 07000000 		.4byte	.LVL1-1
+ 1702 000f 26000000 		.4byte	.LFE1
+ 1703 0013 0400     		.2byte	0x4
+ 1704 0015 F3       		.byte	0xf3
+ 1705 0016 01       		.uleb128 0x1
+ 1706 0017 50       		.byte	0x50
+ 1707 0018 9F       		.byte	0x9f
+ 1708 0019 00000000 		.4byte	0
+ 1709 001d 00000000 		.4byte	0
+ 1710              	.LLST1:
+ 1711 0021 00000000 		.4byte	.LVL10
+ 1712 0025 09000000 		.4byte	.LVL11-1
+ 1713 0029 0100     		.2byte	0x1
+ 1714 002b 50       		.byte	0x50
+ 1715 002c 09000000 		.4byte	.LVL11-1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 39
+
+
+ 1716 0030 28000000 		.4byte	.LVL17
+ 1717 0034 0100     		.2byte	0x1
+ 1718 0036 54       		.byte	0x54
+ 1719 0037 28000000 		.4byte	.LVL17
+ 1720 003b 4C000000 		.4byte	.LFE5
+ 1721 003f 0400     		.2byte	0x4
+ 1722 0041 F3       		.byte	0xf3
+ 1723 0042 01       		.uleb128 0x1
+ 1724 0043 50       		.byte	0x50
+ 1725 0044 9F       		.byte	0x9f
+ 1726 0045 00000000 		.4byte	0
+ 1727 0049 00000000 		.4byte	0
+ 1728              	.LLST2:
+ 1729 004d 00000000 		.4byte	.LVL10
+ 1730 0051 09000000 		.4byte	.LVL11-1
+ 1731 0055 0100     		.2byte	0x1
+ 1732 0057 51       		.byte	0x51
+ 1733 0058 09000000 		.4byte	.LVL11-1
+ 1734 005c 28000000 		.4byte	.LVL17
+ 1735 0060 0100     		.2byte	0x1
+ 1736 0062 55       		.byte	0x55
+ 1737 0063 28000000 		.4byte	.LVL17
+ 1738 0067 4C000000 		.4byte	.LFE5
+ 1739 006b 0400     		.2byte	0x4
+ 1740 006d F3       		.byte	0xf3
+ 1741 006e 01       		.uleb128 0x1
+ 1742 006f 51       		.byte	0x51
+ 1743 0070 9F       		.byte	0x9f
+ 1744 0071 00000000 		.4byte	0
+ 1745 0075 00000000 		.4byte	0
+ 1746              	.LLST3:
+ 1747 0079 26000000 		.4byte	.LVL16
+ 1748 007d 28000000 		.4byte	.LVL17
+ 1749 0081 0200     		.2byte	0x2
+ 1750 0083 30       		.byte	0x30
+ 1751 0084 9F       		.byte	0x9f
+ 1752 0085 28000000 		.4byte	.LVL17
+ 1753 0089 40000000 		.4byte	.LVL21
+ 1754 008d 0700     		.2byte	0x7
+ 1755 008f 74       		.byte	0x74
+ 1756 0090 00       		.sleb128 0
+ 1757 0091 F3       		.byte	0xf3
+ 1758 0092 01       		.uleb128 0x1
+ 1759 0093 50       		.byte	0x50
+ 1760 0094 1C       		.byte	0x1c
+ 1761 0095 9F       		.byte	0x9f
+ 1762 0096 40000000 		.4byte	.LVL21
+ 1763 009a 42000000 		.4byte	.LVL22
+ 1764 009e 0900     		.2byte	0x9
+ 1765 00a0 74       		.byte	0x74
+ 1766 00a1 00       		.sleb128 0
+ 1767 00a2 F3       		.byte	0xf3
+ 1768 00a3 01       		.uleb128 0x1
+ 1769 00a4 50       		.byte	0x50
+ 1770 00a5 1C       		.byte	0x1c
+ 1771 00a6 23       		.byte	0x23
+ 1772 00a7 01       		.uleb128 0x1
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 40
+
+
+ 1773 00a8 9F       		.byte	0x9f
+ 1774 00a9 42000000 		.4byte	.LVL22
+ 1775 00ad 4A000000 		.4byte	.LVL24
+ 1776 00b1 0700     		.2byte	0x7
+ 1777 00b3 74       		.byte	0x74
+ 1778 00b4 00       		.sleb128 0
+ 1779 00b5 F3       		.byte	0xf3
+ 1780 00b6 01       		.uleb128 0x1
+ 1781 00b7 50       		.byte	0x50
+ 1782 00b8 1C       		.byte	0x1c
+ 1783 00b9 9F       		.byte	0x9f
+ 1784 00ba 00000000 		.4byte	0
+ 1785 00be 00000000 		.4byte	0
+ 1786              	.LLST4:
+ 1787 00c2 00000000 		.4byte	.LVL25
+ 1788 00c6 09000000 		.4byte	.LVL26-1
+ 1789 00ca 0100     		.2byte	0x1
+ 1790 00cc 50       		.byte	0x50
+ 1791 00cd 09000000 		.4byte	.LVL26-1
+ 1792 00d1 32000000 		.4byte	.LVL34
+ 1793 00d5 0100     		.2byte	0x1
+ 1794 00d7 55       		.byte	0x55
+ 1795 00d8 32000000 		.4byte	.LVL34
+ 1796 00dc 34000000 		.4byte	.LFE6
+ 1797 00e0 0400     		.2byte	0x4
+ 1798 00e2 F3       		.byte	0xf3
+ 1799 00e3 01       		.uleb128 0x1
+ 1800 00e4 50       		.byte	0x50
+ 1801 00e5 9F       		.byte	0x9f
+ 1802 00e6 00000000 		.4byte	0
+ 1803 00ea 00000000 		.4byte	0
+ 1804              	.LLST5:
+ 1805 00ee 00000000 		.4byte	.LVL25
+ 1806 00f2 09000000 		.4byte	.LVL26-1
+ 1807 00f6 0100     		.2byte	0x1
+ 1808 00f8 51       		.byte	0x51
+ 1809 00f9 09000000 		.4byte	.LVL26-1
+ 1810 00fd 32000000 		.4byte	.LVL33
+ 1811 0101 0100     		.2byte	0x1
+ 1812 0103 54       		.byte	0x54
+ 1813 0104 32000000 		.4byte	.LVL33
+ 1814 0108 34000000 		.4byte	.LFE6
+ 1815 010c 0400     		.2byte	0x4
+ 1816 010e F3       		.byte	0xf3
+ 1817 010f 01       		.uleb128 0x1
+ 1818 0110 51       		.byte	0x51
+ 1819 0111 9F       		.byte	0x9f
+ 1820 0112 00000000 		.4byte	0
+ 1821 0116 00000000 		.4byte	0
+ 1822              	.LLST6:
+ 1823 011a 00000000 		.4byte	.LVL35
+ 1824 011e 34000000 		.4byte	.LVL45
+ 1825 0122 0200     		.2byte	0x2
+ 1826 0124 30       		.byte	0x30
+ 1827 0125 9F       		.byte	0x9f
+ 1828 0126 34000000 		.4byte	.LVL45
+ 1829 012a 3E000000 		.4byte	.LVL47
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 41
+
+
+ 1830 012e 0100     		.2byte	0x1
+ 1831 0130 54       		.byte	0x54
+ 1832 0131 3E000000 		.4byte	.LVL47
+ 1833 0135 40000000 		.4byte	.LFE7
+ 1834 0139 0100     		.2byte	0x1
+ 1835 013b 50       		.byte	0x50
+ 1836 013c 00000000 		.4byte	0
+ 1837 0140 00000000 		.4byte	0
+ 1838              	.LLST7:
+ 1839 0144 00000000 		.4byte	.LVL48
+ 1840 0148 0B000000 		.4byte	.LVL49-1
+ 1841 014c 0100     		.2byte	0x1
+ 1842 014e 50       		.byte	0x50
+ 1843 014f 0B000000 		.4byte	.LVL49-1
+ 1844 0153 38000000 		.4byte	.LFE8
+ 1845 0157 0400     		.2byte	0x4
+ 1846 0159 F3       		.byte	0xf3
+ 1847 015a 01       		.uleb128 0x1
+ 1848 015b 50       		.byte	0x50
+ 1849 015c 9F       		.byte	0x9f
+ 1850 015d 00000000 		.4byte	0
+ 1851 0161 00000000 		.4byte	0
+ 1852              	.LLST8:
+ 1853 0165 00000000 		.4byte	.LVL48
+ 1854 0169 0B000000 		.4byte	.LVL49-1
+ 1855 016d 0100     		.2byte	0x1
+ 1856 016f 51       		.byte	0x51
+ 1857 0170 0B000000 		.4byte	.LVL49-1
+ 1858 0174 36000000 		.4byte	.LVL57
+ 1859 0178 0100     		.2byte	0x1
+ 1860 017a 55       		.byte	0x55
+ 1861 017b 36000000 		.4byte	.LVL57
+ 1862 017f 38000000 		.4byte	.LFE8
+ 1863 0183 0400     		.2byte	0x4
+ 1864 0185 F3       		.byte	0xf3
+ 1865 0186 01       		.uleb128 0x1
+ 1866 0187 51       		.byte	0x51
+ 1867 0188 9F       		.byte	0x9f
+ 1868 0189 00000000 		.4byte	0
+ 1869 018d 00000000 		.4byte	0
+ 1870              	.LLST9:
+ 1871 0191 00000000 		.4byte	.LVL48
+ 1872 0195 0B000000 		.4byte	.LVL49-1
+ 1873 0199 0100     		.2byte	0x1
+ 1874 019b 52       		.byte	0x52
+ 1875 019c 0B000000 		.4byte	.LVL49-1
+ 1876 01a0 36000000 		.4byte	.LVL56
+ 1877 01a4 0100     		.2byte	0x1
+ 1878 01a6 54       		.byte	0x54
+ 1879 01a7 36000000 		.4byte	.LVL56
+ 1880 01ab 38000000 		.4byte	.LFE8
+ 1881 01af 0400     		.2byte	0x4
+ 1882 01b1 F3       		.byte	0xf3
+ 1883 01b2 01       		.uleb128 0x1
+ 1884 01b3 52       		.byte	0x52
+ 1885 01b4 9F       		.byte	0x9f
+ 1886 01b5 00000000 		.4byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 42
+
+
+ 1887 01b9 00000000 		.4byte	0
+ 1888              	.LLST10:
+ 1889 01bd 00000000 		.4byte	.LVL58
+ 1890 01c1 09000000 		.4byte	.LVL59-1
+ 1891 01c5 0100     		.2byte	0x1
+ 1892 01c7 50       		.byte	0x50
+ 1893 01c8 09000000 		.4byte	.LVL59-1
+ 1894 01cc 32000000 		.4byte	.LVL67
+ 1895 01d0 0100     		.2byte	0x1
+ 1896 01d2 55       		.byte	0x55
+ 1897 01d3 32000000 		.4byte	.LVL67
+ 1898 01d7 34000000 		.4byte	.LFE9
+ 1899 01db 0400     		.2byte	0x4
+ 1900 01dd F3       		.byte	0xf3
+ 1901 01de 01       		.uleb128 0x1
+ 1902 01df 50       		.byte	0x50
+ 1903 01e0 9F       		.byte	0x9f
+ 1904 01e1 00000000 		.4byte	0
+ 1905 01e5 00000000 		.4byte	0
+ 1906              	.LLST11:
+ 1907 01e9 00000000 		.4byte	.LVL58
+ 1908 01ed 09000000 		.4byte	.LVL59-1
+ 1909 01f1 0100     		.2byte	0x1
+ 1910 01f3 51       		.byte	0x51
+ 1911 01f4 09000000 		.4byte	.LVL59-1
+ 1912 01f8 32000000 		.4byte	.LVL66
+ 1913 01fc 0100     		.2byte	0x1
+ 1914 01fe 54       		.byte	0x54
+ 1915 01ff 32000000 		.4byte	.LVL66
+ 1916 0203 34000000 		.4byte	.LFE9
+ 1917 0207 0400     		.2byte	0x4
+ 1918 0209 F3       		.byte	0xf3
+ 1919 020a 01       		.uleb128 0x1
+ 1920 020b 51       		.byte	0x51
+ 1921 020c 9F       		.byte	0x9f
+ 1922 020d 00000000 		.4byte	0
+ 1923 0211 00000000 		.4byte	0
+ 1924              	.LLST12:
+ 1925 0215 00000000 		.4byte	.LVL68
+ 1926 0219 26000000 		.4byte	.LVL75
+ 1927 021d 0200     		.2byte	0x2
+ 1928 021f 30       		.byte	0x30
+ 1929 0220 9F       		.byte	0x9f
+ 1930 0221 26000000 		.4byte	.LVL75
+ 1931 0225 2A000000 		.4byte	.LFE10
+ 1932 0229 0100     		.2byte	0x1
+ 1933 022b 50       		.byte	0x50
+ 1934 022c 00000000 		.4byte	0
+ 1935 0230 00000000 		.4byte	0
+ 1936              		.section	.debug_aranges,"",%progbits
+ 1937 0000 64000000 		.4byte	0x64
+ 1938 0004 0200     		.2byte	0x2
+ 1939 0006 00000000 		.4byte	.Ldebug_info0
+ 1940 000a 04       		.byte	0x4
+ 1941 000b 00       		.byte	0
+ 1942 000c 0000     		.2byte	0
+ 1943 000e 0000     		.2byte	0
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 43
+
+
+ 1944 0010 00000000 		.4byte	.LFB1
+ 1945 0014 26000000 		.4byte	.LFE1-.LFB1
+ 1946 0018 00000000 		.4byte	.LFB2
+ 1947 001c 0A000000 		.4byte	.LFE2-.LFB2
+ 1948 0020 00000000 		.4byte	.LFB3
+ 1949 0024 0A000000 		.4byte	.LFE3-.LFB3
+ 1950 0028 00000000 		.4byte	.LFB4
+ 1951 002c 0A000000 		.4byte	.LFE4-.LFB4
+ 1952 0030 00000000 		.4byte	.LFB5
+ 1953 0034 4C000000 		.4byte	.LFE5-.LFB5
+ 1954 0038 00000000 		.4byte	.LFB6
+ 1955 003c 34000000 		.4byte	.LFE6-.LFB6
+ 1956 0040 00000000 		.4byte	.LFB7
+ 1957 0044 40000000 		.4byte	.LFE7-.LFB7
+ 1958 0048 00000000 		.4byte	.LFB8
+ 1959 004c 38000000 		.4byte	.LFE8-.LFB8
+ 1960 0050 00000000 		.4byte	.LFB9
+ 1961 0054 34000000 		.4byte	.LFE9-.LFB9
+ 1962 0058 00000000 		.4byte	.LFB10
+ 1963 005c 2A000000 		.4byte	.LFE10-.LFB10
+ 1964 0060 00000000 		.4byte	0
+ 1965 0064 00000000 		.4byte	0
+ 1966              		.section	.debug_ranges,"",%progbits
+ 1967              	.Ldebug_ranges0:
+ 1968 0000 00000000 		.4byte	.LFB1
+ 1969 0004 26000000 		.4byte	.LFE1
+ 1970 0008 00000000 		.4byte	.LFB2
+ 1971 000c 0A000000 		.4byte	.LFE2
+ 1972 0010 00000000 		.4byte	.LFB3
+ 1973 0014 0A000000 		.4byte	.LFE3
+ 1974 0018 00000000 		.4byte	.LFB4
+ 1975 001c 0A000000 		.4byte	.LFE4
+ 1976 0020 00000000 		.4byte	.LFB5
+ 1977 0024 4C000000 		.4byte	.LFE5
+ 1978 0028 00000000 		.4byte	.LFB6
+ 1979 002c 34000000 		.4byte	.LFE6
+ 1980 0030 00000000 		.4byte	.LFB7
+ 1981 0034 40000000 		.4byte	.LFE7
+ 1982 0038 00000000 		.4byte	.LFB8
+ 1983 003c 38000000 		.4byte	.LFE8
+ 1984 0040 00000000 		.4byte	.LFB9
+ 1985 0044 34000000 		.4byte	.LFE9
+ 1986 0048 00000000 		.4byte	.LFB10
+ 1987 004c 2A000000 		.4byte	.LFE10
+ 1988 0050 00000000 		.4byte	0
+ 1989 0054 00000000 		.4byte	0
+ 1990              		.section	.debug_line,"",%progbits
+ 1991              	.Ldebug_line0:
+ 1992 0000 1C030000 		.section	.debug_str,"MS",%progbits,1
+ 1992      0200E701 
+ 1992      00000201 
+ 1992      FB0E0D00 
+ 1992      01010101 
+ 1993              	.LASF19:
+ 1994 0000 4E52465F 		.ascii	"NRF_CMD_R_RX_PAYLOAD\000"
+ 1994      434D445F 
+ 1994      525F5258 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 44
+
+
+ 1994      5F504159 
+ 1994      4C4F4144 
+ 1995              	.LASF60:
+ 1996 0015 433A5C55 		.ascii	"C:\\Users\\AfdhalAtiffTan\\Documents\\PSoC Creator\\"
+ 1996      73657273 
+ 1996      5C416664 
+ 1996      68616C41 
+ 1996      74696666 
+ 1997 0044 55415254 		.ascii	"UART_over_nFR24\\UART_over_nFR24.cydsn\000"
+ 1997      5F6F7665 
+ 1997      725F6E46 
+ 1997      5232345C 
+ 1997      55415254 
+ 1998              	.LASF21:
+ 1999 006a 4E52465F 		.ascii	"NRF_CMD_FLUSH_TX\000"
+ 1999      434D445F 
+ 1999      464C5553 
+ 1999      485F5458 
+ 1999      00
+ 2000              	.LASF37:
+ 2001 007b 6E524632 		.ascii	"nRF24_reuse_tx_payload_cmd\000"
+ 2001      345F7265 
+ 2001      7573655F 
+ 2001      74785F70 
+ 2001      61796C6F 
+ 2002              	.LASF47:
+ 2003 0096 6E524632 		.ascii	"nRF24_no_ack_payload_cmd\000"
+ 2003      345F6E6F 
+ 2003      5F61636B 
+ 2003      5F706179 
+ 2003      6C6F6164 
+ 2004              	.LASF24:
+ 2005 00af 4E52465F 		.ascii	"NRF_CMD_R_RX_PL_WID\000"
+ 2005      434D445F 
+ 2005      525F5258 
+ 2005      5F504C5F 
+ 2005      57494400 
+ 2006              	.LASF14:
+ 2007 00c3 73697A65 		.ascii	"size_t\000"
+ 2007      5F7400
+ 2008              	.LASF16:
+ 2009 00ca 73697A65 		.ascii	"sizetype\000"
+ 2009      74797065 
+ 2009      00
+ 2010              	.LASF35:
+ 2011 00d3 6E72665F 		.ascii	"nrf_pipe\000"
+ 2011      70697065 
+ 2011      00
+ 2012              	.LASF52:
+ 2013 00dc 5350495F 		.ascii	"SPI_SpiUartClearTxBuffer\000"
+ 2013      53706955 
+ 2013      61727443 
+ 2013      6C656172 
+ 2013      54784275 
+ 2014              	.LASF36:
+ 2015 00f5 6E524632 		.ascii	"nRF24_send_command\000"
+ 2015      345F7365 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 45
+
+
+ 2015      6E645F63 
+ 2015      6F6D6D61 
+ 2015      6E6400
+ 2016              	.LASF55:
+ 2017 0108 5350495F 		.ascii	"SPI_SpiUartGetRxBufferSize\000"
+ 2017      53706955 
+ 2017      61727447 
+ 2017      65745278 
+ 2017      42756666 
+ 2018              	.LASF2:
+ 2019 0123 73686F72 		.ascii	"short int\000"
+ 2019      7420696E 
+ 2019      7400
+ 2020              	.LASF10:
+ 2021 012d 75696E74 		.ascii	"uint8_t\000"
+ 2021      385F7400 
+ 2022              	.LASF29:
+ 2023 0135 4E52465F 		.ascii	"NRF_PIPE0\000"
+ 2023      50495045 
+ 2023      3000
+ 2024              	.LASF30:
+ 2025 013f 4E52465F 		.ascii	"NRF_PIPE1\000"
+ 2025      50495045 
+ 2025      3100
+ 2026              	.LASF31:
+ 2027 0149 4E52465F 		.ascii	"NRF_PIPE2\000"
+ 2027      50495045 
+ 2027      3200
+ 2028              	.LASF32:
+ 2029 0153 4E52465F 		.ascii	"NRF_PIPE3\000"
+ 2029      50495045 
+ 2029      3300
+ 2030              	.LASF33:
+ 2031 015d 4E52465F 		.ascii	"NRF_PIPE4\000"
+ 2031      50495045 
+ 2031      3400
+ 2032              	.LASF34:
+ 2033 0167 4E52465F 		.ascii	"NRF_PIPE5\000"
+ 2033      50495045 
+ 2033      3500
+ 2034              	.LASF43:
+ 2035 0171 6E524632 		.ascii	"nRF24_write_tx_payload_cmd\000"
+ 2035      345F7772 
+ 2035      6974655F 
+ 2035      74785F70 
+ 2035      61796C6F 
+ 2036              	.LASF25:
+ 2037 018c 4E52465F 		.ascii	"NRF_CMD_W_ACK_PAYLOAD\000"
+ 2037      434D445F 
+ 2037      575F4143 
+ 2037      4B5F5041 
+ 2037      594C4F41 
+ 2038              	.LASF44:
+ 2039 01a2 77696474 		.ascii	"width\000"
+ 2039      6800
+ 2040              	.LASF11:
+ 2041 01a8 666C6F61 		.ascii	"float\000"
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 46
+
+
+ 2041      7400
+ 2042              	.LASF6:
+ 2043 01ae 6C6F6E67 		.ascii	"long long int\000"
+ 2043      206C6F6E 
+ 2043      6720696E 
+ 2043      7400
+ 2044              	.LASF45:
+ 2045 01bc 6E524632 		.ascii	"nRF24_write_ack_payload_cmd\000"
+ 2045      345F7772 
+ 2045      6974655F 
+ 2045      61636B5F 
+ 2045      7061796C 
+ 2046              	.LASF53:
+ 2047 01d8 53535F57 		.ascii	"SS_Write\000"
+ 2047      72697465 
+ 2047      00
+ 2048              	.LASF4:
+ 2049 01e1 6C6F6E67 		.ascii	"long int\000"
+ 2049      20696E74 
+ 2049      00
+ 2050              	.LASF27:
+ 2051 01ea 4E52465F 		.ascii	"NRF_CMD_NOP\000"
+ 2051      434D445F 
+ 2051      4E4F5000 
+ 2052              	.LASF9:
+ 2053 01f6 5F5F7569 		.ascii	"__uint8_t\000"
+ 2053      6E74385F 
+ 2053      7400
+ 2054              	.LASF51:
+ 2055 0200 5350495F 		.ascii	"SPI_SpiUartClearRxBuffer\000"
+ 2055      53706955 
+ 2055      61727443 
+ 2055      6C656172 
+ 2055      52784275 
+ 2056              	.LASF15:
+ 2057 0219 6C6F6E67 		.ascii	"long double\000"
+ 2057      20646F75 
+ 2057      626C6500 
+ 2058              	.LASF22:
+ 2059 0225 4E52465F 		.ascii	"NRF_CMD_FLUSH_RX\000"
+ 2059      434D445F 
+ 2059      464C5553 
+ 2059      485F5258 
+ 2059      00
+ 2060              	.LASF1:
+ 2061 0236 756E7369 		.ascii	"unsigned char\000"
+ 2061      676E6564 
+ 2061      20636861 
+ 2061      7200
+ 2062              	.LASF49:
+ 2063 0244 6E524632 		.ascii	"nRF24_nop_cmd\000"
+ 2063      345F6E6F 
+ 2063      705F636D 
+ 2063      6400
+ 2064              	.LASF56:
+ 2065 0252 5350495F 		.ascii	"SPI_SpiUartReadRxData\000"
+ 2065      53706955 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 47
+
+
+ 2065      61727452 
+ 2065      65616452 
+ 2065      78446174 
+ 2066              	.LASF0:
+ 2067 0268 7369676E 		.ascii	"signed char\000"
+ 2067      65642063 
+ 2067      68617200 
+ 2068              	.LASF7:
+ 2069 0274 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2069      206C6F6E 
+ 2069      6720756E 
+ 2069      7369676E 
+ 2069      65642069 
+ 2070              	.LASF8:
+ 2071 028b 756E7369 		.ascii	"unsigned int\000"
+ 2071      676E6564 
+ 2071      20696E74 
+ 2071      00
+ 2072              	.LASF17:
+ 2073 0298 4E52465F 		.ascii	"NRF_CMD_R_REGISTER\000"
+ 2073      434D445F 
+ 2073      525F5245 
+ 2073      47495354 
+ 2073      455200
+ 2074              	.LASF39:
+ 2075 02ab 6E524632 		.ascii	"nRF24_flush_tx_cmd\000"
+ 2075      345F666C 
+ 2075      7573685F 
+ 2075      74785F63 
+ 2075      6D6400
+ 2076              	.LASF18:
+ 2077 02be 4E52465F 		.ascii	"NRF_CMD_W_REGISTER\000"
+ 2077      434D445F 
+ 2077      575F5245 
+ 2077      47495354 
+ 2077      455200
+ 2078              	.LASF50:
+ 2079 02d1 73746174 		.ascii	"status\000"
+ 2079      757300
+ 2080              	.LASF42:
+ 2081 02d8 73697A65 		.ascii	"size\000"
+ 2081      00
+ 2082              	.LASF38:
+ 2083 02dd 6E524632 		.ascii	"nRF24_flush_rx_cmd\000"
+ 2083      345F666C 
+ 2083      7573685F 
+ 2083      72785F63 
+ 2083      6D6400
+ 2084              	.LASF13:
+ 2085 02f0 63686172 		.ascii	"char\000"
+ 2085      00
+ 2086              	.LASF48:
+ 2087 02f5 6E524632 		.ascii	"nRF24_read_payload_width_cmd\000"
+ 2087      345F7265 
+ 2087      61645F70 
+ 2087      61796C6F 
+ 2087      61645F77 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 48
+
+
+ 2088              	.LASF59:
+ 2089 0312 47656E65 		.ascii	"Generated_Source\\PSoC4\\nRF24_COMMANDS.c\000"
+ 2089      72617465 
+ 2089      645F536F 
+ 2089      75726365 
+ 2089      5C50536F 
+ 2090              	.LASF41:
+ 2091 033a 64617461 		.ascii	"data\000"
+ 2091      00
+ 2092              	.LASF3:
+ 2093 033f 73686F72 		.ascii	"short unsigned int\000"
+ 2093      7420756E 
+ 2093      7369676E 
+ 2093      65642069 
+ 2093      6E7400
+ 2094              	.LASF5:
+ 2095 0352 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2095      20756E73 
+ 2095      69676E65 
+ 2095      6420696E 
+ 2095      7400
+ 2096              	.LASF12:
+ 2097 0364 646F7562 		.ascii	"double\000"
+ 2097      6C6500
+ 2098              	.LASF54:
+ 2099 036b 5350495F 		.ascii	"SPI_SpiUartWriteTxData\000"
+ 2099      53706955 
+ 2099      61727457 
+ 2099      72697465 
+ 2099      54784461 
+ 2100              	.LASF57:
+ 2101 0382 5350495F 		.ascii	"SPI_SpiUartPutArray\000"
+ 2101      53706955 
+ 2101      61727450 
+ 2101      75744172 
+ 2101      72617900 
+ 2102              	.LASF23:
+ 2103 0396 4E52465F 		.ascii	"NRF_CMD_REUSE_TX_PL\000"
+ 2103      434D445F 
+ 2103      52455553 
+ 2103      455F5458 
+ 2103      5F504C00 
+ 2104              	.LASF40:
+ 2105 03aa 6E524632 		.ascii	"nRF24_read_rx_payload_cmd\000"
+ 2105      345F7265 
+ 2105      61645F72 
+ 2105      785F7061 
+ 2105      796C6F61 
+ 2106              	.LASF46:
+ 2107 03c4 70697065 		.ascii	"pipe\000"
+ 2107      00
+ 2108              	.LASF28:
+ 2109 03c9 6E72665F 		.ascii	"nrf_cmd\000"
+ 2109      636D6400 
+ 2110              	.LASF58:
+ 2111 03d1 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2111      43313120 
+ARM GAS  C:\Users\AFDHAL~1\AppData\Local\Temp\cczjM8xh.s 			page 49
+
+
+ 2111      352E342E 
+ 2111      31203230 
+ 2111      31363036 
+ 2112 0404 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2112      20726576 
+ 2112      6973696F 
+ 2112      6E203233 
+ 2112      37373135 
+ 2113 0437 73202D66 		.ascii	"s -ffunction-sections -ffat-lto-objects\000"
+ 2113      66756E63 
+ 2113      74696F6E 
+ 2113      2D736563 
+ 2113      74696F6E 
+ 2114              	.LASF26:
+ 2115 045f 4E52465F 		.ascii	"NRF_CMD_W_TX_PAYLOAD_NOACK\000"
+ 2115      434D445F 
+ 2115      575F5458 
+ 2115      5F504159 
+ 2115      4C4F4144 
+ 2116              	.LASF20:
+ 2117 047a 4E52465F 		.ascii	"NRF_CMD_W_TX_PAYLOAD\000"
+ 2117      434D445F 
+ 2117      575F5458 
+ 2117      5F504159 
+ 2117      4C4F4144 
+ 2118              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

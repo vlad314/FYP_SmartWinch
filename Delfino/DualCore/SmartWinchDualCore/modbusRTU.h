@@ -52,9 +52,11 @@
 #include "includes.h"
 
   extern unsigned char modbusRTU_Written;
+  extern unsigned char DEBUGGING;
 
   //to do: change this to struct
-  extern unsigned long modbusRTU_written_register_flags;
+  //extern unsigned long modbusRTU_written_register_flags;
+  extern bool modbusRTU_written_register_flags[64];
 
 /*
  * update(regs, regs_size)
@@ -70,5 +72,8 @@
  * 	the number of bytes sent as reply ( > 4) if OK.
  */
   int modbusRTU_Update(unsigned char slave_id, int *regs, unsigned int regs_size); 
+
+  //used to init all flags to zero
+  void modbusRTU_init();
 
 #endif

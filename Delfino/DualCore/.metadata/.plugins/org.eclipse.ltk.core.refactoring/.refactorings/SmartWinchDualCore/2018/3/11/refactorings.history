@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SmartWinchDualCore/motion_buffer&apos; to &apos;motion_buffer.h&apos;" description="Rename resource &apos;motion_buffer&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="motion_buffer" name="motion_buffer.h" stamp="1521204132916" updateReferences="true"/>
+</session>

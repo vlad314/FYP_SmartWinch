@@ -1,0 +1,162 @@
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/CortexM0/ARM_GCC_541/Release/main.o : C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CE.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CE_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/Clock_1.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyDMA.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyFlash.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyLib.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/LED.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/LED_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/MASTER_UNIT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/MASTER_UNIT_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/Millis_ISR.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/Millis_TMR.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/NRF_ISR.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/NRF_ISR_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_BOOT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_PINS.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_PVT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SCBCLK.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SCB_IRQ.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SPI_UART.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SPI_UART_PVT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_miso_m.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_miso_m_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_mosi_m.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_mosi_m_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_sclk_m.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_sclk_m_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SS.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SS_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_BOOT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_IN.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_IN_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_OUT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_OUT_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_PINS.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_PVT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SCBCLK.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SCB_IRQ.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SPI_UART.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SPI_UART_PVT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_rx.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_rx_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_tx.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_tx_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_BOOT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_PINS.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_PVT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SCBCLK.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SCB_IRQ.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SPI_UART.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SPI_UART_PVT.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_rx.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_rx_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_tx.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_tx_aliases.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cmsis_armcc.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cmsis_compiler.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cmsis_gcc.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/core_cm0.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/core_cm0_psoc4.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cyPm.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cydisabledsheets.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cyfitter.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cyfitter_cfg.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cypins.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cytypes.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_COMMANDS.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_CONFIG.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_DEFS.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_FUNCS.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_HAL.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/project.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/main.c C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/millis.h C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/ring_buffer.h 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CE.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CE_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/Clock_1.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyDMA.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyFlash.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyLFClk.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/CyLib.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/LED.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/LED_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/MASTER_UNIT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/MASTER_UNIT_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/Millis_ISR.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/Millis_TMR.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/NRF_ISR.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/NRF_ISR_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_BOOT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_PINS.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_PVT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SCBCLK.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SCB_IRQ.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SPI_UART.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_SPI_UART_PVT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_miso_m.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_miso_m_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_mosi_m.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_mosi_m_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_sclk_m.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SPI_sclk_m_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SS.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/SS_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_BOOT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_IN.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_IN_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_OUT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_OUT_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_PINS.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_PVT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SCBCLK.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SCB_IRQ.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SPI_UART.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_SPI_UART_PVT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_rx.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_rx_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_tx.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/UART_tx_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_BOOT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_PINS.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_PVT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SCBCLK.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SCB_IRQ.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SPI_UART.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_SPI_UART_PVT.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_rx.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_rx_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_tx.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/USB_UART_tx_aliases.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cmsis_armcc.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cmsis_compiler.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cmsis_gcc.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/core_cm0.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/core_cm0_psoc4.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cyPm.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cydevice_trm.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cydisabledsheets.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cyfitter.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cyfitter_cfg.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cypins.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/cytypes.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_COMMANDS.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_CONFIG.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_DEFS.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_FUNCS.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/nRF24_HAL.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/Generated_Source/PSoC4/project.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/main.c : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/millis.h : 
+
+C:/Users/AfdhalAtiffTan/Documents/PSoC\ Creator/UART_over_nFR24/UART_over_nFR24.cydsn/ring_buffer.h : 
+

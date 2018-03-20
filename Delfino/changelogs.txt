@@ -34,3 +34,21 @@
 -updated kinematics maths (matt danby)
 -fixed non-standalone issues
 
+17th March 2018
+-added motion buffer
+-changed quadrature decoder count from unsigned to signed
+-changed modbus written_flag structure (using boolean array)
+-added primitive task_scheduler
+-added soft reset
+
+18th March 2018
+-added another buffered uart for wireless comms, now SCIA and SCIB can be used
+-fixed homing switch reading
+-added simple homing algorithm
+-code tidying-up, moved most of the funcion inside pid isr to task_scheduler
+-changed baudrate to 9600 to allow wired uart
+-fixed address switch endianness
+-added reset function in MotionProfile
+-slowed down heartbeat led
+-added debug functionality in modbusRTU
+-added relative length control (on top of absolute control)

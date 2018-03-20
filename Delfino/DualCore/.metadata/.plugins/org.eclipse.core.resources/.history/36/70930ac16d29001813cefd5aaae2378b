@@ -1,0 +1,86 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+SHELL = cmd.exe
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CMD_SRCS += \
+../2837xD_FLASH_lnk_cpu1.cmd 
+
+LIB_SRCS += \
+../driverlib.lib 
+
+C_SRCS += \
+../MotionProfile.c \
+../buffered_serial.c \
+../device_init.c \
+../interrupt_handlers.c \
+../kinematics.c \
+../main.c \
+../modbusRTU.c \
+../modbus_regs.c \
+../motion_buffer.c \
+../motor_driver.c 
+
+C_DEPS += \
+./MotionProfile.d \
+./buffered_serial.d \
+./device_init.d \
+./interrupt_handlers.d \
+./kinematics.d \
+./main.d \
+./modbusRTU.d \
+./modbus_regs.d \
+./motion_buffer.d \
+./motor_driver.d 
+
+OBJS += \
+./MotionProfile.obj \
+./buffered_serial.obj \
+./device_init.obj \
+./interrupt_handlers.obj \
+./kinematics.obj \
+./main.obj \
+./modbusRTU.obj \
+./modbus_regs.obj \
+./motion_buffer.obj \
+./motor_driver.obj 
+
+OBJS__QUOTED += \
+"MotionProfile.obj" \
+"buffered_serial.obj" \
+"device_init.obj" \
+"interrupt_handlers.obj" \
+"kinematics.obj" \
+"main.obj" \
+"modbusRTU.obj" \
+"modbus_regs.obj" \
+"motion_buffer.obj" \
+"motor_driver.obj" 
+
+C_DEPS__QUOTED += \
+"MotionProfile.d" \
+"buffered_serial.d" \
+"device_init.d" \
+"interrupt_handlers.d" \
+"kinematics.d" \
+"main.d" \
+"modbusRTU.d" \
+"modbus_regs.d" \
+"motion_buffer.d" \
+"motor_driver.d" 
+
+C_SRCS__QUOTED += \
+"../MotionProfile.c" \
+"../buffered_serial.c" \
+"../device_init.c" \
+"../interrupt_handlers.c" \
+"../kinematics.c" \
+"../main.c" \
+"../modbusRTU.c" \
+"../modbus_regs.c" \
+"../motion_buffer.c" \
+"../motor_driver.c" 
+
+

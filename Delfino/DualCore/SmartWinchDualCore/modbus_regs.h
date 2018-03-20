@@ -26,7 +26,8 @@ enum
     Max_Velocity,       // this is in mm/s
     Max_Acceleration,   // this is in mm/s^2
 
-    Target_Setpoint, //for cable length in mm
+    Target_Setpoint, //for cable length in mm (absolute control)
+    Target_Setpoint_Offset, //used for relative control
 
     Kp,
     Ki,
@@ -55,6 +56,11 @@ enum
     Current_Length_Winch2,
     Current_Length_Winch3,
 
+    Target_Length_Winch0,
+    Target_Length_Winch1,
+    Target_Length_Winch2,
+    Target_Length_Winch3,
+
     Current_Force_Winch0,
     Current_Force_Winch1,
     Current_Force_Winch2,
@@ -68,7 +74,7 @@ enum
     Global_Dwell_Time,
 
     Homing_Flag,
-    Auto_mode,
+    Kinematic_mode,
     Sync,
 
     Follow_Waypoints,

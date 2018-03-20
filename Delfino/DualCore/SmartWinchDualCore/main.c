@@ -67,11 +67,11 @@ void main(void)
     init_smartwinch();
 
     //read WinchId on dip-switches - added on 18th feb 2018
-    modbus_holding_regs[Winch_ID] = 0x03^((GPIO_readPin(DEVICE_GPIO_PIN_ID1)<<1) | (GPIO_readPin(DEVICE_GPIO_PIN_ID0))); //active-low switches
+    modbus_holding_regs[Winch_ID] = 0x03^((GPIO_readPin(DEVICE_GPIO_PIN_ID0)<<1) | (GPIO_readPin(DEVICE_GPIO_PIN_ID1))); //active-low switches
 
     //default motion settings - 19th feb 2018
     modbus_holding_regs[Max_Velocity] = 50;
-    modbus_holding_regs[Max_Acceleration] = 100;
+    modbus_holding_regs[Max_Acceleration] = 50;
 
     MotionProfile((float) modbus_holding_regs[Max_Velocity], (float) modbus_holding_regs[Max_Acceleration], 1, 0);
 
@@ -81,18 +81,40 @@ void main(void)
     msg = "Heeyaa\n\r";
     SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 8);
 
-    modbus_holding_regs[Kp] = 0;
+    modbus_holding_regs[Kp] = 4096;
     modbus_holding_regs[Ki] = 0;
-    modbus_holding_regs[Kd] = 0;
+    modbus_holding_regs[Kd] = 30000;
 
     pid1.Umax = 16777215.0f;
     pid1.Umin = -16777215.0f;
+
+    modbus_holding_regs[Field_Length] = 1000;
+    modbus_holding_regs[Field_Width] = 1000;
+
+/*     if(modbus_holding_regs[Winch_ID] == 0)
+    {
+        while(1)
+        {
+            while(buffered_serial_available())
+                buffered_serial_B_write(buffered_serial_read());
+
+            while(buffered_serial_B_available())
+                buffered_serial_write(buffered_serial_B_read());    
+        }
+    } */
 
 
     while(1)
     {
         //service modbus request if available
         modbusRTU_Update((modbus_holding_regs[Winch_ID]+1), modbus_holding_regs, MB_HREGS);
+
+        //force system reset
+        if(modbus_holding_regs[Soft_Reset] != 0)
+        {
+            modbus_holding_regs[Soft_Reset] = 0;
+            SysCtl_resetDevice();
+        }
 
         //update per second
         static uint32_t prev_systick = 0;
@@ -101,12 +123,15 @@ void main(void)
             prev_systick = systick();
 
             //switch status
-            modbus_holding_regs[Winch_ID] = 0x03^((GPIO_readPin(DEVICE_GPIO_PIN_ID1)<<1) | (GPIO_readPin(DEVICE_GPIO_PIN_ID0))); //active-low switches
+            modbus_holding_regs[Winch_ID] = 0x03^((GPIO_readPin(DEVICE_GPIO_PIN_ID0)<<1) | (GPIO_readPin(DEVICE_GPIO_PIN_ID1))); //active-low switches
 
             //motion control
             MotionProfile_setMaxVelocity((float) modbus_holding_regs[Max_Velocity]);
             MotionProfile_setMaxAcceleration((float) modbus_holding_regs[Max_Acceleration]);
-        }
+
+            //debugging mode
+            DEBUGGING = GPIO_readPin(DEVICE_GPIO_PIN_DBG);
+        }        
     }
 }
 

@@ -114,5 +114,5 @@ void buffered_serial_transmit()
         Interrupt_disable(INT_SCIA_TX);
     }
 
-    GPIO_togglePin(DEVICE_GPIO_PIN_LED2);
+    //GPIO_togglePin(DEVICE_GPIO_PIN_LED2);
 }

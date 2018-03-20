@@ -1,0 +1,14 @@
+/*
+ * task_scheduler.c
+ *
+ *  Created on: 17 Mar 2018
+ *      Author: AfdhalAtiffTan
+ */
+
+#include "task_scheduler.h"
+
+void task_scheduler_handler()
+{
+
+}
+

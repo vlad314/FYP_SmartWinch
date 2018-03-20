@@ -215,3 +215,9 @@ void MotionProfile_reset() {
     oldVelocity = 0;
     acceleration = 0;
 }
+
+//added ny afdhal, used as a workaround to avoid jerking during homing
+void MotionProfile_reset_position(float pos)
+{
+    position = pos;
+}

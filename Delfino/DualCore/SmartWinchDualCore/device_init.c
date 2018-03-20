@@ -41,9 +41,20 @@ void init_gpio()
     //set both pins as input
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_ID0, GPIO_DIR_MODE_IN);
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_ID1, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////
+    //<for debug mode switche>
+    //set pin61 and pin123 as gpio
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_DBG);
+
+    //set pull up on gpio61 and gpio123
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_DBG, GPIO_PIN_TYPE_PULLUP);
+
+    //set both pins as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_DBG, GPIO_DIR_MODE_IN);
 }
 
-void init_uart()
+void init_uart_A()
 {
     // GPIO28 is the SCI Rx pin.
     GPIO_setMasterCore(DEVICE_GPIO_PIN_SCIRXDA, GPIO_CORE_CPU1);
@@ -63,7 +74,7 @@ void init_uart()
     SCI_performSoftwareReset(SCIA_BASE);
 
     // Configure SCIA for echoback.
-    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, 115200, (  SCI_CONFIG_WLEN_8 |
+    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, 9600, (  SCI_CONFIG_WLEN_8 |
                                                             SCI_CONFIG_STOP_ONE |
                                                             SCI_CONFIG_PAR_NONE));
     SCI_enableFIFO(SCIA_BASE);
@@ -97,6 +108,62 @@ void init_uart()
     //
     Interrupt_register(INT_SCIA_RX, sciaRXFIFOISR);
     Interrupt_register(INT_SCIA_TX, sciaTXFIFOISR);
+}
+
+void init_uart_B()
+{
+    //SCI Rx pin.
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SCIRXDB, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SCIRXDB);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_SCIRXDB, GPIO_DIR_MODE_IN);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SCIRXDB, GPIO_PIN_TYPE_PULLUP); //pullup, to allow multidrop
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SCIRXDB, GPIO_QUAL_ASYNC);
+
+    //SCI Tx pin.
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SCITXDB, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SCITXDB);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_SCITXDB, GPIO_DIR_MODE_OUT);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SCITXDB, GPIO_PIN_TYPE_OD); //open drain output, to allow multidrop
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SCITXDB, GPIO_QUAL_ASYNC);
+
+    // Initialize SCIB and its FIFO.
+    SCI_performSoftwareReset(SCIB_BASE);
+
+    // Configure SCIB for echoback.
+    SCI_setConfig(SCIB_BASE, DEVICE_LSPCLK_FREQ, 9600, (  SCI_CONFIG_WLEN_8 |
+                                                            SCI_CONFIG_STOP_ONE |
+                                                            SCI_CONFIG_PAR_NONE));
+    SCI_enableFIFO(SCIB_BASE);
+    SCI_resetRxFIFO(SCIB_BASE);
+    SCI_resetTxFIFO(SCIB_BASE);
+
+    SCI_resetChannels(SCIB_BASE);
+    SCI_clearInterruptStatus(SCIB_BASE, SCI_INT_TXFF | SCI_INT_RXFF);
+    SCI_enableModule(SCIB_BASE);
+    SCI_performSoftwareReset(SCIB_BASE);
+
+    //
+    // RX and TX FIFO Interrupts Enabled
+    //
+    SCI_enableInterrupt(SCIB_BASE, (SCI_INT_RXFF | SCI_INT_TXFF));
+    SCI_disableInterrupt(SCIB_BASE, SCI_INT_RXERR);
+
+    SCI_setFIFOInterruptLevel(SCIB_BASE, SCI_FIFO_TX0, SCI_FIFO_RX1);
+    SCI_performSoftwareReset(SCIB_BASE);
+
+    Interrupt_enable(INT_SCIB_RX);
+    //Interrupt_enable(INT_SCIB_TX);
+
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP9);
+
+
+
+    //
+    // Interrupts that are used in this example are re-mapped to
+    // ISR functions found within this file.
+    //
+    Interrupt_register(INT_SCIB_RX, scibRXFIFOISR);
+    Interrupt_register(INT_SCIB_TX, scibTXFIFOISR);
 }
 
 void init_eqep()
@@ -158,7 +225,8 @@ void init_eqep()
     EQEP_enableCapture(EQEP1_BASE);
 
     //set reset position
-    EQEP_setInitialPosition(EQEP1_BASE, 0x00000000);
+    EQEP_setInitialPosition(EQEP1_BASE, 0x80000000);
+    EQEP_setPosition(EQEP1_BASE, 0x80000000);
 
     //enable index reset
     EQEP_setPositionInitMode(EQEP1_BASE, EQEP_INIT_FALLING_INDEX);
@@ -166,6 +234,8 @@ void init_eqep()
 
 void init_pwm()
 {
+    //frequency of pwm is 200MHz/2(internal_divider)/2(updown_cnt)/0xffff = 769Hz
+
     //
     // Configure the SOC to occur on the first up-count event
     //
@@ -281,7 +351,7 @@ void init_pwm()
     //
     EPWM_setInterruptSource(EPWM2_BASE, EPWM_INT_TBCTR_ZERO);
     EPWM_enableInterrupt(EPWM2_BASE);
-    EPWM_setInterruptEventCount(EPWM2_BASE, 8U);
+    EPWM_setInterruptEventCount(EPWM2_BASE, 8U); /* 763/8 = 95Hz interrupt */
 }
 
 void init_adc()
@@ -394,11 +464,13 @@ void init_smartwinch()
 
     //self-explanatory
     init_gpio();
-    init_uart();
+    init_uart_A(); //usb uart
+    init_uart_B(); //Jumper1 uart
     init_eqep();
     init_pwm();
     init_adc();
     init_timer();
+    modbusRTU_init();
 
     //
     // Enable Global Interrupt (INTM) and realtime interrupt (DBGM)

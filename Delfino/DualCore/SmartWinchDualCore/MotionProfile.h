@@ -49,5 +49,6 @@
 		void MotionProfile_setMaxAcceleration(float aMaxVelocity);
 		void MotionProfile_pause();
 		void MotionProfile_reset();
+		void MotionProfile_reset_position(float pos);
 
 #endif

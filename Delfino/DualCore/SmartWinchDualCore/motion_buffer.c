@@ -1,0 +1,136 @@
+/*
+ * motion_buffer.c
+ *
+ *  Created on: 16 Mar 2018
+ *      Author: AfdhalAtiffTan
+ * 
+ * Circular buffer implementation was taken from: https://github.com/embeddedartistry/embedded-resources/blob/master/examples/c/circular_buffer.c
+ * Lightly modified to accept uint16_t
+ */
+
+#include "motion_buffer.h"
+
+#define BUF_SIZE 256 //set the buffer size
+
+//<embeddedartistry> 
+/* https://embeddedartistry.com/blog/2017/4/6/circular-buffers-in-cc */
+
+typedef struct {
+	uint16_t *  buffer;
+	size_t      head;
+	size_t      tail;
+	size_t      size; //of the buffer
+}   circular_buf_t;
+
+/**
+* Important Usage Note: This library reserves one spare byte for queue-full detection
+* Otherwise, corner cases and detecting difference between full/empty is hard.
+* You are not seeing an accidental off-by-one.
+*/
+
+int circular_buf_reset(circular_buf_t * cbuf);
+int circular_buf_put(circular_buf_t * cbuf, uint16_t data);
+//TODO: int circular_buf_put_range(circular_buf_t cbuf, uint8_t * data, size_t len);
+int circular_buf_get(circular_buf_t * cbuf, uint16_t * data);
+//TODO: int circular_buf_get_range(circular_buf_t cbuf, uint8_t *data, size_t len);
+bool circular_buf_empty(circular_buf_t cbuf);
+bool circular_buf_full(circular_buf_t cbuf);
+
+int circular_buf_reset(circular_buf_t * cbuf)
+{
+    int r = -1;
+
+    if(cbuf)
+    {
+        cbuf->head = 0;
+        cbuf->tail = 0;
+        r = 0;
+    }
+
+    return r;
+}
+
+int circular_buf_put(circular_buf_t * cbuf, uint16_t data)
+{
+    int r = -1;
+
+    if(cbuf)
+    {
+        cbuf->buffer[cbuf->head] = data;
+        cbuf->head = (cbuf->head + 1) % cbuf->size;
+
+        if(cbuf->head == cbuf->tail)
+        {
+            cbuf->tail = (cbuf->tail + 1) % cbuf->size;
+        }
+
+        r = 0;
+    }
+
+    return r;
+}
+
+int circular_buf_get(circular_buf_t * cbuf, uint16_t * data)
+{
+    int r = -1;
+
+    if(cbuf && data && !circular_buf_empty(*cbuf))
+    {
+        *data = cbuf->buffer[cbuf->tail];
+        cbuf->tail = (cbuf->tail + 1) % cbuf->size;
+
+        r = 0;
+    }
+
+    return r;
+}
+
+bool circular_buf_empty(circular_buf_t cbuf)
+{
+	// We define empty as head == tail
+    return (cbuf.head == cbuf.tail);
+}
+
+bool circular_buf_full(circular_buf_t cbuf)
+{
+	// We determine "full" case by head being one position behind the tail
+	// Note that this means we are wasting one space in the buffer!
+	// Instead, you could have an "empty" flag and determine buffer full that way
+    return ((cbuf.head + 1) % cbuf.size) == cbuf.tail;
+}
+
+//</embeddedartistry>
+
+
+//<Adapters>
+circular_buf_t cbuf; //global 
+
+void motion_buffer_init()
+{    
+	cbuf.size = BUF_SIZE;
+    circular_buf_reset(&cbuf); //set head/tail to 0
+    cbuf.buffer = (uint16_t*) malloc(cbuf.size * sizeof(uint16_t));
+}
+
+void motion_buffer_push(uint16_t i)
+{
+    circular_buf_put(&cbuf, i);
+}
+
+uint16_t motion_buffer_pop()
+{
+    uint16_t data;
+	circular_buf_get(&cbuf, &data);
+    return data;
+}
+
+bool motion_buffer_isEmpty()
+{
+    return circular_buf_empty(cbuf);
+}
+
+bool motion_buffer_isFull()
+{
+    return circular_buf_full(cbuf);
+}
+//</Adapters>

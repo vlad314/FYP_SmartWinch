@@ -1,0 +1,7 @@
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|b35ff6f6-c264-490e-8d00-5a2669394b5b
+C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|dbab9e74-a140-41b1-a747-bd50f50a6cec
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|6c1c80b2-b1f7-45c7-acb9-a20dce488119
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|ebb39780-b282-403a-96a1-d6de8caa2ae6
+C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|d130698d-274a-4326-af8e-f311f00e40d6
+C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\UART_over_nFR24\UART_over_nFR24.cydsn\UART_over_nFR24.cyprj|4279ca13-314b-43d8-9d06-acbfce6daac7
+C:\Users\AfdhalAtiffTan\Documents\PSoC Creator\UART_over_nFR24\nRF24_Component-master\nRF24.cylib\nRF24.cyprj|a0ee40c4-e8d4-457d-ba6f-5daac4b13bb1

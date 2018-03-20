@@ -53,11 +53,14 @@
 
 #include "modbusRTU.h"
 
+//if defined, SCIA will be used
+unsigned char DEBUGGING;
 
 //Private prototypes and vars
   unsigned char slave;
   unsigned char modbusRTU_Written = 0;  
-  unsigned long modbusRTU_written_register_flags = 0;
+  //unsigned long modbusRTU_written_register_flags = 0;
+  bool modbusRTU_written_register_flags[64];
 
   unsigned int crc(unsigned char *buf, unsigned char start, unsigned char cnt);
   void build_read_packet(unsigned char function, unsigned char count, unsigned char *packet);
@@ -271,7 +274,10 @@ int send_reply(unsigned char *query, unsigned char string_length)
         for (i = 0; i < string_length; i++) {
                 //Serial.print(char(query[i]));
                 //USB_UART_SpiUartWriteTxData((char)query[i]);
-            buffered_serial_write(query[i]);
+            if (DEBUGGING)
+                buffered_serial_write(query[i]);
+            else 
+                buffered_serial_B_write(query[i]);
         }
 
         //experimental
@@ -305,14 +311,30 @@ int receive_request(unsigned char *received_string)
 
         /* FIXME: does Serial.available wait 1.5T or 3.5T before exiting the loop? */
         //while (Serial.available()) {
-        while (buffered_serial_available()) {
-                //received_string[bytes_received] = Serial.read();
-                received_string[bytes_received] = buffered_serial_read();
-                //Serial.print(received_string[bytes_received], DEC);
-                bytes_received++;
-                if (bytes_received >= MAX_MESSAGE_LENGTH)
-                        return NO_REPLY; 	/* port error */
+
+        if (DEBUGGING)
+        {
+                while (buffered_serial_available()) {
+                        //received_string[bytes_received] = Serial.read();
+                        received_string[bytes_received] = buffered_serial_read();
+                        //Serial.print(received_string[bytes_received], DEC);
+                        bytes_received++;
+                        if (bytes_received >= MAX_MESSAGE_LENGTH)
+                                return NO_REPLY; 	/* port error */
+                }
         }
+        else
+        {
+                while (buffered_serial_B_available()) {
+                        //received_string[bytes_received] = Serial.read();
+                        received_string[bytes_received] = buffered_serial_B_read();
+                        //Serial.print(received_string[bytes_received], DEC);
+                        bytes_received++;
+                        if (bytes_received >= MAX_MESSAGE_LENGTH)
+                                return NO_REPLY; 	/* port error */
+                }
+        }
+        
 
         return (bytes_received);
 }
@@ -554,7 +576,7 @@ unsigned char reg_count, int *regs)
  * 	the number of bytes sent as reply ( > 4) if OK.
  */
 
-uint32_t T35 = 2U; //this should give around 3.5 char long for 200us per tick @ 115200bps
+uint32_t T35 = 25U; //this should give around 3.5 char long for 200us per tick @ 115200bps was 2
 
 int modbusRTU_Update(unsigned char slave_id, int *regs,
 unsigned int regs_size) 
@@ -563,8 +585,13 @@ unsigned int regs_size)
         unsigned char errpacket[EXCEPTION_SIZE + CHECKSUM_SIZE];
         unsigned int start_addr;
         int exception;
+        int length;
 
-        int length = buffered_serial_available();
+        if (DEBUGGING)
+                length = buffered_serial_available();
+        else
+                length = buffered_serial_B_available();
+        
 
         uint32_t now = systick();
         static uint32_t Nowdt = 0;
@@ -623,7 +650,8 @@ unsigned int regs_size)
                     char index = 0;
                     for(index = 0; index < query[REGS_L]; index++)
                     {
-                        modbusRTU_written_register_flags |= 1<<(start_addr+index);
+                        //modbusRTU_written_register_flags |= 1<<(start_addr+index);
+                        modbusRTU_written_register_flags[start_addr+index] = 1;
                     }
                     
                     return preset_multiple_registers(
@@ -637,7 +665,8 @@ unsigned int regs_size)
                 {
                     modbusRTU_Written = 1;
                     
-                    modbusRTU_written_register_flags |= 1<<(start_addr);
+                    //modbusRTU_written_register_flags |= 1<<(start_addr);
+                    modbusRTU_written_register_flags[start_addr] = 1;
                     
                     write_single_register(
                     start_addr,
@@ -649,5 +678,16 @@ unsigned int regs_size)
         return 0;
 }
 
-
+//used to init all flags to zero
+void modbusRTU_init()
+{
+        //memset(modbusRTU_written_register_flags, 0, 64);
+        uint16_t i;
+        for(i=0;i<64;i++)
+        {
+                modbusRTU_written_register_flags[i] = 0;
+        }
+                
+        modbusRTU_Written = 0;
+}
 

@@ -27,4 +27,7 @@ __interrupt void epwm2ISR(void);
 __interrupt void sciaTXFIFOISR(void);
 __interrupt void sciaRXFIFOISR(void);
 
+__interrupt void scibTXFIFOISR(void);
+__interrupt void scibRXFIFOISR(void);
+
 #endif /* INTERRUPT_HANDLERS_H_ */
