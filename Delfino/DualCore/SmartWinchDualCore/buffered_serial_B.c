@@ -9,15 +9,15 @@
 #include "buffered_serial_B.h"
 
 // static data
-#define EUSART_TX_BUFFER_SIZE 0xFF
+#define EUSART_TX_BUFFER_SIZE_B 0xFF
 static char eusartTxHead = 0;
 static char eusartTxTail = 0;
-static char eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
-volatile char eusartTxBufferRemaining_B=EUSART_TX_BUFFER_SIZE;
+static char eusartTxBuffer[EUSART_TX_BUFFER_SIZE_B];
+volatile char eusartTxBufferRemaining_B=EUSART_TX_BUFFER_SIZE_B;
 volatile char TXIE_B = 0;
 
-#define MAX_BUFF 0xFF
-static char _receive_buffer[MAX_BUFF];
+#define MAX_BUFF_B 0xFF
+static char _receive_buffer[MAX_BUFF_B];
 static volatile char _receive_buffer_tail=0;
 static volatile char _receive_buffer_head=0;
 
@@ -41,7 +41,7 @@ void buffered_serial_B_write(char c)
         Interrupt_disable(INT_SCIB_TX);
 
         eusartTxBuffer[eusartTxHead++] = c;
-        if(EUSART_TX_BUFFER_SIZE <= eusartTxHead)
+        if(EUSART_TX_BUFFER_SIZE_B <= eusartTxHead)
         {
             eusartTxHead = 0;
         }
@@ -65,21 +65,21 @@ char buffered_serial_B_read()
 
     // Read from "head"
     char d = _receive_buffer[_receive_buffer_head]; // grab next byte
-    _receive_buffer_head = (_receive_buffer_head + 1) % MAX_BUFF;
+    _receive_buffer_head = (_receive_buffer_head + 1) % MAX_BUFF_B;
     return d;
 }
 
 //ported from arduino softserial library
 char buffered_serial_B_available()
 {
-    return (_receive_buffer_tail + MAX_BUFF - _receive_buffer_head) % MAX_BUFF;
+    return (_receive_buffer_tail + MAX_BUFF_B - _receive_buffer_head) % MAX_BUFF_B;
 }
 
 //ported from arduino softserial library
 void buffered_serial_B_receive()
 {
     // if buffer full, set the overflow flag and return
-    char next = (_receive_buffer_tail + 1) % MAX_BUFF;
+    char next = (_receive_buffer_tail + 1) % MAX_BUFF_B;
     if (next != _receive_buffer_head)
     {
       // save new data in buffer: tail points to where byte goes
@@ -93,15 +93,15 @@ void buffered_serial_B_receive()
 void buffered_serial_B_transmit()
 {
     // add your EUSART interrupt custom code
-    if(EUSART_TX_BUFFER_SIZE > eusartTxBufferRemaining_B)
+    if(EUSART_TX_BUFFER_SIZE_B > eusartTxBufferRemaining_B)
     {
         //TX1REG = eusartTxBuffer[eusartTxTail++];
 
         //fillup fifo
-        while((EUSART_TX_BUFFER_SIZE > eusartTxBufferRemaining_B) && (SCI_getTxFIFOStatus(SCIB_BASE) < SCI_FIFO_TX16)) //this might not work properly
+        while((EUSART_TX_BUFFER_SIZE_B > eusartTxBufferRemaining_B) && (SCI_getTxFIFOStatus(SCIB_BASE) < SCI_FIFO_TX16)) //this might not work properly
         {
             SCI_writeCharBlockingFIFO(SCIB_BASE, eusartTxBuffer[eusartTxTail++]);
-            if(EUSART_TX_BUFFER_SIZE <= eusartTxTail)
+            if(EUSART_TX_BUFFER_SIZE_B <= eusartTxTail)
             {
                 eusartTxTail = 0;
             }

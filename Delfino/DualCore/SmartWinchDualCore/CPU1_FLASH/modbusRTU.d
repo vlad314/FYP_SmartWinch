@@ -94,6 +94,8 @@ modbusRTU.obj: ../MotionProfile.h
 modbusRTU.obj: ../kinematics.h
 modbusRTU.obj: ../motion_buffer.h
 modbusRTU.obj: ../task_scheduler.h
+modbusRTU.obj: ../RoboClaw.h
+modbusRTU.obj: ../buffered_serial_C.h
 
 ../modbusRTU.c: 
 ../modbusRTU.h: 
@@ -189,3 +191,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../kinematics.h: 
 ../motion_buffer.h: 
 ../task_scheduler.h: 
+../RoboClaw.h: 
+../buffered_serial_C.h: 

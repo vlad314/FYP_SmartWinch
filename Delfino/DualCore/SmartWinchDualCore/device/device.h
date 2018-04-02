@@ -72,7 +72,7 @@ a single CPU should be defined."
 #define DEVICE_GPIO_CFG_LED2        GPIO_34_GPIO34  // "pinConfig" for LD3
 
 //
-// SCI for USB-to-UART adapter on FTDI chip
+// SCIA for USB-to-UART adapter on FTDI chip
 //
 #define DEVICE_GPIO_PIN_SCIRXDA     43U             // GPIO number for SCI RX
 #define DEVICE_GPIO_PIN_SCITXDA     42U             // GPIO number for SCI TX
@@ -80,12 +80,20 @@ a single CPU should be defined."
 #define DEVICE_GPIO_CFG_SCITXDA     GPIO_42_SCITXDA // "pinConfig" for SCI TX
 
 //
-// SCI on Jumper1
+// SCIB on J1
 //
 #define DEVICE_GPIO_PIN_SCIRXDB     19U             // GPIO number for SCI RX
 #define DEVICE_GPIO_PIN_SCITXDB     18U             // GPIO number for SCI TX
 #define DEVICE_GPIO_CFG_SCIRXDB     GPIO_19_SCIRXDB // "pinConfig" for SCI RX
 #define DEVICE_GPIO_CFG_SCITXDB     GPIO_18_SCITXDB // "pinConfig" for SCI TX
+
+//
+// SCIC on J5
+//
+#define DEVICE_GPIO_PIN_SCIRXDC     139U             // GPIO number for SCI RX
+#define DEVICE_GPIO_PIN_SCITXDC     56U             // GPIO number for SCI TX
+#define DEVICE_GPIO_CFG_SCIRXDC     GPIO_139_SCIRXDC // "pinConfig" for SCI RX
+#define DEVICE_GPIO_CFG_SCITXDC     GPIO_56_SCITXDC // "pinConfig" for SCI TX
 
 //
 // CANA

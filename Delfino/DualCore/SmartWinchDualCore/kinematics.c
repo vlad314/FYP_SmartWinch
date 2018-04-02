@@ -139,3 +139,15 @@ signed long brensenham3d(signed long x0, signed long y0, signed long z0, signed 
    total_path_points = path_pointer;
    return overflowed;
 }
+
+int32_t length_to_encoder_pulses(int length_in_mm)
+{
+    //count = cable_length * pulse_per_revolution * gear_ratio / spool_diameter / PI
+    //uint32_t count = (uint32_t)(((float)length_in_mm) * 8192.0f * 1.0f / 35.0f / 3.14159265359f);
+    return (int32_t)(((float)length_in_mm) * 74.5027025f);
+}
+
+int32_t encoder_pulses_to_length(int32_t encoder_pulses)
+{
+    return (int32_t)(((float) encoder_pulses) / 74.5027025f);
+}

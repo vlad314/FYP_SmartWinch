@@ -7,6 +7,8 @@
 
 #include "task_scheduler.h"
 
+char homing_workaround = 1; //as a workaround to mcp266 glitch
+
 void simple_homing_routine()
 {
     static length4_struct homed_cable_lengths;
@@ -24,7 +26,7 @@ void simple_homing_routine()
         modbus_holding_regs[Current_Z] = 0;
 
         homed_cable_lengths = XYZ_to_length4(  	(float) modbus_holding_regs[0], //assuming homed position is at <0, 0, 0>
-                                                (float) modbus_holding_regs[0], 
+                                                (float) modbus_holding_regs[0], //bugs! (not fixed yet)
                                                 (float) modbus_holding_regs[0], 
                                                 (float) modbus_holding_regs[Field_Length]);
 
@@ -74,6 +76,83 @@ void simple_homing_routine()
 
         EQEP_setPosition(EQEP1_BASE, homed_length);
     }    
+}
+
+void homing_routine() //with mcp266 apis
+{
+    static bool coordinate_changed = 0;
+    static length4_struct homed_cable_lengths;
+
+    if(modbusRTU_written_register_flags[Current_X] || modbusRTU_written_register_flags[Current_Y] || modbusRTU_written_register_flags[Current_Z])
+    {
+        //clear flags
+        modbusRTU_written_register_flags[Current_X] = 0;
+        modbusRTU_written_register_flags[Current_Y] = 0;
+        modbusRTU_written_register_flags[Current_Z] = 0;
+
+        coordinate_changed = 1; //set flag
+
+        modbus_holding_regs[Target_X] = modbus_holding_regs[Current_X];
+        modbus_holding_regs[Target_Y] = modbus_holding_regs[Current_Y];
+        modbus_holding_regs[Target_Z] = modbus_holding_regs[Current_Z];
+
+        homed_cable_lengths = XYZ_to_length4(  	(float) modbus_holding_regs[Current_X],
+                                                (float) modbus_holding_regs[Current_Y], 
+                                                (float) modbus_holding_regs[Current_Z], 
+                                                (float) modbus_holding_regs[Field_Length]);
+
+        modbus_holding_regs[Target_Length_Winch0] = (int) homed_cable_lengths.lengtha;
+        modbus_holding_regs[Target_Length_Winch1] = (int) homed_cable_lengths.lengthb;
+        modbus_holding_regs[Target_Length_Winch2] = (int) homed_cable_lengths.lengthc;
+        modbus_holding_regs[Target_Length_Winch3] = (int) homed_cable_lengths.lengthd;
+
+        modbus_holding_regs[Current_Length_Winch0] = modbus_holding_regs[Target_Length_Winch0];
+        modbus_holding_regs[Current_Length_Winch1] = modbus_holding_regs[Target_Length_Winch1];
+        modbus_holding_regs[Current_Length_Winch2] = modbus_holding_regs[Target_Length_Winch2];
+        modbus_holding_regs[Current_Length_Winch3] = modbus_holding_regs[Target_Length_Winch3];
+
+        switch(modbus_holding_regs[Winch_ID])
+        {
+            case 0:
+            {
+                modbus_holding_regs[Current_Encoder_Count] = modbus_holding_regs[Current_Length_Winch0];
+                break;
+            }
+            case 1:
+            {
+                modbus_holding_regs[Current_Encoder_Count] = modbus_holding_regs[Current_Length_Winch1];
+                break;
+            }
+            case 2:
+            {
+                modbus_holding_regs[Current_Encoder_Count] = modbus_holding_regs[Current_Length_Winch2];
+                break;
+            }
+            case 3:
+            {
+                modbus_holding_regs[Current_Encoder_Count] = modbus_holding_regs[Current_Length_Winch3];
+                break;
+            }
+        }
+    }
+
+    if(modbusRTU_written_register_flags[Current_Encoder_Count] || coordinate_changed)
+    {
+        coordinate_changed = 0; //clear flag        
+        modbusRTU_written_register_flags[Current_Encoder_Count] = 0; //clear flag
+        modbus_holding_regs[Target_Setpoint] = modbus_holding_regs[Current_Encoder_Count];
+        //MotionProfile_reset_position((float) modbus_holding_regs[Target_Setpoint]); //used to remove jerk, not sure if it work yet
+
+        //count = cable_length * pulse_per_revolution * gear_ratio / spool_diameter / PI
+        //uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 8192.0f * 1.0f / 35.0f / 3.14159265359f);
+        //uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 74.5027025f);
+        int32_t homed_length = length_to_encoder_pulses(modbus_holding_regs[Current_Encoder_Count]);
+        //homed_length += 0x80000000; //this offset is to allow negative length
+
+        RoboClaw_SetEncM1(RoboClaw_Address, homed_length);
+
+        homing_workaround = 0;
+    }
 }
 
 void fetch_current_rpm()
@@ -133,10 +212,27 @@ void read_all_adc()
     }    
 }
 
+void relative_control()
+{
+    //relative control
+    //to do: add simple boundary check to avoid overflow
+    modbus_holding_regs[Target_Setpoint] += modbus_holding_regs[Target_Setpoint_Offset];
+    modbus_holding_regs[Target_X] += modbus_holding_regs[Target_X_Offset];
+    modbus_holding_regs[Target_Y] += modbus_holding_regs[Target_Y_Offset];
+    modbus_holding_regs[Target_Z] += modbus_holding_regs[Target_Z_Offset];
+
+    modbus_holding_regs[Target_Setpoint_Offset] = 0;
+    modbus_holding_regs[Target_X_Offset] = 0;
+    modbus_holding_regs[Target_Y_Offset] = 0;
+    modbus_holding_regs[Target_Z_Offset] = 0;
+}
+
 void manual_control()
 {
     static length4_struct target_cable_lengths;
     static XYZ_coord_struct target_point;
+
+    relative_control();
 
     if(modbusRTU_Written && (modbusRTU_written_register_flags[Target_Setpoint]) || modbusRTU_written_register_flags[Target_Setpoint_Offset]) //if length changed
     {
@@ -159,15 +255,21 @@ void manual_control()
         modbus_holding_regs[Target_Z] =  (signed int) target_point.Z;            
     }
 
-    if(modbusRTU_Written && (   modbusRTU_written_register_flags[Target_X] ||
-                                modbusRTU_written_register_flags[Target_Y] ||
-                                modbusRTU_written_register_flags[Target_Z] )) //if waypoint changed
+    if(modbusRTU_Written && (   modbusRTU_written_register_flags[Target_X]          ||
+                                modbusRTU_written_register_flags[Target_Y]          ||
+                                modbusRTU_written_register_flags[Target_Z]          ||
+                                modbusRTU_written_register_flags[Target_X_Offset]   ||
+                                modbusRTU_written_register_flags[Target_Y_Offset]   ||
+                                modbusRTU_written_register_flags[Target_Z_Offset]   )) //if waypoint changed
     {
         //clear flags
         modbusRTU_Written = 0;
         modbusRTU_written_register_flags[Target_X] = 0;
         modbusRTU_written_register_flags[Target_Y] = 0;
         modbusRTU_written_register_flags[Target_Z] = 0;
+        modbusRTU_written_register_flags[Target_X_Offset] = 0;
+        modbusRTU_written_register_flags[Target_Y_Offset] = 0;
+        modbusRTU_written_register_flags[Target_Z_Offset] = 0;
 
         //update target length
         target_cable_lengths = XYZ_to_length4(  (float) modbus_holding_regs[Target_X], 
@@ -256,33 +358,149 @@ void manual_control()
         modbusRTU_written_register_flags[Target_Length_Winch1] = 0;
         modbusRTU_written_register_flags[Target_Length_Winch2] = 0;
         modbusRTU_written_register_flags[Target_Length_Winch3] = 0;        
-    }  
+    }
+
+    //mcp266 bug workaround
+    if(modbus_holding_regs[Target_Setpoint] == 0)
+        modbus_holding_regs[Target_Setpoint] = 1;
 }
 
-void auto_mode()
+void auto_mode() //autonomous mode
 {
     //to do
+    modbus_holding_regs[Follow_Waypoints] = 0;
+}
+
+
+void read_current_cable_length_from_mcp266()
+{
+    uint16_t status;
+    bool valid;
+    int32_t count = RoboClaw_ReadEncM1(RoboClaw_Address, &status, &valid);
+
+    if(valid)
+        modbus_holding_regs[Current_Encoder_Count] = encoder_pulses_to_length(count);
+}
+
+void update_mcp266_pids()
+{
+    //update velocity pid
+    if( modbusRTU_written_register_flags[Kp_velocity]        ||
+        modbusRTU_written_register_flags[Ki_velocity]        ||
+        modbusRTU_written_register_flags[Kd_velocity]        ||
+        modbusRTU_written_register_flags[Max_Encoder_Feedrate])
+    {
+        //clear flags
+        modbusRTU_written_register_flags[Kp_velocity] = 0;
+        modbusRTU_written_register_flags[Ki_velocity] = 0;
+        modbusRTU_written_register_flags[Kd_velocity] = 0;
+        modbusRTU_written_register_flags[Max_Encoder_Feedrate] = 0;
+
+        RoboClaw_SetM1VelocityPID(RoboClaw_Address,
+                                  (float)modbus_holding_regs[Kp_velocity],
+                                  (float)modbus_holding_regs[Ki_velocity],
+                                  (float)modbus_holding_regs[Kd_velocity],
+                                  length_to_encoder_pulses(modbus_holding_regs[Max_Encoder_Feedrate]));
+    }
+
+    //update position pid
+    if( modbusRTU_written_register_flags[Kp_position]   ||
+        modbusRTU_written_register_flags[Ki_position]   ||
+        modbusRTU_written_register_flags[Kd_position]   )
+    {
+        //clear flags
+        modbusRTU_written_register_flags[Kp_position] = 0;
+        modbusRTU_written_register_flags[Ki_position] = 0;
+        modbusRTU_written_register_flags[Kd_position] = 0;
+
+        RoboClaw_SetM1PositionPID(RoboClaw_Address,
+                                  (float)modbus_holding_regs[Kp_position],
+                                  (float)modbus_holding_regs[Ki_position],
+                                  (float)modbus_holding_regs[Kd_position],
+                                  255,  //Integral max - not sure how to set this
+                                  0,  //deadzone
+                                  0x80000000,  //min limit
+                                  0x7fffffff); //max limit                               
+    }     
+}
+
+void read_mcp266_pids()
+{
+    float pid_temp[3]; uint32_t qpps_temp; bool valid;
+    valid = RoboClaw_ReadM1VelocityPID( RoboClaw_Address,
+                                        &pid_temp[0],
+                                        &pid_temp[1],
+                                        &pid_temp[2],
+                                        &qpps_temp);
+    if(valid)
+    {
+        modbus_holding_regs[Kp_velocity] = (int) pid_temp[0]; 
+        modbus_holding_regs[Ki_velocity] = (int) pid_temp[1];
+        modbus_holding_regs[Kd_velocity] = (int) pid_temp[2];
+        modbus_holding_regs[Max_Encoder_Feedrate] = encoder_pulses_to_length(qpps_temp);
+    }
+    
+
+    uint32_t misc_temp[4];
+    valid = RoboClaw_ReadM1PositionPID( RoboClaw_Address,
+                                        &pid_temp[0],
+                                        &pid_temp[1],
+                                        &pid_temp[2],
+                                        &misc_temp[0], //KiMax
+                                        &misc_temp[1], //DeadZone
+                                        &misc_temp[2], //Min
+                                        &misc_temp[3]); //Max
+    if(valid)
+    {                                    
+        modbus_holding_regs[Kp_position] = (int) pid_temp[0]; 
+        modbus_holding_regs[Ki_position] = (int) pid_temp[1];
+        modbus_holding_regs[Kd_position] = (int) pid_temp[2];
+    }
+}
+
+void read_mcp266_pwm()
+{
+    int16_t pwm[2];
+    if(RoboClaw_ReadPWMs(RoboClaw_Address, &pwm[0], &pwm[1]))
+        modbus_holding_regs[Current_PWM] = (signed int) (((float)pwm[0])/327.67f);
 }
 
 void task_scheduler_handler()
 {
-    //relative control
-    //to do: add simple boundary check to avoid overflow
-    modbus_holding_regs[Target_Setpoint] += modbus_holding_regs[Target_Setpoint_Offset];
-    modbus_holding_regs[Target_Setpoint_Offset] = 0;
+    //future: use state machine to read sequentially
+    homing_routine();
+    read_current_cable_length_from_mcp266();        
+    update_mcp266_pids();
+    read_mcp266_pids();
+    
 
-    simple_homing_routine();
-    fetch_current_rpm();
-    check_current_coordinate();
-    read_all_adc();
+    //simple_homing_routine();
+    //fetch_current_rpm();
+    //check_current_coordinate();
+    //read_all_adc();
 
     if(modbus_holding_regs[Follow_Waypoints] == 0) //if in manual mode, i.e. not using waypoint buffer
     {
         manual_control();
     }    
-    /* else // if autonomous mode activated, i.e. using waypoint buffer
+    else // if autonomous mode activated, i.e. using waypoint buffer
     {
         auto_mode();
-    } */
+    }
+
+    if(modbus_holding_regs[Target_Setpoint] == 0)
+        homing_workaround = 0; 
+
+    //flag=1 means command will be executed immediately, i.e. previous task will be halted
+    //speed and accelerations are in qpps unit
+    RoboClaw_SpeedAccelDeccelPositionM1(RoboClaw_Address, 
+                                        length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]), 
+                                        length_to_encoder_pulses(modbus_holding_regs[Max_Velocity]) * homing_workaround, 
+                                        length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]),
+                                        length_to_encoder_pulses(modbus_holding_regs[Target_Setpoint]), 1); 
+
+    homing_workaround = 1;                                            
+
+    read_mcp266_pwm();                                      
 }
 

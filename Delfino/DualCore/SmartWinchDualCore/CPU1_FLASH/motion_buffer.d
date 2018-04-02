@@ -94,6 +94,8 @@ motion_buffer.obj: ../MotionProfile.h
 motion_buffer.obj: ../kinematics.h
 motion_buffer.obj: ../motion_buffer.h
 motion_buffer.obj: ../task_scheduler.h
+motion_buffer.obj: ../RoboClaw.h
+motion_buffer.obj: ../buffered_serial_C.h
 
 ../motion_buffer.c: 
 ../motion_buffer.h: 
@@ -189,3 +191,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../kinematics.h: 
 ../motion_buffer.h: 
 ../task_scheduler.h: 
+../RoboClaw.h: 
+../buffered_serial_C.h: 

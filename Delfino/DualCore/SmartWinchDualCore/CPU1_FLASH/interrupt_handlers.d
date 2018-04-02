@@ -94,6 +94,8 @@ interrupt_handlers.obj: ../MotionProfile.h
 interrupt_handlers.obj: ../kinematics.h
 interrupt_handlers.obj: ../motion_buffer.h
 interrupt_handlers.obj: ../task_scheduler.h
+interrupt_handlers.obj: ../RoboClaw.h
+interrupt_handlers.obj: ../buffered_serial_C.h
 
 ../interrupt_handlers.c: 
 ../interrupt_handlers.h: 
@@ -189,3 +191,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../kinematics.h: 
 ../motion_buffer.h: 
 ../task_scheduler.h: 
+../RoboClaw.h: 
+../buffered_serial_C.h: 

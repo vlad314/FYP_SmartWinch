@@ -2,22 +2,24 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="timeCalculation" key="selection"/>
+		<item value="TXIE_C" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="TXIE_B"/>
+			<item value="eusartTxBufferRemaining_B"/>
+			<item value="eusartTxBufferRemaining"/>
+			<item value="ReadBuffers"/>
 			<item value="timeCalculation"/>
 			<item value="sampleTime"/>
 			<item value="aSampleTime"/>
 			<item value="send_reply("/>
-			<item value="modbus_reply("/>
-			<item value="modbus_request("/>
-			<item value="crc("/>
-			<item value="crc"/>
 		</list>
 		<list key="replacehistory">
+			<item value="TXIE_C"/>
+			<item value="eusartTxBufferRemaining_C"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

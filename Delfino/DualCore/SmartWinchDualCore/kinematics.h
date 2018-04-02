@@ -36,6 +36,9 @@ extern XYZ_coord_struct_int generated_path[1024]; // maximum distance between po
 extern unsigned int total_path_points;
 
 signed long brensenham3d(signed long x0, signed long y0, signed long z0, signed long x1, signed long y1, signed long z1);
+
+int32_t length_to_encoder_pulses(int length_in_mm);
+int32_t encoder_pulses_to_length(int32_t encoder_pulses);
 //</Afdhal Atiff Tan>
 
 

@@ -15,28 +15,41 @@
 #define MODBUS_REGS_H_
 
 
-
-
 // Slave registers
 enum 
 {
     Winch_ID, //set via dip_switches
     Soft_Reset, //for emergency stop
 
-    Max_Velocity,       // this is in mm/s
-    Max_Acceleration,   // this is in mm/s^2
+    Max_Velocity,       // this is in mm/s used for motion control
+    Max_Acceleration,   // this is in mm/s^2 used for motion control
 
     Target_Setpoint, //for cable length in mm (absolute control)
     Target_Setpoint_Offset, //used for relative control
 
-    Kp,
-    Ki,
-    Kd,
+    //MCP266
+    Kp_velocity,
+    Ki_velocity,
+    Kd_velocity,
+    Max_Encoder_Feedrate, //max speed at 100% power in mm/s
+
+    //MCP266
+    Kp_position,
+    Ki_position,
+    Kd_position,
+
+    Kp, //legacy
+    Ki, //legacy
+    Kd, //legacy
     PID_Setpoint, //for motion planner (read only)
 
     Target_X,
     Target_Y,
     Target_Z,
+
+    Target_X_Offset,
+    Target_Y_Offset,
+    Target_Z_Offset,
 
     Field_Length, //in mm
     Field_Width, //in mm
@@ -71,15 +84,14 @@ enum
     ADC2,
     ADC3,
 
-    Global_Dwell_Time,
-
-    Homing_Flag,
+    Homing_Flag, //obsolete
     Kinematic_mode,
     Sync,
 
     Follow_Waypoints,
     Current_Waypoints_Pointer,
     Number_of_Waypoints,
+    Dwell_Time,
 
     //start of waypoints
     X1 = 64,
@@ -89,7 +101,7 @@ enum
     Y2,
     Z2, //etc..
 
-    MB_HREGS  = 4096 //should give ~1344 3D points
+    MB_HREGS  = 2048 
 };
 
 extern signed int modbus_holding_regs[MB_HREGS];

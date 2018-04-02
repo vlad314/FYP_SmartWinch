@@ -57,12 +57,12 @@
 unsigned char DEBUGGING;
 
 //Private prototypes and vars
-  unsigned char slave;
+  unsigned char slave, addressed_slave; //address_slave is used to detect for broadcast message
   unsigned char modbusRTU_Written = 0;  
   //unsigned long modbusRTU_written_register_flags = 0;
   bool modbusRTU_written_register_flags[64];
 
-  unsigned int crc(unsigned char *buf, unsigned char start, unsigned char cnt);
+  unsigned int modbus_crc(unsigned char *buf, unsigned char start, unsigned char cnt);
   void build_read_packet(unsigned char function, unsigned char count, unsigned char *packet);
   void build_write_packet(unsigned char function, unsigned int start_addr, unsigned char count, unsigned char *packet);
   void build_write_single_packet(unsigned char function, unsigned int write_addr, unsigned int reg_val, unsigned char* packet);
@@ -142,7 +142,7 @@ CRC
  	Note that this crc is only used for Modbus, not Modbus+ etc. 
  ****************************************************************************/
 
-unsigned int crc(unsigned char *buf, unsigned char start,
+unsigned int modbus_crc(unsigned char *buf, unsigned char start,
 unsigned char cnt) 
 {
         unsigned char i, j;
@@ -246,7 +246,7 @@ void modbus_reply(unsigned char *packet, unsigned char string_length)
 {
         int temp_crc;
 
-        temp_crc = crc(packet, 0, string_length);
+        temp_crc = modbus_crc(packet, 0, string_length);
         packet[string_length] = temp_crc >> 8;
         string_length++;
         packet[string_length] = temp_crc & 0x00FF;
@@ -264,12 +264,13 @@ void modbus_reply(unsigned char *packet, unsigned char string_length)
 
 int send_reply(unsigned char *query, unsigned char string_length) 
 {
-        unsigned char i;
+        if (addressed_slave == 0) //if it was a broadcast message, dont send any reply
+                return 0;
 
         modbus_reply(query, string_length);
         string_length += 2;
 
-
+        unsigned char i;
         //used for portability
         for (i = 0; i < string_length; i++) {
                 //Serial.print(char(query[i]));
@@ -288,8 +289,6 @@ int send_reply(unsigned char *query, unsigned char string_length)
 
         //experimental
         //USB_UART_SpiUartPutArray(query, string_length);
-
-
 
         return i; 		/* it does not mean that the write was succesful, though */
 }
@@ -367,7 +366,7 @@ int modbus_request(unsigned char *data)
         response_length = receive_request(data);
 
         if (response_length > 0) {
-                crc_calc = crc(data, 0, response_length - 2);
+                crc_calc = modbus_crc(data, 0, response_length - 2);
                 //recv_crc_hi = (unsigned) data[response_length - 2];
                 //recv_crc_lo = (unsigned) data[response_length - 1];
                 crc_received = data[response_length - 2];
@@ -381,9 +380,11 @@ int modbus_request(unsigned char *data)
                 }
 
                 /* check for slave id */
-                if (slave != data[SLAVE]) {
+                if (slave != data[SLAVE] && data[SLAVE] != 0) { //added brodcast on 31st March 2018 by Afdhal
                         return NO_REPLY;
                 }
+
+                addressed_slave = data[SLAVE]; //used to detect broadcast message
         }
         return (response_length);
 }
@@ -668,11 +669,8 @@ unsigned int regs_size)
                     //modbusRTU_written_register_flags |= 1<<(start_addr);
                     modbusRTU_written_register_flags[start_addr] = 1;
                     
-                    write_single_register(
-                    start_addr,
-                    query,
-                    regs);
-                    break;                                
+                    return write_single_register(start_addr, query, regs);
+                    //break;                                
                 }
         }      
         return 0;

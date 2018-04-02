@@ -74,7 +74,7 @@ void init_uart_A()
     SCI_performSoftwareReset(SCIA_BASE);
 
     // Configure SCIA for echoback.
-    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, 9600, (  SCI_CONFIG_WLEN_8 |
+    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, 115200, (  SCI_CONFIG_WLEN_8 |
                                                             SCI_CONFIG_STOP_ONE |
                                                             SCI_CONFIG_PAR_NONE));
     SCI_enableFIFO(SCIA_BASE);
@@ -118,6 +118,7 @@ void init_uart_B()
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_SCIRXDB, GPIO_DIR_MODE_IN);
     GPIO_setPadConfig(DEVICE_GPIO_PIN_SCIRXDB, GPIO_PIN_TYPE_PULLUP); //pullup, to allow multidrop
     GPIO_setQualificationMode(DEVICE_GPIO_PIN_SCIRXDB, GPIO_QUAL_ASYNC);
+    GPIO_writePin(DEVICE_GPIO_PIN_SCIRXDB, 1); //should enable pull-up
 
     //SCI Tx pin.
     GPIO_setMasterCore(DEVICE_GPIO_PIN_SCITXDB, GPIO_CORE_CPU1);
@@ -164,6 +165,63 @@ void init_uart_B()
     //
     Interrupt_register(INT_SCIB_RX, scibRXFIFOISR);
     Interrupt_register(INT_SCIB_TX, scibTXFIFOISR);
+}
+
+void init_uart_C()
+{
+    //SCI Rx pin.
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SCIRXDC, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SCIRXDC);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_SCIRXDC, GPIO_DIR_MODE_IN);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SCIRXDC, GPIO_PIN_TYPE_PULLUP); 
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SCIRXDC, GPIO_QUAL_ASYNC);
+	GPIO_writePin(DEVICE_GPIO_PIN_SCIRXDC, 1); //should enable pull-up
+
+    //SCI Tx pin.
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SCITXDC, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SCITXDC);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_SCITXDC, GPIO_DIR_MODE_OUT);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SCITXDC, GPIO_PIN_TYPE_STD); 
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SCITXDC, GPIO_QUAL_ASYNC);
+
+    // Initialize SCIC and its FIFO.
+    SCI_performSoftwareReset(SCIC_BASE);
+
+    // Configure SCIC for echoback.
+    SCI_setConfig(SCIC_BASE, DEVICE_LSPCLK_FREQ, 1000000, (  SCI_CONFIG_WLEN_8 |
+                                                            SCI_CONFIG_STOP_ONE |
+                                                            SCI_CONFIG_PAR_NONE));
+    SCI_enableFIFO(SCIC_BASE);
+    SCI_resetRxFIFO(SCIC_BASE);
+    SCI_resetTxFIFO(SCIC_BASE);
+
+    SCI_resetChannels(SCIC_BASE);
+    SCI_clearInterruptStatus(SCIC_BASE, SCI_INT_TXFF | SCI_INT_RXFF);
+    SCI_enableModule(SCIC_BASE);
+    SCI_performSoftwareReset(SCIC_BASE);
+
+    //
+    // RX and TX FIFO Interrupts Enabled
+    //
+    SCI_enableInterrupt(SCIC_BASE, (SCI_INT_RXFF | SCI_INT_TXFF));
+    SCI_disableInterrupt(SCIC_BASE, SCI_INT_RXERR);
+
+    SCI_setFIFOInterruptLevel(SCIC_BASE, SCI_FIFO_TX0, SCI_FIFO_RX1);
+    SCI_performSoftwareReset(SCIC_BASE);
+
+    Interrupt_enable(INT_SCIC_RX);
+    //Interrupt_enable(INT_SCIC_TX);
+
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP8);
+
+
+
+    //
+    // Interrupts that are used in this example are re-mapped to
+    // ISR functions found within this file.
+    //
+    Interrupt_register(INT_SCIC_RX, scicRXFIFOISR);
+    Interrupt_register(INT_SCIC_TX, scicTXFIFOISR);
 }
 
 void init_eqep()
@@ -341,7 +399,7 @@ void init_pwm()
     //
     // Enable ePWM interrupts
     //
-    Interrupt_enable(INT_EPWM2);
+    //Interrupt_enable(INT_EPWM2); //disabled for now
 
 
     //
@@ -439,6 +497,33 @@ void init_timer()
     CPUTimer_startTimer(CPUTIMER0_BASE);
 }
 
+//future: make this init function with auto recovery
+void init_roboclaw()
+{
+    RoboClaw_ForwardM1(RoboClaw_Address, 0x00); //force motor stop
+    RoboClaw_SetEncM1(RoboClaw_Address, 0x00); //center encoder
+
+    RoboClaw_SetM1VelocityPID(RoboClaw_Address,
+                                  (float)modbus_holding_regs[Kp_velocity],
+                                  (float)modbus_holding_regs[Ki_velocity],
+                                  (float)modbus_holding_regs[Kd_velocity],
+                                  length_to_encoder_pulses(modbus_holding_regs[Max_Encoder_Feedrate]));
+
+    RoboClaw_SetM1PositionPID(RoboClaw_Address,
+                                  (float)modbus_holding_regs[Kp_position],
+                                  (float)modbus_holding_regs[Ki_position],
+                                  (float)modbus_holding_regs[Kd_position],
+                                  255,  //Integral max - not sure how to set this
+                                  0,  //deadzone
+                                  0x80000000,  //min limit
+                                  0x7fffffff); //max limit                                     
+
+    //RoboClaw_SetM1MaxCurrent(RoboClaw_Address, 4000); //40A limit
+    //RoboClaw_SetPWMMode(RoboClaw_Address, uint16_t mode);    
+    //RoboClaw_SetMinVoltageMainBattery(RoboClaw_Address, uint16_t voltage);
+    //RoboClaw_SetMaxVoltageMainBattery(RoboClaw_Address, uint16_t voltage);
+}
+
 void init_smartwinch()
 {
     //
@@ -466,11 +551,13 @@ void init_smartwinch()
     init_gpio();
     init_uart_A(); //usb uart
     init_uart_B(); //Jumper1 uart
+    init_uart_C(); //Jumper5 uart
     init_eqep();
     init_pwm();
     init_adc();
     init_timer();
     modbusRTU_init();
+    init_roboclaw();
 
     //
     // Enable Global Interrupt (INTM) and realtime interrupt (DBGM)

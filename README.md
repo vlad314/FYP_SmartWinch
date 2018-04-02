@@ -12,3 +12,7 @@ MEng Final Year Group Project
 * MODBUS library taken from: https://www.cooking-hacks.com/documentation/tutorials/modbus-module-shield-tutorial-for-arduino-raspberry-pi-intel-galileo/
 * Motion Planner taken from: https://github.com/WRidder/MotionProfileGenerator
 * Board used: http://www.ti.com/tool/LAUNCHXL-F28379D
+* Temporary GUI: https://github.com/AfdhalAtiffTan/Cable_Robot_Control_Panel 
+* Motor driver used: http://www.ionmc.com/MCP266-Dual-60A-60VDC-Advanced-Motor-Controller_p_32.html 
+* Encoder used: https://uk.rs-online.com/web/p/rotary-encoders/9189095/ 
+* Motor used: https://www.robotshop.com/uk/12v-5310-rpm-cim-brushed-dc-motor.html

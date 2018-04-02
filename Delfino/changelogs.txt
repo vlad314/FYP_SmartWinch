@@ -52,3 +52,30 @@
 -slowed down heartbeat led
 -added debug functionality in modbusRTU
 -added relative length control (on top of absolute control)
+
+27th March 2018
+-added flush functionality in buffered serial
+-added roboclaw library
+
+28th March 2018
+-added SCIC for MCP266 interfacing
+-tested roboclaw library
+
+29th March 2018
+-added xyz relative control
+-added length and coordinate homing routine
+
+30th March 2018
+-discovered that mcp266 has bug
+
+31st March 2018
+-added modbus broadcast
+
+1st April 2018
+-looked into C nrf24 library, none imported yet
+
+2nd April 2018
+-added workarounds for mcp266:
+-position_pid is not working at 0 setpoint
+-homing will momentarily causes motor jerk if speed is non-zero
+-deadzone disabled as it only around 0 encoder count

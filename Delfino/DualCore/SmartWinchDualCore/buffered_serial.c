@@ -9,14 +9,14 @@
 #include "buffered_serial.h"
 
 // static data
-#define EUSART_TX_BUFFER_SIZE 0xFF
+#define EUSART_TX_BUFFER_SIZE 0x3F
 static char eusartTxHead = 0;
 static char eusartTxTail = 0;
 static char eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
 volatile char eusartTxBufferRemaining=EUSART_TX_BUFFER_SIZE;
 volatile char TXIE = 0;
 
-#define MAX_BUFF 0xFF
+#define MAX_BUFF 0x3F
 static char _receive_buffer[MAX_BUFF];
 static volatile char _receive_buffer_tail=0;
 static volatile char _receive_buffer_head=0;

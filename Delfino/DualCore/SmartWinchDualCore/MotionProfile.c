@@ -64,7 +64,7 @@ void init() {
 }
 
 float MotionProfile_update(float setpoint) {
-    unsigned long now = systick()/5;
+    unsigned long now = systick()/5; //millis
     unsigned long timeChange = (now - lastTime);
 
     if(timeChange >= sampleTime) {

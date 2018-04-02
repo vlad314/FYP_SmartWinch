@@ -30,4 +30,7 @@ __interrupt void sciaRXFIFOISR(void);
 __interrupt void scibTXFIFOISR(void);
 __interrupt void scibRXFIFOISR(void);
 
+__interrupt void scicTXFIFOISR(void);
+__interrupt void scicRXFIFOISR(void);
+
 #endif /* INTERRUPT_HANDLERS_H_ */

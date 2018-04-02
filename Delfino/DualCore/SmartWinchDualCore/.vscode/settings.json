@@ -6,6 +6,8 @@
         "math.h": "c",
         "stdio.h": "c",
         "stdlib.h": "c",
-        "modbusrtu.h": "c"
+        "modbusrtu.h": "c",
+        "buffered_serial_c.h": "c",
+        "interrupt_handlers.h": "c"
     }
 }

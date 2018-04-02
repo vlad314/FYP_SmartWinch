@@ -94,6 +94,8 @@ buffered_serial.obj: ../MotionProfile.h
 buffered_serial.obj: ../kinematics.h
 buffered_serial.obj: ../motion_buffer.h
 buffered_serial.obj: ../task_scheduler.h
+buffered_serial.obj: ../RoboClaw.h
+buffered_serial.obj: ../buffered_serial_C.h
 
 ../buffered_serial.c: 
 ../buffered_serial.h: 
@@ -189,3 +191,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../kinematics.h: 
 ../motion_buffer.h: 
 ../task_scheduler.h: 
+../RoboClaw.h: 
+../buffered_serial_C.h: 

@@ -242,6 +242,53 @@
 -received ps2 joystick from syahidah (thank you!) and tested it, works great
 -added external pull-resistor to the joystick to improve response time
 
-3rd March
+3rd March 2018
 -drafted homing algorithm for manual, semi auto, and auto mode
 
+7th March 2018
+-had a meeting with vlad and antony, discussion on firmware
+-received molex connectors from syahidah
+
+8th March 2018
+-borrowed crimping tools from C26
+-crimped 6 cables for encoder input on mcp266 module
+
+17th March 2018
+-added trajectory buffer on delfino (see changelog)
+
+18th March 2018
+-added task scheduler on delfino (see changelog)
+
+19th March 2018
+-made simple nrf24f01 based transparent wireless-uart bridge
+
+20th March 2018
+-made simple toolhead for demonstration
+
+22nd March 2018
+-added GUI basic layout (non working) on github
+
+26th March 2018
+-moved GUI files to its own dedicated repo
+-preAlpha version of GUI pushed
+
+27th March 2018
+-received 5 mcp266 modules from antony and tested all of them, works fine
+-added roboclaw library
+
+28th March 2018
+-received rotary encoder from antony, tested on mcp266, rs422 works fine and it reports 8192 counts/rev
+-tested roboclaw library
+
+30th March 2018
+-researched KNX, found no pre-made library
+
+31st March 2018
+-added modbus broadcast
+-contacted ion_mc asking them about firmware bug
+
+1st April 2018
+-drafted emergency stops: non-moving motor and non-responding mcp266
+
+2nd April 2018
+-added workarounds for mcp266
