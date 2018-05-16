@@ -96,6 +96,8 @@ buffered_serial.obj: ../motion_buffer.h
 buffered_serial.obj: ../task_scheduler.h
 buffered_serial.obj: ../RoboClaw.h
 buffered_serial.obj: ../buffered_serial_C.h
+buffered_serial.obj: ../safety_routines.h
+buffered_serial.obj: ../autonomous_mode.h
 
 ../buffered_serial.c: 
 ../buffered_serial.h: 
@@ -193,3 +195,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../task_scheduler.h: 
 ../RoboClaw.h: 
 ../buffered_serial_C.h: 
+../safety_routines.h: 
+../autonomous_mode.h: 

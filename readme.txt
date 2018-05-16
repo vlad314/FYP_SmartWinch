@@ -1,0 +1,1 @@
+The latest firmware can be found on https://github.com/AfdhalAtiffTan/FYP_SmartWinch

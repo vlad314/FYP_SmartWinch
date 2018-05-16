@@ -1,0 +1,169 @@
+    //read WinchId on dip-switches - added on 18th feb 2018
+    //modbus_holding_regs[Winch_ID] = 0x03^((GPIO_readPin(DEVICE_GPIO_PIN_ID0)<<1) | (GPIO_readPin(DEVICE_GPIO_PIN_ID1))); //active-low switches
+
+    //MotionProfile((float) modbus_holding_regs[Max_Velocity], (float) modbus_holding_regs[Max_Acceleration], 1, 0);
+	
+
+
+/*
+        //update per second
+        static uint32_t prev_systick = 0;
+        if(systick() - prev_systick > 500)
+        {
+            prev_systick = systick();            
+            GPIO_togglePin(DEVICE_GPIO_PIN_LED1);           
+        }   
+*/
+
+        // //update per second
+        // static uint32_t prev_systick = 0;
+        // if(systick() - prev_systick > 5000)
+        // {
+        //     prev_systick = systick();
+            
+        //     // //motion control
+        //     // MotionProfile_setMaxVelocity((float) modbus_holding_regs[Max_Velocity]);
+        //     // MotionProfile_setMaxAcceleration((float) modbus_holding_regs[Max_Acceleration]);            
+        // }  
+
+        // //testing rc pwm
+        // HRPWM_setCounterCompareValue(   EPWM2_BASE, HRPWM_COUNTER_COMPARE_A,
+        //                                 (((uint32_t) modbus_holding_regs[rc_pwm_H]<<16) ^ (modbus_holding_regs[rc_pwm_L])));
+		
+		
+		
+		
+		
+        //timing matt's apis        
+        /*
+        // GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1);
+        // XYZ_coord_struct coord_out;
+        // coord_out = tenandsag2coord((float)modbus_holding_regs[Current_Force_Winch0]    * 0.0098066500286389f, 
+        //                             (float)modbus_holding_regs[Current_Force_Winch1]    * 0.0098066500286389f, 
+        //                             (float)modbus_holding_regs[Current_Force_Winch2]    * 0.0098066500286389f, 
+        //                             (float)modbus_holding_regs[Current_Force_Winch3]    * 0.0098066500286389f, 
+        //                             (float)modbus_holding_regs[Current_Length_Winch0]   /1000.0f, 
+        //                             (float)modbus_holding_regs[Current_Length_Winch1]   /1000.0f, 
+        //                             (float)modbus_holding_regs[Current_Length_Winch2]   /1000.0f, 
+        //                             (float)modbus_holding_regs[Current_Length_Winch3]   /1000.0f, 
+        //                             (float)modbus_holding_regs[Field_Length]            /1000.0f);
+        // coord_out.X *= 1000;
+        // coord_out.Y *= 1000;
+        // coord_out.Z *= 1000;        
+        // modbus_holding_regs[kinematics_test_X] = (int) coord_out.X;
+        // modbus_holding_regs[kinematics_test_Y] = (int) coord_out.Y;
+        // modbus_holding_regs[kinematics_test_Z] = (int) coord_out.Z;
+        // GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0);
+        */		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+void simple_homing_routine() //old version
+{
+    static length4_struct homed_cable_lengths;
+
+    if(modbus_holding_regs[Homing_Flag] != 0) //if force_homing triggered
+    {
+        modbus_holding_regs[Homing_Flag] = 0; //acknowledge request
+
+        modbus_holding_regs[Target_X] = 0;
+        modbus_holding_regs[Target_Y] = 0;
+        modbus_holding_regs[Target_Z] = 0;
+
+        modbus_holding_regs[Current_X] = 0;
+        modbus_holding_regs[Current_Y] = 0;
+        modbus_holding_regs[Current_Z] = 0;
+
+        homed_cable_lengths = XYZ_to_length4(  	(float) modbus_holding_regs[0], //assuming homed position is at <0, 0, 0>
+                                                (float) modbus_holding_regs[0], //bugs! (not fixed yet)
+                                                (float) modbus_holding_regs[0], 
+                                                (float) modbus_holding_regs[Field_Length]);
+
+        modbus_holding_regs[Target_Length_Winch0] = homed_cable_lengths.lengtha;
+        modbus_holding_regs[Target_Length_Winch1] = homed_cable_lengths.lengthb;
+        modbus_holding_regs[Target_Length_Winch2] = homed_cable_lengths.lengthc;
+        modbus_holding_regs[Target_Length_Winch3] = homed_cable_lengths.lengthd;
+
+        modbus_holding_regs[Current_Length_Winch0] = homed_cable_lengths.lengtha;
+        modbus_holding_regs[Current_Length_Winch1] = homed_cable_lengths.lengthb;
+        modbus_holding_regs[Current_Length_Winch2] = homed_cable_lengths.lengthc;
+        modbus_holding_regs[Current_Length_Winch3] = homed_cable_lengths.lengthd;
+
+        switch(modbus_holding_regs[Winch_ID])
+        {
+            case 0:
+            {
+                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengtha;
+                break;
+            }
+            case 1:
+            {
+                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengthb;
+                break;
+            }
+            case 2:
+            {
+                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengthc;
+                break;
+            }
+            case 3:
+            {
+                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengthd;
+                break;
+            }
+        }
+
+        //to ensure no sudden jerk
+        //to do: remove jerk from motion profile
+        modbus_holding_regs[Current_Encoder_Count] = modbus_holding_regs[Target_Setpoint];
+        MotionProfile_reset_position((float) modbus_holding_regs[Target_Setpoint]); //used to remove jerk, not sure if it work yet
+
+        //count = cable_length * pulse_per_revolution * gear_ratio / spool_diameter / PI
+        //uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 32.0f * 120.0f / 15.0f / 3.14159265359f);
+        uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 81.48733086f);
+        homed_length += 0x80000000; //this offset is to allow negative length
+
+        EQEP_setPosition(EQEP1_BASE, homed_length);
+    }    
+}
+
+
+
+
+
+
+
+
+
+void fetch_current_rpm() //legacy
+{
+    //if a full 32-pulse was received (i.e. one full motor revolution has happened)
+    if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_UNIT_POS_EVNT) != 0)
+    {
+        //
+        // No capture overflow, i.e. if 2 consecutive revolutions happened within 10ms
+        //
+        if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_CAP_OVRFLW_ERROR) == 0)
+        {
+            float rpm = (DEVICE_SYSCLK_FREQ / 128.0) / 2.0 / EQEP_getCapturePeriodLatch(EQEP1_BASE) / 4; // 60 seconds / 120 gearbox_ratio = 2
+            modbus_holding_regs[Current_RPM] = (int) rpm;
+        }
+
+
+        //
+        // Clear unit position event flag and overflow error flag
+        //
+        EQEP_clearStatus(EQEP1_BASE, (EQEP_STS_UNIT_POS_EVNT |
+                                      EQEP_STS_CAP_OVRFLW_ERROR));
+    }
+    else
+    {
+        modbus_holding_regs[Current_RPM] = 0;
+    }    
+}		

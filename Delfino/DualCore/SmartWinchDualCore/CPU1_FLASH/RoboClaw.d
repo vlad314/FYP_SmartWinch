@@ -95,6 +95,8 @@ RoboClaw.obj: ../kinematics.h
 RoboClaw.obj: ../motion_buffer.h
 RoboClaw.obj: ../task_scheduler.h
 RoboClaw.obj: ../RoboClaw.h
+RoboClaw.obj: ../safety_routines.h
+RoboClaw.obj: ../autonomous_mode.h
 RoboClaw.obj: ../buffered_serial_C.h
 
 ../RoboClaw.c: 
@@ -192,4 +194,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../motion_buffer.h: 
 ../task_scheduler.h: 
 ../RoboClaw.h: 
+../safety_routines.h: 
+../autonomous_mode.h: 
 ../buffered_serial_C.h: 

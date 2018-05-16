@@ -30,10 +30,10 @@ void bidirectional_motor(signed long pwm)
     //forward
     if(pwm >= 0)
     {
-        HRPWM_setCounterCompareValue(EPWM2_BASE,
+        HRPWM_setCounterCompareValue(EPWM3_BASE,
                                      HRPWM_COUNTER_COMPARE_A,
                                     pwm);
-        HRPWM_setCounterCompareValue(EPWM2_BASE,
+        HRPWM_setCounterCompareValue(EPWM3_BASE,
                                      HRPWM_COUNTER_COMPARE_B,
                                     0);
     }
@@ -43,10 +43,10 @@ void bidirectional_motor(signed long pwm)
     {
         pwm *= -1;
 
-        HRPWM_setCounterCompareValue(EPWM2_BASE,
+        HRPWM_setCounterCompareValue(EPWM3_BASE,
                                      HRPWM_COUNTER_COMPARE_A,
                                     0);
-        HRPWM_setCounterCompareValue(EPWM2_BASE,
+        HRPWM_setCounterCompareValue(EPWM3_BASE,
                                      HRPWM_COUNTER_COMPARE_B,
                                     pwm);
     }

@@ -96,6 +96,8 @@ device_init.obj: ../motion_buffer.h
 device_init.obj: ../task_scheduler.h
 device_init.obj: ../RoboClaw.h
 device_init.obj: ../buffered_serial_C.h
+device_init.obj: ../safety_routines.h
+device_init.obj: ../autonomous_mode.h
 
 ../device_init.c: 
 ../device_init.h: 
@@ -193,3 +195,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../task_scheduler.h: 
 ../RoboClaw.h: 
 ../buffered_serial_C.h: 
+../safety_routines.h: 
+../autonomous_mode.h: 

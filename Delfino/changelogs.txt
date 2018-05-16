@@ -79,3 +79,24 @@
 -position_pid is not working at 0 setpoint
 -homing will momentarily causes motor jerk if speed is non-zero
 -deadzone disabled as it only around 0 encoder count
+
+17th April 2018
+-added spi_A init
+-added ads1220 init
+-added rc pwm
+-added load cell reading
+-updated pin mapping
+
+18th April 2018
+-fixed spi mode problem on the load cell
+-added tare and calibration regs
+
+8th May 2018
+-added zero force mode
+-added reel in/out button
+-added loadcell and mcp safety routine
+
+16th May 2018
+-added autonomous mode
+-added safety feature
+-added new functions

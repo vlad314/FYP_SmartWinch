@@ -16,3 +16,10 @@ MEng Final Year Group Project
 * Motor driver used: http://www.ionmc.com/MCP266-Dual-60A-60VDC-Advanced-Motor-Controller_p_32.html 
 * Encoder used: https://uk.rs-online.com/web/p/rotary-encoders/9189095/ 
 * Motor used: https://www.robotshop.com/uk/12v-5310-rpm-cim-brushed-dc-motor.html
+* Gearbox: https://www.robotshop.com/uk/banebots-p80-single-cim-gearbox-64.html
+* Small scale motor: https://www.dfrobot.com/wiki/index.php/Micro_DC_Motor_with_Encoder-SJ02_SKU:_FIT0458
+* Tension sensor: https://www.robotshop.com/uk/type-s-load-cell-100-kg.html 
+* Wireless module: https://pycom.io/product/lopy4/ 
+* Remote controller: http://www.techmonkeybusiness.com/using-a-playstation-2-controller-with-your-arduino-project.html
+* Small scale motor mount: https://www.thingiverse.com/thing:2908160
+* Simple winch calculator: https://github.com/AfdhalAtiffTan/WinchBatteryCalc

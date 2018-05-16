@@ -22,7 +22,7 @@ volatile extern uint16_t adc_temp;*/
 
 volatile extern PID pid1;
 
-__interrupt void epwm2ISR(void);
+__interrupt void epwm3ISR(void);
 
 __interrupt void sciaTXFIFOISR(void);
 __interrupt void sciaRXFIFOISR(void);

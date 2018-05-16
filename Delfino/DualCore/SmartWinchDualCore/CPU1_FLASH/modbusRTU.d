@@ -96,6 +96,8 @@ modbusRTU.obj: ../motion_buffer.h
 modbusRTU.obj: ../task_scheduler.h
 modbusRTU.obj: ../RoboClaw.h
 modbusRTU.obj: ../buffered_serial_C.h
+modbusRTU.obj: ../safety_routines.h
+modbusRTU.obj: ../autonomous_mode.h
 
 ../modbusRTU.c: 
 ../modbusRTU.h: 
@@ -193,3 +195,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../task_scheduler.h: 
 ../RoboClaw.h: 
 ../buffered_serial_C.h: 
+../safety_routines.h: 
+../autonomous_mode.h: 

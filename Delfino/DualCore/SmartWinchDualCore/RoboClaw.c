@@ -1,6 +1,6 @@
 #include "RoboClaw.h"
 #include <stdbool.h>
-#define MAXRETRY 2
+#define MAXRETRY 0
 #define SetDWORDval(arg) (uint16_t)(((uint32_t)arg)>>24),(uint16_t)(((uint32_t)arg)>>16),(uint16_t)(((uint32_t)arg)>>8),(uint16_t)arg
 #define SetWORDval(arg) (uint16_t)(((uint16_t)arg)>>8),(uint16_t)arg
 
@@ -45,15 +45,23 @@ void flush()
 int read(uint32_t timeout)
 {
 	uint32_t start = systick(); //was micros
+
+	uint32_t timeout_temp = timeout;
+
+	if(dip_switch.BIT6) //ignore mcp266 reply switch
+		timeout_temp = 0;
+
 	// Empty buffer?
 	while(!available()){
-		if((systick()-start)>=(timeout/200)) //200us per systick
+		if((systick()-start)>=(timeout_temp/200)) //200us per systick
 		{
 			GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0); //if the mcp266 is not responding, then, turn on the warning led (active-low)
+			modbus_holding_regs[mcp266_error] = 1;
 			return -1;
 		}
 	}
 	GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1); //if the mcp266 is responding, then, turn off the warning led (active-low)
+	modbus_holding_regs[mcp266_error] = 0;
 	return buffered_serial_C_read();
 }
 
@@ -102,13 +110,13 @@ bool write_n(uint16_t cnt, ... )
 		write(crc);
 		if(read(timeout)==0xFF)
 		{
-			GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1); //if the mcp266 is responding, then, turn off the warning led (active-low)
+			//GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1); //if the mcp266 is responding, then, turn off the warning led (active-low)
 			return true;
 		}
 			
 	}while(trys--);
 
-	GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0); //if the mcp266 is not responding, then, turn on the warning led (active-low)
+	//GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0); //if the mcp266 is not responding, then, turn on the warning led (active-low)
 	return false;
 }
 

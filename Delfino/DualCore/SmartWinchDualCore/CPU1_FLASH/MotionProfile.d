@@ -96,6 +96,8 @@ MotionProfile.obj: ../motion_buffer.h
 MotionProfile.obj: ../task_scheduler.h
 MotionProfile.obj: ../RoboClaw.h
 MotionProfile.obj: ../buffered_serial_C.h
+MotionProfile.obj: ../safety_routines.h
+MotionProfile.obj: ../autonomous_mode.h
 
 ../MotionProfile.c: 
 ../MotionProfile.h: 
@@ -193,3 +195,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../task_scheduler.h: 
 ../RoboClaw.h: 
 ../buffered_serial_C.h: 
+../safety_routines.h: 
+../autonomous_mode.h: 

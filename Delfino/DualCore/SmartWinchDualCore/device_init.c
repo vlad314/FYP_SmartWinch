@@ -29,12 +29,26 @@ void init_gpio()
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED2, GPIO_DIR_MODE_OUT);
 
     //////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //////////////////////////////////////////////
     //<for setting winchID via 2-bit dip-switches>
-    //set pin61 and pin123 as gpio
     GPIO_setPinConfig(DEVICE_GPIO_CFG_ID0);
     GPIO_setPinConfig(DEVICE_GPIO_CFG_ID1);
 
-    //set pull up on gpio61 and gpio123
+    //set pull up 
     GPIO_setPadConfig(DEVICE_GPIO_PIN_ID0, GPIO_PIN_TYPE_PULLUP);
     GPIO_setPadConfig(DEVICE_GPIO_PIN_ID1, GPIO_PIN_TYPE_PULLUP);
 
@@ -44,14 +58,141 @@ void init_gpio()
 
     //////////////////////////////////////////////
     //<for debug mode switche>
-    //set pin61 and pin123 as gpio
     GPIO_setPinConfig(DEVICE_GPIO_CFG_DBG);
 
-    //set pull up on gpio61 and gpio123
+    //set pull up
     GPIO_setPadConfig(DEVICE_GPIO_PIN_DBG, GPIO_PIN_TYPE_PULLUP);
 
-    //set both pins as input
+    //set both pin
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_DBG, GPIO_DIR_MODE_IN);
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //////////////////////////////////////////////
+    //<for emergency stop switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_EMERGENCY_STOP);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_EMERGENCY_STOP, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_EMERGENCY_STOP, GPIO_DIR_MODE_IN);
+
+    GPIO_writePin(DEVICE_GPIO_PIN_EMERGENCY_STOP, 1);
+
+    //////////////////////////////////////////////    
+    //////////////////////////////////////////////
+    //<for zero tether switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_ZERO_TETHER);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_ZERO_TETHER, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_ZERO_TETHER, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //<for reel out switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_REEL_OUT);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_REEL_OUT, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_REEL_OUT, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //<for reel in switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_REEL_IN);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_REEL_IN, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_REEL_IN, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //<for zero force switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_ZERO_FORCE);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_ZERO_FORCE, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_ZERO_FORCE, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //<for right limit switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_RIGHT_LIMIT);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_RIGHT_LIMIT, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_RIGHT_LIMIT, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //<for left limit switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_LEFT_LIMIT);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_LEFT_LIMIT, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_LEFT_LIMIT, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////
+
+
+    //////////////////////////////////////////////
+    //<for dip switch>
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B0);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B2);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B3);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B4);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B5);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B6);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_B7);
+
+    //set pull up
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B0, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B1, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B2, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B3, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B4, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B5, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B6, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_B7, GPIO_PIN_TYPE_PULLUP);
+
+    //set pin as input
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B0, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B1, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B2, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B3, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B4, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B5, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B6, GPIO_DIR_MODE_IN);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_B7, GPIO_DIR_MODE_IN);
+
+    //////////////////////////////////////////////    
 }
 
 void init_uart_A()
@@ -124,14 +265,14 @@ void init_uart_B()
     GPIO_setMasterCore(DEVICE_GPIO_PIN_SCITXDB, GPIO_CORE_CPU1);
     GPIO_setPinConfig(DEVICE_GPIO_CFG_SCITXDB);
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_SCITXDB, GPIO_DIR_MODE_OUT);
-    GPIO_setPadConfig(DEVICE_GPIO_PIN_SCITXDB, GPIO_PIN_TYPE_OD); //open drain output, to allow multidrop
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SCITXDB, GPIO_PIN_TYPE_STD); //was open drain
     GPIO_setQualificationMode(DEVICE_GPIO_PIN_SCITXDB, GPIO_QUAL_ASYNC);
 
     // Initialize SCIB and its FIFO.
     SCI_performSoftwareReset(SCIB_BASE);
 
     // Configure SCIB for echoback.
-    SCI_setConfig(SCIB_BASE, DEVICE_LSPCLK_FREQ, 9600, (  SCI_CONFIG_WLEN_8 |
+    SCI_setConfig(SCIB_BASE, DEVICE_LSPCLK_FREQ, 115200, (  SCI_CONFIG_WLEN_8 |
                                                             SCI_CONFIG_STOP_ONE |
                                                             SCI_CONFIG_PAR_NONE));
     SCI_enableFIFO(SCIB_BASE);
@@ -297,83 +438,83 @@ void init_pwm()
     //
     // Configure the SOC to occur on the first up-count event
     //
-    EPWM_setADCTriggerSource(EPWM2_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_ZERO); //may need optimisation (sync)
-    EPWM_setADCTriggerEventPrescale(EPWM2_BASE, EPWM_SOC_A, 1); //may need optimisation if hifreq pwm is used
+    EPWM_setADCTriggerSource(EPWM3_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_ZERO); //may need optimisation (sync)
+    EPWM_setADCTriggerEventPrescale(EPWM3_BASE, EPWM_SOC_A, 1); //may need optimisation if hifreq pwm is used
 
     //
     // Enabling SOCA (start-of-conversion)
     //
-    EPWM_enableADCTrigger(EPWM2_BASE, EPWM_SOC_A);
+    EPWM_enableADCTrigger(EPWM3_BASE, EPWM_SOC_A);
 
 
 
     //
     // Clear Compare values
     //
-    EPWM_setCounterCompareValue(EPWM2_BASE,
+    EPWM_setCounterCompareValue(EPWM3_BASE,
                                 EPWM_COUNTER_COMPARE_A,
                                 0);
-    EPWM_setCounterCompareValue(EPWM2_BASE,
+    EPWM_setCounterCompareValue(EPWM3_BASE,
                                 EPWM_COUNTER_COMPARE_B,
                                 0);
 
 
-    GPIO_setPinConfig(DEVICE_GPIO_CFG_EPWM2A);
-    GPIO_setPinConfig(DEVICE_GPIO_CFG_EPWM2B);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_EPWM3A);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_EPWM3B);
 
-    GPIO_setPadConfig(DEVICE_GPIO_PIN_EPWM2A, GPIO_PIN_TYPE_STD);
-    GPIO_setPadConfig(DEVICE_GPIO_PIN_EPWM2B, GPIO_PIN_TYPE_STD);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_EPWM3A, GPIO_PIN_TYPE_STD);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_EPWM3B, GPIO_PIN_TYPE_STD);
 
-    GPIO_writePin(DEVICE_GPIO_PIN_EPWM2A, 0);
-    GPIO_writePin(DEVICE_GPIO_PIN_EPWM2B, 0);
+    GPIO_writePin(DEVICE_GPIO_PIN_EPWM3A, 0);
+    GPIO_writePin(DEVICE_GPIO_PIN_EPWM3B, 0);
 
-    GPIO_setDirectionMode(DEVICE_GPIO_PIN_EPWM2A, GPIO_DIR_MODE_OUT);
-    GPIO_setDirectionMode(DEVICE_GPIO_PIN_EPWM2B, GPIO_DIR_MODE_OUT);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_EPWM3A, GPIO_DIR_MODE_OUT);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_EPWM3B, GPIO_DIR_MODE_OUT);
 
 
     //
     // Set-up TBCLK
     //
-    EPWM_setTimeBasePeriod(EPWM2_BASE, 0xffff);
-    EPWM_setPhaseShift(EPWM2_BASE, 0U);
-    EPWM_setTimeBaseCounter(EPWM2_BASE, 0U);
+    EPWM_setTimeBasePeriod(EPWM3_BASE, 0xffff);
+    EPWM_setPhaseShift(EPWM3_BASE, 0U);
+    EPWM_setTimeBaseCounter(EPWM3_BASE, 0U);
 
 
     //
     // Set up counter mode
     //
-    EPWM_setTimeBaseCounterMode(EPWM2_BASE, EPWM_COUNTER_MODE_UP_DOWN);
-    EPWM_disablePhaseShiftLoad(EPWM2_BASE);
-    EPWM_setClockPrescaler(EPWM2_BASE,
-                           EPWM_CLOCK_DIVIDER_1,
-                           EPWM_HSCLOCK_DIVIDER_1);
+    EPWM_setTimeBaseCounterMode(EPWM3_BASE, EPWM_COUNTER_MODE_UP_DOWN);
+    EPWM_disablePhaseShiftLoad(EPWM3_BASE);
+    EPWM_setClockPrescaler(EPWM3_BASE,
+                           EPWM_CLOCK_DIVIDER_16,
+                           EPWM_HSCLOCK_DIVIDER_1); //the pwm freq now is 200MHz/2(internal)/2(updown)/2^16(period)/16(clkdiv) = 47.68Hz
 
     //
     // Set up shadowing
     //
-    EPWM_setCounterCompareShadowLoadMode(EPWM2_BASE,
+    EPWM_setCounterCompareShadowLoadMode(EPWM3_BASE,
                                          EPWM_COUNTER_COMPARE_A,
                                          EPWM_COMP_LOAD_ON_CNTR_ZERO_PERIOD);
-    EPWM_setCounterCompareShadowLoadMode(EPWM2_BASE,
+    EPWM_setCounterCompareShadowLoadMode(EPWM3_BASE,
                                          EPWM_COUNTER_COMPARE_B,
                                          EPWM_COMP_LOAD_ON_CNTR_ZERO_PERIOD);
 
     //
     // Set actions
     //
-    EPWM_setActionQualifierAction(EPWM2_BASE,
+    EPWM_setActionQualifierAction(EPWM3_BASE,
                                   EPWM_AQ_OUTPUT_A,
                                   EPWM_AQ_OUTPUT_HIGH,
                                   EPWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
-    EPWM_setActionQualifierAction(EPWM2_BASE,
+    EPWM_setActionQualifierAction(EPWM3_BASE,
                                   EPWM_AQ_OUTPUT_A,
                                   EPWM_AQ_OUTPUT_LOW,
                                   EPWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);
-    EPWM_setActionQualifierAction(EPWM2_BASE,
+    EPWM_setActionQualifierAction(EPWM3_BASE,
                                   EPWM_AQ_OUTPUT_B,
                                   EPWM_AQ_OUTPUT_HIGH,
                                   EPWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);
-    EPWM_setActionQualifierAction(EPWM2_BASE,
+    EPWM_setActionQualifierAction(EPWM3_BASE,
                                   EPWM_AQ_OUTPUT_B,
                                   EPWM_AQ_OUTPUT_LOW,
                                   EPWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB);
@@ -382,24 +523,24 @@ void init_pwm()
     //
     // Setting up high resolution pwm
     //
-    HRPWM_setMEPControlMode(EPWM2_BASE, HRPWM_CHANNEL_A, HRPWM_MEP_DUTY_PERIOD_CTRL);
-    HRPWM_setMEPControlMode(EPWM2_BASE, HRPWM_CHANNEL_B, HRPWM_MEP_DUTY_PERIOD_CTRL);
-    HRPWM_setMEPEdgeSelect(EPWM2_BASE, HRPWM_CHANNEL_A, HRPWM_MEP_CTRL_RISING_EDGE);
-    HRPWM_setMEPEdgeSelect(EPWM2_BASE, HRPWM_CHANNEL_B, HRPWM_MEP_CTRL_RISING_EDGE);
-    HRPWM_setMEPStep(EPWM2_BASE, 0xff);
+    HRPWM_setMEPControlMode(EPWM3_BASE, HRPWM_CHANNEL_A, HRPWM_MEP_DUTY_PERIOD_CTRL);
+    HRPWM_setMEPControlMode(EPWM3_BASE, HRPWM_CHANNEL_B, HRPWM_MEP_DUTY_PERIOD_CTRL);
+    HRPWM_setMEPEdgeSelect(EPWM3_BASE, HRPWM_CHANNEL_A, HRPWM_MEP_CTRL_RISING_EDGE);
+    HRPWM_setMEPEdgeSelect(EPWM3_BASE, HRPWM_CHANNEL_B, HRPWM_MEP_CTRL_RISING_EDGE);
+    HRPWM_setMEPStep(EPWM3_BASE, 0xff);
 
 
 
     //
     // Assign the interrupt service routines to ePWM interrupt
     //
-    Interrupt_register(INT_EPWM2, &epwm2ISR);
+    Interrupt_register(INT_EPWM3, &epwm3ISR);
 
 
     //
     // Enable ePWM interrupts
     //
-    //Interrupt_enable(INT_EPWM2); //disabled for now
+    //Interrupt_enable(INT_EPWM3); //disabled for now
 
 
     //
@@ -407,9 +548,9 @@ void init_pwm()
     // Select INT on Time base counter zero event,
     // Enable INT, generate INT on 8th event
     //
-    EPWM_setInterruptSource(EPWM2_BASE, EPWM_INT_TBCTR_ZERO);
-    EPWM_enableInterrupt(EPWM2_BASE);
-    EPWM_setInterruptEventCount(EPWM2_BASE, 8U); /* 763/8 = 95Hz interrupt */
+    EPWM_setInterruptSource(EPWM3_BASE, EPWM_INT_TBCTR_ZERO);
+    EPWM_enableInterrupt(EPWM3_BASE);
+    EPWM_setInterruptEventCount(EPWM3_BASE, 8U); /* 763/8 = 95Hz interrupt */
 }
 
 void init_adc()
@@ -437,17 +578,17 @@ void init_adc()
     DEVICE_DELAY_US(1000);
 
     //
-    // Configure SOC of ADCD to convert pins on J21. The EPWM2SOCA signal will be
+    // Configure SOC of ADCD to convert pins on J21. The EPWM3SOCA signal will be
     // the trigger.
     //
     // For 12-bit resolution, a sampling window of 15 (75 ns at a 200MHz
     // SYSCLK rate) will be used.  For 16-bit resolution, a sampling window of
     // 64 (320 ns at a 200MHz SYSCLK rate) will be used.
     //
-    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN0, 15);
-    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN1, 15);
-    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER2, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN2, 15);
-    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER3, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN3, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM3_SOCA, ADC_CH_ADCIN0, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM3_SOCA, ADC_CH_ADCIN1, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER2, ADC_TRIGGER_EPWM3_SOCA, ADC_CH_ADCIN2, 15);
+    ADC_setupSOC(ADCD_BASE, ADC_SOC_NUMBER3, ADC_TRIGGER_EPWM3_SOCA, ADC_CH_ADCIN3, 15);
 
 
 
@@ -495,6 +636,97 @@ void init_timer()
     // Starts CPU-Timer 0
     //
     CPUTimer_startTimer(CPUTIMER0_BASE);
+}
+
+//this spi is used for ads1220
+void init_spi_A()
+{
+    //
+    // Must put SPI into reset before configuring it
+    //
+    SPI_disableModule(SPIA_BASE);
+
+
+    //SOMI
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPISOMIA, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPISOMIA);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPISOMIA, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPISOMIA, GPIO_QUAL_ASYNC);
+
+    //SIMO
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPISIMOA, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPISIMOA);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPISIMOA, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPISIMOA, GPIO_QUAL_ASYNC);
+
+    //SPISTE
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPISTEA, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPISTEA);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPISTEA, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPISTEA, GPIO_QUAL_ASYNC);
+
+    //SPICLK
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPICLKA, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPICLKA);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPICLKA, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPICLKA, GPIO_QUAL_ASYNC);    
+
+    //SPI IRQ
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPIIRQA);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPIIRQA, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_SPIIRQA, GPIO_DIR_MODE_IN);
+
+
+    
+
+    //
+    // SPI configuration. Use a 1MHz SPICLK, Mode-1, and 8-bit word size.
+    //
+    SPI_setConfig(SPIA_BASE, DEVICE_LSPCLK_FREQ, SPI_PROT_POL0PHA0,
+                  SPI_MODE_MASTER, 1000000, 8);
+    SPI_disableLoopback(SPIA_BASE);
+    SPI_setEmulationMode(SPIA_BASE, SPI_EMULATION_FREE_RUN);
+    
+    //
+    // FIFO and interrupt configuration
+    //
+    SPI_enableFIFO(SPIA_BASE);
+    //SPI_clearInterruptStatus(SPIA_BASE, SPI_INT_TXFF);
+    //SPI_setFIFOInterruptLevel(SPIA_BASE, SPI_FIFO_TX2, SPI_FIFO_RX2);
+    //SPI_enableInterrupt(SPIA_BASE, SPI_INT_TXFF);
+
+    SPI_setSTESignalPolarity (SPIA_BASE, SPI_STE_ACTIVE_LOW);
+    SPI_resetTxFIFO (SPIA_BASE);
+    SPI_resetRxFIFO (SPIA_BASE);
+
+    //
+    // Configuration complete. Enable the module.
+    //
+    SPI_enableModule(SPIA_BASE);
+}
+
+//todo: make this pretty
+void init_ads1220()
+{
+    //the spi write function is left justified
+
+    SPI_writeDataBlockingFIFO (SPIA_BASE, 0x0700); //reset
+    DEVICE_DELAY_US(500);
+
+    uint16_t conf_regs[4];
+    conf_regs[0] = 0x3E00; //mux set to AIN1 and AIN2, gain 128, PGA enabled.
+    conf_regs[1] = 0x1400; //40SPS, turbo-mode, continuous mode, disable internal temperature sensor, disable current source.
+    conf_regs[2] = 0xA800; //refx1 as vref, 50Hz reject, close low-side switch, disable idac.
+    conf_regs[3] = 0x0000; //disable both idacs, separated irq-pin.
+
+    SPI_writeDataBlockingFIFO (SPIA_BASE, 0x4300);
+    SPI_writeDataBlockingFIFO (SPIA_BASE, conf_regs[0]);
+    SPI_writeDataBlockingFIFO (SPIA_BASE, conf_regs[1]);
+    SPI_writeDataBlockingFIFO (SPIA_BASE, conf_regs[2]);
+    SPI_writeDataBlockingFIFO (SPIA_BASE, conf_regs[3]);
+    while(SPI_isBusy (SPIA_BASE));
+
+    SPI_resetRxFIFO (SPIA_BASE);
 }
 
 //future: make this init function with auto recovery
@@ -558,6 +790,8 @@ void init_smartwinch()
     init_timer();
     modbusRTU_init();
     init_roboclaw();
+    init_spi_A();    
+    init_ads1220();
 
     //
     // Enable Global Interrupt (INTM) and realtime interrupt (DBGM)

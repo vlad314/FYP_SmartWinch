@@ -284,6 +284,7 @@
 -researched KNX, found no pre-made library
 
 31st March 2018
+-found KNX premade library, but appear to be not suitable
 -added modbus broadcast
 -contacted ion_mc asking them about firmware bug
 
@@ -292,3 +293,89 @@
 
 2nd April 2018
 -added workarounds for mcp266
+
+3rd April 2018
+-met tim to verify wireless comms
+-drafted pinout for daughterboard
+
+4th April 2018
+-got gearbox from antony
+-researched a bit on wireless module
+
+5th April 2018
+-got Pycom LoPy from Sam/Antony
+-got PSU from Antony
+
+6th April 2018
+-tinkering with Pycom LoPy
+
+8th April 2018
+-got both LoPy to act as a transparent wireless uart
+
+9th April 2018
+-returned back psu/lopy/imu/fuses to sam/antony
+-got ads1220 back
+
+12th April 2018
+-prepared rev1 daughterboard schematic for antony
+
+13th April 2018
+-tinkered with ads1220
+-prepared daughterboard bom list
+
+15th April 2018
+-answered vlad questions on delfino codes
+
+16th April 2018
+-answered vlad questions on delfino codes and psoc wiring
+
+17th April 2018
+-updated daughterboard pin mapping
+
+18th April 2018
+-tested rc pwm on mcp266 via delfino
+
+19th April 2018
+-tested load cell using antony's apparatus
+
+25th April 2018
+-test matt's kinematics math timing
+
+27th April 2018
+-auto tune pid for cim motor
+
+28th April 2018
+-found ready-made tension sensor
+
+29th April 2018
+-made a simple draft on small scale 3d printed fixture
+
+30th April 2018
+-helped tim with his wireless modules
+
+1st May 2018
+-designed motor mount with tension sensor
+-printed matt's version of the fixture, it has dimension error
+
+3rd May 2018
+-reiterate motor mount design
+
+4th May 2018
+-received daughterboard from antony
+-soldered one of the boards
+-received force gauge from vlad
+
+5th May 2018
+-found out issues on daughterboard:
+-no excitation voltage to load cell
+-reversed da-15 port
+
+14th May 2018
+-made node-red based simple gui for tension/length calibration
+
+15th May 2018
+-implemented safety features
+
+16th May 2018
+-written simple python script for uploading waypoints
+-written autonomous mode

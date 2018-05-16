@@ -7,82 +7,17 @@
 
 #include "task_scheduler.h"
 
+DIP_switch_t dip_switch; //global
+
+
 char homing_workaround = 1; //as a workaround to mcp266 glitch
-
-void simple_homing_routine()
-{
-    static length4_struct homed_cable_lengths;
-
-    if(modbus_holding_regs[Homing_Flag] != 0) //if force_homing triggered
-    {
-        modbus_holding_regs[Homing_Flag] = 0; //acknowledge request
-
-        modbus_holding_regs[Target_X] = 0;
-        modbus_holding_regs[Target_Y] = 0;
-        modbus_holding_regs[Target_Z] = 0;
-
-        modbus_holding_regs[Current_X] = 0;
-        modbus_holding_regs[Current_Y] = 0;
-        modbus_holding_regs[Current_Z] = 0;
-
-        homed_cable_lengths = XYZ_to_length4(  	(float) modbus_holding_regs[0], //assuming homed position is at <0, 0, 0>
-                                                (float) modbus_holding_regs[0], //bugs! (not fixed yet)
-                                                (float) modbus_holding_regs[0], 
-                                                (float) modbus_holding_regs[Field_Length]);
-
-        modbus_holding_regs[Target_Length_Winch0] = homed_cable_lengths.lengtha;
-        modbus_holding_regs[Target_Length_Winch1] = homed_cable_lengths.lengthb;
-        modbus_holding_regs[Target_Length_Winch2] = homed_cable_lengths.lengthc;
-        modbus_holding_regs[Target_Length_Winch3] = homed_cable_lengths.lengthd;
-
-        modbus_holding_regs[Current_Length_Winch0] = homed_cable_lengths.lengtha;
-        modbus_holding_regs[Current_Length_Winch1] = homed_cable_lengths.lengthb;
-        modbus_holding_regs[Current_Length_Winch2] = homed_cable_lengths.lengthc;
-        modbus_holding_regs[Current_Length_Winch3] = homed_cable_lengths.lengthd;
-
-        switch(modbus_holding_regs[Winch_ID])
-        {
-            case 0:
-            {
-                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengtha;
-                break;
-            }
-            case 1:
-            {
-                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengthb;
-                break;
-            }
-            case 2:
-            {
-                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengthc;
-                break;
-            }
-            case 3:
-            {
-                modbus_holding_regs[Target_Setpoint] = homed_cable_lengths.lengthd;
-                break;
-            }
-        }
-
-        //to ensure no sudden jerk
-        //to do: remove jerk from motion profile
-        modbus_holding_regs[Current_Encoder_Count] = modbus_holding_regs[Target_Setpoint];
-        MotionProfile_reset_position((float) modbus_holding_regs[Target_Setpoint]); //used to remove jerk, not sure if it work yet
-
-        //count = cable_length * pulse_per_revolution * gear_ratio / spool_diameter / PI
-        //uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 32.0f * 120.0f / 15.0f / 3.14159265359f);
-        uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 81.48733086f);
-        homed_length += 0x80000000; //this offset is to allow negative length
-
-        EQEP_setPosition(EQEP1_BASE, homed_length);
-    }    
-}
 
 void homing_routine() //with mcp266 apis
 {
     static bool coordinate_changed = 0;
     static length4_struct homed_cable_lengths;
 
+    //homing via coordinate
     if(modbusRTU_written_register_flags[Current_X] || modbusRTU_written_register_flags[Current_Y] || modbusRTU_written_register_flags[Current_Z])
     {
         //clear flags
@@ -136,70 +71,65 @@ void homing_routine() //with mcp266 apis
         }
     }
 
+    //homing via zero switch
+    if(!GPIO_readPin(DEVICE_GPIO_PIN_ZERO_TETHER))
+    {
+        coordinate_changed = 1;
+        modbus_holding_regs[Current_Encoder_Count] = 0;
+    }
+
+    //homing via length
     if(modbusRTU_written_register_flags[Current_Encoder_Count] || coordinate_changed)
     {
         coordinate_changed = 0; //clear flag        
         modbusRTU_written_register_flags[Current_Encoder_Count] = 0; //clear flag
-        modbus_holding_regs[Target_Setpoint] = modbus_holding_regs[Current_Encoder_Count];
+
+        if (modbus_holding_regs[Current_Encoder_Count] == 0)
+            modbus_holding_regs[Current_Encoder_Count] = 1; //0mm doesnt work on mcp266
+
+        modbus_holding_regs[Target_Setpoint] = modbus_holding_regs[Current_Encoder_Count];        
         //MotionProfile_reset_position((float) modbus_holding_regs[Target_Setpoint]); //used to remove jerk, not sure if it work yet
 
-        //count = cable_length * pulse_per_revolution * gear_ratio / spool_diameter / PI
-        //uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 8192.0f * 1.0f / 35.0f / 3.14159265359f);
-        //uint32_t homed_length = (uint32_t)(((float)modbus_holding_regs[Current_Encoder_Count]) * 74.5027025f);
         int32_t homed_length = length_to_encoder_pulses(modbus_holding_regs[Current_Encoder_Count]);
-        //homed_length += 0x80000000; //this offset is to allow negative length
 
+        //reset the encoder count using the requested length
         RoboClaw_SetEncM1(RoboClaw_Address, homed_length);
 
         homing_workaround = 0;
     }
 }
 
-void fetch_current_rpm()
+void check_current_coordinate()
 {
-    //if a full 32-pulse was received (i.e. one full motor revolution has happened)
-    if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_UNIT_POS_EVNT) != 0)
+    if (modbusRTU_written_register_flags[Current_Length_Winch0] ||
+        modbusRTU_written_register_flags[Current_Length_Winch1] ||
+        modbusRTU_written_register_flags[Current_Length_Winch2] ||
+        modbusRTU_written_register_flags[Current_Length_Winch3] ) //if current length was updated
     {
-        //
-        // No capture overflow, i.e. if 2 consecutive revolutions happened within 10ms
-        //
-        if((EQEP_getStatus(EQEP1_BASE) & EQEP_STS_CAP_OVRFLW_ERROR) == 0)
-        {
-            float rpm = (DEVICE_SYSCLK_FREQ / 128.0) / 2.0 / EQEP_getCapturePeriodLatch(EQEP1_BASE) / 4; // 60 seconds / 120 gearbox_ratio = 2
-            modbus_holding_regs[Current_RPM] = (int) rpm;
-        }
+        volatile static XYZ_coord_struct actual_point;
 
+        //clear flags
+        modbusRTU_written_register_flags[Current_Length_Winch0] = 0;
+        modbusRTU_written_register_flags[Current_Length_Winch1] = 0;
+        modbusRTU_written_register_flags[Current_Length_Winch2] = 0;
+        modbusRTU_written_register_flags[Current_Length_Winch3] = 0;
 
-        //
-        // Clear unit position event flag and overflow error flag
-        //
-        EQEP_clearStatus(EQEP1_BASE, (EQEP_STS_UNIT_POS_EVNT |
-                                      EQEP_STS_CAP_OVRFLW_ERROR));
-    }
-    else
-    {
-        modbus_holding_regs[Current_RPM] = 0;
+        //calculate current point based on cable length
+        //future: use tension compensated estimation
+        actual_point = length4_to_XYZ(  (float) modbus_holding_regs[Current_Length_Winch0],
+                                        (float) modbus_holding_regs[Current_Length_Winch1],
+                                        (float) modbus_holding_regs[Current_Length_Winch2],
+                                        (float) modbus_holding_regs[Current_Length_Winch3],
+                                        (float) modbus_holding_regs[Field_Length]);
+
+        modbus_holding_regs[Current_X] =  (signed int) actual_point.X;
+        modbus_holding_regs[Current_Y] =  (signed int) actual_point.Y;
+        modbus_holding_regs[Current_Z] =  (signed int) actual_point.Z;    
     }    
 }
 
-void check_current_coordinate()
-{
-    volatile static XYZ_coord_struct actual_point;
-
-    //calculate current point based on cable length
-    actual_point = length4_to_XYZ(  (float) modbus_holding_regs[Current_Length_Winch0],
-                                    (float) modbus_holding_regs[Current_Length_Winch1],
-                                    (float) modbus_holding_regs[Current_Length_Winch2],
-                                    (float) modbus_holding_regs[Current_Length_Winch3],
-                                    (float) modbus_holding_regs[Field_Length]);
-
-    modbus_holding_regs[Current_X] =  (signed int) actual_point.X;
-    modbus_holding_regs[Current_Y] =  (signed int) actual_point.Y;
-    modbus_holding_regs[Current_Z] =  (signed int) actual_point.Z;    
-}
-
 //used to read all adc on J21 (4 channels) round-robin
-void read_all_adc()
+void read_all_adc() //legacy
 {
     //if the conversion was done, fetch all adc results
     if(ADC_getInterruptStatus(ADCD_BASE, ADC_INT_NUMBER1))
@@ -216,6 +146,16 @@ void relative_control()
 {
     //relative control
     //to do: add simple boundary check to avoid overflow
+
+    // manual tether control via switches
+    if(modbus_holding_regs[tether_reached_target])
+    {
+        if(GPIO_readPin(DEVICE_GPIO_PIN_REEL_OUT) == 0)
+            modbus_holding_regs[Target_Setpoint_Offset] += 10;
+        if(GPIO_readPin(DEVICE_GPIO_PIN_REEL_IN) == 0)
+            modbus_holding_regs[Target_Setpoint_Offset] -= 10;
+    }
+
     modbus_holding_regs[Target_Setpoint] += modbus_holding_regs[Target_Setpoint_Offset];
     modbus_holding_regs[Target_X] += modbus_holding_regs[Target_X_Offset];
     modbus_holding_regs[Target_Y] += modbus_holding_regs[Target_Y_Offset];
@@ -244,6 +184,7 @@ void manual_control()
         //update target waypoint
         modbus_holding_regs[Target_Length_Winch0 + modbus_holding_regs[Winch_ID]] = modbus_holding_regs[Target_Setpoint]; 
 
+        //to do: use tension compensated function        
         target_point = length4_to_XYZ(  (float) modbus_holding_regs[Target_Length_Winch0],
                                         (float) modbus_holding_regs[Target_Length_Winch1],
                                         (float) modbus_holding_regs[Target_Length_Winch2],
@@ -359,16 +300,11 @@ void manual_control()
         modbusRTU_written_register_flags[Target_Length_Winch2] = 0;
         modbusRTU_written_register_flags[Target_Length_Winch3] = 0;        
     }
-
-    //mcp266 bug workaround
-    if(modbus_holding_regs[Target_Setpoint] == 0)
-        modbus_holding_regs[Target_Setpoint] = 1;
 }
 
 void auto_mode() //autonomous mode
 {
-    //to do
-    modbus_holding_regs[Follow_Waypoints] = 0;
+    waypoint_follower();
 }
 
 
@@ -418,7 +354,7 @@ void update_mcp266_pids()
                                   (float)modbus_holding_regs[Ki_position],
                                   (float)modbus_holding_regs[Kd_position],
                                   255,  //Integral max - not sure how to set this
-                                  0,  //deadzone
+                                  0,  //deadzone - not sure how to set this
                                   0x80000000,  //min limit
                                   0x7fffffff); //max limit                               
     }     
@@ -465,15 +401,170 @@ void read_mcp266_pwm()
         modbus_holding_regs[Current_PWM] = (signed int) (((float)pwm[0])/327.67f);
 }
 
+void read_load_cell()
+{
+    static uint32_t last_sucessful_time_stamp = 0;
+
+    //if data is ready, read it
+    if(!GPIO_readPin(DEVICE_GPIO_PIN_SPIIRQA))
+    {
+        SPI_resetRxFIFO (SPIA_BASE); //clear rx buffer for new data 
+        SPI_writeDataBlockingFIFO (SPIA_BASE, 0x0000); //read msb
+        SPI_writeDataBlockingFIFO (SPIA_BASE, 0x0000); //read middle byte
+        SPI_writeDataBlockingFIFO (SPIA_BASE, 0x0000); //read lsb
+        SPI_writeDataBlockingFIFO (SPIA_BASE, 0x0000); //dummy
+        while(SPI_isBusy (SPIA_BASE)); //stay until all data is transmited
+
+        //irq pin should be high after the data has been read
+        //if not, maybe there is an error
+        //check for always-low pin
+        if(!GPIO_readPin(DEVICE_GPIO_PIN_SPIIRQA))
+            modbus_holding_regs[load_cell_error] = 1;
+        else
+        {
+            last_sucessful_time_stamp = systick();
+            modbus_holding_regs[load_cell_error] = 0;
+        }
+            
+        static uint32_t rcv_spi[4];
+        uint16_t i=0; //received byte count
+        while (SPI_getRxFIFOStatus(SPIA_BASE)) //read all received byte and put it in a buffer
+        {                
+            rcv_spi[i++] = SPI_readDataBlockingFIFO(SPIA_BASE);                                
+        }
+
+        //ads1220 gives signed 24-bit data, put it left-justified
+        int32_t signed_load_cell = ((rcv_spi[0]<<24) ^ (rcv_spi[1]<<16) ^ (rcv_spi[2]<<8));
+        signed_load_cell>>=8; //this should convert signed 24bit into signed 32bit (2's complement)
+
+        static int32_t offset_load_cell = 0; 
+
+        if(modbus_holding_regs[load_cell_zero]==LOAD_CELL_ZEROING_REQUEST)
+        {
+            modbus_holding_regs[load_cell_zero] = LOAD_CELL_ZEROED;
+            offset_load_cell = signed_load_cell;
+        }
+
+        int32_t tare_load_cell = signed_load_cell - offset_load_cell;
+
+        int32_t calibrated_load_cell = tare_load_cell / ((((unsigned int)modbus_holding_regs[load_cell_cal]) + 1) / 1000);
+
+        if(calibrated_load_cell<0)
+        {
+            modbus_holding_regs[load_cell_neg] = 1; //negative force flag
+            calibrated_load_cell*=-1;
+        }
+        else
+            modbus_holding_regs[load_cell_neg] = 0;
+
+        //full 24bit reading
+        modbus_holding_regs[load_cell_H] = (signed int)((calibrated_load_cell>>16)&0xffff);
+        modbus_holding_regs[load_cell_L] = (signed int)(calibrated_load_cell&0xffff); 
+
+        //only keep the first 65kg
+        modbus_holding_regs[Current_Force_Winch0+modbus_holding_regs[Winch_ID]] = modbus_holding_regs[load_cell_L]; 
+
+        //underload check
+        if (modbus_holding_regs[load_cell_L] < modbus_holding_regs[minimum_tension])
+            modbus_holding_regs[underload_error] = 1;
+        else
+            modbus_holding_regs[underload_error] = 0;
+
+        //overload check
+        if (modbus_holding_regs[load_cell_L] > modbus_holding_regs[maximum_tension])    
+            modbus_holding_regs[overload_error] = 1;
+        else
+            modbus_holding_regs[overload_error] = 0;
+    }   
+    //checking for always-high pin
+    else
+    {
+        //irq pin should go low periodically faster than 3.33Hz
+        if (systick() - last_sucessful_time_stamp > 1500) //if no data for more than 300ms
+            modbus_holding_regs[load_cell_error] = 1;
+    }
+}
+
+void is_tether_close_to_target_length()
+{
+    //set flag if length error is less than 2cm
+    if(abs(modbus_holding_regs[Target_Setpoint] - modbus_holding_regs[Current_Encoder_Count]) < 20)
+        modbus_holding_regs[tether_reached_target] = 1;
+    else
+        modbus_holding_regs[tether_reached_target] = 0;
+}
+
+
+//must read loadcell first before calling this function
+void zero_force_mode()
+{
+    //if load cell is zeroed and the zero_force switch is activated
+    if(modbus_holding_regs[load_cell_zero] == LOAD_CELL_ZEROED && !GPIO_readPin(DEVICE_GPIO_PIN_ZERO_FORCE))
+    {
+        if(modbus_holding_regs[load_cell_L] > 100) //if pulling force is higher than 100grams
+        {
+            if(modbus_holding_regs[tether_reached_target]) //only add offset when the length is near Target_Setpoint
+            {
+                modbus_holding_regs[Target_Setpoint_Offset] += 10; //add 1cm when pulled
+            }
+        }
+    }
+}
+
+void read_DIP_switch()
+{
+    //active-low switches
+    dip_switch.BIT0 = ~GPIO_readPin(DEVICE_GPIO_PIN_B0);
+    dip_switch.BIT1 = ~GPIO_readPin(DEVICE_GPIO_PIN_B1);
+    dip_switch.BIT2 = ~GPIO_readPin(DEVICE_GPIO_PIN_B2);
+    dip_switch.BIT3 = ~GPIO_readPin(DEVICE_GPIO_PIN_B3);
+    dip_switch.BIT4 = ~GPIO_readPin(DEVICE_GPIO_PIN_B4);
+    dip_switch.BIT5 = ~GPIO_readPin(DEVICE_GPIO_PIN_B5);
+    dip_switch.BIT6 = ~GPIO_readPin(DEVICE_GPIO_PIN_B6);
+    dip_switch.BIT7 = ~GPIO_readPin(DEVICE_GPIO_PIN_B7); 
+    modbus_holding_regs[DIP_Switch_Status] = dip_switch.switch_byte;   
+}
+
+void underrun_error_check()
+{    
+    static uint32_t previous_systick = 0;
+    if(systick() - previous_systick > 2500) //check underrun every 500ms
+    {
+        previous_systick = systick();
+
+        static int previous_measured_cable_length = 0;
+        if (abs(modbus_holding_regs[Current_PWM]) > modbus_holding_regs[minimum_duty_cycle]) //if the motor is spinning
+        {
+            if (modbus_holding_regs[Current_Encoder_Count] == previous_measured_cable_length) //if the cable doesnt move
+                modbus_holding_regs[underrun_error] = 1; //set flag
+            else
+                modbus_holding_regs[underrun_error] = 0; //clear flag
+            
+            previous_measured_cable_length = modbus_holding_regs[Current_Encoder_Count];
+        }
+        else //check for motor is not powered
+        {
+            if (modbus_holding_regs[Current_Encoder_Count] != previous_measured_cable_length) //if the cable moves
+                modbus_holding_regs[underrun_error] = 0; //clear flag
+       
+            previous_measured_cable_length = modbus_holding_regs[Current_Encoder_Count];
+        }
+    }
+}
+
 void task_scheduler_handler()
 {
     //future: use state machine to read sequentially
+    read_DIP_switch();
+    is_tether_close_to_target_length();
     homing_routine();
-    read_current_cable_length_from_mcp266();        
+    read_current_cable_length_from_mcp266();
+    check_current_coordinate();
     update_mcp266_pids();
     read_mcp266_pids();
+    read_load_cell();
+    zero_force_mode();
     
-
     //simple_homing_routine();
     //fetch_current_rpm();
     //check_current_coordinate();
@@ -485,22 +576,22 @@ void task_scheduler_handler()
     }    
     else // if autonomous mode activated, i.e. using waypoint buffer
     {
-        auto_mode();
+        waypoint_follower();
     }
 
+    //mcp266 bug workaround
+    //because it doesnt work when the position is set to 0
     if(modbus_holding_regs[Target_Setpoint] == 0)
-        homing_workaround = 0; 
+    {
+        homing_workaround = 0;
+        modbus_holding_regs[Target_Setpoint] = 1;
+    }        
+                    
+    motor_driving_with_safety_check();
 
-    //flag=1 means command will be executed immediately, i.e. previous task will be halted
-    //speed and accelerations are in qpps unit
-    RoboClaw_SpeedAccelDeccelPositionM1(RoboClaw_Address, 
-                                        length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]), 
-                                        length_to_encoder_pulses(modbus_holding_regs[Max_Velocity]) * homing_workaround, 
-                                        length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]),
-                                        length_to_encoder_pulses(modbus_holding_regs[Target_Setpoint]), 1); 
+    homing_workaround = 1;  //this workaround is for removing undesired motor jerk
 
-    homing_workaround = 1;                                            
-
-    read_mcp266_pwm();                                      
+    read_mcp266_pwm();  
+    underrun_error_check();                                    
 }
 

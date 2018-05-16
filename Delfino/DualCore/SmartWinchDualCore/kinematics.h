@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //<Matt Danby>
 typedef struct {
-    float X,Y,Z;
+    float X,Y,Z,uplift;
 } XYZ_coord_struct;
 
 typedef struct {
@@ -22,6 +22,10 @@ typedef struct {
 
 length4_struct XYZ_to_length4(float X, float Y, float Z, float distance);
 XYZ_coord_struct length4_to_XYZ(float c1, float c2, float c3,float c4,float distance);
+
+XYZ_coord_struct tenandsag2coord(float tena,float tenb,float tenc,float tend,float slena,float slenb,float slenc,float slend,float distance);
+length4_struct coord2ten_sag(float x, float y, float z,float distance,float comb_uplift);
+
 //</Matt Danby>
 
 
@@ -39,6 +43,7 @@ signed long brensenham3d(signed long x0, signed long y0, signed long z0, signed 
 
 int32_t length_to_encoder_pulses(int length_in_mm);
 int32_t encoder_pulses_to_length(int32_t encoder_pulses);
+uint32_t waypoints(int index, int axis);
 //</Afdhal Atiff Tan>
 
 

@@ -8,6 +8,11 @@
         "stdlib.h": "c",
         "modbusrtu.h": "c",
         "buffered_serial_c.h": "c",
-        "interrupt_handlers.h": "c"
+        "interrupt_handlers.h": "c",
+        "kinematic_test.h": "c",
+        "safety_routines.h": "c",
+        "roboclaw.h": "c",
+        "stdarg.h": "c",
+        "task_scheduler.h": "c"
     }
 }

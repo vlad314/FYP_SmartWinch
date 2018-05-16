@@ -123,31 +123,124 @@ a single CPU should be defined."
 
 
 //
-// PWM
+// PWM2
 //
-#define DEVICE_GPIO_PIN_EPWM2A        2U  // GPIO number for LD2
-#define DEVICE_GPIO_PIN_EPWM2B        3U  // GPIO number for LD3
-#define DEVICE_GPIO_CFG_EPWM2A        GPIO_2_EPWM2A  // "pinConfig" for LD2
-#define DEVICE_GPIO_CFG_EPWM2B        GPIO_3_EPWM2B  // "pinConfig" for LD3
+#define DEVICE_GPIO_PIN_EPWM2A        2U  
+#define DEVICE_GPIO_PIN_EPWM2B        3U  
+#define DEVICE_GPIO_CFG_EPWM2A        GPIO_2_EPWM2A  
+#define DEVICE_GPIO_CFG_EPWM2B        GPIO_3_EPWM2B  
 
+//
+// PWM3
+//
+#define DEVICE_GPIO_PIN_EPWM3A        4U  
+#define DEVICE_GPIO_PIN_EPWM3B        5U  
+#define DEVICE_GPIO_CFG_EPWM3A        GPIO_4_EPWM3A  
+#define DEVICE_GPIO_CFG_EPWM3B        GPIO_5_EPWM3B  
 
+//<legacy>
 //
 // WinchID Pins (used to set 2-bit Winch Address)
 //
-#define DEVICE_GPIO_PIN_ID0        61U  // GPIO number for LD2
-#define DEVICE_GPIO_PIN_ID1        123U  // GPIO number for LD3
-#define DEVICE_GPIO_CFG_ID0        GPIO_61_GPIO61  // "pinConfig" for LD2
-#define DEVICE_GPIO_CFG_ID1        GPIO_123_GPIO123  // "pinConfig" for LD3
-
-
+#define DEVICE_GPIO_PIN_ID0        124U  
+#define DEVICE_GPIO_PIN_ID1        125U  
+#define DEVICE_GPIO_CFG_ID0        GPIO_124_GPIO124 
+#define DEVICE_GPIO_CFG_ID1        GPIO_125_GPIO125  
 
 //
 // Debug-mode Pin (used to enter debug mode)
 //
-#define DEVICE_GPIO_PIN_DBG        66U  // GPIO number for LD2
-#define DEVICE_GPIO_CFG_DBG        GPIO_66_GPIO66  // "pinConfig" for LD2
+#define DEVICE_GPIO_PIN_DBG        19U 
+#define DEVICE_GPIO_CFG_DBG        GPIO_19_GPIO19 
+//</legacy>
+
+//SPIA for load cell
+#define DEVICE_GPIO_PIN_SPISIMOA    58U
+#define DEVICE_GPIO_PIN_SPISOMIA    59U
+#define DEVICE_GPIO_PIN_SPIIRQA     123U
+#define DEVICE_GPIO_PIN_SPICLKA     60U
+#define DEVICE_GPIO_PIN_SPISTEA     61U
+#define DEVICE_GPIO_CFG_SPISIMOA    GPIO_58_SPISIMOA 
+#define DEVICE_GPIO_CFG_SPISOMIA    GPIO_59_SPISOMIA  
+#define DEVICE_GPIO_CFG_SPIIRQA     GPIO_123_GPIO123  
+#define DEVICE_GPIO_CFG_SPICLKA     GPIO_60_SPICLKA  
+#define DEVICE_GPIO_CFG_SPISTEA     GPIO_61_SPISTEA  
 
 
+//
+// Emergency Stop Switch
+//
+#define DEVICE_GPIO_PIN_EMERGENCY_STOP       2U 
+#define DEVICE_GPIO_CFG_EMERGENCY_STOP       GPIO_2_GPIO2 
+
+//
+// Zero Tether Switch
+//
+#define DEVICE_GPIO_PIN_ZERO_TETHER       0U 
+#define DEVICE_GPIO_CFG_ZERO_TETHER       GPIO_0_GPIO0 
+
+//
+// Reel Out Switch
+//
+#define DEVICE_GPIO_PIN_REEL_OUT       1U 
+#define DEVICE_GPIO_CFG_REEL_OUT       GPIO_1_GPIO1 
+
+//
+// Reel In Switch
+//
+#define DEVICE_GPIO_PIN_REEL_IN       6U 
+#define DEVICE_GPIO_CFG_REEL_IN       GPIO_6_GPIO6 
+
+//
+// Zero Force Switch
+//
+#define DEVICE_GPIO_PIN_ZERO_FORCE       7U 
+#define DEVICE_GPIO_CFG_ZERO_FORCE       GPIO_7_GPIO7 
+
+//
+// Right Limit Switch
+//
+#define DEVICE_GPIO_PIN_RIGHT_LIMIT       8U 
+#define DEVICE_GPIO_CFG_RIGHT_LIMIT       GPIO_8_GPIO8 
+
+//
+// Left Switch
+//
+#define DEVICE_GPIO_PIN_LEFT_LIMIT       9U 
+#define DEVICE_GPIO_CFG_LEFT_LIMIT       GPIO_9_GPIO9 
+
+
+// Bit0 Switch
+#define DEVICE_GPIO_PIN_B0       122U 
+#define DEVICE_GPIO_CFG_B0       GPIO_122_GPIO122 
+
+// Bit1 Switch
+#define DEVICE_GPIO_PIN_B1       124U 
+#define DEVICE_GPIO_CFG_B1       GPIO_124_GPIO124 
+
+// Bit2 Switch
+#define DEVICE_GPIO_PIN_B2       125U 
+#define DEVICE_GPIO_CFG_B2       GPIO_125_GPIO125
+
+// Bit3 Switch
+#define DEVICE_GPIO_PIN_B3       29U 
+#define DEVICE_GPIO_CFG_B3       GPIO_29_GPIO29
+
+// Bit4 Switch
+#define DEVICE_GPIO_PIN_B4       131U 
+#define DEVICE_GPIO_CFG_B4       GPIO_131_GPIO131 
+
+// Bit5 Switch
+#define DEVICE_GPIO_PIN_B5       130U 
+#define DEVICE_GPIO_CFG_B5       GPIO_130_GPIO130 
+
+// Bit6 Switch
+#define DEVICE_GPIO_PIN_B6       26U 
+#define DEVICE_GPIO_CFG_B6       GPIO_26_GPIO26 
+
+// Bit7 Switch
+#define DEVICE_GPIO_PIN_B7       27U 
+#define DEVICE_GPIO_CFG_B7       GPIO_27_GPIO27 
 
 
 //*****************************************************************************

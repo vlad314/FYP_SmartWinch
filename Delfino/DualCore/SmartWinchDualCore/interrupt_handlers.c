@@ -56,9 +56,9 @@ void old_pid()
 }
 
 //
-// epwm2ISR - ePWM 2 ISR
+// epwm3ISR - ePWM 3 ISR
 //
-__interrupt void epwm2ISR(void)
+__interrupt void epwm3ISR(void)
 {
     //GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0); //tic
 
@@ -73,7 +73,7 @@ __interrupt void epwm2ISR(void)
     //old_pid();
 
 
-    EPWM_clearEventTriggerInterruptFlag(EPWM2_BASE);    //Clear INT flag for this timer
+    EPWM_clearEventTriggerInterruptFlag(EPWM3_BASE);    //Clear INT flag for this timer
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP3);      //Acknowledge interrupt group
 
     //GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1); //toc

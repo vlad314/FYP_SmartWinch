@@ -39,6 +39,10 @@
 
 #include "RoboClaw.h"
 
+#include "safety_routines.h"
+
+#include "autonomous_mode.h"
+
 //utilities
 #define systick() ((uint32_t)(4294967295 - CPUTimer_getTimerCount(CPUTIMER0_BASE))) //needed because the cpu_timer is cnt_dwn, not up! (200us per tick)
 

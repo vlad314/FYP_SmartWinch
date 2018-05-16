@@ -96,6 +96,8 @@ kinematics.obj: ../motion_buffer.h
 kinematics.obj: ../task_scheduler.h
 kinematics.obj: ../RoboClaw.h
 kinematics.obj: ../buffered_serial_C.h
+kinematics.obj: ../safety_routines.h
+kinematics.obj: ../autonomous_mode.h
 
 ../kinematics.c: 
 ../kinematics.h: 
@@ -193,3 +195,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../task_scheduler.h: 
 ../RoboClaw.h: 
 ../buffered_serial_C.h: 
+../safety_routines.h: 
+../autonomous_mode.h: 
