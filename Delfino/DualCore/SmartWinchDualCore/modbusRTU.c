@@ -60,7 +60,7 @@ unsigned char DEBUGGING;
   unsigned char slave, addressed_slave; //address_slave is used to detect for broadcast message
   unsigned char modbusRTU_Written = 0;  
   //unsigned long modbusRTU_written_register_flags = 0;
-  bool modbusRTU_written_register_flags[64];
+  bool modbusRTU_written_register_flags[128];
 
   unsigned int modbus_crc(unsigned char *buf, unsigned char start, unsigned char cnt);
   void build_read_packet(unsigned char function, unsigned char count, unsigned char *packet);

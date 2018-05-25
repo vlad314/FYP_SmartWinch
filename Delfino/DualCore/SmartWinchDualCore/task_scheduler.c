@@ -193,7 +193,9 @@ void manual_control()
 
         modbus_holding_regs[Target_X] =  (signed int) target_point.X;
         modbus_holding_regs[Target_Y] =  (signed int) target_point.Y;
-        modbus_holding_regs[Target_Z] =  (signed int) target_point.Z;            
+        modbus_holding_regs[Target_Z] =  (signed int) target_point.Z;
+
+        modbus_holding_regs[scaled_velocity] = modbus_holding_regs[Max_Velocity];
     }
 
     if(modbusRTU_Written && (   modbusRTU_written_register_flags[Target_X]          ||
@@ -218,10 +220,17 @@ void manual_control()
                                                 (float) modbus_holding_regs[Target_Z], 
                                                 (float) modbus_holding_regs[Field_Length]);
 
+
+
         modbus_holding_regs[Target_Length_Winch0] = target_cable_lengths.lengtha;
         modbus_holding_regs[Target_Length_Winch1] = target_cable_lengths.lengthb;
         modbus_holding_regs[Target_Length_Winch2] = target_cable_lengths.lengthc;
         modbus_holding_regs[Target_Length_Winch3] = target_cable_lengths.lengthd;
+
+        update_scaled_velocity( target_cable_lengths.lengtha, 
+                                target_cable_lengths.lengthb, 
+                                target_cable_lengths.lengthc, 
+                                target_cable_lengths.lengthd);
 
         switch(modbus_holding_regs[Winch_ID])
         {
@@ -298,7 +307,9 @@ void manual_control()
         modbusRTU_written_register_flags[Target_Length_Winch0] = 0;
         modbusRTU_written_register_flags[Target_Length_Winch1] = 0;
         modbusRTU_written_register_flags[Target_Length_Winch2] = 0;
-        modbusRTU_written_register_flags[Target_Length_Winch3] = 0;        
+        modbusRTU_written_register_flags[Target_Length_Winch3] = 0; 
+
+        modbus_holding_regs[scaled_velocity] = modbus_holding_regs[Max_Velocity];       
     }
 }
 
@@ -316,6 +327,9 @@ void read_current_cable_length_from_mcp266()
 
     if(valid)
         modbus_holding_regs[Current_Encoder_Count] = encoder_pulses_to_length(count);
+    
+    //update register accordingly
+    modbus_holding_regs[Current_Length_Winch0 + modbus_holding_regs[Winch_ID]] = modbus_holding_regs[Current_Encoder_Count];
 }
 
 void update_mcp266_pids()
@@ -443,6 +457,9 @@ void read_load_cell()
         {
             modbus_holding_regs[load_cell_zero] = LOAD_CELL_ZEROED;
             offset_load_cell = signed_load_cell;
+            //todo: put offset in fram
+            modbus_holding_regs[load_cell_H] = (offset_load_cell>>16);
+            modbus_holding_regs[load_cell_L] = (offset_load_cell & 0x0000ffff);
         }
 
         int32_t tare_load_cell = signed_load_cell - offset_load_cell;
@@ -479,8 +496,8 @@ void read_load_cell()
     //checking for always-high pin
     else
     {
-        //irq pin should go low periodically faster than 3.33Hz
-        if (systick() - last_sucessful_time_stamp > 1500) //if no data for more than 300ms
+        //irq pin should go low periodically
+        if (systick() - last_sucessful_time_stamp > 20000) //if no data for more than 4 secs
             modbus_holding_regs[load_cell_error] = 1;
     }
 }
@@ -564,6 +581,9 @@ void task_scheduler_handler()
     read_mcp266_pids();
     read_load_cell();
     zero_force_mode();
+
+    if(modbus_holding_regs[interwinch_comms])
+        interwinch_comms_handler();
     
     //simple_homing_routine();
     //fetch_current_rpm();

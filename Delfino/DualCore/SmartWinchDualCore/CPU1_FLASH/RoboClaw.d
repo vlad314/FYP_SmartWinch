@@ -97,6 +97,9 @@ RoboClaw.obj: ../task_scheduler.h
 RoboClaw.obj: ../RoboClaw.h
 RoboClaw.obj: ../safety_routines.h
 RoboClaw.obj: ../autonomous_mode.h
+RoboClaw.obj: ../ModbusMaster.h
+RoboClaw.obj: ../FM25W256.h
+RoboClaw.obj: ../interwinch_comms.h
 RoboClaw.obj: ../buffered_serial_C.h
 
 ../RoboClaw.c: 
@@ -196,4 +199,7 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../RoboClaw.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 
 ../buffered_serial_C.h: 

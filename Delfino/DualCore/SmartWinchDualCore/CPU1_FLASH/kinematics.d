@@ -98,6 +98,9 @@ kinematics.obj: ../RoboClaw.h
 kinematics.obj: ../buffered_serial_C.h
 kinematics.obj: ../safety_routines.h
 kinematics.obj: ../autonomous_mode.h
+kinematics.obj: ../ModbusMaster.h
+kinematics.obj: ../FM25W256.h
+kinematics.obj: ../interwinch_comms.h
 
 ../kinematics.c: 
 ../kinematics.h: 
@@ -197,3 +200,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../buffered_serial_C.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 

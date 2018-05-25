@@ -100,3 +100,9 @@
 -added autonomous mode
 -added safety feature
 -added new functions
+
+25th May 2018
+-imported modbus master library
+-added interwinch comms
+-imported fram library
+-added local git

@@ -13,6 +13,9 @@
         "safety_routines.h": "c",
         "roboclaw.h": "c",
         "stdarg.h": "c",
-        "task_scheduler.h": "c"
+        "task_scheduler.h": "c",
+        "buffered_serial_b.h": "c",
+        "modbusmaster.h": "c",
+        "interwinch_comms.h": "c"
     }
 }

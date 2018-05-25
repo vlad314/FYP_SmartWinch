@@ -98,6 +98,9 @@ motion_buffer.obj: ../RoboClaw.h
 motion_buffer.obj: ../buffered_serial_C.h
 motion_buffer.obj: ../safety_routines.h
 motion_buffer.obj: ../autonomous_mode.h
+motion_buffer.obj: ../ModbusMaster.h
+motion_buffer.obj: ../FM25W256.h
+motion_buffer.obj: ../interwinch_comms.h
 
 ../motion_buffer.c: 
 ../motion_buffer.h: 
@@ -197,3 +200,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../buffered_serial_C.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 

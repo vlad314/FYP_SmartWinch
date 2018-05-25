@@ -98,6 +98,9 @@ task_scheduler.obj: ../RoboClaw.h
 task_scheduler.obj: ../buffered_serial_C.h
 task_scheduler.obj: ../safety_routines.h
 task_scheduler.obj: ../autonomous_mode.h
+task_scheduler.obj: ../ModbusMaster.h
+task_scheduler.obj: ../FM25W256.h
+task_scheduler.obj: ../interwinch_comms.h
 
 ../task_scheduler.c: 
 ../task_scheduler.h: 
@@ -197,3 +200,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../buffered_serial_C.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 

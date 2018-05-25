@@ -41,6 +41,7 @@ extern unsigned int total_path_points;
 
 signed long brensenham3d(signed long x0, signed long y0, signed long z0, signed long x1, signed long y1, signed long z1);
 
+void update_scaled_velocity(float length1, float length2,float length3,float length4);
 int32_t length_to_encoder_pulses(int length_in_mm);
 int32_t encoder_pulses_to_length(int32_t encoder_pulses);
 uint32_t waypoints(int index, int axis);

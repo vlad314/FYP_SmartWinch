@@ -628,6 +628,51 @@ unsigned int max(unsigned int a, unsigned int b, unsigned int c)
         return c;
 }
 
+//this function will update global scaled_speed by using the ratio of cable lengths
+//this is so that all winch will finish actuating the tether at around the same time
+void update_scaled_velocity(float length1, float length2,float length3,float length4)
+{
+    if (dip_switch.BIT4) //this is used to skip scaled velocity
+    {
+        modbus_holding_regs[scaled_velocity] = modbus_holding_regs[Max_Velocity];
+        return;
+    }
+
+    float longest_cable = length1;
+
+    if(longest_cable < length2)
+        longest_cable = length2;
+    if(longest_cable < length3)
+        longest_cable = length3;
+    if(longest_cable < length4)
+        longest_cable = length4;
+
+    //todo: this section can be simplified using an array
+    switch(modbus_holding_regs[Winch_ID])
+    {
+        case 0:
+        {
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length1/longest_cable);
+            break;
+        }
+        case 1:
+        {
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length2/longest_cable);
+            break;
+        }
+        case 2:
+        {
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length3/longest_cable);
+            break;
+        }
+        case 3:
+        {
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length4/longest_cable);
+            break;
+        }
+    }     
+}
+
 
 //taken from http://members.chello.at/easyfilter/bresenham.html
 //will return 1 if overflowed
@@ -666,16 +711,22 @@ signed long brensenham3d(signed long x0, signed long y0, signed long z0, signed 
    return overflowed;
 }
 
+float pulse_length_scaler()
+{
+    return  ((float)modbus_holding_regs[Encoder_Pulse]) /
+            ((float)modbus_holding_regs[Encoder_Radius]*2.0f*3.14159265359f/1000.0f);
+}
+
 int32_t length_to_encoder_pulses(int length_in_mm)
 {
     //count = cable_length * pulse_per_revolution * gear_ratio / spool_diameter / PI
     //uint32_t count = (uint32_t)(((float)length_in_mm) * 8192.0f * 1.0f / 35.0f / 3.14159265359f);
-    return (int32_t)(((float)length_in_mm) * (8192.0f / ((float)modbus_holding_regs[Encoder_Radius] * 2.0f) / 3.14159265359f)); // was 74.5027025, 81.48733086f
+    return (int32_t) (((float)length_in_mm) * pulse_length_scaler()); // was 74.5027025, 81.48733086f
 }
 
 int32_t encoder_pulses_to_length(int32_t encoder_pulses)
 {
-    return (int32_t)(((float) encoder_pulses) / (8192.0f / ((float)modbus_holding_regs[Encoder_Radius] * 2.0f) / 3.14159265359f));
+    return (int32_t)(((float) encoder_pulses) / pulse_length_scaler()); //(8192.0f / ((float)modbus_holding_regs[Encoder_Radius] * 2.0f) / 3.14159265359f));
 }
 
 //this function is used for fetching waypoints from modbus buffer

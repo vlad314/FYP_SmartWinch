@@ -56,7 +56,7 @@
 
   //to do: change this to struct
   //extern unsigned long modbusRTU_written_register_flags;
-  extern bool modbusRTU_written_register_flags[64];
+  extern bool modbusRTU_written_register_flags[128];
 
 /*
  * update(regs, regs_size)

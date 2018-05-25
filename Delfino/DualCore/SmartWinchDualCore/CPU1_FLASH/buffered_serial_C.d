@@ -98,6 +98,9 @@ buffered_serial_C.obj: ../RoboClaw.h
 buffered_serial_C.obj: ../buffered_serial_C.h
 buffered_serial_C.obj: ../safety_routines.h
 buffered_serial_C.obj: ../autonomous_mode.h
+buffered_serial_C.obj: ../ModbusMaster.h
+buffered_serial_C.obj: ../FM25W256.h
+buffered_serial_C.obj: ../interwinch_comms.h
 
 ../buffered_serial_C.c: 
 ../buffered_serial_C.h: 
@@ -197,3 +200,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../buffered_serial_C.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 

@@ -98,6 +98,9 @@ autonomous_mode.obj: ../RoboClaw.h
 autonomous_mode.obj: ../buffered_serial_C.h
 autonomous_mode.obj: ../safety_routines.h
 autonomous_mode.obj: ../autonomous_mode.h
+autonomous_mode.obj: ../ModbusMaster.h
+autonomous_mode.obj: ../FM25W256.h
+autonomous_mode.obj: ../interwinch_comms.h
 
 ../autonomous_mode.c: 
 ../autonomous_mode.h: 
@@ -197,3 +200,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../buffered_serial_C.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 

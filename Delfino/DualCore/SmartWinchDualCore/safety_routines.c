@@ -24,7 +24,7 @@ void motor_driving_with_safety_check()
         //speed and accelerations are in qpps unit
         RoboClaw_SpeedAccelDeccelPositionM1(RoboClaw_Address, 
                                             length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]), 
-                                            length_to_encoder_pulses(modbus_holding_regs[Max_Velocity]) * homing_workaround, 
+                                            length_to_encoder_pulses(modbus_holding_regs[scaled_velocity]) * homing_workaround, 
                                             length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]),
                                             length_to_encoder_pulses(modbus_holding_regs[Target_Setpoint]), 1);
     }
@@ -75,7 +75,7 @@ void motor_driving_with_safety_check()
                         //speed and accelerations are in qpps unit
                         RoboClaw_SpeedAccelDeccelPositionM1(RoboClaw_Address, 
                                                             length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]), 
-                                                            length_to_encoder_pulses(modbus_holding_regs[Max_Velocity]) * homing_workaround, 
+                                                            length_to_encoder_pulses(modbus_holding_regs[scaled_velocity]) * homing_workaround, 
                                                             length_to_encoder_pulses(modbus_holding_regs[Max_Acceleration]),
                                                             length_to_encoder_pulses(modbus_holding_regs[Target_Setpoint]), 1);
                     }

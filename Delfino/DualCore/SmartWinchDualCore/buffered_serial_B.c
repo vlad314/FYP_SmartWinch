@@ -75,6 +75,12 @@ char buffered_serial_B_available()
     return (_receive_buffer_tail + MAX_BUFF_B - _receive_buffer_head) % MAX_BUFF_B;
 }
 
+//emulating arduino serial library
+void buffered_serial_B_flush()
+{
+    while ((eusartTxTail + EUSART_TX_BUFFER_SIZE_B - eusartTxHead) % EUSART_TX_BUFFER_SIZE_B);
+}
+
 //ported from arduino softserial library
 void buffered_serial_B_receive()
 {

@@ -98,6 +98,9 @@ MotionProfile.obj: ../RoboClaw.h
 MotionProfile.obj: ../buffered_serial_C.h
 MotionProfile.obj: ../safety_routines.h
 MotionProfile.obj: ../autonomous_mode.h
+MotionProfile.obj: ../ModbusMaster.h
+MotionProfile.obj: ../FM25W256.h
+MotionProfile.obj: ../interwinch_comms.h
 
 ../MotionProfile.c: 
 ../MotionProfile.h: 
@@ -197,3 +200,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../buffered_serial_C.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 

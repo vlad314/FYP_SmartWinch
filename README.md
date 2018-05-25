@@ -9,7 +9,7 @@ MEng Final Year Group Project
 * Smart Winch: closed-loop motor control, wireless comms, kinematics maths, cable stress sensor, safety mechanism, etc
 * Force optimisation for low-power operation and sag compensation (Matt Danby)
 * nRF24L01 library taken from: https://github.com/C47D/nRF24_Component
-* MODBUS library taken from: https://www.cooking-hacks.com/documentation/tutorials/modbus-module-shield-tutorial-for-arduino-raspberry-pi-intel-galileo/
+* MODBUS slave library taken from: https://www.cooking-hacks.com/documentation/tutorials/modbus-module-shield-tutorial-for-arduino-raspberry-pi-intel-galileo/
 * Motion Planner taken from: https://github.com/WRidder/MotionProfileGenerator
 * Board used: http://www.ti.com/tool/LAUNCHXL-F28379D
 * Temporary GUI: https://github.com/AfdhalAtiffTan/Cable_Robot_Control_Panel 
@@ -23,3 +23,5 @@ MEng Final Year Group Project
 * Remote controller: http://www.techmonkeybusiness.com/using-a-playstation-2-controller-with-your-arduino-project.html
 * Small scale motor mount: https://www.thingiverse.com/thing:2908160
 * Simple winch calculator: https://github.com/AfdhalAtiffTan/WinchBatteryCalc
+* Modbus Master library: https://github.com/4-20ma/ModbusMaster
+* FRAM library: https://os.mbed.com/users/MACRUM/code/FM25W256/

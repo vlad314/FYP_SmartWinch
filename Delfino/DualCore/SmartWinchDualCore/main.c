@@ -76,6 +76,7 @@ void init_settings()
     //default motion settings - 19th feb 2018
     modbus_holding_regs[Max_Velocity] = 50; /* mm/s */
     modbus_holding_regs[Max_Acceleration] = 50; /* mm/s^2 */
+    modbus_holding_regs[scaled_velocity] = modbus_holding_regs[Max_Velocity]; /* mm/s */
 
     //30th march 2018
     modbus_holding_regs[Kp_velocity] = 16;
@@ -89,7 +90,9 @@ void init_settings()
 
     modbus_holding_regs[load_cell_cal] = 31000; 
 
-    modbus_holding_regs[Encoder_Radius] = 17500;
+    modbus_holding_regs[Encoder_Radius] = 7500;
+    modbus_holding_regs[Encoder_Pulse] = 3840;
+
 
     modbus_holding_regs[minimum_duty_cycle] = 5; // 5% pwm duty cycle
     modbus_holding_regs[minimum_tension] = 100; //100 grams
@@ -213,6 +216,14 @@ void main(void)
 
             GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0); //toc
         }
+
+        static uint32_t prev_tick1 = 0;
+        if(systick() - prev_tick1 > 5000)
+        {
+            prev_tick1 = systick();
+            FM25W256_write(0xAA, modbus_holding_regs[fram_test_w]);
+            modbus_holding_regs[fram_test_r] = FM25W256_read(0xAA);
+        }        
     }
 }
 

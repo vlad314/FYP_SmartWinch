@@ -98,6 +98,9 @@ interrupt_handlers.obj: ../RoboClaw.h
 interrupt_handlers.obj: ../buffered_serial_C.h
 interrupt_handlers.obj: ../safety_routines.h
 interrupt_handlers.obj: ../autonomous_mode.h
+interrupt_handlers.obj: ../ModbusMaster.h
+interrupt_handlers.obj: ../FM25W256.h
+interrupt_handlers.obj: ../interwinch_comms.h
 
 ../interrupt_handlers.c: 
 ../interrupt_handlers.h: 
@@ -197,3 +200,6 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../buffered_serial_C.h: 
 ../safety_routines.h: 
 ../autonomous_mode.h: 
+../ModbusMaster.h: 
+../FM25W256.h: 
+../interwinch_comms.h: 

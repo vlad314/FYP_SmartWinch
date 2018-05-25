@@ -31,6 +31,11 @@ void waypoint_follower()
         modbus_holding_regs[Target_Length_Winch2] = target_cable_lengths.lengthc;
         modbus_holding_regs[Target_Length_Winch3] = target_cable_lengths.lengthd;
 
+        update_scaled_velocity( target_cable_lengths.lengtha, 
+                                target_cable_lengths.lengthb, 
+                                target_cable_lengths.lengthc, 
+                                target_cable_lengths.lengthd);
+
         switch(modbus_holding_regs[Winch_ID])
         {
             case 0:

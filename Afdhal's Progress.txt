@@ -379,3 +379,6 @@
 16th May 2018
 -written simple python script for uploading waypoints
 -written autonomous mode
+
+23rd May 2018
+-searching parts for power switch and front panel for antony

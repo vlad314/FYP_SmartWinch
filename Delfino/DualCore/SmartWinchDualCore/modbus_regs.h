@@ -26,6 +26,7 @@ enum
     Max_Acceleration,   // this is in mm/s^2 used for motion control
 
     Encoder_Radius, //for measuring wheel
+    Encoder_Pulse, //edge per full rotation
 
     Target_Setpoint, //for cable length in mm (absolute control)
     Target_Setpoint_Offset, //used for relative control
@@ -100,6 +101,8 @@ enum
     load_cell_L,
     load_cell_zero, //tare
     load_cell_cal, //scalar
+    load_cell_offset_H,
+    load_cell_offset_L,
     
     //flags
     load_cell_error, //non responding ads1220 flag
@@ -112,6 +115,8 @@ enum
     minimum_duty_cycle, //minimum duty cycle for the motor to turn
     minimum_tension, // to avoid bird-nesting
     maximum_tension, //tension limit
+
+    scaled_velocity,
     
     kinematics_test_X, //matt's section
     kinematics_test_Y,
@@ -124,6 +129,16 @@ enum
     kinematics_test_B,
     kinematics_test_C,
     kinematics_test_D,
+
+    modbus_master_test,
+
+    fram_test_w,
+    fram_test_r,
+
+    interwinch_comms,
+    sync,
+    network_error,
+
 
     //start of waypoints
     X1,

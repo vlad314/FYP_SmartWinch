@@ -639,6 +639,7 @@ void init_timer()
 }
 
 //this spi is used for ads1220
+//http://www.ti.com/lit/ug/spruhm8g/spruhm8g.pdf
 void init_spi_A()
 {
     //
@@ -704,6 +705,66 @@ void init_spi_A()
     //
     SPI_enableModule(SPIA_BASE);
 }
+
+//this spi is used for fm25v02
+//http://www.ti.com/lit/ug/spruhm8g/spruhm8g.pdf
+void init_spi_B()
+{
+    //
+    // Must put SPI into reset before configuring it
+    //
+    SPI_disableModule(SPIB_BASE);
+
+    //SOMI
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPISOMIB, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPISOMIB);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPISOMIB, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPISOMIB, GPIO_QUAL_ASYNC);
+
+    //SIMO
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPISIMOB, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPISIMOB);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPISIMOB, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPISIMOB, GPIO_QUAL_ASYNC);
+
+    //SPISTE
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPISTEB, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPISTEB);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPISTEB, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPISTEB, GPIO_QUAL_ASYNC);
+
+    //SPICLK
+    GPIO_setMasterCore(DEVICE_GPIO_PIN_SPICLKB, GPIO_CORE_CPU1);
+    GPIO_setPinConfig(DEVICE_GPIO_CFG_SPICLKB);
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_SPICLKB, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(DEVICE_GPIO_PIN_SPICLKB, GPIO_QUAL_ASYNC);    
+    
+    //
+    // SPI configuration. Use a 1MHz SPICLK, Mode-0, and 8-bit word size.
+    //
+    SPI_setConfig(SPIB_BASE, DEVICE_LSPCLK_FREQ, SPI_PROT_POL0PHA1,
+                  SPI_MODE_MASTER, 1000000, 8);
+    SPI_disableLoopback(SPIB_BASE);
+    SPI_setEmulationMode(SPIB_BASE, SPI_EMULATION_FREE_RUN);
+    
+    //
+    // FIFO and interrupt configuration
+    //
+    SPI_enableFIFO(SPIB_BASE);
+    //SPI_clearInterruptStatus(SPIB_BASE, SPI_INT_TXFF);
+    //SPI_setFIFOInterruptLevel(SPIB_BASE, SPI_FIFO_TX2, SPI_FIFO_RX2);
+    //SPI_enableInterrupt(SPIB_BASE, SPI_INT_TXFF);
+
+    SPI_setSTESignalPolarity (SPIB_BASE, SPI_STE_ACTIVE_LOW);
+    SPI_resetTxFIFO (SPIB_BASE);
+    SPI_resetRxFIFO (SPIB_BASE);
+
+    //
+    // Configuration complete. Enable the module.
+    //
+    SPI_enableModule(SPIB_BASE);
+}
+
 
 //todo: make this pretty
 void init_ads1220()
@@ -782,16 +843,18 @@ void init_smartwinch()
     //self-explanatory
     init_gpio();
     init_uart_A(); //usb uart
-    init_uart_B(); //Jumper1 uart
-    init_uart_C(); //Jumper5 uart
+    init_uart_B(); //for lopy
+    init_uart_C(); //for mcp266
     init_eqep();
     init_pwm();
     init_adc();
     init_timer();
     modbusRTU_init();
     init_roboclaw();
-    init_spi_A();    
-    init_ads1220();
+    init_spi_A(); //for load cell   
+    init_ads1220(); 
+    init_spi_B(); //for fram
+    ModbusMaster_begin(0);
 
     //
     // Enable Global Interrupt (INTM) and realtime interrupt (DBGM)
