@@ -129,6 +129,17 @@ enum
     kinematics_test_B,
     kinematics_test_C,
     kinematics_test_D,
+    
+    //Motor coodinates. Coordinates defined so positive and used to calculate
+    //distance in maths section
+    motax,
+    motay,
+    motbx,
+    motby,
+    motcx,
+    motcy,
+    motdx,
+    motdy,
 
     modbus_master_test,
 
