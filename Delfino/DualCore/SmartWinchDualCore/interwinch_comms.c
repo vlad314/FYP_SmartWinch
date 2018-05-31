@@ -45,8 +45,11 @@ void check_network_health()
 //future: add sync flag
 void broadcast_status()
 {
-    ModbusMaster_setTransmitBuffer(0, 1);
-    ModbusMaster_writeMultipleRegisters(sync, 1);
+    if(modbus_holding_regs[Winch_ID] == 0)
+    {
+        ModbusMaster_setTransmitBuffer(0, 1);
+        ModbusMaster_writeMultipleRegisters(sync, 1);
+    }
 
     ModbusMaster_setTransmitBuffer(0, modbus_holding_regs[Current_Length_Winch0 + modbus_holding_regs[Winch_ID]]);
     ModbusMaster_writeMultipleRegisters((Current_Length_Winch0 + modbus_holding_regs[Winch_ID]), 1);

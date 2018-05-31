@@ -186,9 +186,9 @@ void manual_control()
 
         //to do: use tension compensated function        
         target_point = length4_to_XYZ(  (float) modbus_holding_regs[Target_Length_Winch0],
-                                        (float) modbus_holding_regs[Target_Length_Winch1],
-                                        (float) modbus_holding_regs[Target_Length_Winch2],
-                                        (float) modbus_holding_regs[Target_Length_Winch3],
+                                        (float)  modbus_holding_regs[Target_Length_Winch1],
+                                        (float)  modbus_holding_regs[Target_Length_Winch2],
+                                        (float)  modbus_holding_regs[Target_Length_Winch3],
                                         (float) modbus_holding_regs[Field_Length]);
 
         modbus_holding_regs[Target_X] =  (signed int) target_point.X;
@@ -227,10 +227,10 @@ void manual_control()
         modbus_holding_regs[Target_Length_Winch2] = target_cable_lengths.lengthc;
         modbus_holding_regs[Target_Length_Winch3] = target_cable_lengths.lengthd;
 
-        update_scaled_velocity( target_cable_lengths.lengtha, 
-                                target_cable_lengths.lengthb, 
-                                target_cable_lengths.lengthc, 
-                                target_cable_lengths.lengthd);
+        update_scaled_velocity( (float) (modbus_holding_regs[Current_Length_Winch0] - modbus_holding_regs[Target_Length_Winch0]),
+                                (float)  (modbus_holding_regs[Current_Length_Winch1] - modbus_holding_regs[Target_Length_Winch1]),
+                                (float)  (modbus_holding_regs[Current_Length_Winch2] - modbus_holding_regs[Target_Length_Winch2]),
+                                (float)  (modbus_holding_regs[Current_Length_Winch3] - modbus_holding_regs[Target_Length_Winch3]));
 
         switch(modbus_holding_regs[Winch_ID])
         {

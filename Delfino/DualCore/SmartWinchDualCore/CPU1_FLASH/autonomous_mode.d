@@ -3,19 +3,19 @@
 autonomous_mode.obj: ../autonomous_mode.c
 autonomous_mode.obj: ../autonomous_mode.h
 autonomous_mode.obj: ../includes.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/math.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/_ti_config.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/linkage.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/_defs.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdio.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdarg.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlib.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlibf.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdbool.h
-autonomous_mode.obj: D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/DualCore/SmartWinchDualCore/device/driverlib.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/math.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/_ti_config.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/linkage.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/_defs.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdio.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdarg.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdlib.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdlibf.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdbool.h
+autonomous_mode.obj: C:/Users/VladCosmin/Desktop/helloVlad/FYP_SmartWinch-master1/FYP_SmartWinch-master/Delfino/DualCore/SmartWinchDualCore/device/driverlib.h
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_memmap.h
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/adc.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdint.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdint.h
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_adc.h
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_sysctl.h
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_types.h
@@ -79,8 +79,8 @@ autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverli
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/upp.h
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_upp.h
 autonomous_mode.obj: C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/version.h
-autonomous_mode.obj: D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/DualCore/SmartWinchDualCore/device/device.h
-autonomous_mode.obj: C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h
+autonomous_mode.obj: C:/Users/VladCosmin/Desktop/helloVlad/FYP_SmartWinch-master1/FYP_SmartWinch-master/Delfino/DualCore/SmartWinchDualCore/device/device.h
+autonomous_mode.obj: C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stddef.h
 autonomous_mode.obj: ../DCL/include/DCL.h
 autonomous_mode.obj: ../device_init.h
 autonomous_mode.obj: ../includes.h
@@ -101,23 +101,25 @@ autonomous_mode.obj: ../autonomous_mode.h
 autonomous_mode.obj: ../ModbusMaster.h
 autonomous_mode.obj: ../FM25W256.h
 autonomous_mode.obj: ../interwinch_comms.h
+autonomous_mode.obj: ../intermediate_waypoints.h
+autonomous_mode.obj: ../intermediate_wpts_noLoop.h
 
 ../autonomous_mode.c: 
 ../autonomous_mode.h: 
 ../includes.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/math.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/_ti_config.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/linkage.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/_defs.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdio.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdarg.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlib.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdlibf.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdbool.h: 
-D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/DualCore/SmartWinchDualCore/device/driverlib.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/math.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/_ti_config.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/linkage.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/_defs.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdio.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdarg.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdlib.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdlibf.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdbool.h: 
+C:/Users/VladCosmin/Desktop/helloVlad/FYP_SmartWinch-master1/FYP_SmartWinch-master/Delfino/DualCore/SmartWinchDualCore/device/driverlib.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_memmap.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/adc.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stdint.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stdint.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_adc.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_sysctl.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_types.h: 
@@ -181,8 +183,8 @@ C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_spi.h:
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/upp.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/inc/hw_upp.h: 
 C:/ti/c2000/C2000Ware_1_00_03_00/driverlib/f2837xd/driverlib/version.h: 
-D:/AcademicRelated/Y4S1/FYP/Codes/Delfino/DualCore/SmartWinchDualCore/device/device.h: 
-C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h: 
+C:/Users/VladCosmin/Desktop/helloVlad/FYP_SmartWinch-master1/FYP_SmartWinch-master/Delfino/DualCore/SmartWinchDualCore/device/device.h: 
+C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include/stddef.h: 
 ../DCL/include/DCL.h: 
 ../device_init.h: 
 ../includes.h: 
@@ -203,3 +205,5 @@ C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include/stddef.h:
 ../ModbusMaster.h: 
 ../FM25W256.h: 
 ../interwinch_comms.h: 
+../intermediate_waypoints.h: 
+../intermediate_wpts_noLoop.h: 

@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS
+CG_TOOL_ROOT := C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -19,6 +19,7 @@ ORDERED_OBJS += \
 "./buffered_serial_B.obj" \
 "./buffered_serial_C.obj" \
 "./device_init.obj" \
+"./intermediate_waypoints.obj" \
 "./interrupt_handlers.obj" \
 "./interwinch_comms.obj" \
 "./kinematics.obj" \
@@ -171,22 +172,22 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 SmartWinchDualCore.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --opt_for_speed=5 --fp_mode=relaxed --advice:performance=all --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number -z -m"SmartWinchDualCore.map" --heap_size=0x400 --stack_size=0x100 --warn_sections -i"C:/ti/c2000/C2000Ware_1_00_03_00/device_support/f2837xd/headers/cmd" -i"C:/ti/c2000/C2000Ware_1_00_03_00/device_support/f2837xd/common/cmd" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="SmartWinchDualCore_linkInfo.xml" --entry_point=code_start --rom_model -o "SmartWinchDualCore.out" $(ORDERED_OBJS)
+	"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --opt_for_speed=5 --fp_mode=relaxed --advice:performance=all --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number -z -m"SmartWinchDualCore.map" --heap_size=0x400 --stack_size=0x100 --warn_sections -i"C:/ti/c2000/C2000Ware_1_00_03_00/device_support/f2837xd/headers/cmd" -i"C:/ti/c2000/C2000Ware_1_00_03_00/device_support/f2837xd/common/cmd" -i"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/lib" -i"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="SmartWinchDualCore_linkInfo.xml" --entry_point=code_start --rom_model -o "SmartWinchDualCore.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 SmartWinchDualCore.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: C2000 Hex Utility'
-	"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_18.1.0.LTS/bin/hex2000"  -o "SmartWinchDualCore.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/bin/hex2000"  -o "SmartWinchDualCore.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "FM25W256.obj" "ModbusMaster.obj" "MotionProfile.obj" "RoboClaw.obj" "autonomous_mode.obj" "buffered_serial.obj" "buffered_serial_B.obj" "buffered_serial_C.obj" "device_init.obj" "interrupt_handlers.obj" "interwinch_comms.obj" "kinematics.obj" "main.obj" "modbusRTU.obj" "modbus_regs.obj" "motion_buffer.obj" "motor_driver.obj" "safety_routines.obj" "task_scheduler.obj" "DCL\source\DCL_DF13.obj" "DCL\source\DCL_DF22.obj" "DCL\source\DCL_DF23.obj" "DCL\source\DCL_PI.obj" "DCL\source\DCL_PID.obj" "device\F2837xD_CodeStartBranch.obj" "device\device.obj" 
-	-$(RM) "FM25W256.d" "ModbusMaster.d" "MotionProfile.d" "RoboClaw.d" "autonomous_mode.d" "buffered_serial.d" "buffered_serial_B.d" "buffered_serial_C.d" "device_init.d" "interrupt_handlers.d" "interwinch_comms.d" "kinematics.d" "main.d" "modbusRTU.d" "modbus_regs.d" "motion_buffer.d" "motor_driver.d" "safety_routines.d" "task_scheduler.d" "device\device.d" 
+	-$(RM) "FM25W256.obj" "ModbusMaster.obj" "MotionProfile.obj" "RoboClaw.obj" "autonomous_mode.obj" "buffered_serial.obj" "buffered_serial_B.obj" "buffered_serial_C.obj" "device_init.obj" "intermediate_waypoints.obj" "interrupt_handlers.obj" "interwinch_comms.obj" "kinematics.obj" "main.obj" "modbusRTU.obj" "modbus_regs.obj" "motion_buffer.obj" "motor_driver.obj" "safety_routines.obj" "task_scheduler.obj" "DCL\source\DCL_DF13.obj" "DCL\source\DCL_DF22.obj" "DCL\source\DCL_DF23.obj" "DCL\source\DCL_PI.obj" "DCL\source\DCL_PID.obj" "device\F2837xD_CodeStartBranch.obj" "device\device.obj" 
+	-$(RM) "FM25W256.d" "ModbusMaster.d" "MotionProfile.d" "RoboClaw.d" "autonomous_mode.d" "buffered_serial.d" "buffered_serial_B.d" "buffered_serial_C.d" "device_init.d" "intermediate_waypoints.d" "interrupt_handlers.d" "interwinch_comms.d" "kinematics.d" "main.d" "modbusRTU.d" "modbus_regs.d" "motion_buffer.d" "motor_driver.d" "safety_routines.d" "task_scheduler.d" "device\device.d" 
 	-$(RM) "DCL\source\DCL_DF13.d" "DCL\source\DCL_DF22.d" "DCL\source\DCL_DF23.d" "DCL\source\DCL_PI.d" "DCL\source\DCL_PID.d" "device\F2837xD_CodeStartBranch.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

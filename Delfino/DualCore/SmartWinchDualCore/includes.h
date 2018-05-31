@@ -49,6 +49,7 @@
 
 #include "interwinch_comms.h"
 
+#include "intermediate_waypoints.h"
 
 //utilities
 #define systick() ((uint32_t)(4294967295 - CPUTimer_getTimerCount(CPUTIMER0_BASE))) //needed because the cpu_timer is cnt_dwn, not up! (200us per tick)

@@ -630,7 +630,7 @@ unsigned int max(unsigned int a, unsigned int b, unsigned int c)
 
 //this function will update global scaled_speed by using the ratio of cable lengths
 //this is so that all winch will finish actuating the tether at around the same time
-void update_scaled_velocity(float length1, float length2,float length3,float length4)
+void update_scaled_velocity(float difference1, float difference2,float difference3,float difference4)
 {
     if (dip_switch.BIT4) //this is used to skip scaled velocity
     {
@@ -638,36 +638,35 @@ void update_scaled_velocity(float length1, float length2,float length3,float len
         return;
     }
 
-    float longest_cable = length1;
+    float longest_difference = difference1;
 
-    if(longest_cable < length2)
-        longest_cable = length2;
-    if(longest_cable < length3)
-        longest_cable = length3;
-    if(longest_cable < length4)
-        longest_cable = length4;
+    if(longest_difference < difference2)
+        longest_difference = difference2;
+    if(longest_difference < difference3)
+        longest_difference = difference3;
+    if(longest_difference < difference4)
+        longest_difference = difference4;
 
     //todo: this section can be simplified using an array
     switch(modbus_holding_regs[Winch_ID])
     {
         case 0:
         {
-            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length1/longest_cable);
-            break;
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*difference1/longest_difference);
         }
         case 1:
         {
-            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length2/longest_cable);
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*difference2/longest_difference);
             break;
         }
         case 2:
         {
-            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length3/longest_cable);
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*difference3/longest_difference);
             break;
         }
         case 3:
         {
-            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*length4/longest_cable);
+            modbus_holding_regs[scaled_velocity] = (int)((float)modbus_holding_regs[Max_Velocity]*difference4/longest_difference);
             break;
         }
     }     
