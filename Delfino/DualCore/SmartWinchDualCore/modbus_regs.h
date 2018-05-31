@@ -149,7 +149,7 @@ enum
     len_bd,
 
     //Weight of cable in N/mm
-    w,
+    wmm,
 
 
     modbus_master_test,

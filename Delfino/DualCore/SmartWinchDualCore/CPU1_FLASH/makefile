@@ -40,8 +40,7 @@ ORDERED_OBJS += \
 "../2837xD_FLASH_lnk_cpu1.cmd" \
 "../driverlib.lib" \
 $(GEN_CMDS__FLAG) \
--l"C:/ti/c2000/C2000Ware_1_00_03_00/device_support/f2837xd/headers/cmd/F2837xD_Headers_nonBIOS_cpu1.cmd" \
--lrts2800_fpu32.lib \
+-l"C:/Z/Games/ti/C2000Ware_1_00_03_00/device_support/f2837xd/headers/cmd/F2837xD_Headers_nonBIOS_cpu1.cmd" \
 
 -include ../makefile.init
 
@@ -172,7 +171,7 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 SmartWinchDualCore.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --opt_for_speed=5 --fp_mode=relaxed --advice:performance=all --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number -z -m"SmartWinchDualCore.map" --heap_size=0x400 --stack_size=0x100 --warn_sections -i"C:/ti/c2000/C2000Ware_1_00_03_00/device_support/f2837xd/headers/cmd" -i"C:/ti/c2000/C2000Ware_1_00_03_00/device_support/f2837xd/common/cmd" -i"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/lib" -i"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="SmartWinchDualCore_linkInfo.xml" --entry_point=code_start --rom_model -o "SmartWinchDualCore.out" $(ORDERED_OBJS)
+	"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --opt_for_speed=5 --fp_mode=relaxed --advice:performance=all --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number -z -m"SmartWinchDualCore.map" --heap_size=0x400 --stack_size=0x100 --warn_sections -i"C:/Z/Games/ti/C2000Ware_1_00_03_00/device_support/f2837xd/headers/cmd" -i"C:/Z/Games/ti/C2000Ware_1_00_03_00" -i"C:/Z/Games/ti/C2000Ware_1_00_03_00/device_support/f2837xd/common/cmd" -i"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/lib" -i"C:/Z/Games/ti/ti-cgt-c2000_18.1.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="SmartWinchDualCore_linkInfo.xml" --entry_point=code_start --rom_model -o "SmartWinchDualCore.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 

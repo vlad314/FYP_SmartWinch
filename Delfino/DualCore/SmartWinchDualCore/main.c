@@ -100,6 +100,21 @@ void init_settings()
 
     modbus_holding_regs[Current_Waypoints_Pointer] = 0;
     modbus_holding_regs[Dwell_Time] = 1;
+    
+    //Defines motor coordinates
+    //5 input lengths required in metres as follows:
+    //Motor A to Motor B
+    //Motor C to Motor D
+    //Motor A to Motor D
+    //Motor A to Motor C
+    //Motor B to Motor D
+    //This fully charactises the layout and coordinates are set to allow for...
+    //any quadrilateral motor shape
+    set_motor_coord(modbus_holding_regs[len_ab],
+                    modbus_holding_regs[len_cd],
+                    modbus_holding_regs[len_ad],
+                    modbus_holding_regs[len_ac],
+                    modbus_holding_regs[len_bd]);
 }
 
 void blinking_led()
@@ -170,7 +185,8 @@ void main(void)
 
         task_scheduler_handler(); // main program    
 
-        if(dip_switch.BIT7) //used to test matt's maths
+        //Taken out as implemented in the other functions
+        if(0) //used to test matt's maths
         {
             GPIO_writePin(DEVICE_GPIO_PIN_LED1, 1); //tic
             //Tensions x4, Sagged Lengths x4, Distance
@@ -179,15 +195,12 @@ void main(void)
                                         (float)modbus_holding_regs[Current_Force_Winch1]*0.0098066500286389f,
                                         (float)modbus_holding_regs[Current_Force_Winch2]*0.0098066500286389f,
                                         (float)modbus_holding_regs[Current_Force_Winch3]*0.0098066500286389f,
-                                        (float)modbus_holding_regs[Current_Length_Winch0]/1000.0f,
-                                        (float)modbus_holding_regs[Current_Length_Winch1]/1000.0f,
-                                        (float)modbus_holding_regs[Current_Length_Winch2]/1000.0f,
-                                        (float)modbus_holding_regs[Current_Length_Winch3]/1000.0f,
-                                        (float)modbus_holding_regs[Field_Length]/1000.0f);
+                                        modbus_holding_regs[Current_Length_Winch0],
+                                        modbus_holding_regs[Current_Length_Winch1],
+                                        modbus_holding_regs[Current_Length_Winch2],
+                                        modbus_holding_regs[Current_Length_Winch3]);
 
-            coord_out.X *= 1000;
-            coord_out.Y *= 1000;
-            coord_out.Z *= 1000;        
+                    
             modbus_holding_regs[kinematics_test_X] = (int) coord_out.X;
             modbus_holding_regs[kinematics_test_Y] = (int) coord_out.Y;
             modbus_holding_regs[kinematics_test_Z] = (int) coord_out.Z;    
@@ -198,16 +211,12 @@ void main(void)
             GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1); //tic
             //Takes new coordintes XYZ, distance and uplift from previous function
             length4_struct length_out;
-            length_out = coord2ten_sag( (float)modbus_holding_regs[Target_X]/1000.0f,
-                                        (float)modbus_holding_regs[Target_Y]/1000.0f,
-                                        (float)modbus_holding_regs[Target_Z]/1000.0f,
-                                        (float)modbus_holding_regs[Field_Length]/1000.0f,
+            length_out = coord2ten_sag( modbus_holding_regs[Target_X],
+                                        modbus_holding_regs[Target_Y],
+                                        modbus_holding_regs[Target_Z],
                                         coord_out.uplift);
 
-            length_out.lengtha *= 1000;
-            length_out.lengthb *= 1000;
-            length_out.lengthc *= 1000;
-            length_out.lengthd *= 1000;
+            
 
             modbus_holding_regs[kinematics_test_A] = (int) length_out.lengtha;
             modbus_holding_regs[kinematics_test_B] = (int) length_out.lengthb;

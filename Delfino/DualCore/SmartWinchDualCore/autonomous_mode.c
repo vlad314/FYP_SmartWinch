@@ -11,6 +11,7 @@
 void waypoint_follower()
 {
     static length4_struct target_cable_lengths, current_cable_lengths;
+    static XYZ_coord_struct cur_target_point;
     static int previous_mode = 0;
     int dist_wpt_w1, dist_wpt_w2, dist_wpt_w3, dist_wpt_w4;
     int dist [4];
@@ -28,12 +29,14 @@ void waypoint_follower()
         //record the current distances from the winches to the payload
         current_cable_lengths = XYZ_to_length4(  (float) modbus_holding_regs[Current_Waypoints_Pointer ],
                                                 (float) modbus_holding_regs[Current_Waypoints_Pointer + 1],
-                                                (float) modbus_holding_regs[Current_Waypoints_Pointer + 2],
-                                                (float) modbus_holding_regs[Field_Length]); //what if the field is not square?
+                                                (float) modbus_holding_regs[Current_Waypoints_Pointer + 2]
+                                                );
 
         current_x = modbus_holding_regs[Current_Waypoints_Pointer];
         current_y = modbus_holding_regs[Current_Waypoints_Pointer + 1];
         current_z = modbus_holding_regs[Current_Waypoints_Pointer + 2];
+		
+		
 
         //calculate the coordinates of the minimum tether length for winch 1
         wpt_w1 = intermediate_waypoint(modbus_holding_regs[Current_Waypoints_Pointer],
@@ -131,14 +134,14 @@ void waypoint_follower()
             min -= 1;
         }
         for (i = 0; i <= 3; i++){
-            if (dist[0] == dist_wpt_w1)
-                pts[0] = wpt_w1;
-            else if (dist[1] == dist_wpt_w2)
-                pts[1] = wpt_w2;
-            else if (dist[0] == dist_wpt_w3)
-                pts[2] = wpt_w3;
-            else if (dist[0] == dist_wpt_w4)
-                pts[3] = wpt_w4;
+            if (dist[i] == dist_wpt_w1)
+                pts[i] = wpt_w1;
+            else if (dist[i] == dist_wpt_w2)
+                pts[i] = wpt_w2;
+            else if (dist[i] == dist_wpt_w3)
+                pts[i] = wpt_w3;
+            else if (dist[i] == dist_wpt_w4)
+                pts[i] = wpt_w4;
         }
 
         //run through the intemrediate waypoints
@@ -148,10 +151,31 @@ void waypoint_follower()
                     continue;
                 else if (j == 4){
                     //update target length
-                    target_cable_lengths = XYZ_to_length4(  (float) modbus_holding_regs[Target_X],
-                                                            (float) modbus_holding_regs[Target_Y],
-                                                            (float) modbus_holding_regs[Target_Z],
-                                                            (float) modbus_holding_regs[Field_Length]);
+					if(dip_switch.BIT7) //used to test matt's maths
+					{
+					//Pythagorean maths
+						target_cable_lengths = XYZ_to_length4(  modbus_holding_regs[Current_X],
+														   modbus_holding_regs[Current_Y], 
+														   modbus_holding_regs[Current_Z]);
+					} else {
+
+						//update target lengths
+						//Finds current coordinates and from that, relative uplift
+						cur_target_point = tenandsag2coord( (float) modbus_holding_regs[Current_Force_Winch0]*0.0098066500286389f,
+														(float) modbus_holding_regs[Current_Force_Winch1]*0.0098066500286389f,
+													   (float) modbus_holding_regs[Current_Force_Winch2]*0.0098066500286389f,
+														(float) modbus_holding_regs[Current_Force_Winch3]*0.0098066500286389f,
+														modbus_holding_regs[Current_Length_Winch0],
+														modbus_holding_regs[Current_Length_Winch1],
+														modbus_holding_regs[Current_Length_Winch2],
+														modbus_holding_regs[Current_Length_Winch3]);
+
+						//Uses calculated uplift to find tether lengths for target coordinate
+						target_cable_lengths = coord2ten_sag(modbus_holding_regs[Target_X],
+														 modbus_holding_regs[Target_Y],
+														 modbus_holding_regs[Target_Z],
+														 cur_target_point.uplift);
+					}
 
                     modbus_holding_regs[Target_Length_Winch0] = target_cable_lengths.lengtha;
                     modbus_holding_regs[Target_Length_Winch1] = target_cable_lengths.lengthb;
@@ -204,10 +228,35 @@ void waypoint_follower()
                 }
                 else {
                     //calculate the target cable lengths from the coordinates of each intermediate waypoint
-                    target_cable_lengths = XYZ_to_length4(  (float) pts[j].min_x,
+                    /*target_cable_lengths = XYZ_to_length4(  (float) pts[j].min_x,
                                                             (float) pts[j].min_y,
                                                             (float) pts[j].min_z,
-                                                            (float) modbus_holding_regs[Field_Length]);
+                                                            (float) modbus_holding_regs[Field_Length]);*/
+					if(dip_switch.BIT7) //used to test matt's maths
+					{
+					//Pythagorean maths
+						target_cable_lengths = XYZ_to_length4(  (float) pts[j].min_x,
+                                                            (float) pts[j].min_y,
+                                                            (float) pts[j].min_z);
+					} else {
+
+						//update target lengths
+						//Finds current coordinates and from that, relative uplift
+						cur_target_point = tenandsag2coord( (float) modbus_holding_regs[Current_Force_Winch0]*0.0098066500286389f,
+														(float) modbus_holding_regs[Current_Force_Winch1]*0.0098066500286389f,
+													   (float) modbus_holding_regs[Current_Force_Winch2]*0.0098066500286389f,
+														(float) modbus_holding_regs[Current_Force_Winch3]*0.0098066500286389f,
+														modbus_holding_regs[Current_Length_Winch0],
+														modbus_holding_regs[Current_Length_Winch1],
+														modbus_holding_regs[Current_Length_Winch2],
+														modbus_holding_regs[Current_Length_Winch3]);
+
+						//Uses calculated uplift to find tether lengths for target coordinate
+						target_cable_lengths = coord2ten_sag((float) pts[j].min_x,
+                                                            (float) pts[j].min_y,
+                                                            (float) pts[j].min_z,
+														 cur_target_point.uplift);
+					}
 
                     //update the target lengths
                     modbus_holding_regs[Target_Length_Winch0] = target_cable_lengths.lengtha;
